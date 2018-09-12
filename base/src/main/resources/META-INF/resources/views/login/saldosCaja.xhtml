@@ -1,0 +1,233 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmSaldosCaja" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<h1>Saldos de caja</h1>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<div class="margin-top-10"></div>
+
+							<div class="orden-3-columnas sin-padding">
+
+								<div class="marco-datospersonales margin-right-10" style="margin-top: 0px;">
+									<p:outputLabel value="Total arqueo anterior" />
+									<div class="clear-3"></div>
+									<p:outputLabel styleClass="bold"
+										value="#{loginController.beanDatos.importeInicialAnt}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</p:outputLabel>
+								</div>
+
+								<div class="marco-datospersonales margin-right-10">
+									<p:outputLabel value="Saldo contable caja anterior" />
+									<div class="clear-3"></div>
+									<p:outputLabel styleClass="bold"
+										value="#{loginController.beanDatos.saldoContable}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</p:outputLabel>
+								</div>
+
+								<div class="marco-datospersonales">
+									<p:outputLabel value="Fecha contable" />
+									<div class="clear-3"></div>
+									<p:outputLabel styleClass="bold"
+										value="#{loginController.beanDatos.fechaContable}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+								</div>
+
+							</div>
+
+							<div class="clear-row"></div>
+
+							<h3 class="azul-b">
+								<h:outputText id="lblCajaCuadrada" value="Caja cuadrada"
+									rendered="#{loginController.beanDatos.importeInicialAnt == loginController.beanDatos.saldoContable}" />
+							</h3>
+
+							<div class="margin-top-10"></div>
+
+							<h:panelGroup layout="block" id="panelDescuadreCaja">
+								<h:form rendered="#{loginController.beanDatos.importeInicialAnt != loginController.beanDatos.saldoContable}">
+									<h3 class="rojo-b">Caja Descuadrada</h3>
+									<div class="margin-top-10"></div>
+									<div class="contenedor-totales">
+										<div class="grid_48 saldo-disponible bg-rojo-b">
+											<div class="grid_20">
+												<p:outputLabel value="Sobra: "
+													rendered="#{loginController.beanDatos.importeTotal.signum() == -1}" />
+												<p:outputLabel value="Falta: "
+													rendered="#{loginController.beanDatos.importeTotal.signum() == 1}" />
+											</div>
+											<div class="grid_28">
+												<p:outputLabel
+													value="#{loginController.beanDatos.importeTotal.abs()}"
+													rendered="#{loginController.beanDatos.importeTotal.signum() == -1}">
+													<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+														currencySymbol="MXN" />
+												</p:outputLabel>
+												<p:outputLabel
+													value="#{loginController.beanDatos.importeTotal}"
+													rendered="#{loginController.beanDatos.importeTotal.signum() == 1}">
+													<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+														currencySymbol="MXN" />
+												</p:outputLabel>
+											</div>
+										</div>
+										<div class="clear"></div>
+									</div>
+								</h:form>
+
+								<div class="margin-top-10 centrar-objeto">
+									<p:outputLabel styleClass="mensaje-caja-descuadrada rojo-b"
+										value="Debido a discrepancia de saldo, hay un error en transacción o corte."
+								   		rendered="#{loginController.beanDatos.importeInicialAnt != loginController.beanDatos.saldoContable}"/>
+									<div class="margin-top-10"></div>
+
+									<div class="centrar-texto grid_12">
+										<p:outputLabel value="¿Desea eliminar los traspasos?"
+											for="switchEliminarTraspasos" />
+										<div class="clear-3"></div>
+										<p:inputSwitch id="switchEliminarTraspasos" onLabel="Sí"
+											offLabel="No"
+											value="#{loginController.beanDatos.eliminarTraspasos}">
+											<p:ajax event="change" global="false" />
+										</p:inputSwitch>
+									</div>
+
+									<div class="clear-row"></div>
+
+									<div class="grid_12">
+										<p:outputLabel value="Efectivo inicial" />
+										<div class="clear-3"></div>
+										<pe:inputNumber id="txtEfectivoInicial" maxlength="15"
+											styleClass="pe-inputNumber" decimalPlaces="2"
+											decimalSeparator="." thousandSeparator="," minValue="0"
+											maxValue="999999999999.99"
+											value="#{loginController.beanDatos.importeInicialNuevo}">
+											<p:ajax event="blur" global="false" update="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">MXN</span>
+									</div>
+								</div>
+							</h:panelGroup>
+
+						</div>
+
+						<div class="margin-top-10"></div>
+
+						<p:commandButton styleClass="btn_secundario" value="Cerrar"
+							onclick="PF('dlgConfirmarCierre').show();"
+							rendered="#{loginController.beanDatos.importeInicialAnt != loginController.beanDatos.saldoContable}" />
+						<p:commandButton styleClass="btn_primario float-right"
+							value="Aceptar" oncomplete="PF('dlgConfirmarSaldos').show();"
+							update=":dlgConfirmarSaldos"
+							rendered="#{loginController.beanDatos.importeInicialAnt != loginController.beanDatos.saldoContable}" />
+						<p:commandButton styleClass="btn_primario float-right"
+							value="Aceptar" action="#{loginController.redirigirAInicio()}"
+							rendered="#{loginController.beanDatos.importeInicialAnt == loginController.beanDatos.saldoContable}" />
+
+					</h:form>
+
+					<p:dialog id="dlgConfirmarCierre" widgetVar="dlgConfirmarCierre"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						header="Confirmación requerida">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<div class="modal-mensaje">
+							<p:outputLabel
+								value="¡Atención! Está a punto de cerrar sin actualizar el importe de efectivo inicial." />
+						</div>
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgConfirmarCierre').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" onclick="PF('dlgConfirmarCierre').hide();"
+							action="#{loginController.redirigirAInicio()}" />
+					</p:dialog>
+
+					<p:dialog id="dlgConfirmarSaldos" widgetVar="dlgConfirmarSaldos"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade"
+						draggable="false" modal="true" resizable="false"
+						header="Confirmación requerida">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<div class="modal-mensaje">
+							<p:outputLabel
+								value="Va a actualizar el efectivo inicial de caja con valor de " />
+							<p:outputLabel styleClass="modal-mensaje-detalle"
+								value="#{loginController.beanDatos.importeInicialNuevo}">
+								<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+									currencySymbol="MXN" />
+							</p:outputLabel>
+						</div>
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgConfirmarSaldos').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" onclick="PF('dlgConfirmarSaldos').hide();"
+							actionListener="#{loginController.actualizarSaldos()}" />
+					</p:dialog>
+
+					<p:dialog id="dlgOperacionExitosa" widgetVar="dlgOperacionExitosa"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade"
+						draggable="false" modal="true" resizable="false"
+						header="Resultado">
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Su efectivo inicial ha sido actualizado correctamente." />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgOperacionExitosa').hide();"
+							action="#{loginController.redirigirAInicio()}" />
+					</p:dialog>
+
+					<p:dialog id="dlgOperacionFallida" widgetVar="dlgOperacionFallida"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade"
+						draggable="false" modal="true" resizable="false"
+						header="Resultado">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Falló la actualización del efectivo inicial de caja. Por favor, inténtelo de nuevo." />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgOperacionFallida').hide();" />
+					</p:dialog>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

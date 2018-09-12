@@ -1,0 +1,293 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="formLiquidaciones" styleClass="contenedor-form">
+						<pe:blockUI widgetVar="blockUIWidget1" />
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{liquidacionesController.volver()}" immediate="true" />
+							<div>
+								<h2 class="gris-b">
+									Consulta de liquidaciones de <span class="rojo-b">#{liquidacionesController.cuentaBean.tipoCuenta}</span>
+								</h2>
+								<h3 class="gris-b">(#{apunteController.cuentaBean.numeroCuenta})</h3>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<p:commandButton
+								styleClass="btn_secundario btn-icono-texto float-right"
+								icon="cbs-e005-simular" value="Simular" id="btnSimular"
+								action="#{liquidacionesController.simularLiquidaciones}"
+								process="formLiquidaciones:camposBusqueda, @this"
+								update="formLiquidaciones">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+
+							<div class="clear-row margin-top-10"></div>
+
+							<div class="centrar-objeto">
+								<div class="cuadra col-40">
+									<p:outputLabel value="Saldo contable:"></p:outputLabel>
+									<p:outputLabel styleClass="float-right"
+										value="#{liquidacionesController.cuentaBean.saldoBean.saldoContable} MXN">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00" />
+									</p:outputLabel>
+								</div>
+								<div class="clear-3"></div>
+								<div class="cuadra col-40">
+									<p:outputLabel value="Saldo disponible:"></p:outputLabel>
+									<p:outputLabel styleClass="float-right"
+										value="#{liquidacionesController.cuentaBean.saldoBean.disponible} MXN">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00" />
+									</p:outputLabel>
+								</div>
+							</div>
+
+							<div class="clear-row margin-top-10"></div>
+
+							<h:panelGroup layout="block"
+								styleClass="row" id="camposBusqueda">
+								<div class="grid_18">
+									<p:outputLabel for="liquidacionTipo"
+										value="Tipo de liquidación:"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:selectOneMenu id="liquidacionTipo"
+										value="#{liquidacionesController.liquidacionSeleccionada.tipoLiqFiltro}"
+										requiredMessage="">
+										<f:selectItem itemValue="#{null}"
+											itemLabel="Seleccione un valor" noSelectionOption="true" />
+										<f:selectItems
+											value="#{catalogoUtils.filtraCatalogoOrdenado('TP_OPER_LIQ', liquidacionesController.cuentaBean.codLinea.concat(liquidacionesController.cuentaBean.idGrupoProducto))}"
+											var="item" itemValue="#{item.claveFila}"
+											itemLabel="#{item.descripcionL}" />
+									</p:selectOneMenu>
+									<p:message id="liquidacionTipoVal" for="liquidacionTipo"
+										display="text"></p:message>
+								</div>
+
+								<div class="grid_8">
+									<p:outputLabel for="fechasLiquidacionesInicio"
+										value="Rango de fechas:"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:calendar id="fechasLiquidacionesInicio" placeholder="Desde"
+										locale="es"
+										value="#{liquidacionesController.liquidacionSeleccionada.fechaInicioFiltro}"
+										pattern="dd/MM/yyyy" mask="true" showOn="button"
+										requiredMessage=""
+										maxdate="#{liquidacionesController.currentDate}">
+										<f:attribute name="endDate"
+											value="#{liquidacionesController.liquidacionSeleccionada.fechaFinFiltro}" />
+										<f:attribute name="tag" value="fechaLiquidacion" />
+										<f:param name="disableValidation" value="true" />
+										<f:validator validatorId="dateRangeValidator"
+											disabled="#{param['disableValidation']==true}" />
+										<p:ajax event="change"
+											process="fechasLiquidacionesInicio,fechasLiquidacionesFin"
+											update="fechasLiquidacionesInicio,fechasLiquidacionesInicioVal,fechasLiquidacionesFin"
+											partialSubmit="true" />
+										<p:ajax event="dateSelect"
+											process="fechasLiquidacionesInicio,fechasLiquidacionesFin"
+											update="fechasLiquidacionesInicio,fechasLiquidacionesInicioVal,fechasLiquidacionesFin"
+											partialSubmit="true" />
+
+									</p:calendar>
+									<p:message id="fechasLiquidacionesInicioVal"
+											   for="fechasLiquidacionesInicio"/>
+
+								</div>
+								<div class="grid_8">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:calendar id="fechasLiquidacionesFin" placeholder="Hasta"
+										locale="es"
+										value="#{liquidacionesController.liquidacionSeleccionada.fechaFinFiltro}"
+										pattern="dd/MM/yyyy" mask="true" showOn="button"
+										requiredMessage=""
+										maxdate="#{liquidacionesController.currentDate}"
+										mindate="#{liquidacionesController.liquidacionSeleccionada.fechaInicioFiltro}">
+										<f:param name="disableValidation" value="true" />
+										<p:ajax event="change"
+											process="fechasLiquidacionesFin,fechasLiquidacionesInicio"
+											update="fechasLiquidacionesInicio,fechasLiquidacionesInicioVal"
+											partialSubmit="true" />
+										<p:ajax event="dateSelect"
+											process="fechasLiquidacionesFin,fechasLiquidacionesInicio"
+											update="fechasLiquidacionesInicio,fechasLiquidacionesInicioVal"
+											partialSubmit="true" />
+									</p:calendar>
+								</div>
+
+								<div class="grid_7">
+									<div class="clear-3"></div>
+									<p:outputLabel for="incluirAnulados" value="Incluir anulados:"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:inputSwitch id="incluirAnulados" onLabel="Si" offLabel="No"
+										value="#{liquidacionesController.liquidacionSeleccionada.incluirAnuladosFiltro}">
+										<p:ajax event="change" />
+									</p:inputSwitch>
+								</div>
+
+								<p:commandButton styleClass="btn-icono-texto"
+									icon="fa fa-search" value="Buscar"
+									actionListener="#{liquidacionesController.consultaLiquidaciones(false)}"
+									process="formLiquidaciones:camposBusqueda"
+									update="formLiquidaciones" />
+							</h:panelGroup>
+
+							<div class="clear-row"></div>
+							<p:outputLabel styleClass="titulo-form margin-left-10"
+								value="Resultados de búsqueda"
+								rendered="#{liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() > 0}" />
+							<div class="clear-row"></div>
+							<p:dataTable id="tblResultadosLiquidaciones"
+								value="#{liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones}"
+								var="liquidacion" selectionMode="single"
+								rowKey="#{liquidacion.idLiquidacion}"
+								rows="#{ConstantesFuncionales.NUM_FILAS_PAGINA*liquidacionesController.liquidacionSeleccionada.paginaVista}"
+								selection="#{liquidacion}"
+								rendered="#{liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() > 0}">
+								<p:ajax event="rowSelect"
+									listener="#{liquidacionesController.seleccionaLiquidacion}" />
+								<p:column headerText="Fecha liquidación">
+									<h:outputText value="#{liquidacion.fechaLiquidacion}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Tipo liquidación">
+									<h:outputText
+										value="#{liquidacionesController.obtenerDescCatalogoTipoLiq(liquidacion.tipoLiquidacion) }" />
+								</p:column>
+								<p:column headerText="Neto operación">
+									<h:outputText styleClass="float-right"
+										value="#{liquidacion.netoOperacion}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+											groupingUsed="true" locale="es_MX" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Signo">
+									<h:outputText value="DEBE"
+										rendered="#{liquidacion.signo.equals('D')}" />
+									<h:outputText value="HABER"
+										rendered="#{liquidacion.signo.equals('H')}" />
+								</p:column>
+								<p:column headerText="A.J.">
+									<p:outputLabel value="#{liquidacion.aj}" />
+								</p:column>
+								<p:column headerText="Situación">
+									<h:outputText
+										value="#{liquidacionesController.obtenerDescCatalogoSituacionLiq(liquidacion.situacion)}" />
+								</p:column>
+								<p:column headerText="Importe pendiente">
+									<h:outputText styleClass="float-right"
+										value="#{liquidacion.importePendiente}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+											groupingUsed="true" locale="es_MX" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Periodo liquidación">
+									<h:outputText value="#{liquidacion.periodoDesdeLiquidacion}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</h:outputText>
+									<h:outputText value=" - " />
+									<h:outputText value="#{liquidacion.periodoHastaLiquidacion}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+
+							<div class="margin-top-10"></div>
+
+							<div class="centrar-objeto">
+								<p:commandButton id="linkPaginacionLiquidaciones"
+									styleClass="btn-mostrar"
+									actionListener="#{liquidacionesController.consultaLiquidaciones(true)}"
+									update="@form" value="Ver mas resultados" icon="fa fa-refresh"
+									iconPos="right"
+									rendered="#{((liquidacionesController.liquidacionSeleccionada.paginaVista * 10) lt liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size()) ? 
+											true : liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones[liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size()-1].masDatos}" />
+							</div>
+
+							<div class="clear-row"></div>
+
+							<h:panelGroup layout="block" styleClass="sinresultados"
+								rendered="#{!liquidacionesController.muestraTablaResultados and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}">
+								<div>
+									<p:outputLabel
+										rendered="#{!liquidacionesController.muestraTablaResultados and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}"
+										value="No se han encontrado resultados con los siguientes filtros " />
+									<div class="clear-row"></div>
+
+									<p:outputLabel
+										value="Tipo liquidación: #{liquidacionesController.obtenerDescCatalogoTipoLiq(liquidacionesController.liquidacionSeleccionada.tipoLiqFiltro) }"
+										rendered="#{!liquidacionesController.muestraTablaResultados and !liquidacionesController.liquidacionSeleccionada.tipoLiqFiltro.equals('')  and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}" />
+									<h:panelGroup
+										rendered="#{!liquidacionesController.muestraTablaResultados and !liquidacionesController.liquidacionSeleccionada.tipoLiqFiltro.equals('')  and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}">
+										<div class="clear-row"></div>
+									</h:panelGroup>
+									<p:outputLabel value="Fecha desde: "
+										rendered="#{!liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.fechaInicioFiltro != null and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}" />
+									<p:outputLabel
+										value="#{liquidacionesController.liquidacionSeleccionada.fechaInicioFiltro}"
+										rendered="#{!liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.fechaInicioFiltro != null and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+									<h:panelGroup
+										rendered="#{!liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.fechaInicioFiltro != null and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}">
+										<div class="clear-row"></div>
+									</h:panelGroup>
+									<p:outputLabel value="Fecha hasta:"
+										rendered="#{!liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.fechaFinFiltro != null and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}" />
+									<p:outputLabel
+										value="#{liquidacionesController.liquidacionSeleccionada.fechaFinFiltro}"
+										rendered="#{!liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.fechaFinFiltro != null and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+									<h:panelGroup
+										rendered="#{!liquidacionesController.muestraTablaResultados and liquidacionesController.liquidacionSeleccionada.fechaFinFiltro != null and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}">
+										<div class="clear-row"></div>
+									</h:panelGroup>
+									<p:outputLabel
+										value="Incluir anulados: #{liquidacionesController.liquidacionSeleccionada.incluirAnuladosFiltro == true?'Si':'No' }"
+										rendered="#{!liquidacionesController.muestraTablaResultados and (liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones == null or liquidacionesController.liquidacionSeleccionada.listaResultadosLiquidaciones.size() == 0)}" />
+									<div class="clear-row"></div>
+								</div>
+							</h:panelGroup>
+
+							<div class="clear"></div>
+
+						</div>
+
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" action="#{liquidacionesController.volver()}"
+							immediate="true" />
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

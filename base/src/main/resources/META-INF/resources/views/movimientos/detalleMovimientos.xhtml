@@ -1,0 +1,213 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+			<div class="container_48">
+				<!-- Se agregó div contenedores -->
+				<div class="contenedor">
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-home"
+								action="#{movimientosController.regresa()}"></p:commandButton>
+							<h1>Consulta de movimientos</h1>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<ui:include src="../../composites/detalleSaldoCuenta.xhtml">
+								<ui:param name="detalleCuentaUtils"
+									value="#{movimientosController.consultaMovimientosBean.detalleCuentaUtils}" />
+								<ui:param name="saldoCuenta"
+									value="#{movimientosController.consultaMovimientosBean.saldoCuenta}" />
+								<ui:param name="bean" value="#{movimientosController}" />
+								<ui:param name="action" value="imprimeJasper" />
+							</ui:include>
+
+							<div class="margin-top-20"></div>
+
+							<!-- Mensaje No hay datos -->
+							<h:panelGroup layout="block" styleClass="sinresultados sin-margen" rendered="#{movimientosController.mostrarMensaje()}">
+								<div>
+									<h:outputLabel value="No hay datos que mostrar con los parametros ingresados." />
+								</div>
+							</h:panelGroup>
+
+							<!-- Tabla de retenciones -->
+							<h:outputLabel styleClass="label-subtitulo" value="Retenciones"
+								rendered="#{movimientosController.consultaMovimientosBean.tieneRetenciones or
+									movimientosController.consultaMovimientosBean.errorRetenciones}" />
+							<br />
+							<h:outputLabel styleClass="label-subtitulo" value="#{movimientosController.errorRetenciones}"/>
+
+							<div class="margin-bottom-10"></div>
+
+							<p:dataTable var="retencion"
+								rendered="#{movimientosController.consultaMovimientosBean.tieneRetenciones}"
+								value="#{movimientosController.consultaMovimientosBean.retenciones}">
+								<p:column styleClass="col-12" headerText="Tipo">
+									<h:outputText value="#{retencion.subTipo}" />
+								</p:column>
+								<p:column styleClass="col-8" headerText="Estado">
+									<h:outputText value="#{retencion.estado}" />
+								</p:column>
+								<p:column styleClass="col-9" headerText="Fecha Alta">
+									<h:outputText value="#{retencion.fechaAlta}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column styleClass="col-10" headerText="Fecha VTO.">
+									<h:outputText value="#{retencion.fechaVencimiento}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column styleClass="col-30" headerText="Concepto">
+									<h:outputText value="#{retencion.concepto}" />
+								</p:column>
+								<p:column styleClass="col-9" headerText="Empleado">
+									<h:outputText value="#{retencion.empleado}" />
+								</p:column>
+								<p:column styleClass="col-10"
+									headerText="Origen">
+									<h:outputText value="#{retencion.originador}" />
+								</p:column>
+								<p:column styleClass="col-12" headerText="Importe">
+									<h:outputText styleClass="float-right" value="#{retencion.importe}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+
+							<!-- Tabla de autorizaciones  ELIMINADA POR PETICION DE USUARIO -->
+
+							<!-- Tabla de bloqueos -->
+							<div class="margin-top-10"></div>
+
+							<h:outputLabel styleClass="label-subtitulo" value="Bloqueos"
+								rendered="#{movimientosController.consultaMovimientosBean.tieneBloqueos or
+									movimientosController.consultaMovimientosBean.errorBloqueos}" />
+							<br />
+							<h:outputLabel styleClass="label-subtitulo" value="#{movimientosController.errorBloqueos}"/>
+
+							<div class="margin-bottom-10"></div>
+
+							<p:dataTable var="bloqueo"
+								rendered="#{movimientosController.consultaMovimientosBean.tieneBloqueos}"
+								value="#{movimientosController.consultaMovimientosBean.bloqueos}">
+								<p:column styleClass="col-12" headerText="Tipo">
+									<h:outputText value="#{bloqueo.subTipo}" />
+								</p:column>
+								<p:column styleClass="col-8" headerText="Estado">
+									<h:outputText value="#{bloqueo.estado}" />
+								</p:column>
+								<p:column styleClass="col-9" headerText="Fecha Alta">
+									<h:outputText value="#{bloqueo.fechaAlta}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column styleClass="col-10" headerText="Fecha VTO.">
+									<h:outputText value="#{bloqueo.fechaVencimiento}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column styleClass="col-30" headerText="Motivo del bloqueo">
+									<h:outputText value="#{bloqueo.concepto}" />
+								</p:column>
+								<p:column styleClass="col-9" headerText="Empleado">
+									<h:outputText value="#{bloqueo.empleado}" />
+								</p:column>
+								<p:column styleClass="col-9" headerText="Centro">
+									<h:outputText value="#{bloqueo.centro}" />
+								</p:column>
+								<p:column styleClass="col-12" headerText="Importe">
+									<h:outputText styleClass="float-right" value="#{bloqueo.importe}" />
+								</p:column>
+							</p:dataTable>
+
+							<!-- Tabla de movimientos -->
+							<div class="margin-bottom-10"></div>
+
+							<h:outputLabel styleClass="label-subtitulo" value="Movimientos"
+								rendered="#{movimientosController.consultaMovimientosBean.tieneMovimientos or
+								movimientosController.consultaMovimientosBean.errorMovimientos}" />
+							<br />
+							<h:outputLabel styleClass="label-subtitulo" value="#{movimientosController.errorMovimientos}"/>
+
+							<div class="margin-bottom-10"></div>
+
+							<p:dataTable id="listaMovimientos" var="movimiento"
+								rows="#{movimientosController.pagina}"
+								value="#{movimientosController.consultaMovimientosBean.movimientos}"
+								paginator="false"
+								rendered="#{movimientosController.consultaMovimientosBean.tieneMovimientos}">
+								<p:column styleClass="col-30" headerText="Concepto">
+									<h:outputText value="#{movimiento.concepto}" />
+								</p:column>
+								<p:column styleClass="col-9" headerText="F.Operación">
+									<h:outputText value="#{movimiento.fechaOperacion}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column styleClass="col-9" headerText="F.Valor">
+									<h:outputText value="#{movimiento.fechaValor}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column styleClass="col-8" headerText="Ofi. Terminal">
+									<h:outputText value="#{movimiento.oficinaTerminal}" />
+								</p:column>
+								<p:column styleClass="col-8" headerText="Estado">
+									<h:outputText value="#{movimiento.estado}" />
+								</p:column>
+								<p:column styleClass="col-13" headerText="Importe">
+									<h:outputText styleClass="float-right" value="#{movimiento.importe}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+								<p:column styleClass="col-12" headerText="Saldo">
+									<h:outputText styleClass="float-right" value="#{movimiento.saldo}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+							<div class="clear-row"></div>
+							<h:form>
+								<div class="centrar-objeto">
+									<p:commandButton id="btnMas" value="Ver más resultados" styleClass="btn-mostrar"
+										icon="fa fa-refresh" iconPos="right"
+										update=":listaMovimientos, @form"
+										actionListener="#{movimientosController.masDatos()}"
+										rendered="#{movimientosController.mostrarBoton}">
+									</p:commandButton>
+								</div>
+							</h:form>
+							<div class="clear"></div>
+						</div>
+
+						<div class="margin-bottom-10"></div>
+						<p:commandButton styleClass="btn_secundario"
+							value="Volver al inicio"
+							action="#{movimientosController.regresa()}"></p:commandButton>
+
+						<p:commandButton styleClass="btn_principal_derecha"
+							value="Realizar otra consulta"
+							action="#{movimientosController.inicio()}"></p:commandButton>
+
+					</div>
+					<!--termina contenedor-form-->
+				</div>
+				<!--termina contenedor-->
+			</div>
+			<!--termina container-48-->
+		</h:body>
+	</ui:define>
+</ui:composition>

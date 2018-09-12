@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+
+    <ui:define name="contenido">
+
+    <h:body>
+
+        <div class="contenedor">
+            <div class="contenedor-form col-60">
+
+                <div class="titulo centrar-objeto btn-inline-set">
+                    <p:commandButton icon="ui-icon-home" immediate="true" action="#{depositoController.irMenu()}"/>
+                    <h1>Depósito</h1>
+                </div>
+
+                <h:form>
+
+                    <div class="contenedor-campos">
+						
+							<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" id="btnGenerarReporte" widgetVar="btnGenerarReporte"
+										value="Imprimir"
+										action="#{depositoController.generaPlantillaDeposito(depositoController.respuesta)}" />	
+						
+                        <p:outputLabel styleClass="titulo-detalle" value="Resumen de transacción" />
+                        
+                        <div class="margin-bottom-20"></div>
+
+                        <p:outputLabel value="Ha realizado un depósito a la cuenta:" />
+                        <div class="clear"></div>
+                        <h:outputLabel styleClass="detalle" id="cuentaDeposito" value="#{depositoController.deposito.cuentaDeposito}" />
+                        <div class="clear"></div>
+                        <p:outputLabel value="con titular:" />
+                        <div class="clear"></div>
+                        <h:outputLabel styleClass="detalle" id="titularDeposito" value="#{depositoController.deposito.titular}" />
+                        <div class="clear"></div>
+                        <p:outputLabel value=" por valor de: " />
+                        <div class="clear"></div>
+                        <h:outputLabel styleClass="detalle" id="importeDeposito" value="#{depositoController.deposito.importeDeposito}">
+                            <f:convertNumber minFractionDigits="2" currencySymbol="" locale="es_MX" type="currency" />
+                        </h:outputLabel>
+                        <p:outputLabel styleClass="detalle" value=" MXN" />
+
+                        <div class="margin-bottom-20"></div>
+
+                        <p:outputLabel value="Operación: " />
+                        <h:outputLabel styleClass="resumen-detalle" value="#{depositoController.deposito.operacionDepositoDescripcion}" />
+                        <div class="clear"></div>
+                        <p:outputLabel value="Fecha valor: " />
+                        <h:outputLabel styleClass="resumen-detalle" id="fechaValorDeposito" value="#{depositoController.deposito.fechaValorDeposito}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputLabel>
+                        <div class="clear"></div>
+                        <p:outputLabel value="Concepto: " />
+                        <h:outputLabel styleClass="resumen-detalle" id="conceptoDeposito" value="#{depositoController.deposito.conceptoDeposito}" />
+                        <div class="clear"></div>
+                        <p:outputLabel value="Ordenante: " />
+                        <h:outputLabel styleClass="resumen-detalle" id="ordenantesDeposito" value="#{depositoController.deposito.ordenanteDeposito}" />
+
+                    </div>
+
+                    <div class="margin-top-20"></div>
+					
+                    <p:commandButton styleClass="btn_secundario" id="inicio" value="Volver al inicio" immediate="true"
+                       action="#{depositoController.irMenu()}" rendered="#{not depositoController.esDepositoIPF and not depositoController.origenFichaCuenta}" />
+					
+					<p:commandButton styleClass="btn_secundario" id="inicioFicha" value="Volver a la ficha" immediate="true"
+                       action="#{depositoController.irFichaCuenta()}" rendered="#{not depositoController.esDepositoIPF and depositoController.origenFichaCuenta}" />
+					
+                    <p:commandButton styleClass="btn_principal_derecha" id="realizarDeposito" value="Realizar otro depósito"
+                       action="#{depositoController.irDeposito()}" rendered="#{not depositoController.esDepositoIPF}" />
+                       
+                    <p:commandButton styleClass="btn_principal_derecha" id="altaIPF" value="Realizar depósito IPF" immediate="true"
+                       action="#{depositoController.irAltaIPF()}" rendered="#{depositoController.esDepositoIPF}"/>
+
+                </h:form>
+
+            </div>
+        </div>
+
+    </h:body>
+
+</ui:define>
+</ui:composition>

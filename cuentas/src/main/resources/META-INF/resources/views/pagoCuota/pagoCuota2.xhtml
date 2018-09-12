@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+
+    <ui:define name="contenido">
+
+    <h:body>
+            <f:metadata>
+              <f:viewAction action="#{pagoCuotaController.iniciaPaso2()}" phase="APPLY_REQUEST_VALUES" />
+            </f:metadata>
+
+        <div class="contenedor">
+            <div class="contenedor-form col-60">
+
+                <div class="titulo">
+                   <div>
+                     <h2 class="gris-b">#{pagoCuotaController.cuotaIPF.descripcion}</h2>
+                     <h2 class="azul-b">(#{pagoCuotaController.cuotaIPF.numAcuerdo}):</h2>
+                     <h2 class="gris-b">Pago cuota para </h2>
+                     <h2 class="rojo-b">IPF #{pagoCuotaController.cuotaIPF.numSubAc}</h2>
+                   </div>
+                </div>
+
+                <h:form>
+
+                    <div class="contenedor-campos">
+						
+							<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" id="btnGenerarReporte" widgetVar="btnGenerarReporte"
+										value="Imprimir" 
+										action="#{pagoCuotaController.generaPlantillaDeposito()}" />	
+						
+                        
+                        <div class="margin-bottom-10"></div>
+
+                        <p:outputLabel value="Ha realizado un pago de cuota en la " />
+                        <p:outputLabel styleClass="detalle" value="IPF #{pagoCuotaController.cuotaIPF.numSubAc}" />
+                        <p:outputLabel value=" por valor de " />
+                        <p:outputLabel styleClass="detalle" value="#{pagoCuotaController.cuotaIPF.importeDeposito}">
+                          <f:convertNumber pattern="#,##0.00 ¤" locale="es_MX" 
+                            currencySymbol="MXN"/>
+                        </p:outputLabel>
+                        <div class="clear"></div>
+                        <p:outputLabel value="Cargo: " />                        
+                        <p:outputLabel styleClass="detalle" value="#{pagoCuotaController.cuotaIPF.tipoCargo.descripcion}" />
+                        <div class="clear"></div>
+                        <p:outputLabel value="Fecha Valor: " />
+							          <p:outputLabel styleClass="detalle" value="#{contextoUtils.getFechaContableActual()}">
+							            <f:convertDateTime pattern="dd/MM/yyyy" />
+							          </p:outputLabel>
+                    </div>
+
+                    <div class="margin-top-20"></div>
+
+                    <p:commandButton styleClass="btn_secundario" id="inicio" value="Volver a la ficha de cuenta"
+                       action="#{pagoCuotaController.irAHome()}" />
+
+                    <p:commandButton styleClass="btn_principal_derecha" id="realizarPagoCuota" value="Realizar otro pago"
+                       action="#{pagoCuotaController.irAPaso1()}" />
+                       
+
+                </h:form>
+
+            </div>
+        </div>
+
+    </h:body>
+
+</ui:define>
+</ui:composition>

@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								action="#{diferenciasController.regresarDetalle()}"></p:commandButton>
+							<h2 class="gris-b">Desglose de petición de efectivo </h2>
+							<h2 class="azul-b">(#{diferenciasController.formateoFechaString(diferenciasController.diferenciaBean.fechaPeticion)})</h2>
+							<h3 class="rojo-b"> #{diferenciasController.diferenciaBean.numeroUrgente == 0 ? '' : '(No. urgente '.concat(diferenciasController.diferenciaBean.numeroUrgente).concat(')')} </h3>
+						</div>
+						
+						<h:form id="formEnvioEntreOficinas">
+
+							<div class="contenedor-campos margin-top-20 margin-left-5">
+								
+								<div class="grid_24 marco-datospersonales">
+									<p:outputLabel value="Centro destino: " />
+									<p:outputLabel styleClass="bold"
+										value="#{diferenciasController.obtenerDescripcionCentro(diferenciasController.diferenciaBean.centroDesino).descripcionL}" />
+									<div class="clear"></div>
+									<p:outputLabel value="Estatus: " />
+									<p:outputLabel styleClass="bold"
+										value="#{diferenciasController.diferenciaBean.estatus.descripcionL} " />
+									<div class="clear"></div>
+									<p:outputLabel value="Importe autorizado: " />
+									<p:outputLabel styleClass="bold"
+										value="#{diferenciasController.diferenciaBean.totalAutorizado}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</p:outputLabel>
+									<div class="clear"></div>
+									<p:outputLabel value="Importe recibido: " />
+									<p:outputLabel styleClass="bold"
+										value="#{diferenciasController.diferenciaBean.totalRecibido}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</p:outputLabel>
+									<div class="clear"></div>
+									<p:outputLabel value="Diferencia: " />
+									<p:outputLabel styleClass="bold"
+										value="#{diferenciasController.calculcaDiferencia(diferenciasController.diferenciaBean.totalAutorizado, diferenciasController.diferenciaBean.totalRecibido)}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</p:outputLabel>
+								</div>
+								
+								<div class="clear-row" />
+								<div class="clear-3" />
+								
+								<b:parrilla filtro="false" editable="false" precinto="false"
+									parrillaBean="#{diferenciasController.diferenciaBean.parrilla}" />
+							
+								<div class="clear-row" />
+								<div class="clear-3" />
+								
+								<div class="float-right">
+									<p:remoteCommand value="Cerrar" immediate="true" 
+									action="#{diferenciasController.regresarConsulta()}"/>								
+								</div>
+								
+								<div class="clear-row" />
+
+							</div>
+						
+						</h:form>
+						
+					</div>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

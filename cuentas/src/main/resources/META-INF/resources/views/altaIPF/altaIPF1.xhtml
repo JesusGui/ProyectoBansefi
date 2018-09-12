@@ -1,0 +1,332 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:cc="http://java.sun.com/jsf/composite/composites"
+xmlns:o="http://omnifaces.org/ui"
+template="../../templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+    <ui:define name="contenido">
+        <h:outputScript name="/js/altaIPF1.js" />
+        <h:body>
+		        <f:metadata>
+		          <f:viewAction action="#{altaIPFController.iniciaPaso1()}" phase="APPLY_REQUEST_VALUES" />
+		        </f:metadata>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <o:form id="altaIPF1" styleClass="contenedor-form">
+                    <pe:importConstants className="mx.babel.bansefi.banksystem.cuentas.enums.TipoCargoEnum"
+                        var="TipoCargo" />
+                        <!--titulo d ela ventana-->
+                        
+                         <div class="titulo centrar-objeto btn-inline-set">
+                         	<p:commandButton icon="ui-icon-arrow-1-w" rendered="#{not altaIPFController.modificacion}" title="Volver atrás"
+                          		action="#{altaIPFController.irAHome()}"></p:commandButton>
+                            <div>
+                            <h2 class="gris-b">#{altaIPFController.modificacion?'Alta':'Condiciones'} de depósito </h2>
+                            <h2 class="azul-b">IPF #{altaIPFController.modificacion?altaIPFController.depositoIPF.numSubAc:''}</h2>
+                            <h2 class="gris-b"> para </h2>
+                            <h2 class="rojo-b">#{altaIPFController.depositoIPF.descripcion} </h2>
+                            <h3 class="gris-b">(#{altaIPFController.depositoIPF.numAcuerdo})</h3>
+                            </div>
+                        </div>                        
+							            <!--Wizard Botones circulares superiores -->            
+							              <div class="wiz-pasos">
+							                <p:commandButton styleClass="activo" value="Negociar tarifa" rendered="#{altaIPFController.modificacion}" />
+							                <p:commandButton styleClass="inactivo" value="Relacionar otras cuentas"
+							                 action="#{altaIPFController.irAPaso2()}" rendered="#{altaIPFController.modificacion}" >
+							                   <o:ignoreValidationFailed/>
+							                 </p:commandButton>
+							              </div>
+							              <!--contenedor del wizard-->
+                            <div class="contenedor-campos">
+                               <p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" 
+                                 value="*Campos Obligatorios" rendered="#{altaIPFController.modificacion}" />
+                                <!--aqui se introducen todos los campos-->
+                                <h:panelGroup layout="block" styleClass="grid_10 alpha" rendered="#{not altaIPFController.modificacion}">
+                                   <p:outputLabel for="comboIPFs" value="Nº depósito: "/>
+                                   <div class="clear-3"></div>
+                                   <p:selectOneMenu id="comboIPFs" panelStyleClass="combo-estandar" value="#{altaIPFController.selectedIPF}">
+                                     <f:selectItems value="#{altaIPFController.ipfs}" var="ipf" 
+                                       itemValue="#{ipf.numSubAc}" itemLabel="IPF #{ipf.numSubAc}"/>
+                                     <p:ajax event="change" update="importeMinimo estado titular pnlInformacionAmpliada pnlAccordionCondiciones pnlCambiaEstado pnlGuardar :dlgMsgError" 
+                                       listener="#{altaIPFController.recalculaDatosIPF()}" oncomplete="unLoadTab();" />
+                                   </p:selectOneMenu>
+                                 </h:panelGroup>
+                                 <div class="clear"></div>
+                                <div class="marco-datospersonales orden-2-columnas">                                  
+                                    <p:outputLabel value="Importe: "/>
+	                                <p:outputLabel id="importeMinimo" styleClass="bold" value="#{altaIPFController.depositoIPF.importe}">
+	                                  <f:convertNumber pattern="#,##0.00 ¤" locale="es_MX" 
+	                                    currencySymbol="#{altaIPFController.depositoIPF.moneda}"/>
+	                                </p:outputLabel>
+	                                <div class="clear-3"></div>
+	                                <p:outputLabel value="ESTADO: "></p:outputLabel>
+	                                <p:outputLabel id ="estado" styleClass="bold" value="#{altaIPFController.calculaNombreEstadoIPF()}"></p:outputLabel>
+	                                <div class="clear-3"></div>
+	                                <p:outputLabel value="Titular: "></p:outputLabel>
+	                                <p:outputLabel id="titular" styleClass="bold" value="#{altaIPFController.cliente.nombre}"></p:outputLabel>
+	                                
+                              <h:panelGroup layout="block" rendered="#{not altaIPFController.modificacion}" id="pnlInformacionAmpliada">
+                                  <div class="clear-3"></div>
+                                  <p:outputLabel value="Fecha de apertura: "/>
+                                  <p:outputLabel styleClass="bold" value="#{altaIPFController.depositoIPF.fechaApertura}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                  </p:outputLabel>
+                                  <div class="clear-3"></div>
+                                  <p:outputLabel value="Fecha de vencimiento: "/>
+                                  <p:outputLabel styleClass="bold" value="#{altaIPFController.depositoIPF.fechaVencimiento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                  </p:outputLabel>
+                                  <div class="clear-3"></div>
+                                  <p:outputLabel value="Fecha de próxima liquidación: "/>
+                                  <p:outputLabel styleClass="bold" value="#{altaIPFController.depositoIPF.fechaProxLiq}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                  </p:outputLabel>
+                                  <div class="clear-3"></div>
+                                  <p:outputLabel value="Fecha de última liquidación: "/>
+                                  <p:outputLabel styleClass="bold" value="#{altaIPFController.depositoIPF.fechaUltLiq}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                  </p:outputLabel>
+                                  <div class="clear-3"></div>
+                                  <p:outputLabel value="Tipo de interés: "/>
+                                  <p:outputLabel styleClass="bold" value="#{altaIPFController.depositoIPF.tipoInteres}"/>
+                                  <div class="clear-3"></div>
+                                  <p:outputLabel value="Frecuencia de liquidación: "/>
+                                  <p:outputLabel styleClass="bold" value="#{altaIPFController.depositoIPF.freqLiquidacion}" />
+                                  <div class="clear-3"></div>
+                                  <p:outputLabel value="Duración: "/>
+                                  <p:outputLabel id="duracion" styleClass="bold" value="#{altaIPFController.depositoIPF.duracion}"/>
+                              </h:panelGroup>
+		                         </div>
+		                         
+		                          <h:panelGroup rendered="#{altaIPFController.modificacion}">
+		                          	<div class="margin-top-15"></div>
+                                    <p:outputLabel value="Con cargo a" for="itemRadio"></p:outputLabel>
+                                    <div class="clear-3"></div>
+                                    <p:selectOneRadio id="itemRadio" value="#{altaIPFController.depositoIPF.tipoCargo}" 
+                                         styleClass="arq-update"  >
+                                        <f:selectItem itemValue="#{TipoCargo.ACUERDO.tipo}" itemLabel="#{TipoCargo.ACUERDO.descripcion}"
+                                           itemDisabled="#{not altaIPFController.modificacion}"/>
+                                        <f:selectItem itemValue="#{TipoCargo.CAJA.tipo}" itemLabel="#{TipoCargo.CAJA.descripcion}" itemDisabled="true"/>
+                                        <f:selectItem itemValue="#{TipoCargo.INTERVENCION.tipo}" itemLabel="#{TipoCargo.INTERVENCION.descripcion}"
+                                           itemDisabled="#{not altaIPFController.modificacion}"/>
+                                    </p:selectOneRadio>
+                              </h:panelGroup>
+                              
+                              <div class="clear-row"></div>
+                              
+                              <h:panelGroup id="pnlCambiaEstado">
+	                              <h:panelGroup layout="block" styleClass="btn-estados btn-estado float-right"
+	                               rendered="#{not altaIPFController.modificacion and altaIPFController.esEstadoModificable()}">
+									                <p:commandButton styleClass="btn_secundario btn-icono-texto icono-16 btn-estado-#{altaIPFController.calculaNombreEstadoIPF()}" id="btnOpcionesEstado" value="#{altaIPFController.calculaNombreEstadoIPF()}" type="button" icon="ui-icon-menu"/>
+									                <p:menu styleClass="margin-top-10 menu-ficha" id="mnuEstados" widgetVar="mnuEstados"
+									                  value="#{altaIPFController.calculaNombreEstadoIPF()}" overlay="true" trigger="btnOpcionesEstado" my="left top" at="left bottom">
+									                    <p:menuitem value="ACTIVAR" action="#{altaIPFController.solicitaCambioEstadoIPF()}"
+									                     update="importeMinimo estado titular pnlInformacionAmpliada pnlAccordionCondiciones pnlCambiaEstado pnlGuardar :dlgMsgError"
+									                     oncomplete="focusOpenErrorTabs();"/>
+									                </p:menu>
+									              </h:panelGroup>
+								              </h:panelGroup>
+						            <div class="clear-row"></div>
+
+
+
+                <h3 class="gris-b">Negociación de tarifas</h3>
+                <h:panelGroup id="pnlAccordionCondiciones">
+                <c:forEach var="pds"
+                  items="#{altaIPFController.depositoIPF.productosSimples}">
+                  <div class="margin-top-20"></div>
+                  <h3 class="rojo-b">#{pds.descripcion}</h3>
+                  
+                  <p:accordionPanel id="idPds#{pds.id}"
+                    value="#{pds.condiciones}" activeIndex="-" dynamic="true"
+                    var="condition" widgetVar="idPds#{pds.id}" multiple="true">
+                    <p:ajax event="tabChange"
+                      onstart="return loadTab('idPds#{pds.id}');"
+                      listener="#{altaIPFController.cargarCondicion}"></p:ajax>
+                    <p:tab title="#{condition.descripcion}#{condition.isEditable()?' (Negociable)':' (No Negociable)'}" disabled="#{empty condition.tipoCondicion}">
+                      <h:panelGroup layout="block" rendered="#{condition.loaded}">
+                        <ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'comision'}">
+                          <cc:valorComision esComisionFija="#{condition.tipo eq 'F'}"
+                            validezFrom="#{condition.fechaEstadoActual}"
+                            validezTo="#{condition.fechaFinValidezFormateada}"
+                            importeFijo="#{condition.importeComFija}"
+                            calculoProducto="#{condition.formaCalculoComFija}"
+                            comision="#{condition.porcentajeComisionComVar}"
+                            baseCalculo="#{condition.baseCalculoComVar}"
+                            baseCalculoDesc="#{condition.baseCalculoComVarDesc}"
+                            agruClop="#{condition.agruClop}"
+                            impMinimo="#{condition.importeMinComVar}"
+                            impMaximo="#{condition.importeMaxComVar}"
+                            franquicia="#{condition.importeFranquiciaComVar}"
+                            editable="#{altaIPFController.esCondicionModificable() and condition.isEditable()}">
+                          </cc:valorComision>
+                        </ui:fragment>
+                        <ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'interes'}">
+                          <cc:valorInteres esTipoFijo="#{condition.tipo eq 'F'}"
+                            validezFrom="#{condition.fechaEstadoActual}"
+                            validezTo="#{condition.fechaFinValidezFormateada}"
+                            baseCalculoDesc="#{condition.baseCalculoDesc}"
+                            valorFijo="#{condition.valorIntFijo}"
+                            valorActual="#{condition.valorActualVar}"
+                            referencia="#{condition.codReferenciaIntVar}"
+                            criterio="#{condition.codCriterioRevIntVar}"
+                            frec="#{condition.frecuenciaRevIntVar}"
+                            forma="#{condition.formaRevIntVar}"
+                            fechaRev="#{condition.fechaRevVar}"
+                            diferencial="#{condition.diferencialIntVar}"
+                            minimo="#{condition.interesMinIntVar}"
+                            maximo="#{condition.interesMaxIntVar}"
+                            fraccion="#{condition.fraccionRevIntVar}"
+                            porcentaje="#{condition.porcentajeMinRevIntVar}"
+                            editable="#{altaIPFController.esCondicionModificable() and condition.isEditable()}">
+                          </cc:valorInteres>
+                        </ui:fragment>
+
+                        <ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'lista'}">
+                          <cc:lista validezFrom="#{condition.fechaEstadoActual}"
+                            validezTo="#{condition.fechaFinValidezFormateada}"
+                            condicionLista="#{condition}"
+                            editable="#{altaIPFController.esCondicionModificable() and condition.isEditable()}">
+                          </cc:lista>
+                        </ui:fragment>
+
+                        <ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'rango'}">
+                          <cc:rango validezFrom="#{condition.fechaEstadoActual}"
+                            validezTo="#{condition.fechaFinValidezFormateada}"
+                            preferente="#{condition.preferente}"
+                            minimo="#{condition.minimo}"
+                            maximo="#{condition.maximo}"
+                            unidades="#{condition.unidades}"
+                            incremento="#{condition.incremento}"
+                            editable="#{altaIPFController.esCondicionModificable() and condition.isEditable()}">
+                          </cc:rango>
+                        </ui:fragment>
+                        <ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'valorLista'}">
+                          <cc:valorLista validezFrom="#{condition.fechaEstadoActual}"
+                            validezTo="#{condition.fechaFinValidezFormateada}"
+                            value="#{condition.codDomParmcd}"
+                            items="#{condition.items}"
+                            editable="#{altaIPFController.esCondicionModificable() and condition.isEditable()}">
+                          </cc:valorLista>
+                        </ui:fragment>
+                        <ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'valorRango'}">
+                          <cc:valorRango condValorRango="#{condition}"
+                            editable="#{altaIPFController.esCondicionModificable() and condition.isEditable()}">
+                          </cc:valorRango>
+                        </ui:fragment>
+                        
+                        <ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'tramo'}">
+                          <cc:tramos condTramo="#{condition}"
+                            controller="#{altaIPFController}"
+                            idPds="#{pds.id}"
+                            editable="#{altaIPFController.esCondicionModificable() and condition.isEditable()}">
+                          </cc:tramos>
+                        </ui:fragment>
+                      </h:panelGroup>
+                    </p:tab>
+                  </p:accordionPanel>
+                  </c:forEach>
+                </h:panelGroup>
+
+                            </div>
+                        <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" rendered="#{altaIPFController.modificacion}"
+                           value="#{altaIPFController.origenFichaCuenta?'Cancelar':'Ir a la ficha de cuenta'}"
+                           onclick="PF('dlgCancelar').show();"/>
+                        <p:commandButton styleClass="btn_secundario margin-top-10" rendered="#{not altaIPFController.modificacion}"
+                           value="Cancelar" action="#{altaIPFController.irAHome()}"/>
+                        <h:panelGroup id="pnlGuardar">
+	                        <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Guardar"
+	                           update="@(.arq-update) @(.ui-message) importeMinimo" oncomplete="focusOpenErrorTabs();"
+	                           rendered="#{altaIPFController.esCondicionModificable()}"
+	                           actionListener="#{altaIPFController.guardarCondiciones()}" />
+                        </h:panelGroup>
+                    </o:form>
+                </div>
+            </div>
+            <p:dialog widgetVar="dlgNoGuardar" id="dlgNoGuardar" showEffect="fade" hideEffect="fade"
+		          appendTo="@(body)" header="Negocación de tarifa" modal="true"
+		          visible="false" closable="false" resizable="false"
+		          draggable="false">
+		          <span class="ui-messages-warn-icon warn-dialog"></span>
+		          <p:outputLabel styleClass="modal-mensaje"
+		            value="¡Atencion! No ha guardado las negociaciones. Si continua perderá todos los cambios." />
+		          <div class="clear"></div>
+		          <p:outputLabel styleClass="modal-accion"
+		            value="¿Desea continuar de todos modos?" />
+		          <div class="margin-bottom-20"></div>
+		          <p:commandButton styleClass="btn_secundario_dialog"
+		            id="stay1" onclick="PF('dlgNoGuardar').hide();"
+		            value="Cancelar"/>
+		          <p:commandButton styleClass="btn_principal_dialog_derecha"
+		            value="Continuar" onclick="PF('dlgNoGuardar').hide();"
+		            action="#{altaIPFController.irAFlujo()}" rendered="#{altaIPFController.modificacion}"/>
+              <p:commandButton styleClass="btn_principal_dialog_derecha"
+                value="Continuar" onclick="PF('dlgNoGuardar').hide();" 
+                update=":altaIPF1:importeMinimo :altaIPF1:estado :altaIPF1:titular :altaIPF1:pnlInformacionAmpliada
+                :altaIPF1:pnlAccordionCondiciones :altaIPF1:pnlCambiaEstado :altaIPF1:pnlGuardar :dlgMsgError"
+                action="#{altaIPFController.cambioEstadoIPF()}" oncomplete="unLoadTab();" rendered="#{not altaIPFController.modificacion}"/>
+		        </p:dialog>
+		        
+            <p:dialog widgetVar="dlgCancelar" id="dlgCancelar" showEffect="fade" hideEffect="fade"
+              appendTo="@(body)" header="Negociación de tarifa" modal="true"
+              visible="false" closable="false" resizable="false"
+              draggable="false">
+              <span class="ui-messages-warn-icon warn-dialog"></span>
+              <p:outputLabel styleClass="modal-mensaje"
+                value="¡Atencion! No ha guardado las negociaciones. Si continua perderá todos los cambios." />
+              <div class="clear"></div>
+              <p:outputLabel styleClass="modal-accion"
+                value="¿Desea continuar de todos modos?" />
+              <div class="margin-bottom-20"></div>
+              <p:commandButton styleClass="btn_secundario_dialog"
+                onclick="PF('dlgCancelar').hide();"
+                value="Cancelar"/>
+              <p:commandButton styleClass="btn_principal_dialog_derecha"
+                value="Continuar" immediate="true" onclick="PF('dlgCancelar').hide();"
+                action="#{altaIPFController.irAHome()}">
+              </p:commandButton>
+            </p:dialog>
+            <p:dialog id="dlgMsgError" widgetVar="dlgMsgError" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+            closable="false" dynamic="true" draggable="false" modal="true"
+            resizable="false" header="¡Atención!" visible="#{not empty altaIPFController.messageError}">
+              <span class="ui-messages-warn-icon warn-dialog"></span>
+              <p:outputLabel styleClass="modal-mensaje"
+                value="#{altaIPFController.messageError}" />
+              <div class="margin-bottom-20"></div>
+            <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgMsgError').hide();"
+              value="Aceptar" immediate="true" action="#{altaIPFController.irAHome()}" rendered="#{altaIPFController.modificacion}"/>
+               <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgMsgError').hide();"
+              value="Aceptar" rendered="#{not altaIPFController.modificacion}"/>
+          </p:dialog>
+          
+          <p:dialog widgetVar="dlgSuccess" id="dlgSuccess" appendTo="@(body)" header="Negociación de tarifa" showEffect="fade" hideEffect="fade"
+               modal="true" visible="false" closable="false" resizable="false" draggable="false">
+                 <!--icono de la modal -->
+                 <span class="ui-messages-exito-icon exito-dialog"></span>
+                 <!--mensaje de la modal styleClass="modal-mensaje" -->
+                 <p:outputLabel styleClass="modal-mensaje" value="Las negociaciones se guardaron correctamente." />
+                 <div class="margin-bottom-20"></div>
+                 <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" 
+                 onclick="PF('dlgSuccess').hide();" />
+             </p:dialog>
+            <!--termina container 24-->
+        </h:body>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+	<ui:debug hotkey="x"/>
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form styleClass="contenedor-form" id="pocDomicilioForm">
+						<!--título de la ventana-->
+						<div class="titulo">
+							<!--botón atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+							action="#{pocDomicilioController.goToDashBoard()}" process="@this" partialSubmit="true" ></p:commandButton>
+							<h1>POC Componente Domicilio</h1>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campos-oblg"
+								value="*Campos Obligatorios" for="rfcFisica"></p:outputLabel>
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+
+
+<!-- aquí va el otro código fake-->
+
+hola
+							algunos campos...
+							<p:inputText id="rfcFisica" value="#{pocDomicilioController.rfcFisica}" required="true"></p:inputText> 
+							<br /> <br />
+							
+							<componente:domicilio
+								controller="#{pocDomicilioController}"
+								codigoPostalRequerido="true" 
+								municipioRequerido="true" 
+								estadoRequerido="true" 
+								paisRequerido="true"
+								estadoReadOnly="true" 
+								paisReadOnly="true" 
+								calleReadOnly="#{pocDomicilioController.calleReadOnly}"
+								tipoCalleDisabled="#{pocDomicilioController.tipoCalleDisabled}"/>
+								
+							<br /> <br /> otros campos... <br /> <br /> 
+						</div>
+						<!--Botones  -->
+						<p:commandButton icon="ui-icon-arrow-1-w"
+							action="#{pocDomicilioController.guardaAlgo()}" update="@form"></p:commandButton>
+					</h:form>
+				</div>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+
+</ui:composition>

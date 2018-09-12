@@ -1,0 +1,823 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:outputScript name="/js/administracion.js" />
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="formAltaEmpleado1" styleClass="contenedor-form">
+
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+
+						<h:panelGroup
+							rendered="#{altaEmpleadoController.modificacionEmpleado ne true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+									title="Volver atrás" onclick="PF('dlgCancelarAlta').show();">
+								</p:commandButton>
+								<h1>Alta de empleado</h1>
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{altaEmpleadoController.modificacionEmpleado eq true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+									onclick="PF('dlgCancelarModificacion').show();"
+									title="Volver atrás" />
+								<div>
+									<h2 class="gris-b">Modificación de</h2>
+									<h2 class="azul-b">#{altaEmpleadoController.empleado.datos.nombre}
+										#{altaEmpleadoController.empleado.datos.apePaterno !=null
+										?altaEmpleadoController.empleado.datos.apePaterno:''}
+										#{altaEmpleadoController.empleado.datos.apeMaterno !=null
+										?altaEmpleadoController.empleado.datos.apeMaterno:''}</h2>
+									<h3 class="gris-b">(ID:
+										#{altaEmpleadoController.empleado.numEmpleado})</h3>
+								</div>
+							</div>
+						</h:panelGroup>
+
+						<br />
+
+						<div class="wiz-pasos">
+							<p:commandButton styleClass="activo textfill"
+								value="Datos Personales" />
+							<h:panelGroup
+								rendered="#{altaEmpleadoController.modificacionEmpleado ne true}">
+								<p:commandButton styleClass="inactivo textfill padding-15"
+									value="Lugar de nacimiento y datos de ocupación"
+									onclick="acordion()"
+									action="#{altaEmpleadoController.irAPaso2()}" ajax="true"
+									update="formAltaEmpleado1" />
+							</h:panelGroup>
+							<h:panelGroup
+								rendered="#{altaEmpleadoController.modificacionEmpleado eq true}">
+								<p:commandButton styleClass="inactivo textfill padding-15"
+									value="Lugar de nacimiento y datos de ocupación"
+									onclick="acordionModif()"
+									action="#{altaEmpleadoController.irAPaso2()}" ajax="true"
+									update="formAltaEmpleado1" />
+							</h:panelGroup>
+							<p:commandButton styleClass="inactivo textfill"
+								value="Cédula de conocimiento" disabled="true" />
+						</div>
+
+						<div class="wiz-contenedor">
+							<div class="wiz-atras"></div>
+							<div class="contenedor-campos">
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Datos Obligatorios" />
+								<br />
+								<h:outputLabel styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+								<p:accordionPanel widgetVar="accordionAlta1" multiple="true"
+									dynamic="true" id="accformAltaEmpleado1" activeIndex="0,1,2,3">
+
+									<p:tab title="Datos Empleado"
+										rendered="#{altaEmpleadoController.modificacionEmpleado eq true}">
+
+										<div class="grid_12">
+											<p:outputLabel for="numEmpleado" value="Nº Empleado" />
+											<div class="clear-3"></div>
+											<p:inputMask id="numEmpleado" disabled="true"
+												value="#{altaEmpleadoController.empleado.numEmpleado}"
+												maxlength="8" required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-Z0-9 ]*$/" preventPaste="false" />
+											</p:inputMask>
+										</div>
+										<div class="grid_12">
+											<p:outputLabel for="centroPertenencia"
+												value="Centro de pertenencia" />
+											<div class="clear-3"></div>
+											<b:autoComplete id="centroPertenencia"
+												maxlength="40"
+												value="#{altaEmpleadoController.centroSelected}"
+												catalogSource="catalogoCentrosLoaderTask"
+												var="item" itemLabel="#{item.descripcionL}"
+												itemValue="#{item}" converter="catalogoConverter"
+												forceSelection="true"
+												required="#{param['disableValidation']==null}">
+												<p:ajax event="query" global="false"></p:ajax>
+											</b:autoComplete>
+											<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" preventPaste="false" for="centroPertenencia"/>
+										</div>
+										<div class="grid_12">
+											<p:outputLabel for="cargo" value="Cargo" />
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="cargo"
+												value="#{altaEmpleadoController.empleado.cargo}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_CARGO_EMPL')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="grid_12">
+											<p:outputLabel for="perfil" value="Perfil"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="perfil"
+												value="#{altaEmpleadoController.empleado.perfil}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('PERFILES_NSS')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_13">
+											<p:outputLabel for="perfilTCB" value="Perfil TCB"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:autoComplete id="perfilTCB"
+												value="#{altaEmpleadoController.empleado.perfilTCB}"
+												completeMethod="#{catalogoPerfilesTCBLoaderTask.getPerfiles}"
+												itemLabel="#{item}" itemValue="#{item}"
+												onblur="value=value.toUpperCase()"
+												required="#{param['disableValidation']==null}"
+												forceSelection="true">
+												<p:ajax event="query" global="false"></p:ajax>
+											</p:autoComplete>
+											<pe:keyFilter regEx="/^[a-zA-Z]*$/" preventPaste="false" for="perfilTCB" />
+										</div>
+
+									</p:tab>
+
+									<p:tab title="Datos Personales">
+										<div class="grid_6">
+											<p:outputLabel for="tratamiento" value="Tratamiento"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="tratamiento"
+												value="#{altaEmpleadoController.empleado.datos.tratamiento}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_TRATMTO_PERS')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel for="nombre" value="Nombre (s)"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="nombre"
+												value="#{altaEmpleadoController.empleado.datos.nombre}"
+												maxlength="30"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"
+													preventPaste="false" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel for="apellidoPaterno" value="Apellido Paterno"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="apellidoPaterno"
+												value="#{altaEmpleadoController.empleado.datos.apePaterno}"
+												maxlength="30"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"
+													preventPaste="false" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel for="apellidoMaterno" value="Apellido Materno"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="apellidoMaterno"
+												value="#{altaEmpleadoController.empleado.datos.apeMaterno}"
+												maxlength="30" onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"
+													preventPaste="false" />
+											</p:inputMask>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_20">
+
+											<div class="grid_28 alpha">
+												<p:message id="identificacionTipoVal"
+													for="identificacionTipo" display="icon" />
+												<p:outputLabel for="identificacionTipo"
+													value="Identificación" />
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="identificacionTipo"
+													value="#{altaEmpleadoController.empleado.datos.tipoIdentificacion}"
+													required="#{param['disableValidation']==null}"
+													requiredMessage="">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{altaEmpleadoController.selectIdentificaciones}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_20 omega float-right">
+												<div class="label-vacio" />
+												<div class="clear-3"></div>
+												<p:inputMask id="identificacionNum"
+													value="#{altaEmpleadoController.empleado.datos.numIdentificacion}"
+													maxlength="14"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()" placeholder="Número">
+													<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/"
+														preventPaste="false" />
+												</p:inputMask>
+											</div>
+
+										</div>
+
+										<div class="grid_8">
+											<p:message id="rfcVal" for="rfc" display="icon"></p:message>
+											<p:outputLabel for="rfc" value="RFC"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="rfc"
+												value="#{altaEmpleadoController.empleado.datos.rfc}"
+												maxlength="13" onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/"
+													preventPaste="false" />
+												<f:validator binding="#{personaFisicaRFCValidator}" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:message id="curpVal" for="curp" display="icon"></p:message>
+											<p:outputLabel for="curp" value="CURP"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="curp"
+												value="#{altaEmpleadoController.empleado.datos.curp}"
+												maxlength="18" onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/"
+													preventPaste="false" />
+												<f:validator binding="#{curpValidator}" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel for="sexo" value="Sexo"></p:outputLabel>
+											<div class="clear-3"></div>
+											<h:selectOneRadio id="sexo" styleClass="tabla-radio"
+												value="#{altaEmpleadoController.empleado.datos.sexo}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="H" itemLabel="Hombre" />
+												<f:selectItem itemValue="M" itemLabel="Mujer" />
+											</h:selectOneRadio>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_8">
+												<p:message id="fechaNacimientoVal" for="fechaNacimiento"
+													display="icon"></p:message>
+												<p:outputLabel for="fechaNacimiento"
+													value="Fecha de Nacimiento"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:calendar id="fechaNacimiento"
+													value="#{altaEmpleadoController.empleado.datos.fechaNacimiento}"
+													required="#{param['disableValidation']==null}"
+													showOn="button" pattern="dd/MM/yyyy" mask="true"
+													locale="es" requiredMessage="">
+													<f:attribute name="endDate"
+														value="#{altaEmpleadoController.currentDate}" />
+													<f:attribute name="tag" value="fechaNacimiento" />
+													<f:validator validatorId="dateRangeValidator" />
+													<f:validator validatorId="empleadoMenorValidator" />
+													<f:attribute name="showMsgForBirthdayValidation"
+														value="true" />
+													<p:ajax global="false" event="change"
+														process="fechaNacimiento"
+														update="fechaNacimiento,fechaNacimientoVal"
+														partialSubmit="true" />
+													<p:ajax global="false" event="dateSelect"
+														process="fechaNacimiento"
+														update="fechaNacimiento,fechaNacimientoVal"
+														partialSubmit="true" />
+												</p:calendar>
+											</div>
+
+											<div class="grid_12">
+												<p:outputLabel for="estadoCivil" value="Estado Civil"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="estadoCivil"
+													value="#{altaEmpleadoController.empleado.datos.estadoCivil}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_EST_CIVIL_INDV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+													<p:ajax global="false" event="change" update="regimenEconomico,regimenGroup" />
+												</p:selectOneMenu>
+											</div>
+
+											<h:panelGroup id="regimenGroup">
+												<div class="grid_50">
+													<p:outputLabel id="regimenEconomicoLabel"
+														for="regimenEconomico" value="Régimen Económico"
+														rendered="#{altaEmpleadoController.empleado.datos.estadoCivil.equals(ConstantesFuncionales.TP_EST_CIVIL_INDV_CASADO)}" />
+													<div class="clear-3"></div>
+													<p:selectOneMenu id="regimenEconomico"
+														required="#{param['disableValidation']==null and altaEmpleadoController.empleado.datos.estadoCivil.equals(ConstantesFuncionales.TP_EST_CIVIL_INDV_CASADO)}"
+														value="#{altaEmpleadoController.empleado.datos.regimenEconomico}"
+														rendered="#{altaEmpleadoController.empleado.datos.estadoCivil.equals(ConstantesFuncionales.TP_EST_CIVIL_INDV_CASADO)}">
+														<f:selectItem itemValue="#{null}"
+															itemLabel="Seleccione un valor" noSelectionOption="true" />
+														<f:selectItems
+															value="#{catalogoUtils.getCatalogo('TP_RGMN_MATRI_INDV')}"
+															var="item" itemValue="#{item.claveFila}"
+															itemLabel="#{item.descripcionL}" />
+													</p:selectOneMenu>
+												</div>
+											</h:panelGroup>
+
+											<div class="grid_8">
+												<p:outputLabel for="paisNacionalidad"
+													value="País de Nacionalidad" />
+												<div class="clear-3"></div>
+												<b:autoComplete id="paisNacionalidad"
+													value="#{altaEmpleadoController.paisNacionalidadSelected}"
+													maxlength="50" catalogSource="catalogoPaisesUtils"
+													var="item" itemLabel="#{item.descripcionL}"
+													itemValue="#{item}" converter="catalogoConverter"
+													forceSelection="true"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<p:ajax event="query" global="false"></p:ajax>
+												</b:autoComplete>
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel for="paisResidencia"
+													value="País de Residencia" />
+												<div class="clear-3"></div>
+												<b:autoComplete id="paisResidencia"
+													value="#{altaEmpleadoController.paisResidenciaSelected}"
+													maxlength="50" catalogSource="catalogoPaisesUtils"
+													var="item" itemLabel="#{item.descripcionL}"
+													itemValue="#{item}" converter="catalogoConverter"
+													forceSelection="true"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<p:ajax event="query" global="false"></p:ajax>
+												</b:autoComplete>
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+											</div>
+
+										</div>
+
+										<div class="grid_20">
+											<p:outputLabel for="razonAlta" value="Razón de Alta"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="razonAlta"
+												value="#{altaEmpleadoController.empleado.datos.razonAlta}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_RZN_ALTA_PERS')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+									</p:tab>
+
+									<p:tab title="Domicilio" id="tabDomicilio">
+
+										<div class="row-flex">
+
+											<div class="grid_10">
+												<p:outputLabel for="regimenOcupacion"
+													value="Régimen de Ocupación"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="regimenOcupacion"
+													value="#{altaEmpleadoController.empleado.datos.domicilios[0].regimenOcupacion}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_OCUPACION_VIV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel for="telefono" value="Teléfono"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask id="telefono"
+													value="#{altaEmpleadoController.empleado.datos.domicilios[0].telefono}"
+													maxlength="14"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/[\d]/" />
+												</p:inputMask>
+											</div>
+
+										</div>
+										<componente:domicilio controller="#{altaEmpleadoController}"
+											codigoPostalRequerido="#{param['disableValidation']==null}"
+											municipioRequerido="#{param['disableValidation']==null}"
+											estadoRequerido="#{param['disableValidation']==null}"
+											paisRequerido="#{param['disableValidation']==null}"
+											tipoCalleRequerido="#{param['disableValidation']==null}"
+											calleRequerido="#{param['disableValidation']==null}"
+											numExtRequerido="#{param['disableValidation']==null}"
+											coloniaRequerido="#{param['disableValidation']==null}"
+											estadoReadOnly="#{param['disableValidation']==null}"
+											paisReadOnly="#{param['disableValidation']==null}">
+											<f:param name="disableValidation" value="true" />
+										</componente:domicilio>
+
+									</p:tab>
+
+									<p:tab title="Otros Datos">
+
+										<div class="row-flex">
+
+											<div class="grid_8">
+												<p:outputLabel for="idioma" value="Idioma"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="idioma"
+													value="#{altaEmpleadoController.empleado.datos.idioma}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_IDIOM_PERS')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_4">
+												<p:outputLabel for="numHijos" value="N° de Hijos"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask id="numHijos"
+													value="#{altaEmpleadoController.empleado.datos.numHijos}"
+													maxlength="2" onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/[\d]/" />
+												</p:inputMask>
+											</div>
+
+											<div class="grid_10">
+												<p:message id="situacionEconomicaVal"
+													for="situacionEconomica" display="icon"></p:message>
+												<p:outputLabel for="situacionEconomica"
+													value="Situación Económica"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="situacionEconomica"
+													value="#{altaEmpleadoController.empleado.datos.situacionEconomica}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_SIT_ECON_PERS')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_26">
+												<div class="grid_48">
+													<p:outputLabel value="Correspondencia"></p:outputLabel>
+												</div>
+												<div class="clear-3"></div>
+												<div class="grid_11">
+													<p:selectBooleanCheckbox styleClass="centrado-vertical"
+														id="noPublicidad"
+														value="#{altaEmpleadoController.empleado.datos.noPublicidad}" />
+													<h:outputLabel styleClass="centrado-vertical"
+														value="No publicidad" />
+												</div>
+
+												<div class="grid_11">
+													<p:selectBooleanCheckbox styleClass="centrado-vertical"
+														id="oficina"
+														value="#{altaEmpleadoController.empleado.datos.correspondenciaOficina}">
+														<p:ajax global="false" event="change"
+															listener="#{altaEmpleadoController.actualizarOficina()}"
+															update="oficina,oficinaNum"
+															process="oficina,#{altaEmpleadoController.empleado.datos.correspondenciaOficina eq true ? 'oficinaNum':''}" />
+													</p:selectBooleanCheckbox>
+													<h:outputLabel styleClass="centrado-vertical"
+														value="En la Oficina" />
+												</div>
+
+												<div class="grid_26">
+													<b:autoComplete id="oficinaNum"
+														placeholder="Número de oficina"
+														value="#{altaEmpleadoController.oficinaSelected}"
+														disabled="#{!altaEmpleadoController.empleado.datos.correspondenciaOficina}"
+														maxlength="4" catalogSource="catalogoCentrosLoaderTask"
+														var="item" itemLabel="#{item.descripcionL}"
+														itemValue="#{item}" converter="catalogoConverter"
+														forceSelection="true"
+														required="#{param['disableValidation']==null}">
+														<p:ajax event="query" global="false"></p:ajax>
+													</b:autoComplete>
+													<pe:keyFilter regEx="/[\d]/" preventPaste="false" />
+												</div>
+											</div>
+
+										</div>
+
+										<div class="row-flex">
+
+											<h:panelGroup
+												rendered="#{altaEmpleadoController.modificacionEmpleado eq true}">
+												<div class="grid_8">
+													<p:message id="fechaFallecimientoVal"
+														for="fechaFallecimiento" display="icon"></p:message>
+													<p:outputLabel for="fechaFallecimiento"
+														value="Fecha de fallecimiento"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:calendar id="fechaFallecimiento"
+														value="#{altaEmpleadoController.empleado.datos.fechaFallecimiento}"
+														pattern="dd/MM/yyyy" mask="true" showOn="button"
+														locale="es" requiredMessage="">
+														<f:attribute name="endDate"
+															value="#{altaEmpleadoController.currentDate}" />
+														<f:validator validatorId="dateRangeValidator" />
+														<p:ajax global="false" event="change"
+															process="fechaFallecimiento"
+															update="fechaFallecimiento,fechaFallecimientoVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="fechaFallecimiento"
+															update="fechaFallecimiento,fechaFallecimientoVal"
+															partialSubmit="true" />
+													</p:calendar>
+												</div>
+											</h:panelGroup>
+
+											<div class="grid_13">
+												<p:outputLabel value="Relacion con la entidad"></p:outputLabel>
+												<div class="clear-3"></div>
+												<div class="grid_24">
+													<p:selectBooleanCheckbox id="Consejero"
+														styleClass="centrado-vertical"
+														value="#{altaEmpleadoController.empleado.datos.relacionConsejero}" />
+													<h:outputLabel styleClass="centrado-vertical"
+														value="Consejero" />
+												</div>
+												<div class="grid_24">
+													<p:selectBooleanCheckbox id="AltoCargo"
+														styleClass="centrado-vertical"
+														value="#{altaEmpleadoController.empleado.datos.relacionAltaCargo}" />
+													<h:outputLabel styleClass="centrado-vertical"
+														value="Alto Cargo" />
+												</div>
+											</div>
+
+											<div class="grid_11">
+												<p:message id="solvenciaMoralVal" for="solvenciaMoral"
+													display="icon"></p:message>
+												<p:outputLabel for="solvenciaMoral"
+													value="Capacidad de actuar"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="solvenciaMoral"
+													value="#{altaEmpleadoController.empleado.datos.solvenciaMoral}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_CPCDAD_LGL_INDV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+													<p:ajax global="false" event="change"
+														update="fechasSolvencia" />
+												</p:selectOneMenu>
+											</div>
+
+											<h:panelGroup id="fechasSolvencia">
+												<div class="grid_20">
+
+													<p:message id="fechaDesdeSolvenciaMoralVal"	for="fechaDesdeSolvenciaMoral" display="icon"></p:message>
+													<p:outputLabel value="Desde" 
+
+													rendered="#{altaEmpleadoController.empleado.datos.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}"/>
+														<!--for="fechaDesdeSolvenciaMoral" value="Desde" />
+														   /> -->
+												
+													<div class="clear-3"></div>
+													
+													<p:calendar id="fechaDesdeSolvenciaMoral" label="Desde"
+													    locale="es" mask="true" pattern="dd/MM/yyyy"
+														requiredMessage=""
+														required="#{param['disableValidation']==null and altaEmpleadoController.empleado.datos.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}"
+														rendered="#{altaEmpleadoController.empleado.datos.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}"
+
+														value="#{altaEmpleadoController.empleado.datos.solvenciaMoralDesde}"
+														placeholder="Desde" showOn="button"	>
+
+
+														<f:attribute name="beginDate"
+															value="#{altaEmpleadoController.empleado.datos.solvenciaMoralDesde}" />
+														<f:param name="disableValidation" value="true" />
+												<!-- 		<f:attribute name="endDate"
+															value="#{altaEmpleadoController.empleado.datos.solvenciaMoralHasta}" /> 
+												 		<f:attribute name="tag" value="solvenciaMoral" />
+														<f:validator validatorId="dateRangeValidator" /> -->
+												  	<p:ajax global="false" event="change"
+															process="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral, fechaDesdeSolvenciaMoralVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral, fechaDesdeSolvenciaMoralVal"
+															partialSubmit="true" /> 
+													</p:calendar>
+
+												</div>
+												
+
+												<div class="grid_20">
+												<p:message id="fechaHastaSolvenciaMoralVal" for="fechaHastaSolvenciaMoral" display="icon"></p:message>
+													<p:outputLabel value="Hasta" 
+													rendered="#{altaEmpleadoController.empleado.datos.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}"/>
+													<!--	for="fechaHastaSolvenciaMoral" 
+														rendered="#{altaEmpleadoController.empleado.datos.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}" /> -->
+														
+
+												     	<div class="clear-3"></div>
+												     	
+													<p:calendar id="fechaHastaSolvenciaMoral" label="Hasta"
+													    locale="es" mask="true" pattern="dd/MM/yyyy" 
+													    requiredMessage=""
+														required="#{param['disableValidation']==null and altaEmpleadoController.empleado.datos.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}"
+														rendered="#{altaEmpleadoController.empleado.datos.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}"
+														value="#{altaEmpleadoController.empleado.datos.solvenciaMoralHasta}"
+														placeholder="Hasta"  showOn="button">
+											 			<f:attribute name="beginDate"
+
+
+															value="#{altaEmpleadoController.empleado.datos.solvenciaMoralDesde}" />  
+														<f:param name="disableValidation" value="true" />
+														<f:validator validatorId="dateRangeValidator"
+													      disabled="#{param['disableValidation']==true}" />
+															<p:ajax global="false" event="change"
+															process="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral, fechaDesdeSolvenciaMoralVal, fechaHastaSolvenciaMoralVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral, fechaHastaSolvenciaMoral, fechaDesdeSolvenciaMoralVal, fechaHastaSolvenciaMoralVal"
+															partialSubmit="true" /> 
+													</p:calendar>
+												</div>
+
+											</h:panelGroup>
+
+										</div>
+									</p:tab>
+
+								</p:accordionPanel>
+
+							</div>
+							<div class="wiz-siguiente">
+								<h:panelGroup
+									rendered="#{altaEmpleadoController.modificacionEmpleado ne true}">
+									<p:commandButton icon="ui-icon-arrow-1-e" title="Siguiente"
+										onclick="acordion()"
+										action="#{altaEmpleadoController.irAPaso2()}" ajax="true"
+										update="formAltaEmpleado1" />
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{altaEmpleadoController.modificacionEmpleado eq true}">
+									<p:commandButton icon="ui-icon-arrow-1-e" title="Siguiente"
+										onclick="acordionModif()"
+										action="#{altaEmpleadoController.irAPaso2()}" ajax="true"
+										update="formAltaEmpleado1" />
+								</h:panelGroup>
+							</div>
+						</div>
+
+						<h:panelGroup
+							rendered="#{altaEmpleadoController.modificacionEmpleado ne true}">
+							<p:commandButton styleClass="btn_secundario  margin-top-10"
+								id="cancelarA" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarAlta').show();" />
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{altaEmpleadoController.modificacionEmpleado eq true}">
+							<p:commandButton styleClass="btn_secundario  margin-top-10"
+								id="cancelarM" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarModificacion').show();" />
+						</h:panelGroup>
+
+						<ui:include src="../store.xhtml">
+							<ui:param name="storeBean" value="#{altaEmpleadoController}" />
+						</ui:include>
+
+					</h:form>
+
+				</div>
+
+				<p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta"
+					appendTo="@(body)" header="Cancelar alta empleado" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atención! Está a punto de cancelar el alta de empleado" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarAlta').hide();" id="VolverAlta" -->
+<!-- 						value="Continuar con el alta" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartar" value="No guardar" -->
+<!-- 						action="#{altaEmpleadoController.cancelarAltaModificacion()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardar" value="Guardar" onclick="return storeData();" /> -->
+						
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaEmpleadoController.cancelarAltaModificacion()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgCancelarModificacion"
+					id="dlgCancelarModificacion" appendTo="@(body)"
+					header="Cancelar modificacion empleado" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atención! Está a punto de cancelar la modificación de empleado" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarModificacion').hide();" -->
+<!-- 						id="VolverModificacion" value="Continuar con la modificación" -->
+<!-- 						immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartarM" value="No guardar" -->
+<!-- 						action="#{altaEmpleadoController.cancelarAltaModificacion()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardarM" value="Guardar" onclick="return storeData();" /> -->
+
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaEmpleadoController.cancelarAltaModificacion()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+				</p:dialog>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

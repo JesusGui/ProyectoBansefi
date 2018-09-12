@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="../../templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="formDetalleArqueoPuesto" styleClass="contenedor-form col-70">
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás"
+                            	action="#{arqueoPuestoController.inicio()}"></p:commandButton>
+	                        <div>
+									<h2 class="gris-b">Arqueo de puesto </h2>
+									<h3 class="rojo-b">#{arqueoPuestoController.arqueoPuestoBean.puesto}</h3>
+							</div>
+                        </div>
+                        
+                            <div class="contenedor-campos">
+                            	<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" value="Imprimir"
+                            		action="#{arqueoPuestoController.printReport()}">
+                            	</p:commandButton>
+                            	
+                            	<div class="clear margin-bottom-10"></div>
+								
+								<h3 class="azul-b margin-bottom-5">Caja</h3>
+                            	<h:panelGroup layout="block" styleClass="sinresultados" 
+								 	rendered="#{arqueoPuestoController.arqueoPuestoBean.difCajaOn == null}">
+						        	<div>
+						        	<h:outputLabel value="No se encontraron movimientos en caja para este puesto."/><br />
+						        	</div>
+						        </h:panelGroup>
+						        <h:panelGroup rendered="#{arqueoPuestoController.arqueoPuestoBean.difCajaOn != null}">
+	                            	<div class="marco-componente">
+	                            	<ui:include src="arqueoPuestoTable.xhtml">
+										<ui:param name="columna1" value="Cobros" />
+										<ui:param name="columna2" value="Pagos" />
+										<ui:param name="c11" value="#{arqueoPuestoController.arqueoPuestoBean.cobroOn}" />
+										<ui:param name="c12" value="#{arqueoPuestoController.arqueoPuestoBean.pagoOn}" />
+										<ui:param name="c13" value="#{arqueoPuestoController.arqueoPuestoBean.difCajaOn}" />
+									</ui:include>
+									<div class="clear-row"></div>
+									<div class="grid_24 float-right">
+									<div class="grid_20">
+									<p:outputLabel styleClass="float-right" value="Neto traspasos:"></p:outputLabel>
+									</div>
+									<div class="grid_28 alpha push_1">
+									<p:outputLabel styleClass="float-right bold" value="#{arqueoPuestoController.arqueoPuestoBean.netoTraspasos}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+									</p:outputLabel>
+									</div>
+									<div class="clear"></div>
+									<div class="grid_20">
+									<p:outputLabel styleClass="float-right" value="Total arqueo:"></p:outputLabel>
+									</div>
+									<div class="grid_28 alpha push_1">
+									<p:outputLabel styleClass="float-right bold" value="#{arqueoPuestoController.arqueoPuestoBean.totalArqueo}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+									</p:outputLabel>
+									</div>
+									</div>
+									<div class="clear"></div>
+									</div>
+								</h:panelGroup>
+								
+                            	<div class="margin-top-15"></div>
+						    
+								<h3 class="azul-b margin-bottom-5">Cuenta intervención</h3>
+								
+								<h:panelGroup layout="block" styleClass="sinresultados" 
+								 	rendered="#{arqueoPuestoController.arqueoPuestoBean.difCajaOn == null}">
+						        	<div>
+						        	<h:outputLabel value="No se encontraron movimientos en cuenta de intervención para este puesto."/><br />
+						        	</div>
+						        </h:panelGroup>
+						        <h:panelGroup rendered="#{arqueoPuestoController.arqueoPuestoBean.difCajaOn != null}">
+									<div class="marco-componente">
+	                            	<ui:include src="arqueoPuestoTable.xhtml">
+										<ui:param name="columna1" value="Debe" />
+										<ui:param name="columna2" value="Haber" />
+										<ui:param name="c11" value="#{arqueoPuestoController.arqueoPuestoBean.debeOn}" />
+										<ui:param name="c12" value="#{arqueoPuestoController.arqueoPuestoBean.haberOn}" />
+										<ui:param name="c13" value="#{arqueoPuestoController.arqueoPuestoBean.difCuentaOn}" />
+									</ui:include>
+									
+									<div class="clear"></div>
+									</div>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{arqueoPuestoController.arqueoPuestoBean.cajaCuadrada()}">
+									<div class="clear-row"></div>
+									<div class="saldo-disponible bg-azul-b">
+										<p:outputLabel>Caja Cuadrada</p:outputLabel>
+									</div>
+									<div class="clear-row"></div>
+									
+									<div class="centrar-objeto">
+									<p:outputLabel styleClass="rojo-b">¿Desea consultar traspasos?</p:outputLabel>
+									<div class="clear-3"></div>
+									
+									<p:commandButton styleClass="btn_primario margin-top-10" value="Consultar Traspasos"
+										action="#{arqueoPuestoController.rutaTraspasos()}"></p:commandButton>
+									</div>	
+								
+								</h:panelGroup>
+								<h:panelGroup rendered="#{!arqueoPuestoController.arqueoPuestoBean.cajaCuadrada()}">
+									<div class="margin-top-15"></div>
+									<h3 class="rojo-b margin-bottom-5">Caja Descuadrada</h3>
+									<div class="contenedor-totales">
+									<div class="grid_48 saldo-disponible bg-rojo-b">
+							        	<div class="grid_20">
+							            <p:outputLabel>#{arqueoPuestoController.getLabelDescuadre()}</p:outputLabel>
+							        	</div>
+							        	<div class="grid_28">
+							            <p:outputLabel value="#{arqueoPuestoController.arqueoPuestoBean.descuadre.abs()}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+										</div>
+							        </div>
+							        </div>
+							        <div class="clear"></div>
+							        <div class="margin-top-5 centrar-objeto">
+							        	<p:outputLabel styleClass="mensaje-caja-descuadrada rojo-b" rendered="#{!arqueoPuestoController.arqueoPuestoBean.cuentaCuadrada()}"
+											value="Los valores “DEBE” y “HABER” de la cuenta de intervención no coinciden.">
+										</p:outputLabel>
+									</div>
+									
+									<div class="clear-row"></div>
+									
+									<div class="centrar-objeto">
+									<p:outputLabel styleClass="rojo-b">¿Desea consultar traspasos?</p:outputLabel>
+									<div class="clear-3"></div>
+									
+									<p:commandButton styleClass="btn_primario margin-top-10" value="Consultar Traspasos"
+										action="#{arqueoPuestoController.rutaTraspasos()}"></p:commandButton>
+									</div>	
+								
+								</h:panelGroup>
+								<div class="clear"></div>
+                            </div>
+                        <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" value="Cerrar" 
+                        	action="#{arqueoPuestoController.rutaInicio()}"/>
+                        <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Anterior"
+                        	action="#{arqueoPuestoController.inicio()}" />
+                    </h:form>
+                </div>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

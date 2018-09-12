@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="../../templates/plantilla-inicio.xhtml">
+
+    <ui:define name="contenido">
+
+        <h:body>
+
+            <div class="container_48">
+
+                <div class="embed-responsive-my-16by9">
+
+                    <ui:include src="../composites/defaultIframe.xhtml" />
+
+                    <form id="formRenderFuncionalidad"
+                          action="#{cajaCenSerCenController.urlConEncajes()}"
+                          class="hidden"
+                          method="post"
+                          target="framePrincipal">
+
+                        <input name="BSFOPERADOR"
+                               id="BSFOPERADOR"
+                               hidden=""
+                               value="#{commonController.generarBsfOperadorComun()}"/>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </h:body>
+
+    </ui:define>
+
+</ui:composition>

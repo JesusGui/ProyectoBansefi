@@ -1,0 +1,317 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<!-- Se agregó div contenedores -->
+				<div class="contenedor">
+
+					<h:form id="formDetalleAnotaciones" styleClass="contenedor-form">
+
+						<!-- Simplemente se pone para que cargue la libreria de primefaces EXT -->
+						<pe:blockUI widgetVar="blockUIWidget1">
+						</pe:blockUI>
+
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								action="#{anotacionesController.volver()}" />
+							<div>
+								<h2 class="gris-b">Consulta de Anotación </h2>
+								<h2 class="rojo-b">#{anotacionesController.anotacion.numero}</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos consulta-anotaciones">
+
+							<div class="grid_10 alpha">
+								<div class="grid_41">
+									<p:message id="fechaCierreVal" for="fechaCierre" display="icon" />
+									<p:outputLabel for="fechaCierre" value="Fecha Cierre"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:calendar id="fechaCierre"
+										value="#{anotacionesController.anotacion.fechaCierre}"
+										locale="es" pattern="dd/MM/yyyy" mask="true" showOn="button"
+										disabled="#{!anotacionesController.accesoModificarFechaCierre}"
+										mindate="#{anotacionesController.currentDate}">
+										<f:attribute name="beginDate"
+											value="#{anotacionesController.currentDate}" />
+										<f:validator validatorId="dateRangeValidator" />
+									</p:calendar>
+								</div>
+								<div class="grid_7">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:commandButton id="guardar" value="" icon="ui-icon-check"
+										styleClass="btn-icono-conbackground" title="Guardar"
+										action="#{anotacionesController.modificarFechaCierreAnotacion(anotacionesController.anotacion)}"
+										ajax="true" update="formDetalleAnotaciones"
+										rendered="#{anotacionesController.accesoModificarFechaCierre}" />
+								</div>
+							</div>
+							
+							<div class="float-right">
+								<p:commandButton immediate="true" id="responder"
+									styleClass="btn-icono-texto"
+									icon="ui-icon-arrowreturnthick-1-w"
+									rendered="#{anotacionesController.activarBotonRespuestaAnotacion and !anotacionesController.activarRespuestaAnotacion}"
+									value="Responder"
+									action="#{anotacionesController.mostrarPanelRespuestaAnotacion()}"
+									update="formDetalleAnotaciones" />
+							</div>
+
+							<div class="clear"></div>
+
+							<div class="marco-datospersonales">
+							
+							<h:panelGroup
+								rendered="#{anotacionesController.anotacion.relacionados.size()>0}">
+								<div class="clear-3"></div>
+
+								<div class="grid_16">
+									<p:outputLabel value="Cuentas Relacionadas"
+										rendered="#{anotacionesController.anotacion.dirigidoA.equals(ConstantesFuncionales.DEST_ANTCN_CUENTAS[0]) or
+ 																							anotacionesController.anotacion.dirigidoA.equals(ConstantesFuncionales.DEST_ANTCN_CUENTAS[1])}" />
+									<p:outputLabel value="Clientes Relacionados"
+										rendered="#{anotacionesController.anotacion.dirigidoA.equals(ConstantesFuncionales.DEST_ANTCN_PERSONAS[0]) or
+																							 anotacionesController.anotacion.dirigidoA.equals(ConstantesFuncionales.DEST_ANTCN_PERSONAS[1])}" />
+								</div>
+
+								<div class="clear clear-3"></div>
+								<div class="relaciones grid_42">
+									<c:forEach var="relacion"
+										items="#{anotacionesController.anotacion.relacionados}"
+										varStatus="myVarStatus">
+										<p:outputLabel styleClass="label-valor texto-sininput"
+											value="#{relacion}" />
+										<div class="clear"></div>
+									</c:forEach>
+								</div>
+								<div class="clear margin-bottom-20"></div>
+
+							</h:panelGroup>
+							<div class="clear"></div>
+
+							<div class="grid_10">
+								<p:outputLabel value="Tipo: "></p:outputLabel>
+								<p:outputLabel styleClass="bold"
+									value="#{anotacionesController.obtenerTipoAnotacionBuscada(anotacionesController.anotacion.tipo)}" />
+							</div>
+
+							<div class="grid_20">
+								<p:outputLabel value="Subcódigo: "></p:outputLabel>
+								<p:outputLabel styleClass="bold"
+									value="#{anotacionesController.obtenerSubCodigoAnotacionBuscada(anotacionesController.anotacion.subcodigo)}"></p:outputLabel>
+							</div>
+
+							<div class="grid_10">
+								<p:outputLabel value="Área: "></p:outputLabel>
+								<p:outputLabel styleClass="bold"
+									value="#{anotacionesController.obtenerAreaAnotacionBuscada(anotacionesController.anotacion.area)}"></p:outputLabel>
+							</div>
+							<div class="clear"></div>
+							</div>
+
+							<div class="clear-3"></div>
+
+							<div class="hilo-anotaciones bg-gris2-b">
+								<div class="row-flex">
+									<div class="grid_5">
+										<p:outputLabel styleClass="hilo-fecha"
+											value="#{anotacionesController.anotacion.fechaInicio}">
+											<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+										</p:outputLabel>
+									</div>
+									<div class="grid_22">
+										<p:outputLabel styleClass="fa fa-warning orange hilo-prioridad"
+											value=""
+											rendered="#{anotacionesController.anotacion.prioridad.equals(ConstantesFuncionales.COD_PRIORIDAD_ANOTACION_ALTA)}" />
+										<p:outputLabel styleClass="hilo-descorta"
+											value=" #{anotacionesController.anotacion.descripcionCorta}" />
+									</div>
+								</div>
+								
+								<h:panelGroup layout="block" styleClass="grid_21 push_5"
+								rendered="#{!anotacionesController.origenAnotacionBatch}">
+									<p:outputLabel styleClass="hilo-id" value="Empleado: " />
+									<p:outputLabel styleClass="hilo-id"
+										value="#{anotacionesController.anotacion.idEmpleado}" />
+									<p:outputLabel styleClass="hilo-nombre"
+										value=", #{anotacionesController.anotacion.nombreEmpleado}" />
+								</h:panelGroup>
+	
+								<h:panelGroup layout="block" styleClass="grid_21 push_5"
+									rendered="#{anotacionesController.origenAnotacionBatch}">
+										<p:outputLabel styleClass="hilo-id"
+											value="#{anotacionesController.anotacion.idEmpleado}" />
+								</h:panelGroup>
+
+								<div class="clear-3"></div>
+								<div class="grid_43 push_5">
+									<p:outputLabel styleClass="hilo-deslarga"
+										value="#{anotacionesController.anotacion.descripcionLarga}" />
+								</div>
+
+								<div class="clear"></div>
+								
+								</div>
+
+							<h:panelGroup
+								rendered="#{anotacionesController.respuestasOcultas>0}">
+								<div class="anotaciones-colapsadas centrar-objeto">
+									<p:commandButton styleClass="btn-mas-anotaciones"
+										value="#{anotacionesController.respuestasOcultas} anotaciones"
+										action="#{anotacionesController.verMasRespuestasAnotaciones()}"
+										ajax="true" update="formDetalleAnotaciones" immediate="true" />
+								</div>
+							</h:panelGroup>
+
+
+
+							<div class="clear"></div>
+							<c:forEach var="anot"
+								items="#{anotacionesController.anotaciones.subList(anotacionesController.respuestasOcultas,anotacionesController.anotaciones.size())}"
+								varStatus="myVarStatus">
+
+								<div class="clear-3"></div>
+
+								<div class="hilo-anotaciones bg-gris2-b">
+									
+									<div class="row-flex">
+										<div class="grid_5">
+											<p:outputLabel styleClass="hilo-fecha"
+												value="#{anot.fechaInicio}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+										</div>
+	
+										<div class="grid_22">
+											<p:outputLabel
+												styleClass="fa fa-warning orange hilo-prioridad" value=""
+												rendered="#{anot.prioridad.equals(ConstantesFuncionales.COD_PRIORIDAD_ANOTACION_ALTA)}" />
+											<p:outputLabel styleClass="hilo-descorta"
+												value=" #{anot.descripcionCorta}" />
+										</div>
+									</div>
+									
+									<h:panelGroup layout="block" styleClass="grid_21 push_5"
+									rendered="#{!anotacionesController.origenAnotacionBatch}">
+										<p:outputLabel styleClass="hilo-id" value="Empleado: " />
+										<p:outputLabel styleClass="hilo-id" value="#{anot.idEmpleado}" />
+										<p:outputLabel styleClass="hilo-nombre"
+											value=", #{anot.nombreEmpleado}" />
+									</h:panelGroup>
+	
+									<h:panelGroup layout="block" styleClass="grid_21"
+										rendered="#{anotacionesController.origenAnotacionBatch}">
+											<p:outputLabel styleClass="hilo-id" value="#{anot.idEmpleado}" />
+									</h:panelGroup>
+									
+									<div class="clear-3"></div>
+									<div class="grid_42 push_5">
+										<p:outputLabel styleClass="hilo-deslarga"
+											value="#{anot.descripcionLarga}" />
+									</div>
+									<div class="clear"></div>
+								</div>
+							</c:forEach>
+							
+							<div class="clear margin-top-20"></div>
+							<h:panelGroup
+								rendered="#{anotacionesController.activarRespuestaAnotacion}">
+
+								<div class="grid_8">
+									<p:outputLabel for="prioridadRespuesta" value="Prioridad"></p:outputLabel>
+									<div class="clear-3" />
+									<p:selectOneMenu id="prioridadRespuesta"
+										value="#{anotacionesController.anotacionRespuesta.prioridad}"
+										required="#{param['disableValidation']==null}">
+										<f:selectItem itemValue="#{null}"
+											itemLabel="Seleccione un valor" noSelectionOption="true" />
+										<f:selectItems
+											value="#{catalogoUtils.getCatalogo('PRIORIDAD_ANOTACION')}"
+											var="item" itemValue="#{item.claveFila}"
+											itemLabel="#{item.descripcionL}" />
+									</p:selectOneMenu>
+								</div>
+
+								<div class="grid_40 centrar-objeto btn-inline-set">
+									<div class="grid_40">
+
+										<p:outputLabel for="descripicionBreveRespuesta"
+											value="Descripción Breve" />
+										<div class="clear-3" />
+										<p:inputMask id="descripicionBreveRespuesta"
+											value="#{anotacionesController.anotacionRespuesta.descripcionCorta}"
+											maxlength="30" required="#{param['disableValidation']==null}"
+											onblur="value=value.toUpperCase();value=value.trim()">
+											<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ\- ]*$/"
+												preventPaste="false" />
+										</p:inputMask>
+
+										<div class="clear" />
+
+										<p:outputLabel for="descripicionLargaRespuesta"
+											value="Descripción Larga" />
+										<div class="clear-3" />
+										<p:inputTextarea id="descripicionLargaRespuesta"
+											autoResize="true" rows="2"
+											value="#{anotacionesController.anotacionRespuesta.descripcionLarga}"
+											maxlength="300" onblur="value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ\- ]*$/"
+												preventPaste="false" />
+										</p:inputTextarea>
+									</div>
+
+									<div class="grid_8 centrar-objeto btn-inline-set">
+										<p:commandButton id="enviar"
+											styleClass="btn-icono-conbackground btn-enviar"
+											icon="fa fa-send" title="Enviar"
+											action="#{anotacionesController.responderAnotacion()}"
+											update="formDetalleAnotaciones" />
+
+										<p:commandButton id="cancelar"
+											styleClass="btn-icono-conbackground btn-cancelar btn_secundario"
+											icon="fa fa-times gris3-b" title="Cancelar"
+											action="#{anotacionesController.ocultarPanelRespuestaAnotacion()}"
+											update="formDetalleAnotaciones" immediate="true" />
+									</div>
+								</div>
+								<div class="clear" />
+
+								<div class="clear"></div>
+							</h:panelGroup>
+
+							<div class="clear"></div>
+						</div>
+					</h:form>
+				</div>
+
+				<p:dialog widgetVar="dlgModiFechaCierre" id="dlgModiFechaCierre"
+					appendTo="@(body)" modal="true" visible="false" closable="false"
+					resizable="false" draggable="false">
+					<span class="ui-messages-exito-icon exito-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="La fecha de cierre se modificó correctamente" />
+					<div class="clear"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgModiFechaCierre').hide();" value="Aceptar"
+						immediate="true" />
+				</p:dialog>
+
+			</div>
+		</h:body>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaDocumentosAEmitir" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultadocumentosaemitir.ResponseBansefi.OTRDETODOSDOCUACTRN.TRDETODOSDOCUACEVTZ</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.EmisionDocumentosBean</class-b>
+		<field>
+			<a>idinternodc</a>
+			<b>idInterno</b>
+		</field>
+		<field>
+			<a>coddoc</a>
+			<b>codigo</b>
+		</field>
+		<field>
+			<a>descrformlr</a>
+			<b>descripcion</b>
+		</field>
+		<field>
+			<a>codidiompers</a>
+			<b>idioma</b>
+		</field>
+		<field>
+			<a>indobligac</a>
+			<b>obligatorio</b>
+		</field>
+		<field>
+			<a>codecvdocemtdo</a>
+			<b>estado</b>
+		</field>
+		<field>
+			<a>nombreficherodo</a>
+			<b>fichero</b>
+		</field>
+		<field>
+			<a>numsecfo</a>
+			<b>formulario</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaformaliz</a>
+			<b>fechaFormalizacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaecvact</a>
+			<b>fechaEmision</b>
+		</field>
+		<field>
+			<a>numcopias</a>
+			<b>numCopias</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaCamposDocumento" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultacamposdocumento.ResponseBansefi.OTRDECONSDATOSENTTRN.TRDECONSDATOSENTEVT.DEDATOSRLAPV</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.CampoDocumentoBean</class-b>
+		<field>
+			<a>descrvariable</a>
+			<b>descripcionVariable</b>
+		</field>
+		<field>
+			<a>codapartado</a>
+			<b>apartado</b>
+		</field>
+		<field>
+			<a>valorasociado</a>
+			<b>valor</b>
+		</field>
+		<field>
+			<a>valorasociadolen</a>
+			<b>valorLen</b>
+		</field>
+		<field>
+			<a>valorasociado</a>
+			<b>original</b>
+		</field>
+		<field>
+			<a>codcampo</a>
+			<b>codigo</b>
+		</field>
+		<field>
+			<a>codorgapdo</a>
+			<b>codigoApartado</b>
+		</field>
+		<field>
+			<a>numsecapdo</a>
+			<b>seccionApartado</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaEstadosDocumento" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultaestadosdocumento.ResponseBansefi.OTRDECONSECVSTRNO.TRDECONSECVSEVTZ</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.EstadoDocumentoBean</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaoprcn</a>
+			<b>fechaOperacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToStringHourConverter">
+			<a>horaoprcn</a>
+			<b>horaOperacion</b>
+		</field>
+		<field>
+			<a>idinternoemplep</a>
+			<b>empleado</b>
+		</field>
+		<field>
+			<a>codecvdocemtdo</a>
+			<b>estado</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="documentoEmitido" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.emisiondocumentos.ResponseBansefi.OTRDEEMITIRCDOTRNO.TRDEEMITIRCDOEVTZ</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.EmisionDocumentosBean</class-b>
+		<field>
+			<a>idinternodc</a>
+			<b>idInterno</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaecvact</a>
+			<b>fechaEmision</b>
+		</field>
+		<field>
+			<a>nombreficherodo</a>
+			<b>fichero</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="peticionFormalizaDocumento" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.beans.EmisionDocumentosBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.formalizadocumento.Ejecutar.ITRDEFORMALIZARTRNI.TRDEFORMALIZAREVTY.DEDOCEMTDOE</class-b>
+		<field>
+			<a>idInterno</a>
+			<b>idinternodc</b>
+		</field>
+		<field>
+			<a>codigo</a>
+			<b>coddoc</b>
+		</field>
+		<field>
+			<a>idioma</a>
+			<b>codidiompers</b>
+		</field>
+		<field>
+			<a>formulario</a>
+			<b>numsecfo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaEmision</a>
+			<b>fechaecvact</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaFormalizacion</a>
+			<b>fechaformaliz</b>
+		</field>
+		<field>
+			<a>numCopias</a>
+			<b>numcopias</b>
+		</field>
+		<field>
+			<a>fichero</a>
+			<b>nombreficherodo</b>
+		</field>
+		<field>
+			<a>estado</a>
+			<b>codecvdocemtdo</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="peticionAnularDocumento" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.beans.EmisionDocumentosBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.anuladocumento.Ejecutar.ITRDECANCELARTRNI.TRDECANCELAREVTY.DEDOCEMTDOE</class-b>
+		<field>
+			<a>idInterno</a>
+			<b>idinternodc</b>
+		</field>
+		<field>
+			<a>codigo</a>
+			<b>coddoc</b>
+		</field>
+		<field>
+			<a>idioma</a>
+			<b>codidiompers</b>
+		</field>
+		<field>
+			<a>formulario</a>
+			<b>numsecfo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaEmision</a>
+			<b>fechaecvact</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaFormalizacion</a>
+			<b>fechaformaliz</b>
+		</field>
+		<field>
+			<a>numCopias</a>
+			<b>numcopias</b>
+		</field>
+		<field>
+			<a>fichero</a>
+			<b>nombreficherodo</b>
+		</field>
+		<field>
+			<a>estado</a>
+			<b>codecvdocemtdo</b>
+		</field>
+	</mapping>
+</mappings>

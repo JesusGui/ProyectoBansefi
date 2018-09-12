@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="altaOrigenIngresos" wildcard="false" map-null="false" map-empty-string="true"
+		trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.OrigenIngresosBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.altaorigeningreso.Ejecutar.ITRPEALTAORGNINGTRN.TRPEALTAORGNINGEVTY
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+			<a>codOrigenIngresos</a>
+			<b>codorgningrindv</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="bajaOrigenIngresos" wildcard="false" map-null="false" map-empty-string="true"
+		trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.OrigenIngresosBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.bajaorigeningresos.Ejecutar.ITRPEBAJAORGNINGTRN.TRPEBAJAORGNINGEVTY.PEORGNINGRINDVP
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+			<a>codOrigenIngresos</a>
+			<b>codorgningrindv</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaOrigenIngresos" wildcard="false" map-null="false"
+		trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultaorigenesingresos.ResponseBansefi.OTRPECONSORGNINGTRN.TRPECONSORGNINGEVTZ.TRPECONSORGNINGEVTV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.OrigenIngresosBean
+		</class-b>
+		<field>
+			<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>idinternope</a>
+			<b>idInterno</b>
+		</field>
+		<field>
+			<a>codorgningrindv</a>
+			<b>codOrigenIngresos</b>
+		</field>
+	</mapping>
+</mappings>

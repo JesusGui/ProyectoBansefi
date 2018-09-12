@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+		  http://dozer.sourceforge.net/schema/beanmapping.xsd">
+		  
+	<mapping map-id="resultadoInformacionDerivada" wildcard="false"
+		map-null="false">
+		<class-a>
+			mx.babel.bansefi.banksystem.cuentas.webservices.consultainformacionderivada.ResponseBansefi.OTRCONSUDERIVADASACTR.TRCONSUDERIVADASACEVT.ACINFDRVDE
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.cuentas.beans.InformacionDerivadaBean
+		</class-b>
+		<field>
+			<a>codinfdrvdac</a>
+			<b>informacionDerivada</b>
+		</field>
+		<field>
+			<a>valorinfdrvd</a>
+			<b>valor</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="resultadoInformacionNumerica" wildcard="false"
+		map-null="false">
+		<class-a>
+			mx.babel.bansefi.banksystem.cuentas.webservices.consultainformacionderivada.ResponseBansefi.OTRCONSUDERIVADASACTR.TRCONSUDERIVADASACEVT.LIQTAEAPERV.LIQTAEAPERLSTV.LIQTRAMOINTV.LIQTRAMOINTLSTV
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.cuentas.beans.InformacionNumericaBean
+		</class-b>
+		<field>
+			<a>numtramo</a>
+			<b>numTramo</b>
+		</field>
+		<field>
+			<a>tae</a>
+			<b>tae</b>
+		</field>
+	</mapping>
+
+</mappings>

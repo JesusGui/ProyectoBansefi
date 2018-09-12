@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoRelacionCuentaPlazo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultarelacionescuentaplazo.ResponseBansefi.OTRRELIMPSCNACTRNO.TRRELIMPSCNACEVTZ.TRRELIMPSCNACEVTV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.domain.CuentaRelacionPlazoBean
+    </class-b>
+    <field>
+      <a>PCT</a>
+      <b>porcentaje</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINIC</a>
+      <b>inicio</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRRE</a>
+      <b>cierre</b>
+    </field>
+    <field>
+      <a>numsecac</a>
+      <b>numAcuerdo</b>
+    </field>
+    <field>
+      <a>CODRLACSUBAC</a>
+      <b>tipoRelacion</b>
+    </field>
+    <field>
+      <a>CODINTERNOUO</a>
+      <b>codInternoUO</b>
+    </field>
+    <field>
+      <a>CODORGNAPNTE</a>
+      <b>codOrgApunte</b>
+    </field>
+  </mapping>
+</mappings>

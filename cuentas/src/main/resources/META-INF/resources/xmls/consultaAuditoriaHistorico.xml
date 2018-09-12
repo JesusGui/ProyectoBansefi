@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="respuestaConsultaAuditoriaHistoricoCuentas" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.AuditoriaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.consultaauditoriahistorico.ResponseBansefi.OTRCONSUAUDITECVACTR.TRCONSUAUDITECVACEVT</class-b>
+		<field>
+			<a>entidad</a>
+			<b>acecvace.codnrbeen</b>
+		</field>
+		<field>
+			<a>centroAc</a>
+			<b>acecvace.numsecac</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaOperacion</a>
+			<b>acecvace.fechaoprcn</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToStringHourConverter">
+			<a>horaOperacion</a>
+			<b>acecvace.horaoprcn</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaInicioEstadoCuenta</a>
+			<b>acecvace.fechainicecv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaFinEstadoCuenta</a>
+			<b>acecvace.fechafinecv</b>
+		</field>
+		<field>
+			<a>codigoEstadoAcuerdo</a>
+			<b>acecvace.codecvac</b>
+		</field>
+		<field>
+			<a>codigoRazonEstadoAcuerdo</a>
+			<b>acecvace.codrznecvac</b>
+		</field>
+		<field>
+			<a>centroOperativo</a>
+			<b>acecvacv.codinternouo</b>
+		</field>
+		<field>
+			<a>transaccion</a>
+			<b>acecvacv.codtx</b>
+		</field>
+		<field>
+			<a>empleadoAutorizado</a>
+			<b>acecvacv.idemplaut</b>
+		</field>
+		<field>
+			<a>empleadoOrigen</a>
+			<b>acecvacv.idinternoemplep</b>
+		</field>
+		<field>
+			<a>terminal</a>
+			<b>acecvacv.idinternotermtn</b>
+		</field>
+	</mapping>
+</mappings>

@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<p:fieldset legend="Datos deuda">
+
+		<div class="margin-top-10"></div>
+
+		<div class="row-flex">
+
+		<div class="grid_12">
+			<p:outputLabel value="Entidad" />
+			<div class="clear-3"></div>
+			<p:selectOneMenu value="#{bien.datosDeuda.entidad}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor"
+					noSelectionOption="true" />
+				<f:selectItems value="#{catalogoUtils.getCatalogo('ENTIDAD_DEUDA')}"
+					var="item" itemValue="#{item.claveFila}"
+					itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+		</div>
+		<div class="grid_5">
+			<p:outputLabel value="% Negocio" />
+			<div class="clear-3"></div>
+			<pe:inputNumber emptyValue="0" decimalPlaces="3" maxValue="99.999"
+				decimalSeparator="." thousandSeparator=","
+				value="#{bien.datosDeuda.negocio}" />
+		</div>
+		<div class="grid_14">
+			<p:outputLabel value="Tipo de deuda" />
+			<div class="clear-3"></div>
+			<p:inputMask value="#{bien.datosDeuda.tipoDeuda}" maxlength="20"
+				onblur="value=value.toUpperCase()">
+				<pe:keyFilter regEx="/^[a-zA-ZñÑ0-9\- ]*$/" preventPaste="false" />
+			</p:inputMask>
+		</div>
+		<div class="grid_12">
+			<p:outputLabel value="Concedido" />
+			<div class="clear-3"></div>
+			<pe:inputNumber emptyValue="0" maxlength="12"
+				styleClass="pe-inputNumber" maxValue="999999999999.99"
+				decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+				value="#{bien.datosDeuda.concedido}" placeholder="Importe" />
+			<span class="pe-inputNumber-suffix">MXN</span>
+		</div>
+
+		<div class="grid_5">
+			<p:outputLabel value="Tipo interés" />
+			<div class="clear-3"></div>
+			<pe:inputNumber styleClass="text-align-right-input" emptyValue="0" decimalPlaces="3" maxValue="999.999"
+				decimalSeparator="." thousandSeparator=","
+				value="#{bien.datosDeuda.tipoInteres}" />
+		</div>
+
+		</div>
+		
+		<div class="row-flex">
+
+		<div class="grid_6">
+			<p:outputLabel value="Frec. amortización" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.datosDeuda.frecuenciaAmortizacion}"
+				maxlength="3">
+				<pe:keyFilter regEx="/[0-9]/" preventPaste="false" />
+			</p:inputMask>
+		</div>
+		<div class="grid_6">
+			<p:outputLabel value="Duración" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.datosDeuda.duracion}" maxlength="5">
+        <pe:keyFilter regEx="/[0-9]/" preventPaste="false" />
+			</p:inputMask>
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="F. vencimiento" />
+			<div class="clear-3"></div>
+			<p:calendar value="#{bien.datosDeuda.fechaVencimiento}"
+				pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es">
+			</p:calendar>
+		</div>
+		
+		</div>
+	</p:fieldset>
+
+</ui:composition>

@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  xmlns:cc="http://java.sun.com/jsf/composite/composites">
+  <head>
+	<title>Composite Tramos</title>
+  </head>
+  <body>
+	<composite:interface>
+      <composite:attribute name="id"></composite:attribute>
+	  <composite:attribute name="condTramo" required="true"></composite:attribute>
+    <composite:attribute name="controller" required="true"></composite:attribute>
+    <composite:attribute name="idPds" required="true"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+	  <div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" >	
+	  
+		  <p:outputLabel value="Base del cálculo: #{cc.attrs.condTramo.baseCalculoDesc}"></p:outputLabel>
+		  <div class="clear-row"></div>
+<!-- Combobox -->
+      <p:inputText id="criterio" value="TRAMEADO #{cc.attrs.condTramo.idTrameado}" disabled="true">
+      </p:inputText>
+<!-- End Combobox -->
+		<div class="clear-row"></div>
+<!-- Datatable -->    	
+    	  <p:dataTable id="tablaTramos#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" styleClass="tabla-tramos" var="subTramo" value="#{cc.attrs.condTramo.getSubtramoListPaginada()}">
+		    <p:column >
+		    	<p:rowToggler/>
+		    </p:column>
+		    
+		    <p:column headerText="TRAMO">
+		        <h:outputText value="#{subTramo.numTramo}" />
+		    </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.descripcion}">
+		        <h:outputText value="#{subTramo.value}" />
+		    </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.getCabeceraBean(1).descripcion}">
+		        <h:outputText rendered="#{(not empty cc.attrs.condTramo.getCabeceraBean(1).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(1).posCol > 0)}"
+		          value="#{'De '.concat(subTramo.limiteTramo.getLimInferior(cc.attrs.condTramo.getCabeceraBean(1).posCol))
+			        .concat(' a ').concat(subTramo.limiteTramo.getLimSuperior(cc.attrs.condTramo.getCabeceraBean(1).posCol))}" />
+		        <h:outputText rendered="#{(empty cc.attrs.condTramo.getCabeceraBean(1).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(1).posCol > 0)}"
+              value="#{subTramo.limiteTramo.getDescDomParmCd(cc.attrs.condTramo.getCabeceraBean(1).posCol)}" />
+		    </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.getCabeceraBean(2).descripcion}">
+            <h:outputText rendered="#{(not empty cc.attrs.condTramo.getCabeceraBean(2).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(2).posCol > 0)}"
+              value="#{'De '.concat(subTramo.limiteTramo.getLimInferior(cc.attrs.condTramo.getCabeceraBean(2).posCol))
+              .concat(' a ').concat(subTramo.limiteTramo.getLimSuperior(cc.attrs.condTramo.getCabeceraBean(2).posCol))}" />
+            <h:outputText rendered="#{(empty cc.attrs.condTramo.getCabeceraBean(2).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(2).posCol > 0)}"
+              value="#{subTramo.limiteTramo.getDescDomParmCd(cc.attrs.condTramo.getCabeceraBean(2).posCol)}" />
+        </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.getCabeceraBean(3).descripcion}">
+           <h:outputText rendered="#{(not empty cc.attrs.condTramo.getCabeceraBean(3).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(3).posCol > 0)}"
+              value="#{'De '.concat(subTramo.limiteTramo.getLimInferior(cc.attrs.condTramo.getCabeceraBean(3).posCol))
+              .concat(' a ').concat(subTramo.limiteTramo.getLimSuperior(cc.attrs.condTramo.getCabeceraBean(3).posCol))}" />
+            <h:outputText rendered="#{(empty cc.attrs.condTramo.getCabeceraBean(3).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(3).posCol > 0)}"
+              value="#{subTramo.limiteTramo.getDescDomParmCd(cc.attrs.condTramo.getCabeceraBean(3).posCol)}" />
+        </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.getCabeceraBean(4).descripcion}">
+            <h:outputText rendered="#{(not empty cc.attrs.condTramo.getCabeceraBean(4).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(4).posCol > 0)}"
+              value="#{'De '.concat(subTramo.limiteTramo.getLimInferior(cc.attrs.condTramo.getCabeceraBean(4).posCol))
+              .concat(' a ').concat(subTramo.limiteTramo.getLimSuperior(cc.attrs.condTramo.getCabeceraBean(4).posCol))}" />
+            <h:outputText rendered="#{(empty cc.attrs.condTramo.getCabeceraBean(4).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(4).posCol > 0)}"
+              value="#{subTramo.limiteTramo.getDescDomParmCd(cc.attrs.condTramo.getCabeceraBean(4).posCol)}" />
+        </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.getCabeceraBean(5).descripcion}">
+            <h:outputText rendered="#{(not empty cc.attrs.condTramo.getCabeceraBean(5).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(5).posCol > 0)}"
+              value="#{'De '.concat(subTramo.limiteTramo.getLimInferior(cc.attrs.condTramo.getCabeceraBean(5).posCol))
+              .concat(' a ').concat(subTramo.limiteTramo.getLimSuperior(cc.attrs.condTramo.getCabeceraBean(5).posCol))}" />
+            <h:outputText rendered="#{(empty cc.attrs.condTramo.getCabeceraBean(5).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(5).posCol > 0)}"
+              value="#{subTramo.limiteTramo.getDescDomParmCd(cc.attrs.condTramo.getCabeceraBean(5).posCol)}" />
+        </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.getCabeceraBean(6).descripcion}">
+            <h:outputText rendered="#{(not empty cc.attrs.condTramo.getCabeceraBean(6).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(6).posCol > 0)}"
+              value="#{'De '.concat(subTramo.limiteTramo.getLimInferior(cc.attrs.condTramo.getCabeceraBean(6).posCol))
+              .concat(' a ').concat(subTramo.limiteTramo.getLimSuperior(cc.attrs.condTramo.getCabeceraBean(6).posCol))}" />
+            <h:outputText rendered="#{(empty cc.attrs.condTramo.getCabeceraBean(6).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(6).posCol > 0)}"
+              value="#{subTramo.limiteTramo.getDescDomParmCd(cc.attrs.condTramo.getCabeceraBean(6).posCol)}" />
+        </p:column>
+		 
+		    <p:column headerText="#{cc.attrs.condTramo.getCabeceraBean(7).descripcion}">
+            <h:outputText rendered="#{(not empty cc.attrs.condTramo.getCabeceraBean(7).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(7).posCol > 0)}"
+              value="#{'De '.concat(subTramo.limiteTramo.getLimInferior(cc.attrs.condTramo.getCabeceraBean(7).posCol))
+              .concat(' a ').concat(subTramo.limiteTramo.getLimSuperior(cc.attrs.condTramo.getCabeceraBean(7).posCol))}" />
+            <h:outputText rendered="#{(empty cc.attrs.condTramo.getCabeceraBean(7).udMedidas) and (cc.attrs.condTramo.getCabeceraBean(7).posCol > 0)}"
+              value="#{subTramo.limiteTramo.getDescDomParmCd(cc.attrs.condTramo.getCabeceraBean(7).posCol)}" />
+        </p:column>
+		 
+		    <p:column headerText="F. INICIO">
+		        <h:outputText value="#{subTramo.condicionBean.fechaInicioValidez}" >
+               <f:convertDateTime type="date" pattern="dd/MM/yyyy"/> 
+		        </h:outputText>
+		    </p:column>
+		 
+		    <p:column headerText="F. CIERRE">
+		        <h:outputText value="#{subTramo.condicionBean.fechaFinValidezFormateada}" >
+               <f:convertDateTime type="date" pattern="dd/MM/yyyy"/> 
+            </h:outputText>
+		    </p:column>
+		    
+		    <p:rowExpansion >  
+        		 <ui:fragment
+               rendered="#{subTramo.condicionBean.tipoCondicion eq 'comision'}">
+               <cc:valorComision esComisionFija="#{subTramo.condicionBean.tipo eq 'F'}"
+                 validezFrom="#{subTramo.condicionBean.fechaEstadoActual}"
+                 validezTo="#{subTramo.condicionBean.fechaFinValidezFormateada}"
+                 importeFijo="#{subTramo.condicionBean.importeComFija}"
+                 calculoProducto="#{subTramo.condicionBean.formaCalculoComFija}"
+                 comision="#{subTramo.condicionBean.porcentajeComisionComVar}"
+                 baseCalculo="#{subTramo.condicionBean.baseCalculoComVar}"
+                 baseCalculoDesc="#{subTramo.condicionBean.baseCalculoComVarDesc}"
+                 agruClop="#{subTramo.condicionBean.agruClop}"
+                 impMinimo="#{subTramo.condicionBean.importeMinComVar}"
+                 impMaximo="#{subTramo.condicionBean.importeMaxComVar}"
+                 franquicia="#{subTramo.condicionBean.importeFranquiciaComVar}"
+                 editable="false">
+               </cc:valorComision>
+             </ui:fragment>
+             <ui:fragment
+               rendered="#{subTramo.condicionBean.tipoCondicion eq 'interes'}">
+               <cc:valorInteres esTipoFijo="#{subTramo.condicionBean.tipo eq 'F'}"
+                 validezFrom="#{subTramo.condicionBean.fechaEstadoActual}"
+                 validezTo="#{subTramo.condicionBean.fechaFinValidezFormateada}"
+                 baseCalculoDesc="#{subTramo.condicionBean.baseCalculoDesc}"
+                 valorFijo="#{subTramo.condicionBean.valorIntFijo}"
+                 valorActual="#{subTramo.condicionBean.valorActualVar}"
+                 referencia="#{subTramo.condicionBean.codReferenciaIntVar}"
+                 criterio="#{subTramo.condicionBean.codCriterioRevIntVar}"
+                 frec="#{subTramo.condicionBean.frecuenciaRevIntVar}"
+                 forma="#{subTramo.condicionBean.formaRevIntVar}"
+                 fechaRev="#{subTramo.condicionBean.fechaRevVar}"
+                 diferencial="#{subTramo.condicionBean.diferencialIntVar}"
+                 minimo="#{subTramo.condicionBean.interesMinIntVar}"
+                 maximo="#{subTramo.condicionBean.interesMaxIntVar}"
+                 fraccion="#{subTramo.condicionBean.fraccionRevIntVar}"
+                 porcentaje="#{subTramo.condicionBean.porcentajeMinRevIntVar}"
+                 editable="false">
+               </cc:valorInteres>
+             </ui:fragment>
+
+             <ui:fragment
+               rendered="#{subTramo.condicionBean.tipoCondicion eq 'lista'}">
+               <cc:lista validezFrom="#{subTramo.condicionBean.fechaEstadoActual}"
+                 validezTo="#{subTramo.condicionBean.fechaFinValidezFormateada}"
+                 condicionLista="#{subTramo.condicionBean}"
+                 editable="false">
+               </cc:lista>
+             </ui:fragment>
+
+             <ui:fragment
+               rendered="#{subTramo.condicionBean.tipoCondicion eq 'rango'}">
+               <cc:rango validezFrom="#{subTramo.condicionBean.fechaEstadoActual}"
+                 validezTo="#{subTramo.condicionBean.fechaFinValidezFormateada}"
+                 preferente="#{subTramo.condicionBean.preferente}"
+                 minimo="#{subTramo.condicionBean.minimo}"
+                 maximo="#{subTramo.condicionBean.maximo}"
+                 unidades="#{subTramo.condicionBean.unidades}"
+                 incremento="#{subTramo.condicionBean.incremento}"
+                 editable="false">
+               </cc:rango>
+             </ui:fragment>
+             <ui:fragment
+               rendered="#{subTramo.condicionBean.tipoCondicion eq 'valorLista'}">
+               <cc:valorLista validezFrom="#{subTramo.condicionBean.fechaEstadoActual}"
+                 validezTo="#{subTramo.condicionBean.fechaFinValidezFormateada}"
+                 value="#{subTramo.condicionBean.codDomParmcd}"
+                 items="#{subTramo.condicionBean.items}"
+                 editable="false">
+               </cc:valorLista>
+             </ui:fragment>
+             <ui:fragment
+               rendered="#{subTramo.condicionBean.tipoCondicion eq 'valorRango'}">
+               <cc:valorRango condValorRango="#{subTramo.condicionBean}" 
+                 editable="false">
+               </cc:valorRango>
+             </ui:fragment>
+      	</p:rowExpansion>  
+		  </p:dataTable>
+		  <div class="margin-top-10"></div>
+		  <h:panelGroup id="pnlMasDatos#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" layout="block" styleClass="centrar-objeto">
+		  <p:commandButton value="Ver mas resultados" styleClass="btn-mostrar" icon="fa fa-refresh" iconPos="right"
+				update="pnlMasDatos#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id},tablaTramos#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}"
+		          actionListener="#{cc.attrs.controller.masDatosTramos(cc.attrs.idPds, cc.attrs.condTramo.clave)}"
+		          rendered="#{cc.attrs.condTramo.isPaginacionActiva()}">
+			</p:commandButton>
+       </h:panelGroup>
+<!-- End Datatable -->
+	  </div>
+	</composite:implementation>
+  </body>
+</html>

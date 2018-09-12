@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="resultadoAltaCuenta" wildcard="false" 
+	  map-null="false" trim-strings="true" map-empty-string="false" >
+		<class-a>
+			mx.babel.bansefi.banksystem.cuentas.webservices.altacuenta.ResponseBansefi.OTRSOLICITARACTRNO.TRSOLICITARACEVTZ.ACACE
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.base.beans.domain.CuentaBean
+		</class-b>
+		<field>
+			<a>NUMSECAC</a>
+			<b>numeroCuenta</b>
+		</field>
+		<field>
+			<a>CODECVAC</a>
+			<b>estado</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>FECHAINIECVACT</a>
+			<b>fechaEstado</b>
+		</field>
+		<field>
+			<a>CODLINEA</a>
+			<b>codlinea</b>
+		</field>
+		<field>
+			<a>IDGRPPD</a>
+			<b>idGrupoProducto</b>
+		</field>
+		<field>
+			<a>IDPDV</a>
+			<b>idProducto</b>
+		</field>
+		<field>
+			<a>IDTRFAPDV</a>
+			<b>idTarifaProducto</b>
+		</field>
+		<field>
+			<a>CODINTERNOUO</a>
+			<b>centro</b>
+		</field>
+		<field>
+			<a>CODNRBEEN</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>CODPLZBANCARIA</a>
+			<b>plazaBancaria</b>
+		</field>
+		<field>
+			<a>CODDIGCRUO</a>
+			<b>digitoVerificador</b>
+		</field>
+		<field>
+			<a>CODNUMRCOMONEDA</a>
+			<b>moneda</b>
+		</field>
+	</mapping>
+</mappings>

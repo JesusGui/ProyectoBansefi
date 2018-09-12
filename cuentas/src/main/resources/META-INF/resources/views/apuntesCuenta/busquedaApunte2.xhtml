@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmBusquedaApuntes2" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{apunteController.volverAFlujoOrigen()}"
+								immediate="true" />
+							<div>
+								<h2 class="gris-b">
+									Consulta de apuntes de <span class="rojo-b">#{apunteController.cuentaBean.tipoCuenta}</span>
+								</h2>
+								<h3 class="gris-b">(#{apunteController.cuentaBean.numeroCuenta})</h3>
+							</div>
+						</div>
+
+						<div class="contenedor-campos margin-top-10">
+
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Campos Obligatorios" />
+
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+
+							<div class="centrar-objeto btn-inline-set margin-top-10">
+								<div class="grid_20">
+									<p:outputLabel id="lblNaturaleza" value="Naturaleza"
+										for="cboNaturaleza" />
+									<div class="clear-3"></div>
+									<p:selectOneMenu id="cboNaturaleza" widgetVar="cboNaturaleza"
+										value="#{apunteController.filtroNaturaleza}" required="true">
+										<f:selectItem itemValue="#{null}"
+											itemLabel="Seleccione un tipo" itemDisabled="true"
+											noSelectionOption="true" />
+										<f:selectItems var="item"
+											value="#{apunteController.naturalezas}"
+											itemValue="#{item.value}" itemLabel="#{item.description}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="grid_8">
+									<p:commandButton id="btnBuscar" widgetVar="btnBuscar"
+										icon="ui-icon-search"
+										value="Buscar"
+										actionListener="#{apunteController.buscarPorNaturaleza()}"
+										update=":frmBusquedaApuntes2" />
+								</div>
+							</div>
+
+							<div class="clear-row"></div>
+
+							<p:outputLabel styleClass="titulo-form margin-left-10"
+								value="Resultados de búsqueda"
+								rendered="#{apunteController.panelResultadosDisponible}" />
+							<div class="clear margin-top-10"></div>
+							<h:panelGroup styleClass="grid_48" display="block"
+								id="panelResultadosBusqueda"
+								rendered="#{apunteController.apuntes.size() == 0 and apunteController.panelResultadosDisponible}">
+								<div class="sinresultados">
+									<div>
+										<p:outputLabel
+											value="No se han encontrado resultados con los siguientes filtros" />
+										<div class="clear margin-top-10"></div>
+										<p:outputLabel value="Filtro Naturaleza: "
+											rendered="#{apunteController.filtroNaturaleza != null}" />
+										<p:outputLabel styleClass="bold"
+											value="#{apunteController.filtroNaturaleza} #{apunteController.obtenerDescNaturaleza()}"
+											rendered="#{apunteController.filtroNaturaleza != null}" />
+									</div>
+									<div class="clear"></div>
+								</div>
+							</h:panelGroup>
+
+							<div class="clear"></div>
+
+							<p:dataTable id="tblApuntes" widgetVar="tblApuntes" var="apunte"
+								value="#{apunteController.apuntes}" rowKey="#{apunte.numSec}"
+								rows="#{apunteController.pagina}" selectionMode="single"
+								selection="#{apunteController.apunteSeleccionado}"
+								paginator="false"
+								rendered="#{apunteController.apuntes.size() > 0}">
+								<p:ajax event="rowSelect"
+									listener="#{apunteController.onRowSelect}" />
+								<p:column headerText="Fecha contable">
+									<h:outputText value="#{apunte.fechaContable}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha valor">
+									<h:outputText value="#{apunte.fechaValor}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Concepto">
+									<h:outputText value="#{apunte.concepto}" />
+								</p:column>
+								<p:column headerText="Número">
+									<h:outputText value="#{apunte.numSec}" />
+								</p:column>
+								<p:column headerText="Signo">
+									<h:outputText value="#{apunte.signo}" />
+								</p:column>
+								<p:column headerText="Importe">
+									<h:outputText styleClass="float-right"
+										value="#{apunte.importe}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Saldo arrastre">
+									<h:outputText styleClass="float-right" value="#{apunte.saldo}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+
+							<div class="centrar-objeto">
+								<p:commandButton id="btnMasDatos" widgetVar="btnMasDatos"
+									styleClass="margin-top-10 btn-mostrar"
+									value="Ver más resultados" icon="ui-icon-refresh"
+									actionListener="#{apunteController.verMasDatosPorNaturaleza()}"
+									update=":frmBusquedaApuntes2"
+									rendered="#{(apunteController.apuntes.size() > 0) and (apunteController.pagina lt apunteController.apuntes.size() ? true : apunteController.masDatos)}" />
+							</div>
+
+							<div class="clear"></div>
+
+						</div>
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,439 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+
+			<!-- Simplemente se pone para que cargue la libreria de primefaces EXT -->
+			<pe:blockUI widgetVar="blockUIWidget1">
+			</pe:blockUI>
+			<!-- Importamos el enum de estados para los listados -->
+			<pe:importConstants
+				className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+				var="EstadoListadosEnum" />
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="bienesForm" styleClass="contenedor-form">
+						<!--titulo dela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--boton atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								action="#{bienesController.volver()}" />
+							<div>
+							<h2 class="gris-b">Ampliar bienes de </h2>
+							<h2 class="azul-b">#{bienesController.cliente.nombreCompleto}</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="*Datos Obligatorios"></p:outputLabel>
+							<div class="margin-top-10"></div>
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							
+								<div class="grid_12 alpha">
+									<h:outputLabel value="Tipo de bien:" />
+									<div class="clear-3"></div>
+									<p:selectOneMenu id="claseBien" panelStyleClass="combo-estandar"
+										value="#{bienesController.clase}">
+										<p:ajax event="change" update="tipoBien"
+											listener="#{bienesController.determinaTiposBien()}" process="claseBien tipoBien" partialSubmit="true"/>
+										<f:selectItem itemLabel="Muebles/Inmuebles/otros"
+											itemValue="1" />
+										<f:selectItem itemLabel="Ingresos/Gastos" itemValue="2" />
+									</p:selectOneMenu>
+								</div>
+								
+								<div class="grid_14">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:selectOneMenu id="tipoBien" panelStyleClass="combo-estandar"
+										value="#{bienesController.tipo}">
+										<f:selectItems
+											value="#{bienesController.tipoBienesParaMostrar}" var="item"
+											itemValue="#{item.claveFila}"
+											itemLabel="#{item.descripcionL}" />
+											<p:ajax event="change" process="tipoBien" partialSubmit="true"></p:ajax>
+									</p:selectOneMenu>
+								</div>
+								
+								<div class="grid_4">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:commandButton id="anadirBien" styleClass="btn-icono btn-anadir" icon="ui-icon-circle-plus" 
+											action="#{bienesController.nuevoBien()}" title="Añadir bien" immediate="true"
+											update="bienesLista">
+									</p:commandButton>
+								</div>
+								
+							<div class="clear-row"></div>
+
+							<!-- BIENES  -->
+
+							<h:panelGroup id="bienesLista" layout="block">
+								<c:forEach var="bien" items="#{bienesController.bienesLista}"
+									varStatus="myVarStatus">
+
+									<p:panel header="" id="bienesLista#{myVarStatus.index}"
+										styleClass="#{bien.estado.styleClass}">
+										<f:facet name="actions">
+											<p:commandButton
+												id="eliminaBienConsultado#{myVarStatus.index}"
+												label="Eliminar" update="@form" 
+												alt="Eliminar bien"
+												styleClass="btn-icono btn-panel btn-eliminar"
+												icon="ui-icon-trash"
+												actionListener="#{bienesController.eliminaBien(bien)}"
+												rendered="#{not (bien.estado == EstadoListadosEnum.ELIMINADO)}"
+												title="Eliminar bien" immediate="true">
+												</p:commandButton>
+											<p:commandButton id="editaBienConsultado#{myVarStatus.index}"
+												label="Editar" update="@form" immediate="true"
+												styleClass="btn-icono btn-panel" icon="fa fa-pencil"
+												alt="Editar Bien"
+												actionListener="#{bienesController.editaBien(bien)}"
+												rendered="#{bien.estado == EstadoListadosEnum.CONSULTADO}"
+												title="Editar Bien" />
+											<p:commandButton
+												id="restauraBienConsultado#{myVarStatus.index}"
+												label="Restaurar" update="@form" immediate="true"
+												alt="Recuperar Bien"
+												actionListener="#{bienesController.restauraBien(bien)}"
+												styleClass="btn-icono btn-panel"
+												icon="fa fa-rotate-left"
+												rendered="#{bien.estado == EstadoListadosEnum.ELIMINADO or bien.estado == EstadoListadosEnum.MODIFICADO}"
+												title="Recuperar" />
+										</f:facet>
+										<p:focus context="bien#{myVarStatus.index}" />
+										<h:panelGroup id="bien#{myVarStatus.index}" layout="block" styleClass="grid_48"
+											rendered="#{bien.estado == EstadoListadosEnum.CONSULTADO or bien.estado == EstadoListadosEnum.ELIMINADO}">
+											<div class="grid_14">
+												<p:outputLabel for="tipoBienConsultado#{myVarStatus.index}"
+													value="Tipo:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													id="tipoBienConsultado#{myVarStatus.index}"
+													value="#{bien.tipoDesc}" />
+											</div>
+											<div class="grid_14">
+												<p:outputLabel
+													for="descripcionBienConsultadoLabel#{myVarStatus.index}"
+													value="Descripción:" />
+												<div class="clear-3"></div>
+												<p:outputLabel  styleClass="label-valor texto-sininput"
+													id="descripcionBienConsultadoLabel#{myVarStatus.index}"
+													value="#{bien.datosGenerales.descripcion}"/>	
+												</div>
+											<h:panelGroup layout="block" styleClass="grid_10"
+												rendered="#{bien.clase eq 1}">
+													<p:outputLabel
+														for="valorBienConsultado#{myVarStatus.index}"
+														value="Valor apreciado" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														id="valorBienConsultado#{myVarStatus.index}"
+														value="#{bien.datosGenerales.valor}">
+														<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+															currencySymbol="MXN" />
+													</p:outputLabel>
+											</h:panelGroup>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="grid_48"
+											rendered="#{bien.estado == EstadoListadosEnum.MODIFICADO or bien.estado == EstadoListadosEnum.NUEVO}">
+											<div class="grid_14">
+												<p:outputLabel
+													for="tipoBienConsultadoEditar#{myVarStatus.index}"
+													value="Tipo:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													id="tipoBienConsultadoEditar#{myVarStatus.index}"
+													value="#{bien.tipoDesc}" />
+											</div>
+											<div class="grid_16">
+												<p:outputLabel
+													for="descripcionBienConsultadoEditar#{myVarStatus.index}"
+													value="Descripción" />
+												
+												<p:inputText
+													id="descripcionBienConsultadoEditar#{myVarStatus.index}"
+													required="#{param['disableValidation']==null}" value="#{bien.datosGenerales.descripcion}"
+													label="Descripcion" maxlength="30"
+													onblur="this.value=this.value.toUpperCase()" draggable="false">
+													<pe:keyFilter preventPaste="true" />
+													<p:ajax event="blur"
+														process="descripcionBienConsultadoEditar#{myVarStatus.index}"
+														partialSubmit="true"></p:ajax>
+												</p:inputText>
+											</div>
+
+											<h:panelGroup layout="block" styleClass="grid_10"
+												rendered="#{bien.clase eq 1}">
+													<p:outputLabel
+														for="valorBienConsultadoEditar#{myVarStatus.index}"
+														value="Valor apreciado" />
+													<pe:inputNumber required="#{param['disableValidation']==null}"
+														id="valorBienConsultadoEditar#{myVarStatus.index}"
+														label="Valor" maxValue="9999999999999.99" decimalPlaces="2"
+														decimalSeparator="." thousandSeparator="," styleClass="pe-inputNumber"
+														symbolPosition="suffix"
+														value="#{bien.datosGenerales.valor}" placeholder="Importe">
+														<p:ajax event="blur"
+															process="valorBienConsultadoEditar#{myVarStatus.index}"
+															partialSubmit="true"></p:ajax>
+													</pe:inputNumber>
+													<span class="pe-inputNumber-suffix">MXN</span>
+											</h:panelGroup>
+											
+											<h:panelGroup layout="block" styleClass="grid_8"
+												rendered="#{bien.clase eq 1 and bien.muestraDatosGenerales}">
+												<p:message id="fechaVal#{myVarStatus.index}"
+													for="fecha#{myVarStatus.index}" display="icon"></p:message>
+												<p:outputLabel for="fecha#{myVarStatus.index}" value="Fecha"/>
+												<div class="clear-3"></div>
+												<p:calendar id="fecha#{myVarStatus.index}" value="#{bien.datosGenerales.fecha}" showOn="button"
+													pattern="dd/MM/yyyy" mask="true" locale="es" required="#{param['disableValidation']==null}">
+													<f:attribute name="endDate"
+														value="#{bienesController.currentDate}" />
+														<f:attribute name="endDate"
+														value="#{bienesController.currentDate}" />
+													<f:validator validatorId="dateRangeValidator" />
+													<p:ajax event="change" process="fecha#{myVarStatus.index}"
+														update="fecha#{myVarStatus.index},fechaVal#{myVarStatus.index}"
+														partialSubmit="true" />
+													<p:ajax event="dateSelect"
+														process="fecha#{myVarStatus.index}"
+														update="fecha#{myVarStatus.index},fechaVal#{myVarStatus.index}"
+														partialSubmit="true" />
+												</p:calendar>
+											</h:panelGroup>
+											
+											<h:panelGroup layout="block" styleClass="grid_8"
+												rendered="#{bien.clase eq 2 and bien.muestraDatosGenerales}">
+												<p:message id="fechaValInicio#{myVarStatus.index}"
+													for="fechaInicio#{myVarStatus.index}" display="icon"></p:message>
+												<p:outputLabel id="fechaInicioLabel#{myVarStatus.index}"
+													for="fechaInicio#{myVarStatus.index}" value="Fecha Inicio" />
+												<div class="clear-3"></div>
+												<p:calendar id="fechaInicio#{myVarStatus.index}" requiredMessage=""
+													pattern="dd/MM/yyyy" showOn="button"
+													value="#{bien.datosGenerales.fechaInicio}" mask="true" locale="es"
+													maxdate="#{bienesController.currentDate}" required="#{param['disableValidation']==null}">
+													<f:attribute name="endDate"
+														value="#{bienesController.currentDate}" />
+													<f:validator validatorId="dateRangeValidator" />
+													<p:ajax event="change" process="fechaInicio#{myVarStatus.index}"
+														update="fechaInicio#{myVarStatus.index},fechaValInicio#{myVarStatus.index},fechaInicioLabel#{myVarStatus.index}"
+														partialSubmit="true" />
+													<p:ajax event="dateSelect"
+														process="fechaInicio#{myVarStatus.index}"
+														update="fechaInicio#{myVarStatus.index},fechaValInicio#{myVarStatus.index},fechaInicioLabel#{myVarStatus.index}"
+														partialSubmit="true" />
+												</p:calendar>
+											</h:panelGroup>
+										</h:panelGroup>
+										<div class="clear"></div>
+
+										<!-- Desplegable para mas datos -->
+
+										<p:panel styleClass="panel-desplegable"
+											id="masDatosBienConsultado#{myVarStatus.index}"
+											collapsed="true" toggleable="true" header=""
+											toggleSpeed="500" widgetVar="panel#{myVarStatus.index}"
+											rendered="#{bien.estado == EstadoListadosEnum.MODIFICADO or bien.estado == EstadoListadosEnum.NUEVO}">
+
+											<h:panelGroup rendered="#{bien.muestraDatosGenerales}">
+												<ui:include src="datosGeneralesBien.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup
+												id="datosTerrenoRenderPanel#{myVarStatus.index}"
+												rendered="#{bien.muestraDatosTerreno}">
+												<ui:include src="datosTerrenoBien.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup
+												id="direccionRegistralRenderPanel#{myVarStatus.index}"
+												rendered="#{bien.muestraDireccionRegistral}">
+												<ui:include src="direccionRegistralBien.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup
+												id="datoValuacionRenderPanel#{myVarStatus.index}"
+												rendered="#{bien.muestraDatosValuacion}">
+												<ui:include src="datosValuacionBien.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup id="datosSeguroRenderPanel#{myVarStatus.index}"
+												rendered="#{bien.muestraDatosSeguro}">
+												<ui:include src="datosSeguroBien.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup id="datosDeudaRenderPanel#{myVarStatus.index}"
+												rendered="#{bien.muestraDatosDeuda}">
+												<ui:include src="datosDeudaBien.xhtml" />
+											</h:panelGroup>
+										</p:panel>
+
+
+									</p:panel>
+
+								</c:forEach>
+							</h:panelGroup>
+							
+						</div>
+						
+						<div class="margin-top-10"></div>
+							<p:commandButton id="volverInicio" styleClass="btn_secundario"
+								value="Cancelar" action="#{bienesController.volver()}" immediate="true" />
+							<p:commandButton id="guardar"
+								styleClass="btn_primario float-right" update="@form"
+								value="Guardar" action="#{bienesController.guardarBienes()}">
+							</p:commandButton>
+								
+					</h:form>
+				</div>
+				<p:dialog id="dlgConfirmacionModificacion" appendTo="@(body)" header="¡Atención!" closable="false"
+						showEffect="fade" hideEffect="fade"
+						widgetVar="dlgConfirmacionModificacion" resizable="false" dynamic="true"
+						modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Está a punto de eliminar #{bienesController.bienesEliminados} bienes." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar"
+							onclick="PF('dlgConfirmacionModificacion').hide()" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true"
+							action="#{bienesController.confirmarGuardar()}"
+							widgetVar="btnGuardar" update=":bienesForm" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false"
+							showEffect="fade" hideEffect="fade"
+						widgetVar="dlgVolver" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" onclick="PF('dlgVolver').hide()" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true"
+							action="#{bienesController.confirmarVolver()}"
+							widgetVar="btnGuardar" update=":bienesForm" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Error!" closable="false"
+							showEffect="fade" hideEffect="fade"
+						widgetVar="dlgError" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Algunas de las transacciones fallaron y es posible que haya perdido información." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="Por favor revise que todos los cambios se hayan realizado correctamente." />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha margin-left-10"
+							value="Aceptar" onclick="PF('dlgError').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Éxito!" closable="false"
+							showEffect="fade" hideEffect="fade"
+						widgetVar="dlgAlta" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los bienes se dieron de alta correctamente." />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgAlta').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Ëxito!" closable="false"
+							showEffect="fade" hideEffect="fade"
+						widgetVar="dlgEliminar" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los bienes se eliminaron correctamente." />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha margin-left-10"
+							value="Aceptar" onclick="PF('dlgEliminar').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Éxito!" closable="false"
+							showEffect="fade" hideEffect="fade"
+						widgetVar="dlgModificacion" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los bienes se modificaron correctamente." />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgModificacion').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false"
+							showEffect="fade" hideEffect="fade"
+						widgetVar="dlgNoCambios" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No se han realizado cambios" />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgNoCambios').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false"
+							showEffect="fade" hideEffect="fade"
+						widgetVar="dlgNoMas" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! No puede añadir/modificar más de #{bienesController.getManejoMaxBienes()} bienes al mismo tiempo." />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgNoMas').hide()" />
+					</p:dialog>
+				
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

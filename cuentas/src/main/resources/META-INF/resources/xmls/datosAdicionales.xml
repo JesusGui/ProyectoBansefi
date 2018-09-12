@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaYFOTRSIDEXTACE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultadatosadicionales.ResponseBansefi.OTRCONSUAMPLIARACTRN.TRCONSUAMPLIARACEVTZ.YFOTRSIDEXTACE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-b>
+		<field>
+			<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>codlinea</a>
+			<b>codigoLinea</b>
+		</field>
+		<field>
+			<a>idgrppd</a>
+			<b>idGrpPd</b>
+		</field>
+		<field>
+			<a>codotridextac</a>
+			<b>codigoOtroIdExtAc</b>
+		</field>
+		<field>
+			<a>indoblig</a>
+			<b>obligatorio</b>
+		</field>
+		<field>
+			<a>indestrctra</a>
+			<b>indicadorEstructura</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="consultaYFINFADICACE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultadatosadicionales.ResponseBansefi.OTRCONSUAMPLIARACTRN.TRCONSUAMPLIARACEVTZ.YFINFADICACE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-b>
+		<field>
+			<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>codlinea</a>
+			<b>codigoLinea</b>
+		</field>
+		<field>
+			<a>idgrppd</a>
+			<b>idGrpPd</b>
+		</field>
+		<field>
+			<a>codinfadicac</a>
+			<b>codInfAdicAc</b>
+		</field>
+		<field>
+			<a>indoblig</a>
+			<b>obligatorio</b>
+		</field>
+		<field>
+			<a>indestrctra</a>
+			<b>indicadorEstructura</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="consultaYFRLACUOE" wildcard="false" map-null="false"
+		trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultadatosadicionales.ResponseBansefi.OTRCONSUAMPLIARACTRN.TRCONSUAMPLIARACEVTZ.YFRLACUOE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-b>
+		<field>
+			<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>codlinea</a>
+			<b>codigoLinea</b>
+		</field>
+		<field>
+			<a>idgrppd</a>
+			<b>idGrpPd</b>
+		</field>
+		<field>
+			<a>codRlaCuo</a>
+			<b>codrlacuo</b>
+		</field>
+		<field>
+			<a>indoblig</a>
+			<b>obligatorio</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="consultaYFINFADIPERSACE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultadatosadicionales.ResponseBansefi.OTRCONSUAMPLIARACTRN.TRCONSUAMPLIARACEVTZ.YFINFADIPERSACE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-b>
+		<field>
+			<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>codlinea</a>
+			<b>codigoLinea</b>
+		</field>
+		<field>
+			<a>idgrppd</a>
+			<b>idGrpPd</b>
+		</field>
+		<field>
+			<a>codOtrsPerSac</a>
+			<b>codotrspersac</b>
+		</field>
+		<field>
+			<a>codInfAdiOtPeAc</a>
+			<b>codinfadiotpeac</b>
+		</field>
+		<field>
+			<a>indoblig</a>
+			<b>obligatorio</b>
+		</field>
+		<field>
+			<a>indestrctra</a>
+			<b>indicadorEstructura</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="consultaYFOTRSPERSACE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultadatosadicionales.ResponseBansefi.OTRCONSUAMPLIARACTRN.TRCONSUAMPLIARACEVTZ.YFOTRSPERSACE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-b>
+		<field>
+			<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>codlinea</a>
+			<b>codigoLinea</b>
+		</field>
+		<field>
+			<a>idgrppd</a>
+			<b>idGrpPd</b>
+		</field>
+		<field>
+			<a>codotrspersac</a>
+			<b>codOtrsPerSac</b>
+		</field>
+		<field>
+			<a>indoblig</a>
+			<b>obligatorio</b>
+		</field>
+		<field>
+			<a>indestrctra</a>
+			<b>indicadorEstructura</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="modificarACINFADICE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.modificaciondatosadicionales.Ejecutar.ITRMODIFAMPLIARACTRN.TRMODIFAMPLIARACEVTY.ACINFADICE
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codInfAdicAc</a>
+			<b>codinfadicac</b>
+		</field>
+		<field>
+			<a>valor</a>
+			<b>valoracinfadic</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="modificarACINFADIOTRPERSE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.modificaciondatosadicionales.Ejecutar.ITRMODIFAMPLIARACTRN.TRMODIFAMPLIARACEVTY.ACINFADIOTRPERSE
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codOtrsPerSac</a>
+			<b>codotrspersac</b>
+		</field>
+		<field>
+			<a>valor</a>
+			<b>valacinfadiper</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="modificarACOTRSIDFREXTE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.modificaciondatosadicionales.Ejecutar.ITRMODIFAMPLIARACTRN.TRMODIFAMPLIARACEVTY.ACOTRSIDFREXTE
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codigoOtroIdExtAc</a>
+			<b>codotridextac</b>
+		</field>
+		<field>
+			<a>valor</a>
+			<b>valoracidext</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="modificarACOTRSPERSE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.modificaciondatosadicionales.Ejecutar.ITRMODIFAMPLIARACTRN.TRMODIFAMPLIARACEVTY.ACOTRSPERSE
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codOtrsPerSac</a>
+			<b>codotrspersac</b>
+		</field>
+		<field>
+			<a>valor</a>
+			<b>nombpers</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="modificarACACRLCENTROE" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.beans.DatoAdicionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.webservices.modificaciondatosadicionales.Ejecutar.ITRMODIFAMPLIARACTRN.TRMODIFAMPLIARACEVTY.ACACRLCENTROE
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codRlaCuo</a>
+			<b>codrlacuo</b>
+		</field>
+		<field>
+			<a>valor</a>
+			<b>codcentuo</b>
+		</field>
+	</mapping>
+</mappings>

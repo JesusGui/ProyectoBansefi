@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+<ui:define name="contenido">
+
+    <h:body>
+        <div class="contenedor">
+            <div class="contenedor-form col-55">
+
+                <div class="titulo centrar-objeto btn-inline-set">
+                    <p:commandButton icon="ui-icon-home" action="#{altaApunteController.cancelar()}" immediate="true" ></p:commandButton>   
+                    <h1>Apuntes a cuenta mutua/ajena</h1>
+                </div>
+                <div class="clear"></div>
+
+                <h:form>
+
+                    <div class="contenedor-campos">
+                    
+                    <p:commandButton id="imprimirApunte" styleClass="btn_secundario btn-icono-texto float-right" value="Imprimir" icon="ui-icon-print" action="#{altaApunteController.generaPlantillaDeposito()}" immediate="true" ></p:commandButton>
+					
+                        <div class="clear"></div>
+                        
+                        <p:outputLabel value="Ha realizado un " />
+                        <div class="clear-3"></div>
+                        
+                        <p:outputLabel styleClass="detalle" value="#{altaApunteController.mostrarTipo()}" />
+                        <div class="clear-3"></div>
+                        
+                        <p:outputLabel value="de cuenta " />
+                        <div class="clear-3"></div>
+                        
+                        <p:outputLabel styleClass="detalle" value="#{altaApunteController.apuntesBean.numCuenta}" />
+                        <div class="clear-3"></div>
+
+                        <p:outputLabel value="con titular:" />
+                        <div class="clear-3"></div>
+                                           
+                        <p:outputLabel styleClass="detalle" value="#{altaApunteController.apuntesBean.titular}" />
+                        <div class="clear-3"></div>
+
+                       	<p:outputLabel value="por valor de:" />
+                       	<div class="clear-3"></div>
+                       	
+                        <h:outputText styleClass="detalle" value="#{altaApunteController.apuntesBean.importe}">
+                        	<f:convertNumber minFractionDigits="2" type="currency" currencySymbol="" locale="es_MX" />
+                        </h:outputText>
+                        <p:outputLabel styleClass="detalle" value="MXN" />
+                        <div class="clear-3"></div>
+
+                        <div class="margin-bottom-20"></div>
+                        
+                        <p:outputLabel value="Código de operación: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.obtenerCodigoOperacion()}" />
+                        <div class="clear-3"></div>
+                        
+                        <p:outputLabel value="Código de transacción: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.obtenerCodigoTransaccion()}" />
+                        <div class="clear-3"></div>
+                        
+                        <p:outputLabel value="ID transacción: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.numTransaccion}" />
+                        <div class="clear-3"></div>
+                        
+                        <p:outputLabel value="Concepto: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.concepto}" />
+                        <div class="clear-3"></div>
+                        
+                        <p:outputLabel value="Fecha valor: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.fechaValor}">
+                        	 <f:convertDateTime  pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                        <div class="clear-3"></div>
+                        <p:outputLabel value=" Fecha operación: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.fechaOperacion}">
+                        	 <f:convertDateTime  pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                        <div class="clear-3"></div>
+                        <p:outputLabel value="  Hora operación: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.horaOperacion}" />
+                        <div class="clear-3"></div>
+                        <p:outputLabel value=" Terminal: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.terminal}" />
+                        <div class="clear-3"></div>
+                        <p:outputLabel value=" Entidad: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.puesto}" />
+                        <div class="clear-3"></div>
+                        <p:outputLabel value=" Centro: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{altaApunteController.apuntesBean.centro}" />
+
+                    </div>
+                    <div class="clear"></div>
+                    <p:commandButton styleClass="btn_secundario margin-top-10" value="Inicio" 
+                        	action="#{altaApunteController.cancelar()}" immediate="true"/>
+                    <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Realizar nueva operación" 
+                        	action="#{altaApunteController.inicio()}" immediate="true"/>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</ui:define>
+</ui:composition>

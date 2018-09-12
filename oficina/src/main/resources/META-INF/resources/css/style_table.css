@@ -1,0 +1,136 @@
+
+.table-advance .btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-shadow: 0 1px 0 #fff;
+  border-radius: .25em;
+}
+
+.table-advance .btn.btn-micro {
+  font-size: .8125em;
+  padding: .3em .7em .25em .7em;
+}
+
+.table-bar .table-advance a.table-nav-btn {
+  display: inline-block;
+  overflow: hidden;
+  width: 1.8em;
+  height: 1.8em;
+  background-position: 50% 50%;
+  margin-left: .5em;
+  position: relative;
+}
+
+.table-bar .table-advance a.table-nav-btn.left:before,
+.table-bar .table-advance a.table-nav-btn.right:before,
+.table-bar .table-advance a.table-nav-btn.down:before,
+.table-bar .table-advance a.table-nav-btn.up:before {
+  content: "\0020";
+  overflow: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.table-bar .table-advance a.table-nav-btn.down:before {
+  left: .5em;
+  top: .65em;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #808080;
+}
+
+.table-bar .table-advance a.table-nav-btn.up:before {
+  left: .5em;
+  top: .65em;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #808080;
+}
+
+.table-bar .table-advance a.table-nav-btn.left:before,
+.table-bar .table-advance a.table-nav-btn.right:before {
+  top: .45em;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.table-bar .table-advance a.table-nav-btn.left:before {
+  left: .6em;
+  border-right: 5px solid #808080;
+}
+
+.table-bar .table-advance a.table-nav-btn.right:before {
+  left: .7em;
+  border-left: 5px solid #808080;
+}
+
+.table-advance a.table-nav-btn.disabled {
+  opacity: .25;
+  filter: alpha(opacity=25);
+  cursor: default;
+  pointer-events: none;
+}
+
+
+
+
+@media only all {
+  /* Unchecked manually: Always hide */
+
+  .table-swipe th.table-cell-hidden,
+  .table-swipe td.table-cell-hidden {
+    display: none;
+  }
+}
+
+.table-advance {
+  float: right;
+}
+
+.table-advance.minimap {
+  margin-right: .4em;
+}
+
+.table-advance-dots {
+  float: left;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.table-advance-dots li {
+  display: table-cell;
+  margin: 0;
+  padding: .4em .2em;
+}
+
+.table-advance-dots li i {
+  width: .25em;
+  height: .25em;
+  background: #555;
+  border-radius: 100%;
+  display: inline-block;
+}
+
+.table-advance-dots-hide {
+  opacity: .25;
+  filter: alpha(opacity=25);
+  cursor: default;
+  pointer-events: none;
+}
+
+.ui-datatable .ui-datatable-header {
+	overflow: hidden;
+}
+
+.prueba {
+	background-color: green !important;
+}
+
+.prueba-dos {
+	background-color: red;
+}

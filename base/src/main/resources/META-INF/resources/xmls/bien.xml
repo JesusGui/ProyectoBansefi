@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<!-- Mapeo de clases -->
+	<mapping map-id="altaBienInmueble" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.altabieninmueble.Ejecutar.ITRBIENALTATRNI.TRBIENALTAEVTY
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaAntiguedad</a>
+			<b>datosbienv.fechaantigbi</b>
+		</field>
+		<field>
+			<a>datosValuacion.razonAlta</a>
+			<b>datosbienv.codrznaltabien</b>
+		</field>
+		<field>
+			<a>datosValuacion.valorDeclarado</a>
+			<b>datosbienv.valorbisubjet</b>
+		</field>
+		<field>
+			<a>datosValuacion.valorValuado</a>
+			<b>DATOSBIENV.valorbitasac</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosValuacion.fechaDeclaracion</a>
+			<b>datosbienv.fechavalsubjet</b>
+		</field>
+		<field>
+			<a>datosGenerales.valor</a>
+			<b>datosbienv.valorbiaprec</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fecha</a>
+			<b>datosbienv.fechavalaprec</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosValuacion.fechaValuacion</a>
+			<b>datosbienv.fechavaltasac</b>
+		</field>
+		<field>
+			<a>datosValuacion.origenAdquisicion</a>
+			<b>datosbienv.orgnbirlpe</b>
+		</field>
+		<field>
+			<a>datosValuacion.usoBien</a>
+			<b>datosbienv.usobirlpe</b>
+		</field>
+		<field>
+			<a>datosValuacion.domiciliacion</a>
+			<b>datosbienv.pctbirlpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosValuacion.fechaAdquisicion</a>
+			<b>datosbienv.fecadquibirlpe</b>
+		</field>
+		<field>
+			<a>datosValuacion.valor</a>
+			<b>datosbienv.valadqbirlpe</b>
+		</field>
+		<field>
+			<a>direccionRegistral.tipoRegistro</a>
+			<b>datosbienv.codrgstro</b>
+		</field>
+		<field>
+			<a>direccionRegistral.numeroRegistro</a>
+			<b>datosbienv.numrgstro</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>datosGenerales.fijo</a>
+			<b>datosbienv.indfijoig</b>
+		</field>
+		<field>
+			<a>tipoCodigo</a>
+			<b>DATOSBIENV.codbien</b>
+		</field>
+		<field>
+			<a>datosGenerales.descripcion</a>
+			<b>DATOSBIENV.txtotrosbi</b>
+		</field>
+		<field>
+			<a>datosGenerales.valor</a>
+			<b>DATOSBIENV.valorbiaprec</b>
+		</field>
+		<field>
+			<a>idInternoPersona</a>
+			<b>DATOSBIENV.idinternope</b>
+		</field>
+	</mapping>
+	
+	<!-- Mapeo de clases -->
+	<mapping map-id="altaBienIngresoGasto" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.altabieningresogasto.Ejecutar.ITRALTABIENINGGASTRN.TRALTABIENINGGASEVT
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaInicio</a>
+			<b>fechainiccrt</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaFin</a>
+			<b>fechafincrt</b>
+		</field>
+		<field>
+			<a>datosGenerales.ingresoGastoMensual</a>
+			<b>impmensualig</b>
+		</field>
+		<field>
+			<a>datosGenerales.ingresoGastoAnual</a>
+			<b>impanualig</b>
+		</field>
+		<field>
+			<a>datosGenerales.descripcion</a>
+			<b>txtig</b>
+		</field>
+		<field>
+			<a>tipoCodigo</a>
+			<b>codbien</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>datosGenerales.fijo</a>
+			<b>indfijoig</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>datosGenerales.justificado</a>
+			<b>stdchar01</b>
+		</field>
+	</mapping>
+	
+	<!-- Mapeo de clases -->
+	<mapping map-id="bienInmuebleLista" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultabienes.ResponseBansefi.OTRPERLBILSTTRNO.TRPERLBILSTEVTZ.BIOTRBIENLSV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-b>
+		<field >
+			<a>codbien</a>
+			<b>tipoCodigo</b>
+		</field>
+		<field >
+			<a>txtotrosbi</a>
+			<b>datosGenerales.descripcion</b>
+		</field>
+		<field >
+			<a>idinternobi</a>
+			<b>idInterno</b>
+		</field>
+		<field >
+			<a>idinternope</a>
+			<b>idInternoPersona</b>
+		</field>
+		<field >
+			<a>valorbiaprec</a>
+			<b>datosGenerales.valor</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecadquibirlpe</a>
+			<b>datosValuacion.fechaAdquisicion</b>
+		</field>
+		<field>
+			<a>orgnbirlpe</a>
+			<b>datosValuacion.origenAdquisicion</b>
+		</field>
+		<field>
+			<a>usobirlpe</a>
+			<b>datosValuacion.usoBien</b>
+		</field>
+		
+		<field>
+			<a>valadqbirlpe</a>
+			<b>datosValuacion.valor</b>
+		</field>
+		<field>
+			<a>valorbisubjet</a>
+			<b>datosValuacion.valorDeclarado</b>
+		</field>
+		<field>
+			<a>valorbitasac</a>
+			<b>datosValuacion.valorValuado</b>
+		</field>
+		<field>
+			<a>pctbirlpe</a>
+			<b>datosValuacion.domiciliacion</b>
+		</field>
+	</mapping>
+	<!-- Mapeo de clases -->
+	<mapping map-id="bienIngresoLista" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultabienes.ResponseBansefi.OTRPERLBILSTTRNO.TRPERLBILSTEVTZ.BIINGGASLSV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-b>
+		<field >
+			<a>codbien</a>
+			<b>tipoCodigo</b>
+		</field>
+		<field >
+			<a>txtig</a>
+			<b>datosGenerales.descripcion</b>
+		</field>
+		<field >
+			<a>idinternobi</a>
+			<b>idInterno</b>
+		</field>
+		
+		<field >
+			<a>impmensualig</a>
+			<b>datosGenerales.ingresoGastoMensual</b>
+		</field>
+		<field >
+			<a>impanualig</a>
+			<b>datosGenerales.ingresoGastoAnual</b>
+		</field>
+		
+	</mapping>
+	
+	
+	<mapping map-id="bienDetalle" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultadetallebien.ResponseBansefi.OTRBIENCNSTRNO.TRBIENCNSEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosbienv.fechaantigbi</a>
+			<b>datosGenerales.fechaAntiguedad</b>
+		</field>
+		<field>
+			<a>datosbienv.codrznaltabien</a>
+			<b>datosValuacion.razonAlta</b>
+		</field>
+		<field>
+			<a>datosbienv.txtotrosbi</a>
+			<b>datosGenerales.descripcion</b>
+		</field>
+		<field>
+			<a>datosbienv.valorbisubjet</a>
+			<b>datosValuacion.valorDeclarado</b>
+		</field>
+		<field>
+			<a>DATOSBIENV.valorbitasac</a>
+			<b>datosValuacion.valorValuado</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosbienv.fechavalsubjet</a>
+			<b>datosValuacion.fechaDeclaracion</b>
+		</field>
+		<field>
+			<a>datosbienv.valorbiaprec</a>
+			<b>datosGenerales.valor</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosbienv.fechavalaprec</a>
+			<b>datosGenerales.fecha</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosbienv.fechavaltasac</a>
+			<b>datosValuacion.fechaValuacion</b>
+		</field>
+		<field>
+			<a>datosbienv.orgnbirlpe</a>
+			<b>datosValuacion.origenAdquisicion</b>
+		</field>
+		<field>
+			<a>datosbienv.usobirlpe</a>
+			<b>datosValuacion.usoBien</b>
+		</field>
+		<field>
+			<a>datosbienv.pctbirlpe</a>
+			<b>datosValuacion.domiciliacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosbienv.fecadquibirlpe</a>
+			<b>datosValuacion.fechaAdquisicion</b>
+		</field>
+		<field>
+			<a>datosbienv.valadqbirlpe</a>
+			<b>datosValuacion.valor</b>
+		</field>
+		<field>
+			<a>datosbienv.codrgstro</a>
+			<b>direccionRegistral.tipoRegistro</b>
+		</field>
+		
+		<field>
+			<a>datosbienv.numrgstro</a>
+			<b>direccionRegistral.numeroRegistro</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DireccionRegistralConverter" custom-converter-param="01">
+			<a>drcomprgstrov</a>
+			<b>direccionRegistral.numeroRegistral</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DireccionRegistralConverter" custom-converter-param="02">
+			<a>drcomprgstrov</a>
+			<b>direccionRegistral.tomo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DireccionRegistralConverter" custom-converter-param="03">
+			<a>drcomprgstrov</a>
+			<b>direccionRegistral.libro</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DireccionRegistralConverter" custom-converter-param="04">
+			<a>drcomprgstrov</a>
+			<b>direccionRegistral.folio</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DireccionRegistralConverter" custom-converter-param="05">
+			<a>drcomprgstrov</a>
+			<b>direccionRegistral.numeroInscripcion</b>
+		</field>
+<!-- 		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.DireccionRegistralConverter" custom-converter-param="07"> -->
+<!-- 			<a>drcomprgstrov</a> -->
+<!-- 			<b>direccionRegistral.fechaExpedicion</b> -->
+<!-- 		</field> -->
+		
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>datosbienv.indfijoig</a>
+			<b>datosGenerales.fijo</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping map-id="bienDetalleIngresoGasto" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultadetallebieningresogasto.ResponseBansefi.OTRCONSBIENTRNO.TRCONSBIENEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechainiccrt</a>
+			<b>datosGenerales.fechaInicio</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechafincrt</a>
+			<b>datosGenerales.fechaFin</b>
+		</field>
+		<field>
+			<a>txtig</a>
+			<b>datosGenerales.descripcion</b>
+		</field>
+		<field>
+			<a>impmensualig</a>
+			<b>datosGenerales.ingresoGastoMensual</b>
+		</field>
+		<field>
+			<a>impanualig</a>
+			<b>datosGenerales.ingresoGastoAnual</b>
+		</field>
+		
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>indfijoig</a>
+			<b>datosGenerales.fijo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>stdchar01</a>
+			<b>datosGenerales.justificado</b>
+		</field>
+		
+		
+	</mapping>
+	
+	<mapping map-id="bajaBienInmueble" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.bajabieninmueble.Ejecutar.ITRBIENBAJATRNI.TRBIENBAJAEVTY.PEPERSRLBIENP
+		</class-b>
+		<field>
+			<a>tipoCodigo</a>
+			<b>codbien</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>idinternobi</b>
+		</field>
+		<field>
+			<a>idInternoPersona</a>
+			<b>idinternope</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="bajaBienIngresoGasto" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.bajabieningresogasto.Ejecutar.ITRBAJABIENINGGASTRN.TRBAJABIENINGGASEVT.PEPERSRLBIENP
+		</class-b>
+		<field>
+			<a>tipoCodigo</a>
+			<b>codbien</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>idinternobi</b>
+		</field>
+		<field>
+			<a>idInternoPersona</a>
+			<b>idinternope</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="modificaBienInmueble" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.modificabieninmueble.Ejecutar.ITRBIENMODITRNI.TRBIENMODIEVTY
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaAntiguedad</a>
+			<b>datosbienv.fechaantigbi</b>
+		</field>
+		<field>
+			<a>datosValuacion.razonAlta</a>
+			<b>datosbienv.codrznaltabien</b>
+		</field>
+		<field>
+			<a>datosValuacion.valorDeclarado</a>
+			<b>datosbienv.valorbisubjet</b>
+		</field>
+		<field>
+			<a>datosValuacion.valorValuado</a>
+			<b>DATOSBIENV.valorbitasac</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosValuacion.fechaDeclaracion</a>
+			<b>datosbienv.fechavalsubjet</b>
+		</field>
+		<field>
+			<a>datosGenerales.valor</a>
+			<b>datosbienv.valorbiaprec</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fecha</a>
+			<b>datosbienv.fechavalaprec</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosValuacion.fechaValuacion</a>
+			<b>datosbienv.fechavaltasac</b>
+		</field>
+		<field>
+			<a>datosValuacion.origenAdquisicion</a>
+			<b>datosbienv.orgnbirlpe</b>
+		</field>
+		<field>
+			<a>datosValuacion.usoBien</a>
+			<b>datosbienv.usobirlpe</b>
+		</field>
+		<field>
+			<a>datosValuacion.domiciliacion</a>
+			<b>datosbienv.pctbirlpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosValuacion.fechaAdquisicion</a>
+			<b>datosbienv.fecadquibirlpe</b>
+		</field>
+		<field>
+			<a>datosValuacion.valor</a>
+			<b>datosbienv.valadqbirlpe</b>
+		</field>
+		<field>
+			<a>direccionRegistral.tipoRegistro</a>
+			<b>datosbienv.codrgstro</b>
+		</field>
+		<field>
+			<a>direccionRegistral.numeroRegistro</a>
+			<b>datosbienv.numrgstro</b>
+		</field>
+		
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>datosGenerales.fijo</a>
+			<b>datosbienv.indfijoig</b>
+		</field>
+		<field>
+			<a>tipoCodigo</a>
+			<b>DATOSBIENV.codbien</b>
+		</field>
+		<field>
+			<a>datosGenerales.descripcion</a>
+			<b>DATOSBIENV.txtotrosbi</b>
+		</field>
+		<field>
+			<a>datosGenerales.valor</a>
+			<b>DATOSBIENV.valorbiaprec</b>
+		</field>
+		<field>
+			<a>idInternoPersona</a>
+			<b>DATOSBIENV.idinternope</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>DATOSBIENV.idinternobi</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaAntiguedad</a>
+			<b>DATOSBIENV.fechaantigbi</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaFin</a>
+			<b>DATOSBIENV.fechafincrt</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaInicio</a>
+			<b>DATOSBIENV.fechainiccrt</b>
+		</field>
+		
+	</mapping>
+	
+	<mapping map-id="modificaBienIngresGasto" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.modificabieningresogasto.Ejecutar.ITRMODIBIENINGGASTRN.TRMODIBIENINGGASEVT
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaInicio</a>
+			<b>fechainiccrt</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>datosGenerales.fechaFin</a>
+			<b>fechafincrt</b>
+		</field>
+		<field>
+			<a>datosGenerales.ingresoGastoMensual</a>
+			<b>impmensualig</b>
+		</field>
+		<field>
+			<a>datosGenerales.ingresoGastoAnual</a>
+			<b>impanualig</b>
+		</field>
+		<field>
+			<a>datosGenerales.descripcion</a>
+			<b>txtig</b>
+		</field>
+		<field >
+			<a>tipoCodigo</a>
+			<b>codbien</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>idinternobi</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>datosGenerales.fijo</a>
+			<b>indfijoig</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>datosGenerales.justificado</a>
+			<b>stdchar01</b>
+		</field>
+	</mapping>
+</mappings>

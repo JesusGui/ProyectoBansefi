@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/web-services
+      http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+       http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<context:annotation-config /> <!-- configurar componentes spring basándose en anotaciones -->
+	<context:component-scan base-package="mx.babel" /> <!-- paquete base a escanear -->
+	<sws:annotation-driven /> <!-- configurar componentes spring ws basándose en anotaciones -->
+	
+	<!-- Inicio y cierre de sesión -->
+
+	<sws:static-wsdl id="LOGONNSF" location="/WEB-INF/wsdl/LOGONNSF.wsdl" />
+
+	<sws:static-wsdl id="NSABCMSG" location="/WEB-INF/wsdl/NSABCMSG.wsdl" />
+
+	<sws:static-wsdl id="wsDiasFestivos"
+		location="/WEB-INF/wsdl/TR_CON_LISTA_FIESTAS_TRN.wsdl" />
+
+	<sws:static-wsdl id="wsUltimoArqueo"
+		location="/WEB-INF/wsdl/TR_EXIST_EX_LST_TRN.wsdl" />
+
+	<sws:static-wsdl id="TR_DESCONEXION_IRIS_TRN"
+		location="/WEB-INF/wsdl/TR_DESCONEXION_IRIS_TRN.wsdl" />
+	
+	<!--  -->
+	
+	<!-- Alta de clientes -->
+
+	<sws:static-wsdl id="PE_ALTA_INDV_PERF_TRAN_TRN"
+		location="/WEB-INF/wsdl/PE_ALTA_INDV_PERF_TRAN_TRN.wsdl" />
+		
+	<sws:static-wsdl id="PE_CONS_INDV_PERF_TRAN_TRN"
+		location="/WEB-INF/wsdl/PE_CONS_INDV_PERF_TRAN_TRN.wsdl" />
+		
+	<sws:static-wsdl id="PE_CONS_INDV_USO_CTA_TRN"
+		location="/WEB-INF/wsdl/PE_CONS_INDV_USO_CTA_TRN.wsdl" />
+		
+	<sws:static-wsdl id="PE_CONS_TRAN_ESTIM_TRN"
+		location="/WEB-INF/wsdl/PE_CONS_TRAN_ESTIM_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_AG_LOC_LA_CNS_TRN"
+		location="/WEB-INF/wsdl/TR_AG_LOC_LA_CNS_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_AG_LOCALIDAD_CNS_TRN"
+		location="/WEB-INF/wsdl/TR_AG_LOCALIDAD_CNS_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_PE_ALTA_INDV_TRN"
+		location="/WEB-INF/wsdl/TR_PE_ALTA_INDV_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_PE_CONS_VAL_ID_EXT_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CONS_VAL_ID_EXT_TRN.wsdl" />
+		
+	<!--  -->
+	
+	<!-- Alta de empleados -->
+	
+	<sws:static-wsdl id="TR_PE_CONS_DOMIC_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CONS_DOMIC_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_ALTA_EMPL_TRN.wsdl"
+		location="/WEB-INF/wsdl/TR_ALTA_EMPL_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_MODIF_EMPL_TRN"
+		location="/WEB-INF/wsdl/TR_MODIF_EMPL_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_CONS_EMPL_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_EMPL_TRN.wsdl" />
+	
+	<!--  -->
+	
+	
+	<sws:static-wsdl id="TR_PE_CONS_INDV_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CONS_INDV_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_CONSULTA_RP_PANT_TRN"
+		location="/WEB-INF/wsdl/TR_CONSULTA_RP_PANT_TRN.wsdl" />
+		
+	<sws:static-wsdl id="T3_IMPUTAC_VTNLLA_PASIVO_TRN"
+		location="/WEB-INF/wsdl/T3_IMPUTAC_VTNLLA_PASIVO_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_CONSU_DATOS_AC_TRN"
+		location="/WEB-INF/wsdl/TR_CONSU_DATOS_AC_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_GENERA_IDCTE_TRN"
+		location="/WEB-INF/wsdl/TR_GENERA_IDCTE_TRN.wsdl" />
+	
+	<sws:static-wsdl id="ConsultaCatalogo"
+		location="/WEB-INF/wsdl/ConsultaCatalogo.wsdl" />
+			
+	<sws:static-wsdl id="TR_GR_CONS_TRN"
+		location="/WEB-INF/wsdl/TR_GR_CONS_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_CONS_DOMIC_PPAL_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_DOMIC_PPAL_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_PE_CB_NOMBRE_CNS_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CB_NOMBRE_CNS_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_PE_CB_ID_EXTERNA_CNS_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CB_ID_EXTERNA_CNS_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_PE_CL_CB_DA_CNS_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CL_CB_DA_CNS_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_GR_LST_TRN"
+		location="/WEB-INF/wsdl/TR_GR_LST_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_DC_LS_CNS_TRN"
+		location="/WEB-INF/wsdl/TR_DC_LS_CNS_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_PE_RL_PE_LS_CNS_TRN"
+		location="/WEB-INF/wsdl/TR_PE_RL_PE_LS_CNS_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_CONSU_SELECTIV2_AC_TRN"
+		location="/WEB-INF/wsdl/TR_CONSU_SELECTIV2_AC_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_PE_CONSULTA_POSICION_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CONSULTA_POSICION_TRN.wsdl" />
+	
+	<sws:static-wsdl id="consultitular"
+		location="/WEB-INF/wsdl/CONSTITU.wsdl" />
+		
+	<sws:static-wsdl id="VTCONSAL"
+		location="/WEB-INF/wsdl/VTCONSAL.wsdl" />
+		
+	<sws:static-wsdl id="TR_CONSULTA_RP_PANT_5_TRN"
+		location="/WEB-INF/wsdl/TR_CONSULTA_RP_PANT_5_TRN.wsdl" />
+		
+	<sws:static-wsdl id="realizarretiro"
+		location="/WEB-INF/wsdl/VTRETIRO.wsdl" />
+		
+	<sws:static-wsdl id="DISRECLI"
+		location="/WEB-INF/wsdl/DISRECLI.wsdl" />
+		
+	<sws:static-wsdl id="CONSTITU"
+		location="/WEB-INF/wsdl/CONSTITU.wsdl" />
+
+	<!-- Centros (alta, modificación, detalle, búsqueda y acuerdos instrumentales -->
+	
+	<sws:static-wsdl id="TR_LIST_NOMB_CENT_TRN"
+		location="/WEB-INF/wsdl/TR_LIST_NOMB_CENT_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_CONS_CENTRO_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_CENTRO_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_MODI_CENTRO_TRN"
+		location="/WEB-INF/wsdl/TR_MODI_CENTRO_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_ALTA_CENTRO_TRN"
+		location="/WEB-INF/wsdl/TR_ALTA_CENTRO_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_CON_MIN_CENTRO_2_TRN"
+		location="/WEB-INF/wsdl/TR_CON_MIN_CENTRO_2_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_CONS_AC_INST_OFIC_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_AC_INST_OFIC_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_ALTA_AC_INST_OFIC_TRN"
+		location="/WEB-INF/wsdl/TR_ALTA_AC_INST_OFIC_TRN.wsdl" />
+		
+	
+			
+	<!-- Consulta de movimientos, retenciones, actualizaciones y bloqueos -->
+	
+	<sws:static-wsdl id="VTCONMOV"
+		location="/WEB-INF/wsdl/VTCONMOV.wsdl" />
+		
+	<sws:static-wsdl id="TR_CONSULTA_GLOBAL_RT_TRN"
+		location="/WEB-INF/wsdl/TR_CONSULTA_GLOBAL_RT_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_CONSULTA_GLOBAL_AT_TRN"
+		location="/WEB-INF/wsdl/TR_CONSULTA_GLOBAL_AT_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_PETICION_CONSULTA_BP_TRN"
+		location="/WEB-INF/wsdl/TR_PETICION_CONSULTA_BP_TRN.wsdl" />
+	
+	<!--  -->
+	
+	<!-- Consulta detalle de cuenta -->
+	
+	<sws:static-wsdl id="TR_CONSULTA_ACUERDO_TRN"
+		location="/WEB-INF/wsdl/TR_CONSULTA_ACUERDO_TRN.wsdl" />
+	
+	<!--  -->
+	
+	<!-- ABC de entidad -->
+	<sws:static-wsdl id="TR_ALTA_ENTIDAD_TRN"
+		location="/WEB-INF/wsdl/TR_ALTA_ENTIDAD_TRN.wsdl" />
+	
+	<sws:static-wsdl id="TR_LISTA_ENTIDADES_2_TRN"
+		location="/WEB-INF/wsdl/TR_LISTA_ENTIDADES_2_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_CON_ENTIDAD_TRN"
+		location="/WEB-INF/wsdl/TR_CON_ENTIDAD_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_MODI_ENTIDAD_TRN"
+		location="/WEB-INF/wsdl/TR_MODI_ENTIDAD_TRN.wsdl" />
+	<!--  -->
+	
+	<!-- Realizar deposito -->
+
+	<sws:static-wsdl id="VTDEPOSI" location="/WEB-INF/wsdl/VTDEPOSI.wsdl" />
+
+	<!-- -->
+
+	<!-- Alta de persona moral -->
+	<sws:static-wsdl id="TR_PE_ALTA_ORG_TRN"
+		location="/WEB-INF/wsdl/TR_PE_ALTA_ORG_TRN.wsdl" />
+	<!-- Consulta de persona moral -->
+	<sws:static-wsdl id="TR_PE_CONS_ORG_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CONS_ORG_TRN.wsdl" />
+	<!-- Modificación de persona moral -->
+	<sws:static-wsdl id="TR_PE_MODIF_ORG_TRN"
+		location="/WEB-INF/wsdl/TR_PE_MODIF_ORG_TRN.wsdl" />
+	<!-- Alta de accionistas y funcionarios -->
+	<sws:static-wsdl id="PE_ALTA_ORG_ACC_FUN_TRN"
+		location="/WEB-INF/wsdl/PE_ALTA_ORG_ACC_FUN_TRN.wsdl" />
+	<!-- Consulta de accionistas y funcionarios -->
+	<sws:static-wsdl id="PE_CONS_ORG_ACC_FUN_TRN"
+		location="/WEB-INF/wsdl/PE_CONS_ORG_ACC_FUN_TRN.wsdl" />
+	<!-- Modificacionde accionistas y funcionarios -->
+	<sws:static-wsdl id="PE_MODI_ORG_ACC_FUN_TRN"
+		location="/WEB-INF/wsdl/PE_MODI_ORG_ACC_FUN_TRN.wsdl" />
+	<!-- Baja de accionistas y funcionarios -->
+	<sws:static-wsdl id="PE_BAJA_ORG_ACC_FUN_TRN"
+		location="/WEB-INF/wsdl/PE_BAJA_ORG_ACC_FUN_TRN.wsdl" />
+	<!-- Consulta de RComerciales y RBancarias -->
+	<sws:static-wsdl id="PE_CONS_ORG_SOCIOEC_TRN"
+		location="/WEB-INF/wsdl/PE_CONS_ORG_SOCIOEC_TRN.wsdl" />
+	<!-- Alta de referencias comerciales -->
+	<sws:static-wsdl id="PE_ALTA_ORG_REF_COM_TRN"
+		location="/WEB-INF/wsdl/PE_ALTA_ORG_REF_COM_TRN.wsdl" />
+	<!-- Baja de referencias comerciales -->
+	<sws:static-wsdl id="PE_BAJA_ORG_REF_COM_TRN"
+		location="/WEB-INF/wsdl/PE_BAJA_ORG_REF_COM_TRN.wsdl" />
+	<!-- Modificacion referencias comerciales -->
+	<sws:static-wsdl id="PE_MODI_ORG_REF_COM_TRN"
+		location="/WEB-INF/wsdl/PE_MODI_ORG_REF_COM_TRN.wsdl" />
+	<!-- Alta de referencias bancarias -->
+	<sws:static-wsdl id="PE_ALTA_ORG_REF_BAN_TRN"
+		location="/WEB-INF/wsdl/PE_ALTA_ORG_REF_BAN_TRN.wsdl" />
+	<!-- Baja de referencias bancarias --> 
+	<sws:static-wsdl id="PE_BAJA_ORG_REF_BAN_TRN"
+		location="/WEB-INF/wsdl/PE_BAJA_ORG_REF_BAN_TRN.wsdl" />
+	<!-- Modificacion referencias bancarias -->
+	<sws:static-wsdl id="PE_MODI_ORG_REF_BAN_TRN"
+		location="/WEB-INF/wsdl/PE_MODI_ORG_REF_BAN_TRN.wsdl" />
+	<!-- Alta de perfil transaccional -->	
+	<sws:static-wsdl id="PE_ALTA_ORG_PERF_TRAN_TRN"
+		location="/WEB-INF/wsdl/PE_ALTA_ORG_PERF_TRAN_TRN.wsdl" />
+	<!-- COnsulta de perfil transaccional -->
+	<sws:static-wsdl id="PE_CONS_ORG_PERF_TRAN_TRN"
+		location="/WEB-INF/wsdl/PE_CONS_ORG_PERF_TRAN_TRN.wsdl" />
+	<!-- Modificar pertil transaccional -->
+	<sws:static-wsdl id="PE_MODI_ORG_PERF_TRAN_TRN"
+		location="/WEB-INF/wsdl/PE_MODI_ORG_PERF_TRAN_TRN.wsdl" />
+	
+	<!--  -->
+	
+	<!-- Relaciones cuentas -->
+	
+	<sws:static-wsdl id="TR_ALTA_RP_PANT_TRN"
+		location="/WEB-INF/wsdl/TR_ALTA_RP_PANT_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_ALTA_RX_PANT_TRN"
+		location="/WEB-INF/wsdl/TR_ALTA_RX_PANT_TRN.wsdl" />
+		
+	<sws:static-wsdl id="TR_LISTA_LG_RL_PERS_TRN"
+		location="/WEB-INF/wsdl/TR_LISTA_LG_RL_PERS_TRN.wsdl" />
+
+	<!-- -->
+
+	<!-- Alta relaciones de un cliente -->
+
+	<sws:static-wsdl id="TR_PE_ALTA_RL_PE_DS_TRN"
+		location="/WEB-INF/wsdl/TR_PE_ALTA_RL_PE_DS_TRN.wsdl" />
+
+	<sws:static-wsdl id="TR_GR_ALTA_RL_PE_TRN"
+		location="/WEB-INF/wsdl/TR_GR_ALTA_RL_PE_TRN.wsdl" />
+
+	<!-- -->
+
+	<!-- Baja relaciones de un cliente -->
+
+	<sws:static-wsdl id="TR_PE_BAJA_RL_PE_DS_TRN"
+		location="/WEB-INF/wsdl/TR_PE_BAJA_RL_PE_DS_TRN.wsdl" />
+
+	<sws:static-wsdl id="TR_GR_BAJA_RL_PE_TRN"
+		location="/WEB-INF/wsdl/TR_GR_BAJA_RL_PE_TRN.wsdl" />
+
+	<!-- -->
+
+	<!-- Consulta relaciones de un cliente -->
+
+	<sws:static-wsdl id="TR_PE_CONS_RL_PE_DS_TRN"
+		location="/WEB-INF/wsdl/TR_PE_CONS_RL_PE_DS_TRN.wsdl" />
+
+	<sws:static-wsdl id="TR_GR_CONS_RL_PE_TRN"
+		location="/WEB-INF/wsdl/TR_GR_CONS_RL_PE_TRN.wsdl" />
+
+	<!-- -->
+
+	<!-- Emisión documentos -->
+	
+	<sws:static-wsdl id="TR_DE_TODOS_DOCU_AC_TRN"
+		location="/WEB-INF/wsdl/TR_DE_TODOS_DOCU_AC_TRN.wsdl" />
+	<sws:static-wsdl id="TR_DE_CONS_DATOS_ENT_TRN"
+		location="/WEB-INF/wsdl/TR_DE_CONS_DATOS_ENT_TRN.wsdl" />
+	<sws:static-wsdl id="TR_DE_CONS_ECVS_TRN"
+		location="/WEB-INF/wsdl/TR_DE_CONS_ECVS_TRN.wsdl" />
+	<sws:static-wsdl id="TR_DE_EMITIR_CDO_TRN"
+		location="/WEB-INF/wsdl/TR_DE_EMITIR_CDO_TRN.wsdl" />
+	<sws:static-wsdl id="TR_DE_MODI_DATOS_ENT_TRN"
+		location="/WEB-INF/wsdl/TR_DE_MODI_DATOS_ENT_TRN.wsdl" />
+	<sws:static-wsdl id="TR_DE_FORMALIZAR_TRN"
+		location="/WEB-INF/wsdl/TR_DE_FORMALIZAR_TRN.wsdl" />
+	<sws:static-wsdl id="TR_DE_CANCELAR_TRN"
+		location="/WEB-INF/wsdl/TR_DE_CANCELAR_TRN.wsdl" />
+
+	<!-- Consulta condiciones -->
+	<sws:static-wsdl id="TR_CONS_VAL_KA_CMS_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_VAL_KA_CMS_TRN.wsdl" />
+	<sws:static-wsdl id="TR_CONS_VAL_KA_INT_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_VAL_KA_INT_TRN.wsdl" />
+	<sws:static-wsdl id="TR_CONS_VAL_KA_LST_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_VAL_KA_LST_TRN.wsdl" />
+	<sws:static-wsdl id="TR_CONS_VAL_KA_RNG_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_VAL_KA_RNG_TRN.wsdl" />
+	<sws:static-wsdl id="TR_CONS_VAL_KA_MTZ_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_VAL_KA_MTZ_TRN.wsdl" />
+	<sws:static-wsdl id="TR_CONS_VAL_KA_VLS_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_VAL_KA_VLS_TRN.wsdl" />
+	<sws:static-wsdl id="TR_CONS_VAL_KA_VRG_TRN"
+		location="/WEB-INF/wsdl/TR_CONS_VAL_KA_VRG_TRN.wsdl" />
+
+	<!-- Modificacion condiciones -->
+	<sws:static-wsdl id="TR_MODIFICAR_KA_CMS_TRN"
+		location="/WEB-INF/wsdl/TR_MODIFICAR_KA_CMS_TRN.wsdl" />
+	<sws:static-wsdl id="TR_MODIFICAR_KF_INT_TRN"
+		location="/WEB-INF/wsdl/TR_MODIFICAR_KF_INT_TRN.wsdl" />
+	<sws:static-wsdl id="TR_MODIFICAR_KA_VLS_TRN"
+		location="/WEB-INF/wsdl/TR_MODIFICAR_KA_VLS_TRN.wsdl" />
+	<sws:static-wsdl id="TR_MODIFICAR_KA_VRG_TRN"
+		location="/WEB-INF/wsdl/TR_MODIFICAR_KA_VRG_TRN.wsdl" />
+
+	<!-- Consulta lista de empleados por centro/perfil -->
+	<sws:static-wsdl id="TR_CON_LISTA_EMPL_TRN"
+		location="/WEB-INF/wsdl/TR_CON_LISTA_EMPL_TRN.wsdl" />
+	<!-- -->
+
+	<!-- Modificacion cliente y su perfil transaccional -->
+	<sws:static-wsdl id="TR_PE_MODIF_INDV_TRN"
+		location="/WEB-INF/wsdl/TR_PE_MODIF_INDV_TRN.wsdl" />
+	<sws:static-wsdl id="PE_MODI_INDV_PERF_TRAN_TRN"
+		location="/WEB-INF/wsdl/PE_MODI_INDV_PERF_TRAN_TRN.wsdl" />
+	<!-- -->
+	
+	<!-- Alta de documentos de personas -->
+	
+	<sws:static-wsdl id="TR_PE_ALTA_DC_TRN"
+		location="/WEB-INF/wsdl/TR_PE_ALTA_DC_TRN.wsdl" />
+	<!-- -->	
+	
+	<!-- -->	
+	
+	 <!-- Identificaciones Personas -->
+  
+  <sws:static-wsdl id="AltaOtraIdentificacionPersona"
+    location="/WEB-INF/wsdl/AltaOtraIdentificacionPersona.wsdl" />
+<sws:static-wsdl id="BajaOtraIdentificacionPersona"
+    location="/WEB-INF/wsdl/BajaOtraIdentificacionPersona.wsdl" />
+<sws:static-wsdl id="ConsultaOtrasIdentificacionesPersona"
+    location="/WEB-INF/wsdl/ConsultaOtrasIdentificacionesPersona.wsdl" />
+  <!-- -->  
+	
+   <!-- Nombres Personas -->
+  
+  <sws:static-wsdl id="AltaOtroNombrePersona"
+    location="/WEB-INF/wsdl/AltaOtroNombrePersona.wsdl" />
+<sws:static-wsdl id="BajaOtroNombrePersona"
+    location="/WEB-INF/wsdl/BajaOtroNombrePersona.wsdl" />
+<sws:static-wsdl id="ModificaOtroNombrePersona"
+    location="/WEB-INF/wsdl/ModificaOtroNombrePersona.wsdl" />
+<sws:static-wsdl id="ConsultaOtrosNombresPersona"
+    location="/WEB-INF/wsdl/ConsultaOtrosNombresPersona.wsdl" />
+  <!-- -->  
+     
+  <sws:static-wsdl id="AltaOtroTelFaxPersona"
+    location="/WEB-INF/wsdl/AltaOtroTelFaxPersona.wsdl" />
+<sws:static-wsdl id="BajaOtroTelFaxPersona"
+    location="/WEB-INF/wsdl/BajaOtroTelFaxPersona.wsdl" />
+<sws:static-wsdl id="ConsultaOtrosTelFaxPersona"
+    location="/WEB-INF/wsdl/ConsultaOtrosTelFaxPersona.wsdl" />
+  
+  	<!-- Consulta minima por idInterna-->  
+  	<sws:static-wsdl id="TR_CONS_MINIMA_PERSONA_TRN"
+    location="/WEB-INF/wsdl/TR_CONS_MINIMA_PERSONA_TRN.wsdl" />
+  	<!-- -->
+  	
+  	<!-- Consulta status cuenta-->  
+  	<sws:static-wsdl id="TR_CONSUL_DTAL_AC_CTE_TRN"
+    location="/WEB-INF/wsdl/TR_CONSUL_DTAL_AC_CTE_TRN.wsdl" />
+  	<!-- -->
+  	
+  	<!-- Arqueo Centro -->
+  	<sws:static-wsdl id="TR_OBTE_DATOS_ARQUEO_TRN"
+    	location="/WEB-INF/wsdl/TR_OBTE_DATOS_ARQUEO_TRN.wsdl" />
+    <sws:static-wsdl id="TR_TN_CONT_HOST_2_CNS_TRN"
+    	location="/WEB-INF/wsdl/TR_TN_CONT_HOST_2_CNS_TRN.wsdl" />
+    <sws:static-wsdl id="TR_ARQUEO_CAJA_EX_TRN"
+    	location="/WEB-INF/wsdl/TR_ARQUEO_CAJA_EX_TRN.wsdl" />
+  	<!--  -->
+  	
+  	<!-- Arqueo Puesto -->
+  	<sws:static-wsdl id="TR_TN_CONT_HOST_CNS_TRN"
+    	location="/WEB-INF/wsdl/TR_TN_CONT_HOST_CNS_TRN.wsdl" />
+  	<!--  -->
+  	
+  	<!-- Consulta/Modificacion/Alta de perfil de empleados-->  
+  	<sws:static-wsdl id="TR_EP_CON_PERFIL_EMPL_TRN"
+    location="/WEB-INF/wsdl/TR_EP_CON_PERFIL_EMPL_TRN.wsdl" />
+    <sws:static-wsdl id="TR_MODIF_PERFIL_EMPL_TRN"
+    location="/WEB-INF/wsdl/TR_MODIF_PERFIL_EMPL_TRN.wsdl" />
+    <sws:static-wsdl id="TR_ALTA_PERFIL_EMPL_TRN"
+    location="/WEB-INF/wsdl/TR_ALTA_PERFIL_EMPL_TRN.wsdl" />
+  	<!-- -->
+  	
+  	<!-- Consulta/Modificacion/Alta de anotaciones-->    	
+    <sws:static-wsdl id="TR_AN_CONS_ANOT_M_TRN"
+    location="/WEB-INF/wsdl/TR_AN_CONS_ANOT_M_TRN.wsdl" />
+    <sws:static-wsdl id="TR_AN_CONS_DATOS_DP_TRN"
+    location="/WEB-INF/wsdl/TR_AN_CONS_DATOS_DP_TRN.wsdl" />
+    <sws:static-wsdl id="TR_CONSULTA_AN_MAN_TRN"
+    location="/WEB-INF/wsdl/TR_CONSULTA_AN_MAN_TRN.wsdl" />
+    <sws:static-wsdl id="TR_AN_MODI_DATOS_DP_TRN"
+    location="/WEB-INF/wsdl/TR_AN_MODI_DATOS_DP_TRN.wsdl" />
+    <sws:static-wsdl id="TR_AN_ALTA_DATOS_DP_TRN"
+    location="/WEB-INF/wsdl/TR_AN_ALTA_DATOS_DP_TRN.wsdl" />
+  	<!-- -->
+  	    
+</beans>

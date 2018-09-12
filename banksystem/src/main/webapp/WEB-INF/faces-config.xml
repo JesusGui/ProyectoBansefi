@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+  <application>
+    <!-- Delegate to Spring beans management -->
+    <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+    <!-- Mensajes de vista -->
+    <resource-bundle>
+		<base-name>META-INF.resources.properties.mensaje_vista</base-name>
+		<var>msg</var>
+ 	</resource-bundle>
+ 	<el-resolver>
+		org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver
+	</el-resolver>
+	<action-listener>mx.babel.arq.storage.listeners.StorageActionListener</action-listener>
+	</application>
+  
+	<factory>
+		<exception-handler-factory>
+			mx.babel.bansefi.banksystem.base.handlers.CustomExceptionHandlerFactory
+		</exception-handler-factory>
+	</factory>
+	
+	<managed-bean>
+	    <managed-bean-name>currentDate</managed-bean-name>
+	    <managed-bean-class>org.joda.time.LocalDate</managed-bean-class>
+	    <managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+  
+</faces-config>

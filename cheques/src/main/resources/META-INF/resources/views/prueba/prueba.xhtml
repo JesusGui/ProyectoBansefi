@@ -1,0 +1,94 @@
+                                                                                                                                                                                                                                                                                                                                                                       <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								onclick="PF('dlgCancelar').show();"></p:commandButton>
+							<h1>Pantalla de prueba cheques</h1>
+						</div>
+
+						<h:form id="formPrueba">
+
+							<div class="contenedor-campos">
+							
+								<div class="grid_10">
+									<p:outputLabel value="Prueba"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:inputText value="#{pruebaController.pruebaBean.cadena}">
+										<p:ajax event="keyup" onstart="value=value.toUpperCase()" update="prueba" />
+									</p:inputText>
+								</div>
+								
+								<div class="clear-row"></div>
+								
+								<div class="grid_48">
+									<p:outputLabel id="prueba"
+										value="#{pruebaController.pruebaBean.cadena}" />
+								</div>
+								
+								<div class="clear-row"></div>
+								
+								<!-- Otro campo -->
+									
+								<div class="clear-3" />
+								<div class="clear-row" />
+							
+							</div>
+							
+							<div class="float-right">
+							
+								<p:commandButton id="btnLimpiar"
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									update="@form" value="Limpiar" 
+									action="#{pruebaController.limpiar()}" />
+
+							</div>
+
+						</h:form>
+						
+						<p:dialog widgetVar="dlgCancelar" id="dlgCancelar"
+							appendTo="@(body)" header="Cancelar" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="¡Atención! Si continua perderá todos los cambios" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true" id="btnContinuar"
+								action="#{pruebaController.irInicio()}"
+								oncomplete="PF('dlgCancelar').hide();" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+						</p:dialog>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+</ui:composition>

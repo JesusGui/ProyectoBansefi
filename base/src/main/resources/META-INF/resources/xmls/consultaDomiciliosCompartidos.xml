@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<!-- Mapeo de clases -->
+	<mapping map-id="consultaDomiciliosCompartidos" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultadomiciliocompartido.ResponseBansefi.OTRPECOMPLACNSTRNO.TRPECOMPLACNSEVTZ.TRPECOMPLACNSEVTV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioCompartidoBean
+		</class-b>
+		<field>
+			<a>nomb50</a>
+			<b>nombre</b>
+		</field>
+		<field>
+			<a>idinternope</a>
+			<b>idInternoPersona</b>
+		</field>
+		<field>
+			<a>idextpe</a>
+			<b>idExternoPersona</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecnctoconstpe</a>
+			<b>fechaNacimientoConstitucion</b>
+		</field>
+		<field>
+			<a>codofcnaalta</a>
+			<b>codigoOficina</b>
+		</field>
+		<field>
+			<a>codpe</a>
+			<b>codigoPersona</b>
+		</field>
+		<field>
+			<a>codidextpers</a>
+			<b>codigoIdExternoPersona</b>
+		</field>
+	</mapping>
+</mappings>

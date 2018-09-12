@@ -1,0 +1,234 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+
+		<h:body>
+			<!-- Simplemente se pone para que cargue la libreria de primefaces EXT -->
+			<pe:blockUI widgetVar="blockUIWidget1">
+			</pe:blockUI>
+			<!-- Importamos el enum de estados para los listados -->
+			<pe:importConstants
+				className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+				var="EstadoListadosEnum" />
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="documentosForm" styleClass="contenedor-form">
+						<!--titulo dela ventana-->
+						
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" rendered="#{!documentosPersonasController.isAlta}" title="Volver atrás"
+							action="#{documentosPersonasController.volver()}" immediate="true"></p:commandButton>
+							<div>
+							<h2 class="gris-b">Documentos de cliente </h2>
+							<h2 class="azul-b">#{documentosPersonasController.cliente.nombreCompleto}</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="*Campos Obligatorios"></p:outputLabel>
+							<div class="margin-top-10"></div>
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+							<div class="grid_22 alpha">
+								<p:outputLabel id="tipoDocumentolabel" for="tipoDocumento"
+									value="Tipo de documento" />
+								<div class="clear-3"></div>
+								
+								<p:autoComplete id="tipoDocumento"
+									value="#{documentosPersonasController.tipoDocumento}"
+									required="#{param['disableValidationCabecera']==null}" maxResults="5"  maxlength="60" var="item"
+									completeMethod="#{documentosPersonasController.obtenerTiposDocumentos}"
+									itemLabel="#{item.descripcionL}" itemValue="#{item}"
+									converter="#{catalogoDocumentosBeanConverter}" forceSelection="true"
+									onblur="value=value.toUpperCase()">
+								</p:autoComplete>
+							</div>
+							<div class="grid_3">
+								<div class="label-vacio"></div>
+								<div class="clear-3"></div>
+								<p:commandButton styleClass="btn-icono btn-anadir" title="Añadir"
+									icon="ui-icon-circle-plus" id="anadirDocumento"
+									actionListener="#{documentosPersonasController.nuevoDocumento()}"
+									update="@form" process="@form">
+									<f:param name="disableValidation" value="true" />
+								</p:commandButton>
+
+							</div>
+
+							<div class="clear-row"></div>
+
+							<!-- DOCUMENTOS CONSULTADOS -->
+							<h:panelGroup id="documentosConsultados" layout="block">
+
+								<c:forEach var="documento"
+									items="#{documentosPersonasController.documentosConsultados}"
+									varStatus="myVarStatus">
+
+									<ui:include src="documentoConsultadoDetalle.xhtml" />
+
+								</c:forEach>
+
+							</h:panelGroup>
+
+							<!-- DOCUMENTOS NUEVOS -->
+							<h:panelGroup id="documentosNuevosPanel" layout="block">
+
+								<c:forEach var="documento"
+									items="#{documentosPersonasController.documentosNuevos}"
+									varStatus="myVarStatus">
+
+									<ui:include src="documentoNuevoDetalle.xhtml" />
+
+								</c:forEach>
+
+							</h:panelGroup>
+
+
+							<div class="clear"></div>
+
+						</div>
+
+						<div class="margin-top-10"></div>
+
+						<p:commandButton id="volverInicio" styleClass="btn_secundario"
+							value="#{documentosPersonasController.valorBotonVolver}"
+							immediate="true"
+							action="#{documentosPersonasController.volver()}" />
+						<p:commandButton id="guardar"
+							rendered="#{not (documentosPersonasController.documentosConsultados.size() == 0 and documentosPersonasController.documentosNuevos.size() == 0)}"
+							update="@form :dlgConfirmacionModificacion" value="Guardar"
+							action="#{documentosPersonasController.guardarDocumentos()}"
+							styleClass="btn_principal_dialog_derecha" >
+							<f:param name="disableValidationCabecera" value="true" />
+							</p:commandButton>
+
+					</h:form>
+					<p:dialog id="dlgConfirmacionModificacion" appendTo="@(body)"
+						header="¡Atención!" closable="false" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgConfirmacionModificacion" resizable="false"
+						dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Está a punto de eliminar #{documentosPersonasController.documentosEliminados} documentos." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar"
+							onclick="PF('dlgConfirmacionModificacion').hide()" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true"
+							action="#{documentosPersonasController.confirmarGuardar()}"
+							widgetVar="btnGuardar" update=":documentosForm" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgVolver" resizable="false" dynamic="true"
+						modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" onclick="PF('dlgVolver').hide()" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true"
+							action="#{documentosPersonasController.confirmarVolver()}"
+							widgetVar="btnGuardar" update=":documentosForm" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Éxito!" closable="false" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgAlta" resizable="false" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los documentos se dieron de alta correctamente." />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgAlta').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Ëxito!" closable="false" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgEliminar" resizable="false" dynamic="true"
+						modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los documentos se eliminaron correctamente." />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgEliminar').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Éxito!" closable="false" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgModificacion" resizable="false" dynamic="true"
+						modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los documentos se modificaron correctamente." />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgModificacion').hide()" />
+					</p:dialog>
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgNoCambios" resizable="false" dynamic="true"
+						modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<!--accion a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No se han realizado cambios" />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgNoCambios').hide()" />
+					</p:dialog>
+
+
+				</div>
+
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

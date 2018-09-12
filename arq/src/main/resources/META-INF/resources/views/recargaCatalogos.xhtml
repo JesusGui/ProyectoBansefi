@@ -1,0 +1,201 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../templates/plantilla-inicio.xhtml">
+
+	<!-- plantilla de ventana tipo-->
+	<ui:define name="contenido">
+	<ui:debug hotkey="x"/>
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="frmRecargaCatalogos" styleClass="contenedor-form">
+						<!--título de la ventana-->
+						<div class="titulo">
+							<!--botón atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+							action="#{recargaCatalogosController.goToDashBoard()}" process="@this" partialSubmit="true" ></p:commandButton>
+							<h1>Utilería para recarga de catálogos.</h1>
+						</div>
+						<div class="contenedor-campos">
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+							<div class="grid_10">
+								<!-- <p:outputLabel value="Catálogos Generales"></p:outputLabel>
+								<div class="clear-3"></div> -->
+								<p:commandButton value="Catálogos Generales" 
+									actionListener="#{recargaCatalogosController.recargaCatalogosGenerales()}"
+									update="tblRegistrosCatalogosGral" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogosGral" var="info" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogosGeneralesMap.entrySet().toArray()}" >
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{info.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{info.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+							<div class="grid_10">
+								<p:commandButton value="Catálogos Tarifas" 
+									actionListener="#{recargaCatalogosController.recargarCatalogosTarifas()}"
+									update="tblRegistrosCatalogoTarifas" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogoTarifas" var="tarifa" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogoTarifasMap.entrySet().toArray()}" >
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{tarifa.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{tarifa.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+							<div class="grid_10">
+								<p:commandButton value="Catálogos GEO" 
+									actionListener="#{recargaCatalogosController.recargarCatalogosGEO()}"
+									update="tblRegistrosCatalogosGeo" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogosGeo" var="catGeo" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogosGEOMap.entrySet().toArray()}" >
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{catGeo.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{catGeo.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+							<div class="grid_10">
+								<p:commandButton value="Catálogo Centros" 
+									actionListener="#{recargaCatalogosController.recargarCatalogoCentros()}"
+									update="tblRegistrosCatalogoCentros" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogoCentros" var="centro" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogoCentrosMap.entrySet().toArray()}" 
+									scrollable="true" scrollHeight="150">
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{centro.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{centro.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+							<div class="grid_10">
+								<p:commandButton value="Catálogo Lista Empleados" 
+									actionListener="#{recargaCatalogosController.recargarCatalogoListaEmpleados()}"
+									update="tblRegistrosCatalogoListaEmpl" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogoListaEmpl" var="lstEmpl" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogoListaEmpleadosMap.entrySet().toArray()}" 
+									scrollable="true" scrollHeight="150">
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{lstEmpl.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{lstEmpl.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+							<div class="grid_10">
+								<p:commandButton value="Catálogo Paises" 
+									actionListener="#{recargaCatalogosController.recargarCatalogoPaises()}"
+									update="tblRegistrosCatalogoPaises" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogoPaises" var="pais" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogoPaisesMap.entrySet().toArray()}" >
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{pais.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{pais.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+							<div class="grid_10">
+								<p:commandButton value="Catálogo Perfiles TCB" 
+									actionListener="#{recargaCatalogosController.recargarCatalogoPerfilesTCB()}"
+									update="tblRegistrosCatalogoPerfTCB" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogoPerfTCB" var="perfTCB" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogoPerfilesTCBMap.entrySet().toArray()}" 
+									scrollable="true" scrollHeight="150">
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{perfTCB.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{perfTCB.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+							<div class="grid_10">
+								<p:commandButton value="Catálogo Monedas" 
+									actionListener="#{recargaCatalogosController.recargarCatalogoMonedas()}"
+									update="tblRegistrosCatalogoMonedas" 
+									global="false" onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+							</div>
+							<div class="grid_30">
+								<p:dataTable id="tblRegistrosCatalogoMonedas" var="moneda" emptyMessage="Sin registro de los catálogos recargados."
+									value="#{recargaCatalogosController.cantidadCatalogoMonedasMap.entrySet().toArray()}" >
+									<p:column headerText="CATÁLOGO">
+										<h:outputText value="#{moneda.key}" />
+									</p:column>
+									<p:column headerText="REGISTROS CARGADOS">
+										<h:outputText value="#{moneda.value}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+							
+    						<div class="clear-row" />
+    						
+						</div>
+					</h:form>
+				</div>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

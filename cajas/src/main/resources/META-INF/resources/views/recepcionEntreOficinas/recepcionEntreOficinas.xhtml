@@ -1,0 +1,498 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								onclick="PF('dlgCancelar').show();"></p:commandButton>
+							<h1>Recepción entre oficinas</h1>
+						</div>
+						
+						<h:form id="formRecepcionEntreOficinas">
+
+							<div class="contenedor-campos">
+							
+								<p:outputLabel
+									value="Introduzca los datos correspondientes para realizar una recepción entre oficinas." />
+
+								<div class="margin-top-10"></div>
+
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios"></p:outputLabel>
+
+								<div class="clear-row" />
+								<div class="clear-3" />
+
+								<h:outputText styleClass="txt-campos-oblg grid_48"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+
+								<div class="clear-row" />
+								<div class="clear-3"></div>
+
+								<div class="grid_48 alpha">
+
+								<!-- <div class="grid_15">
+										<p:outputLabel for="centroOrigen" value="Centro origen"
+											id="lblCentroOrigen" />
+										<div class="clear-3"></div>
+										<b:autoComplete id="centroOrigen"
+											value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.centroOrigenAuto}"
+											maxlength="40" catalogSource="catalogoCentrosLoaderTask"
+											var="item" itemLabel="#{item.descripcionL}"
+											disabled="#{recepcionEntreOficinasController.fechaDisabled}"
+											itemValue="#{item}" converter="catalogoConverter"
+											forceSelection="true" tabindex="1"
+											required="#{param['disableValidation']==null}">
+											<p:ajax event="query" global="false"></p:ajax>
+										</b:autoComplete>
+									</div> -->
+									
+									<div class="grid_10">
+										<p:outputLabel for="centroOrigen" value="Centro origen"
+											id="lblCentroOrigen" />
+										<div class="clear-3"></div>
+										<p:inputText id="centroOrigen" tabindex="1"
+											required="#{param['disableValidation']==null}"
+											disabled="#{recepcionEntreOficinasController.fechaDisabled}"
+											value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.centroOrigen}">
+											<p:ajax event="change" process="@this" update="@this"></p:ajax>
+										</p:inputText>
+									</div>
+									
+									<div class="grid_10">
+										<p:message id="msgFechaEnvio" for="fechaEnvio" display="icon" />
+										<p:outputLabel for="fechaEnvio" value="Fecha de envío"
+											id="lblFechaEnvio" />
+										<div class="clear-3"></div>
+										<p:calendar id="fechaEnvio" locale="es" mask="true"
+											tabindex="2" widgetVar="fechaEnvio" readonlyInput="false"
+											pattern="dd/MM/yyyy" placeholder="" requiredMessage=""
+											disabled="#{recepcionEntreOficinasController.fechaDisabled}"
+											showOn="button" required="#{param['disableValidation']==null}"
+											value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.fechaEnvio}">
+											<p:ajax event="change" process="fechaEnvio" listener="#{recepcionEntreOficinasController.actualizarFechaEnvio()}"
+												update="fechaEnvio msgFechaEnvio lblFechaEnvio" partialSubmit="true" />
+											<p:ajax event="dateSelect" process="fechaEnvio" listener="#{recepcionEntreOficinasController.actualizarFechaEnvio()}"
+												update="fechaEnvio msgFechaEnvio lblFechaEnvio" partialSubmit="true" />
+										</p:calendar>
+									</div>
+
+									<h:panelGroup id="panelEstatus"
+										rendered="#{recepcionEntreOficinasController.estatusVisible}">
+										<div class="grid_7">
+											<p:outputLabel value="Estatus" for="estatus"></p:outputLabel>
+											<div class="clear-3"></div>
+											<div class="clear-3"></div>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="azul-b" id="estatus"
+												value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.estatusL}" />
+										</div>
+									</h:panelGroup>
+
+									<div class="float-right">
+										<p:commandButton styleClass="btn_primario margin-top-10"
+											value="Buscar" tabindex="3" icon="fa fa-search"
+											rendered="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.estatusC eq ''}"
+											action="#{recepcionEntreOficinasController.consultarEnvioEntreOficinas()}"
+											update="@form :dlgError" onsuccess="resizeParrillaColumns()"
+											oncomplete="resizeParrillaColumns()">
+										</p:commandButton>
+										
+										<p:commandButton styleClass="btn_primario margin-top-10"
+												value="Realizar otra busqueda" icon="fa fa-search"
+												rendered="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.estatusC ne ''}"
+												action="#{recepcionEntreOficinasController.realizarOtraBusqueda()}"
+												update="@form :dlgError" onsuccess="resizeParrillaColumns()"
+												oncomplete="resizeParrillaColumns()">
+											</p:commandButton>
+									</div>
+
+								</div>
+								
+								<div class="clear-row" />
+								<div class="clear-3" />
+								
+								<div class="grid_10">								
+								<h:panelGroup id="parrilla" rendered="#{recepcionEntreOficinasController.filtro}">
+									<p:outputLabel value="Filtro" for="filtroDenominaciones"></p:outputLabel>
+											<div class="clear-3"></div>
+									<p:selectOneMenu id="filtroDenominaciones"
+										disabled="#{recepcionEntreOficinasController.filtoDisabled}"
+										value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.parrilla.filtro}">
+										<p:ajax event="change" process="@this"
+											update="contenedorDenominaciones"
+											oncomplete="resizeParrillaColumns()" />
+										<f:selectItem itemLabel="Todos" itemValue="0" />
+										<f:selectItem itemLabel="Ventanilla" itemValue="1" />
+										<f:selectItem itemLabel="Dispensador" itemValue="2" />
+										<f:selectItem itemLabel="Billetes" itemValue="3" />
+										<f:selectItem itemLabel="Monedas" itemValue="4" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+								</div>
+
+								<div class="clear-row" />
+								<div class="clear-3" />
+
+								<div class="grid_48 saldo-disponible">
+
+									<div class="clear-row"></div>
+									<div class="grid_37" style="text-align: right;">
+										<p:outputLabel value="Total enviado: " />
+									</div>
+									<div class="grid_11" style="text-align: right;">
+										<p:outputLabel id="totalEnviado"
+											value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.totalEnviado}">
+											<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+												currencySymbol="MXN" />
+										</p:outputLabel>
+									</div>
+
+									<div class="clear-row"></div>
+									<div class="grid_37" style="text-align: right;">
+										<p:outputLabel value="Total recibido " />
+									</div>
+									<div class="grid_11" style="text-align: right;">
+										<p:outputLabel id="totalRecibido"
+											value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.totalRecibido}">
+											<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+												currencySymbol="MXN" />
+										</p:outputLabel>
+									</div>
+
+									<div class="clear-row"></div>
+									<div class="grid_37" style="text-align: right;">
+										<p:outputLabel value="Diferencias: " />
+									</div>
+									<div class="grid_11" style="text-align: right;">
+										<p:outputLabel id="diferencias"
+											value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.diferencias}">
+											<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+												currencySymbol="MXN" />
+										</p:outputLabel>
+									</div>
+									<div class="clear-row"></div>
+								</div>
+
+								<h:panelGroup id="recEntOfiParrilla">
+
+									<div class="contenedor-arqueopuesto">
+										<script>
+										//<![CDATA[
+										function resizeParrillaColumns() {
+											var w = Math.floor(100/$('.parrillaTitle').children().size());
+											$('.cuerpo-denominacion-parrilla').each(function() {
+											  $(this).children().each(function(){
+											     $(this).css({'width':w+'%'});
+											   });
+											});
+										}
+										//]]>
+										</script>
+										<ui:insert />
+										
+										<div class="ui-datatable ui-widget">
+											<div class="ui-datatable-tablewrapper">
+												<table>
+													<thead>
+														<tr class="parrillaTitle">
+															<th><h:outputLabel value="Valor facial" /></th>
+															<th><h:outputLabel value="Soporte" /></th>
+															<th><h:outputLabel value="Formato" /></th>
+															<th><h:outputLabel value="D/V" /></th>
+															<th><h:outputLabel value="Importe enviado" /></th>
+															<th><h:outputLabel value="Unidades" /></th>
+															<th><h:outputLabel value="Importe recibido" /></th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+										</div>
+										<h:panelGroup id="contenedorDenominaciones">
+											<ui:repeat var="denominacion"
+												value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.parrilla.listaDenominaciones}">
+												<h:panelGroup
+													rendered="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.parrilla.isVisible(denominacion)}">
+													<div
+														class="cuerpo-arqueopuesto cuerpo-denominacion-parrilla">
+														<div>
+															<h:outputLabel styleClass="float-right"
+																value="#{denominacion.valor}">
+																<f:convertNumber pattern="#,##0.00 ¤"
+																	currencySymbol="MXN" />
+															</h:outputLabel>
+														</div>
+														<div>
+															<h:outputLabel
+																value="#{denominacion.moneda? 'Moneda':'Billete'}" />
+														</div>
+														<div>
+															<h:outputLabel value="#{denominacion.formato}" />
+														</div>
+														<div>
+															<h:outputLabel
+																value="#{'V'.equals(denominacion.origen)? 'Ventanilla':'Dispensador'}" />
+														</div>
+
+														<!-- <ui:repeat var="columna"
+															value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.parrilla.columnas}">
+															<h:panelGroup rendered="#{columna.currency}">
+																<div>
+																	<h:outputLabel
+																		value="#{denominacion[columna.nombreAtributo]}">
+																		<f:convertNumber pattern="#,##0.00 ¤"
+																			currencySymbol="MXN" />
+																	</h:outputLabel>
+																</div>
+															</h:panelGroup>
+															<h:panelGroup rendered="#{!columna.currency}">
+																<div>
+																	<h:outputLabel
+																		value="#{denominacion[columna.nombreAtributo]}">
+																		<f:convertNumber pattern="#,###" />
+																	</h:outputLabel>
+																</div>
+															</h:panelGroup>
+														</ui:repeat> -->
+														<div style="text-align: right;">
+															<h:outputLabel value="#{denominacion.importeEnviado}">
+																<f:convertNumber pattern="#,##0.00 ¤"
+																	currencySymbol="MXN" />
+															</h:outputLabel>
+														</div>
+														<h:panelGroup
+															rendered="#{recepcionEntreOficinasController.editable}">
+															<div class="ui-inputNum">
+																<p:inputMask id="unidades"
+																	disabled="#{recepcionEntreOficinasController.unidadesDisabled}"
+																	value="#{denominacion.unidades}" placeholder="0"
+																	maxlength="5">
+																	<pe:keyFilter regEx="/[0-9_]/i" />
+																	<p:ajax event="change" process="unidades"
+																		global="false"
+																		listener="#{recepcionEntreOficinasController.actualizaImporte(denominacion)}"
+																		update="importeDenominacion mensajeImporte 
+																			:formRecepcionEntreOficinas:totalRecibido 
+																			:formRecepcionEntreOficinas:diferencias 
+																			:formRecepcionEntreOficinas:btnGuardar"
+																		oncomplete="resizeParrillaColumns()" />
+																</p:inputMask>
+															</div>
+															<div>
+																<pe:inputNumber id="importeDenominacion"
+																	disabled="#{recepcionEntreOficinasController.importeRecibidoDisabled}"
+																	value="#{denominacion.importeRecibido}"
+																	decimalPlaces="2" decimalSeparator="."
+																	thousandSeparator="," symbol=" MXN"
+																	symbolPosition="suffix" maxlength="12">
+																	<f:attribute id="importeAttribute" name="valor"
+																		value="#{denominacion.valor}" />
+																	<f:validator validatorId="importeDenominacionValidator" />
+																	<p:ajax event="change" global="false" process="@this"
+																		partialSubmit="true"
+																		update="importeDenominacion unidades mensajeImporte
+																		:formRecepcionEntreOficinas:totalRecibido 
+																		:formRecepcionEntreOficinas:diferencias
+																		:formRecepcionEntreOficinas:btnGuardar"
+																		oncomplete="resizeParrillaColumns()"
+																		listener="#{recepcionEntreOficinasController.actualizaUnidades(denominacion)}" />
+																</pe:inputNumber>
+																<p:watermark for="importeDenominacion" value="0.00 MXN" />
+																<p:message for="importeDenominacion" id="mensajeImporte"
+																	display="text" />
+															</div>
+														</h:panelGroup>
+														<h:panelGroup
+															rendered="#{recepcionEntreOficinasController.precinto}">
+															<div>
+																<p:inputText maxlength="10"
+																	rendered="#{recepcionEntreOficinasController.editable}"
+																	id="precinto" value="#{denominacion.precinto}">
+																	<p:ajax event="change"
+																		oncomplete="resizeParrillaColumns()" />
+																</p:inputText>
+																<h:outputLabel
+																	rendered="#{not recepcionEntreOficinasController.editable}"
+																	value="#{denominacion.precinto}"></h:outputLabel>
+															</div>
+														</h:panelGroup>
+													</div>
+												</h:panelGroup>
+											</ui:repeat>
+											
+											<div class="clear-row" />
+											<div class="grid_48">
+												<p:outputLabel value="Observaciones" for="observaciones" />
+												<div class="clear-3" />
+												<p:inputMask id="observaciones"
+													value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.observaciones}"
+													maxlength="60"
+													disabled="#{recepcionEntreOficinasController.observacionesDisabled}"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ ]*$/" />
+												</p:inputMask>
+											</div>
+										</h:panelGroup>
+										
+										<div class="clear-row" />
+										<div class="clear-3" />
+										
+									</div>
+									
+								</h:panelGroup>
+								
+							</div>
+							
+							<div class="float-right">
+							
+								<p:commandButton value="Guardar" id="btnGuardar"
+									rendered="#{recepcionEntreOficinasController.mostrarBotones}"
+									styleClass="btn_primario margin-top-10 margin-right-10"
+									disabled="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.totalRecibido.compareTo(recepcionEntreOficinasController.zero) == 0 ? 'true' : 'false'}"
+									oncomplete="resizeParrillaColumns()" update=":dlgRecepcion"
+									action="#{recepcionEntreOficinasController.mostrarMensajeConfirmacion()}"/>
+
+								<p:commandButton
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									rendered="#{recepcionEntreOficinasController.mostrarBotones}"
+									value="Limpiar" global="false" partialSubmit="false" immediate="true"
+									action="#{recepcionEntreOficinasController.limpiar()}"
+									oncomplete="resizeParrillaColumns()" update="@form" />
+							</div>
+							
+						</h:form>
+						
+						<p:dialog id="dlgRecepcion" widgetVar="dlgRecepcion" showEffect="fade"
+							hideEffect="fade" appendTo="@(body)" closable="false"
+							dynamic="true" draggable="false" modal="true" resizable="false"
+							header="Resultado">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<div class="modal-mensaje">
+								<p:outputLabel
+									value="Va a realizar una recepción de efectivo con valor de " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.totalRecibido}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<p:outputLabel value=" proveniente del centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{recepcionEntreOficinasController.recepcionEntreOficinasBean.centroOrigen}" />
+							</div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true" onclick="PF('dlgRecepcion').hide();"
+								action="#{recepcionEntreOficinasController.realizarRecepcion()}"
+								oncomplete="resizeParrillaColumns()" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgRecepcion').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgCancelar" id="dlgCancelar"
+							appendTo="@(body)" header="Cancelar autorización" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="¡Atención! Si continua perderá todos los cambios" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true"
+								action="#{recepcionEntreOficinasController.irInicio()}" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgCancelar').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgErrorRecep" id="dlgErrorRecep"
+							appendTo="@(body)" header="Cancelar autorización" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-error-icon error-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{recepcionEntreOficinasController.mensajeError}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Cancelar" onclick="PF('dlgErrorRecep').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgAdvertenciaRecep" id="dlgAdvertenciaRecep"
+							appendTo="@(body)" header="Cancelar autorización" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{recepcionEntreOficinasController.mensajePrecaucion}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Cancelar" onclick="PF('dlgAdvertenciaRecep').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgInfoRecep" id="dlgInfoRecep"
+							appendTo="@(body)" header="Cancelar autorización" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-info-icon info-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{recepcionEntreOficinasController.mensajeInfo}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Cancelar" onclick="PF('dlgInfoRecep').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgOperacionCorrecta" id="dlgOperacionCorrecta"
+							appendTo="@(body)" header="Cancelar autorización" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-exito-icon exito-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="OPERACIÓN REALIZADA CORRECTAMENTE" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								action="#{recepcionEntreOficinasController.irDetalle()}"
+								value="Cancelar" onclick="PF('dlgOperacionCorrecta').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+						
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

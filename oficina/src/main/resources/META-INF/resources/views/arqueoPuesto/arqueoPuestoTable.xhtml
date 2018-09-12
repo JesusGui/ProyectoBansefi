@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<div class="detalle-arqueo">
+		<div class="grid_6">
+		<div class="label-vacio"></div>
+		</div>
+		<div class="grid_14">
+			<h:outputLabel value="#{columna1}"></h:outputLabel>
+		</div>
+		<div class="grid_14">
+			<h:outputLabel value="#{columna2}"></h:outputLabel>
+		</div>
+		<div class="grid_14">
+			<h:outputLabel value="Diferencia"></h:outputLabel>
+		</div>
+		<ui:include src="arqueoPuestoRow.xhtml">
+			<ui:param name="tituloRow" value="On" />
+			<ui:param name="primerColumna" value="#{c11}" />
+			<ui:param name="segundaColumna" value="#{c12}" />
+			<ui:param name="terceraColumna" value="#{c13}" />
+		</ui:include>
+		
+		<div class="clear"></div>
+	</div>
+</ui:composition>

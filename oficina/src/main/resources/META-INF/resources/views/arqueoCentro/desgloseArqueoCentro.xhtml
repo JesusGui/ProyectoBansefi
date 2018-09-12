@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="../../templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+    <ui:define name="contenido">
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="formDesgloseArqueoCentro" styleClass="contenedor-form col-70">
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+                            	action="#{arqueoCentroController.rutaInicio()}"></p:commandButton>
+                        <div>
+								<h2 class="gris-b">Desglose de arqueo de centro </h2>
+								<h3 class="rojo-b">#{arqueoCentroController.arqueoCentroBean.numeroCentro}</h3>
+                        </div>
+                        </div>
+                        
+                            <div class="contenedor-campos">
+                            	
+                            	<div class="clear margin-bottom-10"></div>
+                            	
+                            	<div class="saldo-disponible">
+                            	<p:outputLabel>Total arqueo de centro:</p:outputLabel>
+                            	<p:outputLabel styleClass="float-right" value="#{arqueoCentroController.arqueoCentroBean.totalArqueo}">
+                            		<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+                            	</p:outputLabel>
+                            	</div>
+                            	
+                            	<div class="clear-row"></div>
+                            	<h:panelGroup layout="block" styleClass="sinresultados sin-margen" 
+									 	rendered="#{arqueoCentroController.arqueoCentroBean.existenciaDenominaciones.isEmpty()}">
+							        	<div>
+							        	<h:outputLabel value="No se encontraron denominaciones arqueadas en el centro."/><br />
+							        	</div>
+							        </h:panelGroup>
+                            	<p:dataTable rendered="#{!arqueoCentroController.arqueoCentroBean.existenciaDenominaciones.isEmpty()}" 
+                            		var="denominacion" value="#{arqueoCentroController.arqueoCentroBean.existenciaDenominaciones}">
+                            		<p:column headerText="Valor Facial">
+								        <h:outputText styleClass="float-right" value="#{denominacion.valor}">
+								        	<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+								        </h:outputText>
+								    </p:column>
+								    <p:column headerText="Soporte">
+								        <h:outputText value="#{denominacion.moneda? 'Moneda':'Billete'}" />
+								    </p:column>
+								    <p:column headerText="Formato">
+								        <h:outputText value="#{denominacion.formato}" />
+								    </p:column>
+								    <p:column headerText="D/V">
+								        <h:outputText value="#{'V'.equals(denominacion.origen)? 'Ventanilla':'Dispensador'}" />
+								    </p:column>
+								    <p:column headerText="Unidades">
+								        <h:outputText styleClass="float-right" value="#{denominacion.unidades}">
+								        	<f:convertNumber pattern="#,###" />
+								        </h:outputText>
+								    </p:column>
+								    <p:column headerText="Importe">
+								        <h:outputText styleClass="float-right" value="#{denominacion.importe}">
+								        	<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+								        </h:outputText>
+								    </p:column>
+                            	</p:dataTable>
+                            </div>
+                        <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" value="Cancelar" 
+                        	immediate="true" action="#{arqueoCentroController.rutaInicio()}"/>
+                        <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Ver Resultado" 
+                        	action="#{arqueoCentroController.rutaResultado()}"/>
+                    </h:form>
+                </div>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

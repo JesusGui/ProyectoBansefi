@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          <!-- Mapeo de clases -->
+	<mapping map-id="busquedaCuenta">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.busquedacuenta.ResponseBansefi
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.CuentaBean
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>centro</a>
+			<b>centro</b>
+		</field>
+		<field>
+			<a>acuerdo</a>
+			<b>numeroCuenta</b>
+		</field>
+		<field>
+			<a>ciclovida</a>
+			<b>estado</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>fecha</a>
+			<b>fechaEstado</b>
+		</field>
+		<field>
+			<a>linea</a>
+			<b>codLinea</b>
+		</field>
+		<field>
+			<a>grp</a>
+			<b>idGrupoProducto</b>
+		</field>
+		<field>
+			<a>pdv</a>
+			<b>idProducto</b>
+		</field>
+		<field>
+			<a>tarifa</a>
+			<b>idTarifaProducto</b>
+		</field>
+		<field>
+			<a>plazabanca</a>
+			<b>plazaBancaria</b>
+		</field>
+		<field>
+			<a>digito</a>
+			<b>digitoVerificador</b>
+		</field>
+		<field>
+			<a>moneda</a>
+			<b>moneda</b>
+		</field>
+		<field>
+			<a>titular</a>
+			<b>nombreTitular</b>
+		</field>
+		<field>
+			<a>nivelcuenta</a>
+			<b>nivelCuenta</b>
+		</field>
+		<field>
+			<a>pan</a>
+			<b>pan</b>
+		</field>
+	</mapping>
+</mappings>

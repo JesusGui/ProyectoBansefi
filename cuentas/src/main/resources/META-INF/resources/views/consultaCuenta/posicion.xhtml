@@ -1,0 +1,159 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formPosicion" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{posicionController.volver}" />
+							<div>
+								<h2 class="gris-b">
+									Posición de
+									<h:outputText styleClass="rojo-b"
+										rendered="#{posicionController.posicion.cliente!=null}"
+										value="#{posicionController.posicion.cliente.nombre}" />
+									<h:outputText styleClass="rojo-b"
+										rendered="#{posicionController.posicion.cuenta!=null}"
+										value="#{posicionController.posicion.cuenta.tipoCuenta} " />
+									<h:outputText styleClass="gris-b sub-h"
+										rendered="#{posicionController.posicion.cuenta!=null}"
+										value="(#{posicionController.posicion.cuenta.numeroCuenta})" />
+								</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel rendered="#{posicionController.verMsg}">¡Atención! Posición de #{posicionController.mensaje} parcial. Se muestran los 10 primeros integrantes ordenados por Id. Interna ascendente.</p:outputLabel>
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+
+							<div class="ocultar-en-impresion">
+								<p:commandButton styleClass="btn_secundario btn-icono-texto float-right"
+									id="btnImprimir" widgetVar="btnImprimir" icon="ui-icon-print"
+									alt="Imprimir" value="Imprimir"
+									onclick="printContenedorCamposId('printArea');" />
+							</div>
+							
+							<div id="printArea">
+								<div class="impresion posicion">
+									<h3 class="mostrar-en-impresion">
+										Posición de
+										<h:outputText
+											rendered="#{posicionController.posicion.cliente!=null}"
+											value="#{posicionController.posicion.cliente.nombre}" />
+										<h:outputText
+											rendered="#{posicionController.posicion.cuenta!=null}"
+											value="la Cuenta " />
+										<h:outputText
+											rendered="#{posicionController.posicion.cuenta!=null}"
+											value="#{posicionController.posicion.cuenta.numeroCuenta}" />
+									</h3>
+									<h3 class="azul-b float-left margin-top-20">Integrantes</h3>
+									
+									<div class="clear-row"></div>
+									<div class="marco-datospersonales orden-2-columnas sin-margen">
+										<p:dataList styleClass="posicion-integrantes"
+											value="#{posicionController.posicion.intervinientes}"
+											var="persona" rowIndexVar="fila"
+											rendered="#{posicionController.posicion.intervinientes.size() > 0}">
+											<p:outputLabel value="Persona #{fila+1}: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{posicionController.relacionesCuenta[fila]}, "
+												rendered="#{posicionController.relacionesCuenta.size()>0}" />
+											<p:outputLabel styleClass="bold"
+												value="#{persona.nombreCompleto}, "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{persona.desTipoId} "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{persona.numIdentificacion}"></p:outputLabel>
+										</p:dataList>
+									</div>
+									<div class="clear"></div>
+										<p:panel layout="block" styleClass="sinresultados sin-margen"
+											rendered="#{posicionController.posicion.intervinientes.size() == 0}">
+											<div>
+												<p:outputLabel
+													value="No se han podido consultar los intervinientes."></p:outputLabel>
+											</div>
+										</p:panel>
+									<div class="clear"></div>
+										<p:panel layout="block" styleClass="sinresultados sin-margen"
+											rendered="#{posicionController.posicion.conceptos.size() == 0}">
+											<div>
+												<p:outputLabel value="No hay posiciones a mostrar"></p:outputLabel>
+											</div>
+										</p:panel>
+										<div class="clear"></div>
+									<div class="clear margin-top-10"></div>
+									<div class="tabla-posicion">
+										<p:dataTable value="#{posicionController.posicion.conceptos}"
+											var="lista" id="tablaPosicion" draggableColumns="true"
+											rowStyleClass="#{lista.estilo}" resizableColumns="true"
+											rendered="#{posicionController.posicion.conceptos.size() != 0}">
+											<f:facet name="header">
+												<br/>
+											</f:facet>
+											<p:column styleClass="" headerText="Concepto">
+												<h:outputText value="#{lista.descripcion}"
+													styleClass="#{lista.estilo}" />
+											</p:column>
+											<p:columns value="#{posicionController.columnas}"
+												columnIndexVar="col" var="columna"
+												styleClass="#{lista.estilo}">
+												<f:facet name="header">
+													<h:outputText value="#{columna}" />
+												</f:facet>
+												<h:outputText value="#{lista.importes[col]}"
+													styleClass="float-right editor-label-MXN">
+													<f:convertNumber pattern="#,##0.00" minFractionDigits="2"
+														maxFractionDigits="2" />
+												</h:outputText>
+											</p:columns>
+										</p:dataTable>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="clear"></div>
+						<!--Botones  -->
+					</h:form>
+				</div>
+			</div>
+			<div class="clear"></div>
+			
+			<!-- MENSAJE ERROR -->
+			<p:dialog widgetVar="dlgAvisoError" id="dlgAvisoError" header="Posición" modal="true" 
+						showEffect="fade" hideEffect="fade"
+					resizable="false" closable="false" appendTo="@(body)" dynamic="true">
+            	<span class="ui-messages-warn-icon warn-dialog"></span>
+            	<div class="modal-mensaje">|
+            	<p:outputLabel
+            		value="#{posicionController.codigoError} " />
+            	<p:outputLabel
+            		value="#{posicionController.mensajeError}" />
+            	</div>
+            	<div class="clear"></div>
+            	<p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" 
+            			immediate="true" action="#{posicionController.volver()}" onclick="PF('dlgAvisoError').hide();" />            
+        	</p:dialog>
+			
+			<script src="../../js/custom_table.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$('div[id$=tablaPosicion]').tablabansefi();
+				});
+			</script>
+		</h:body>
+	</ui:define>
+</ui:composition>

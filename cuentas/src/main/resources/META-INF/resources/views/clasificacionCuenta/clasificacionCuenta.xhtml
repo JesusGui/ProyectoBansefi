@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+	
+	<ui:define name="contenido">
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+				<h:form id="clasificacionCuentas" styleClass="contenedor-form col-70">
+
+					<div class="titulo centrar-objeto btn-inline-set">
+                            <p:commandButton icon="ui-icon-arrow-1-w" action="#{clasificacionCuentaController.regresa()}" immediate="true"></p:commandButton>
+					<div>
+						<h2>
+							<h:outputFormat styleClass="gris-b" value="Añadir clasificaciones de "></h:outputFormat>
+							<h:outputFormat styleClass ="rojo-b" value="#{clasificacionCuentaController.cuentaBean.tipoCuenta} " />
+							<h:outputFormat styleClass="gris-b sub-h" value=" (#{clasificacionCuentaController.cuentaBean.numeroCuenta})"></h:outputFormat>
+						</h2>
+					</div>
+					</div>
+
+					<div class="contenedor-campos">
+
+    						<p:commandButton id="btnImprimir" value="Imprimir" styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" var=""  onclick="printContenedorCamposId('printArea');"></p:commandButton>
+						
+						<div class="clear"/>
+						
+						<div id="printArea">
+							<div class="impresion clasificacion">
+							
+							<h2 class="mostrar-en-impresion">
+								<h:outputFormat styleClass="" value="Inicio de clasificación de la cuenta "></h:outputFormat>
+								<h:outputFormat styleClass="" value="#{clasificacionCuentaController.cuentaBean.numeroCuenta}"></h:outputFormat>
+							</h2>
+								<div class="margin-top-20">
+								<table class="clasificacion-tabla">
+									<tr>
+										<td class="align-right bold"> <p:outputLabel value="Tarifa vendible: "/> </td>
+										<td> <p:outputLabel id="tarifaVendible" value="#{clasificacionCuentaController.cuentaBean.codLinea} #{clasificacionCuentaController.cuentaBean.idGrupoProducto} #{clasificacionCuentaController.cuentaBean.idProducto} #{clasificacionCuentaController.cuentaBean.idTarifaProducto}" /></td> 
+										<td></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="codigoActivo" value="Código activo: "/></td>
+										<td><p:outputLabel id="codigoActivo" value="#{clasificacionCuentaController.clasificacionBean.codigoActivo}"/></td>
+										<td><p:outputLabel id="descCodigoActivo" value="#{clasificacionCuentaController.obtenerDescActivo()}" /></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="situacionIrregular" value="Situación irregular: "/></td>
+										<td><p:outputLabel id="situacionIrregular" value="#{clasificacionCuentaController.clasificacionBean.situacionIrregular}" /></td>
+										<td><p:outputLabel id="descSituacionIrregular" value="#{clasificacionCuentaController.obtenerDescSitIrreg()}"/></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="situacionReclama" value="Situación Reclamación: "/></td>
+										<td><p:outputLabel id="situacionReclama" value="#{clasificacionCuentaController.clasificacionBean.situacionReclama}" /></td>
+										<td><p:outputLabel id="descSituacionReclama" value="#{clasificacionCuentaController.obtenerDescSitReclam()}" /></td>
+										
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="codigoGarantia" value="Código de garantía: "/></td>
+										<td><p:outputLabel id="codigoGarantia" value="#{clasificacionCuentaController.clasificacionBean.codigoGarantia}" /></td>
+										<td><p:outputLabel id="descCodigoGarantia" value="#{clasificacionCuentaController.obtenerDescGrtia()}" /></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="descGarantiaContable" value="Garantía Contable: "/></td>
+										<td><p:outputLabel id="descGarantiaContable" value="#{clasificacionCuentaController.clasificacionBean.descGarantiaContable}" /></td>
+										<td><p:outputLabel id="garantiaContable" value="#{clasificacionCuentaController.obtenerDescGtiaCtble()}" /></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="garantiaCirbe" value="Garantía Cirbe: "/></td>
+										<td><p:outputLabel id="garantiaCirbe" value="#{clasificacionCuentaController.clasificacionBean.garantiaCirbe}" /></td>
+										<td><p:outputLabel id="descGarantiaCirbe" value="#{clasificacionCuentaController.obtenerDescGtiaCirbe()}" /></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="persContable" value="Persona Contable: "/></td>
+										<td><p:outputLabel id="persContable" value="#{clasificacionCuentaController.clasificacionBean.persContable}" /></td>
+										<td><p:outputLabel id="descPersContable" value="#{clasificacionCuentaController.obtenerDescSitPersCtble()}" /></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="residente" value="Residente: "/></td>
+										<td><p:outputLabel id="residente" value="#{clasificacionCuentaController.clasificacionBean.residente}" /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td class="align-right bold"><p:outputLabel for="socio" value="Socio: "/></td>
+										<td><p:outputLabel id="socio" value="#{clasificacionCuentaController.clasificacionBean.socio}"/></td>
+										<td></td>
+									</tr>
+								</table>
+							</div>
+							
+							<div class="clear-row margin-top-10"/>
+
+							<div class="grid_48 ocultar-en-impresion">
+								<p:outputLabel for="finalidad" value="Finalidad: "></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectOneMenu id="finalidad" value="#{clasificacionCuentaController.clasificacionBean.finalidad}" 
+									required="false"
+									requiredMessage=""
+									disabled="#{not clasificacionCuentaController.isCuentaActiva()}">
+									<f:selectItem itemLabel="Seleccione una opción" itemValue=""/>
+									<f:selectItems
+										value="#{clasificacionCuentaController.finalidad}"
+										var="lista" itemValue="#{lista.codigoFinalidad}"
+										itemLabel="#{lista.codigoFinalidad} - #{lista.descCodigoFinalidad}" />
+								</p:selectOneMenu>
+								
+							</div>
+							
+							<div class="clear-row"/>
+							
+							<div class="grid_48 ocultar-en-impresion">
+								<p:outputLabel for="cnae" value="CNAE: "></p:outputLabel>
+								<div class="clear-3"/>
+								<b:autoComplete id="cnae" disabled="#{not clasificacionCuentaController.isCuentaActiva()}"
+									value="#{clasificacionCuentaController.cnaeSelected}" 
+									maxlength="60" catalog="TP_CNAE_PERS" var="item"
+									itemLabel="#{item.descripcionL}" itemValue="#{item}"
+									converter="catalogoConverter" forceSelection="false"
+									onblur="value=value.toUpperCase()">
+									<p:ajax event="query" global="false"></p:ajax>	
+									<p:ajax event="blur" global="false" process="@this"></p:ajax>	
+								</b:autoComplete>
+								
+							</div>
+							
+							</div>
+						</div>
+
+						<div class="clear"/>
+					</div>		
+					
+					<p:commandButton id="guardar" styleClass="btn_primario float-right margin-top-10"
+						validateClient="true" value="Guardar" update="clasificacionCuentas :dlgGuardado"
+						action="#{clasificacionCuentaController.guardar()}" disabled="#{not clasificacionCuentaController.isCuentaActiva()}"/>
+					<p:commandButton id="cancelar" styleClass="btn_secundario margin-top-10" value="Cancelar"
+						action="#{clasificacionCuentaController.regresa()}" immediate="true"/>
+					
+				</h:form>
+			</div> 
+			</div> 
+			<p:dialog widgetVar="dlgGuardado" id="dlgGuardado"
+			header="Éxito" modal="true" rezisable="false" closable="false"
+			showEffect="fade" hideEffect="fade"
+			appendTo="@(body)" visible="#{clasificacionCuentaController.guardado and (not facesContext.validationFailed)}"
+			dynamic="true">
+				<span class="ui-messages-exito-icon exito-dialog"></span>
+				<p:outputLabel styleClass="modal-mensaje" value="Los datos de clasificación de la cuenta se han guardado correctamente."></p:outputLabel>	
+				<div class="margin-top-20"></div>
+				<p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" oncomplete="PF('dlgGuardado').hide();"/>
+			</p:dialog>
+			
+			<p:dialog closable="false" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" widgetVar="dlgNoCambios" id="dlgNoCambios"
+						dynamic="true" modal="true">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No se han realizado cambios." />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							widgetVar="btnAceptar" onclick="PF('btnAceptar').disable()"
+							oncomplete="PF('dlgNoCambios').hide();" update=":clasificacionCuentas" />
+					</p:dialog>
+		</h:body>
+	</ui:define>
+</ui:composition>

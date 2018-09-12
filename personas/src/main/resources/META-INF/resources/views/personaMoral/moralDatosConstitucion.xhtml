@@ -1,0 +1,670 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+
+					<h:form id="formAltaMoral" styleClass="contenedor-form">
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion ne true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<!--botón volver al dashboard-->
+								<h:panelGroup
+									rendered="#{personaMoralController.esModificacion ne true}">
+									<p:commandButton immediate="true" icon="ui-icon-arrow-1-w"
+										title="Regresar" onclick="PF('dlgCancelarAlta').show();" />
+								</h:panelGroup>
+								<h1>Alta de persona moral</h1>
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion eq true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<h:panelGroup
+									rendered="#{personaMoralController.esModificacion eq true}">
+									<p:commandButton immediate="true" icon="ui-icon-arrow-1-w"
+										title="Regresar"
+										onclick="PF('dlgCancelarModificacion').show();" />
+								</h:panelGroup>
+								<div>
+									<h2 class="gris-b">Modificación de</h2>
+									<h2 class="azul-b">#{personaMoralController.personaMoralBean.nombre}
+									</h2>
+									<h3 class="gris-b">(#{personaMoralController.obtenerDescripcionTpDoc()}
+										#{personaMoralController.personaMoralBean.numIdentificacion})</h3>
+								</div>
+							</div>
+						</h:panelGroup>
+
+						<!--Wizard Botones circulares superiores -->
+						<div class="wiz-pasos">
+
+							<!--  Botones de arriba -->
+							<p:commandButton id="anteriorCab1" value="Datos Generales"
+								action="#{personaMoralController.irDatosGenerales()}"
+								ajax="true" update="formAltaMoral" styleClass="inactivo">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+							<p:commandButton id="anteriorCab2" value="Datos de Constitución"
+								styleClass="activo" />
+							<p:commandButton value="Cédula de conocimiento"
+								action="#{personaMoralController.irCedulaConocimiento()}"
+								ajax="true" update="formAltaMoral" styleClass="inactivo">
+							</p:commandButton>
+						</div>
+
+						<!--contenedor del wizard-->
+						<div class="wiz-contenedor">
+							<div class="wiz-atras">
+								<!--aqui va el boton de "paso anterior" del wizard-->
+								<p:commandButton icon="ui-icon-arrow-1-w" id="atras"
+									action="#{personaMoralController.irDatosGenerales()}"
+									update="formAltaMoral">
+									<f:param name="disableValidation" value="true" />
+								</p:commandButton>
+							</div>
+							<div class="contenedor-campos">
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios"></p:outputLabel>
+								<br />
+								<h:outputLabel styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+								<p:messages for="formCliente" showIcon="false"
+									rendered="#{facesContext.validationFailed}"/>
+
+								<!-- Tab de Datos de Constitución -->
+								<p:fieldset legend="Datos de constitución" toggleable="false"
+									collapsed="false">
+
+									<!-- Fecha de Constitución -->
+									<div class="grid_8">
+										<p:message for="fechaConstitucion" id="fechaConstitucionMsg"
+											display="icon" />
+										<p:outputLabel for="fechaConstitucion" value="Fecha" />
+										<div class="clear-3"></div>
+										<p:calendar id="fechaConstitucion"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.fechaConstitucion}"
+											showOn="button" locale="es"
+											maxdate="#{contextoUtils.getFechaContableActual()}"
+											pattern="dd/MM/yyyy" mask="true"
+											required="#{param['disableValidation']==null}"
+											requiredMessage="">
+											<f:attribute name="beginDate"
+												value="#{FechaUtils.fechaMinima}" />
+											<f:attribute name="endDate"
+												value="#{contextoUtils.getFechaContableActual()}" />
+											<f:validator validatorId="dateRangeValidator" />
+											<p:ajax global="false" event="change"
+												process="fechaConstitucion fechaConstitucionMsg"
+												partialSubmit="true" />
+											<p:ajax global="false" event="dateSelect"
+												process="fechaConstitucion fechaConstitucionMsg"
+												partialSubmit="true" />
+										</p:calendar>
+										<pe:keyFilter for="fechaConstitucion"></pe:keyFilter>
+									</div>
+
+									<!-- Fecha de Cierre -->
+									<div class="grid_8">
+										<p:message for="fechaCierre" id="fechaCierreMsg"
+											display="icon" />
+										<p:outputLabel for="fechaCierre" value="Fecha de cierre"
+											rendered="#{personaMoralController.esModificacion}"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:calendar id="fechaCierre"
+											rendered="#{personaMoralController.esModificacion}"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.fechaCierre}"
+											showOn="button" locale="es"
+											maxdate="#{contextoUtils.getFechaContableActual()}"
+											pattern="dd/MM/yyyy" mask="true">
+											<f:attribute name="beginDate"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.fechaConstitucion}" />
+											<f:attribute name="endDate"
+												value="#{contextoUtils.getFechaContableActual()}" />
+											<f:validator validatorId="dateRangeValidator" />
+											<p:ajax global="false" event="change"
+												process="fechaCierre fechaCierreMsg" partialSubmit="true" />
+											<p:ajax global="false" event="dateSelect"
+												process="fechaCierre fechaCierreMsg" partialSubmit="true" />
+										</p:calendar>
+										<pe:keyFilter for="fechaCierre"></pe:keyFilter>
+									</div>
+
+									<!-- Municipio -->
+									<div class="grid_24">
+										<p:outputLabel for="municipio"
+											value="Municipio/Localidad/Delegación" />
+										<div class="clear-3"></div>
+										<p:autoComplete id="municipio" widgetVar="municipioWidget"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.municipioCatGeo}"
+											maxResults="5" onblur="value=value.toUpperCase()"
+											completeMethod="#{domicilioUtils.getMunicipios}" var="mun"
+											itemLabel="#{mun.municipioLocalidad}" itemValue="#{mun}"
+											converter="#{catalogoBeanConverter}"
+											required="#{param['disableValidation']==null}">
+											<f:attribute name="filter" value="MUNICIPIOS" />
+											<p:ajax event="query" global="false"></p:ajax>
+										</p:autoComplete>
+										<pe:keyFilter regEx="/^[a-zA-ZñÑ\-/() ]*$/" for="municipio" />
+									</div>
+									<div class="clear-row"></div>
+
+								</p:fieldset>
+
+								<!-- Tab de Datos Registrales -->
+								<p:fieldset legend="Datos registrales" toggleable="false"
+									collapsed="false">
+
+									<!-- Tipo de registro -->
+									<div class="grid_16">
+										<p:outputLabel for="tipoRegistro" id="tipoRegistroLabel"
+											value="Tipo de registro"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="tipoRegistro"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.tipoRegistro}">
+											<p:ajax global="false" event="change" update="tipoRegistro" />
+											<f:selectItem itemLabel="Seleccione un valor"
+												itemValue="#{null}" noSelectionOption="true" />
+											<f:selectItems
+												value="#{catalogoUtils.getCatalogo('TP_RGSTRO')}" var="item"
+												itemValue="#{item.claveFila}"
+												itemLabel="#{item.descripcionL}" />
+										</p:selectOneMenu>
+									</div>
+
+									<!-- Municipio -->
+									<div class="grid_24">
+										<p:outputLabel for="municipioRegistro"
+											value="Municipio/Localidad/Delegación" />
+										<div class="clear-3"></div>
+										<p:autoComplete id="municipioRegistro"
+											widgetVar="municipioRegistroWidget"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.municipioRegistro}"
+											maxResults="5" maxlength="45"
+											onblur="value=value.toUpperCase()"
+											completeMethod="#{domicilioUtils.getMunicipios}" var="mun"
+											itemLabel="#{mun.municipioLocalidad}" itemValue="#{mun}"
+											converter="#{catalogoBeanConverter}">
+											<f:attribute name="filter" value="MUNICIPIOS" />
+											<f:attribute name="codificada" value="true" />
+											<p:ajax global="false" event="change" process="@this" />
+											<p:ajax event="query" global="false"></p:ajax>
+										</p:autoComplete>
+										<pe:keyFilter regEx="/^[a-zA-ZñÑ\-/() ]*$/"
+											for="municipioRegistro" />
+									</div>
+
+									<!-- Número de registro -->
+									<div class="grid_8">
+										<p:outputLabel for="numRegistro" id="numRegistroLabel"
+											value="Nº registro"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="numRegistro" maxlength="4"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.numRegistro}">
+											<pe:keyFilter regEx="/^[0-9]*$/" />
+											<p:ajax global="false" event="blur" process="@this" />
+											<f:validator validatorId="camposValidator"/>
+											<f:attribute name="tipoValidacion" value="C"/>
+										</p:inputMask>
+									</div>
+
+									<div class="clear-row"></div>
+
+									<!-- Número Registral -->
+
+									<div class="row-flex">
+
+										<div class="grid_7">
+											<p:outputLabel for="numRegistral" id="numRegistralLabel"
+												value="Nº registral"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="numRegistral" maxlength="45"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.numRegistral}">
+												<pe:keyFilter regEx="/^[0-9]*$/" />
+												<p:ajax global="false" event="blur" process="@this" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<!-- Tomo -->
+										<div class="grid_7">
+											<p:outputLabel for="tomo" id="tomoLabel" value="Tomo"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="tomo" maxlength="45"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.tomo}">
+												<pe:keyFilter regEx="/^[0-9]*$/" />
+												<p:ajax global="false" event="blur" process="@this" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<!-- Libro -->
+										<div class="grid_7">
+											<p:outputLabel for="libro" id="libroLabel" value="Libro"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="libro" maxlength="45"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.libro}">
+												<pe:keyFilter regEx="/^[0-9]*$/" />
+												<p:ajax global="false" event="blur" process="@this" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<!-- Folio -->
+										<div class="grid_7">
+											<p:outputLabel for="folio" id="folioLabel" value="Folio"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="folio" maxlength="45"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.folio}">
+												<pe:keyFilter regEx="/^[0-9]*$/" />
+												<p:ajax global="false" event="blur" process="@this" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<!-- Número de inscripción -->
+										<div class="grid_6">
+											<p:outputLabel for="numInscripcion" id="numInscripcionLabel"
+												value="Nº de inscripción"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="numInscripcion" maxlength="45"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.numInscripcion}">
+												<pe:keyFilter regEx="/^[0-9]*$/" />
+												<p:ajax global="false" event="blur" process="@this" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+
+										</div>
+
+										<!-- Finca -->
+										<div class="grid_6">
+											<p:outputLabel for="finca" id="fincaLabel" value="Terreno"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="finca" maxlength="45"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.finca}">
+												<pe:keyFilter regEx="/^[0-9]*$/" />
+												<p:ajax global="false" event="blur" process="@this" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<!-- Fecha de expedición -->
+										<div class="grid_8">
+											<p:message for="fechaExpedicion" id="fechaExpedicionMsg"
+												display="icon" />
+											<p:outputLabel for="fechaExpedicion"
+												value="Fecha de expedición"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:calendar id="fechaExpedicion"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.fechaExpedicion}"
+												showOn="button" locale="es"
+												maxdate="#{personaMoralController.currentDate}"
+												pattern="dd/MM/yyyy" mask="true">
+												<f:attribute name="beginDate"
+													value="#{FechaUtils.fechaMinima}" />
+												<f:attribute name="endDate"
+													value="#{personaMoralController.currentDate}" />
+												<f:validator validatorId="dateRangeValidator" />
+												<p:ajax global="false" event="change"
+													process="fechaExpedicion fechaExpedicionMsg"
+													partialSubmit="true" />
+												<p:ajax global="false" event="dateSelect"
+													process="fechaExpedicion fechaExpedicionMsg"
+													partialSubmit="true" />
+											</p:calendar>
+											<pe:keyFilter for="fechaExpedicion"></pe:keyFilter>
+										</div>
+
+									</div>
+
+								</p:fieldset>
+
+								<!-- Tab de Poder Legal -->
+								<p:fieldset legend="Poder legal" toggleable="false"
+									collapsed="false">
+
+									<!-- Fecha de alta -->
+									<div class="grid_8">
+										<p:message for="fechaAlta" id="fechaAltaMsg" display="icon" />
+										<p:outputLabel for="fechaAlta" value="Fecha de alta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:calendar id="fechaAlta"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.fechaAlta}"
+											showOn="button" locale="es"
+											maxdate="#{personaMoralController.currentDate}"
+											pattern="dd/MM/yyyy" mask="true">
+											<f:attribute name="beginDate"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.fechaConstitucion}" />
+											<f:attribute name="endDate"
+												value="#{personaMoralController.currentDate}" />
+											<f:validator validatorId="dateRangeValidator"
+												disabled="#{param['disableValidation']==true}" />
+											<p:ajax global="false" event="change"
+												process="fechaAlta,fechaBaja"
+												update="fechaAlta,fechaAltaMsg,fechaBaja"
+												partialSubmit="true" />
+											<p:ajax global="false" event="dateSelect"
+												process="fechaAlta,fechaBaja"
+												update="fechaAlta,fechaAltaMsg,fechaBaja"
+												partialSubmit="true" />
+										</p:calendar>
+										<pe:keyFilter for="fechaAlta"></pe:keyFilter>
+									</div>
+
+									<!-- Fecha de baja -->
+									<div class="grid_8">
+										<p:message for="fechaBaja" id="fechaBajaMsg" display="icon" />
+										<p:outputLabel for="fechaBaja" value="Fecha de baja"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:calendar id="fechaBaja"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.fechaBaja}"
+											showOn="button" locale="es"
+											maxdate="#{personaMoralController.currentDate}"
+											pattern="dd/MM/yyyy" mask="true">
+											<f:attribute name="beginDate"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.fechaAlta}" />
+											<f:validator validatorId="dateRangeValidator" />
+											<p:ajax global="false" event="change"
+												process="fechaAlta,fechaBaja"
+												update="fechaAlta,fechaAltaMsg,fechaBaja"
+												partialSubmit="true" />
+											<p:ajax global="false" event="dateSelect"
+												process="fechaAlta,fechaBaja"
+												update="fechaAlta,fechaAltaMsg,fechaBaja,fechaBajaMsg"
+												partialSubmit="true" />
+										</p:calendar>
+										<pe:keyFilter for="fechaBaja"></pe:keyFilter>
+									</div>
+
+									<!-- Observaciones -->
+									<div class="grid_32">
+										<p:outputLabel for="observaciones" id="observacionesLabel"
+											value="Observaciones"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="observaciones"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.observacionesPoderLegal}"
+											maxlength="60" onblur="value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+											<f:validator validatorId="camposValidator"/>
+											<f:attribute name="tipoValidacion" value="A"/>
+										</p:inputMask>
+									</div>
+
+									<div class="clear-row"></div>
+
+								</p:fieldset>
+
+								<!-- Tab de Capital Social -->
+								<p:fieldset legend="Capital social" toggleable="false"
+									collapsed="false">
+
+									<!-- Capital Social -->
+									<div class="grid_12">
+										<p:outputLabel for="importeCapitalSocial"
+											id="importeCapitalSocialLabel" value="Importe"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber id="importeCapitalSocial" maxlength="16"
+											minValue="0" maxValue="9999999999999.99" decimalPlaces="2"
+											decimalSeparator="." thousandSeparator=","
+											styleClass="pe-inputNumber" placeholder="Importe"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.importeCapitalSocial}">
+										</pe:inputNumber>
+										<pe:keyFilter regEx="/[\d\.]/" for="importeCapitalSocial"/>
+										<span class="pe-inputNumber-suffix">MXN</span>
+									</div>
+
+									<!-- Distribución -->
+									<div class="grid_36">
+										<p:outputLabel for="distribucion" id="distribucionLabel"
+											value="Distribución"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="distribucion"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.distribucion}"
+											maxlength="60" onblur="value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+											<f:validator validatorId="camposValidator"/>
+											<f:attribute name="tipoValidacion" value="A"/>
+										</p:inputMask>
+									</div>
+
+									<div class="clear-row"></div>
+
+								</p:fieldset>
+
+								<!-- Tab de Otros Datos -->
+								<p:fieldset legend="Otros Datos" toggleable="false"
+									collapsed="false">
+
+									<!-- Idioma -->
+									<div class="grid_8">
+										<p:outputLabel for="idioma" id="idiomaLabel" value="Idioma"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="idioma"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.idioma}">
+											<f:selectItem itemValue="#{null}"
+												itemLabel="Seleccione un valor" noSelectionOption="true"
+												itemDisabled="true" />
+											<f:selectItems
+												value="#{catalogoUtils.getCatalogo('TP_IDIOM_PERS')}"
+												var="item" itemValue="#{item.claveFila}"
+												itemLabel="#{item.descripcionL}" />
+										</p:selectOneMenu>
+									</div>
+
+									<div class="grid_32">
+										<div class="grid_48">
+											<p:outputLabel value="Correspondencia"></p:outputLabel>
+										</div>
+										<div class="clear-3"></div>
+										<div class="grid_10">
+											<p:selectBooleanCheckbox styleClass="centrado-vertical"
+												id="noPublicidad"
+												value="#{personaMoralController.personaMoralBean.constitucionBean.noPublicidad}" />
+											<h:outputLabel styleClass="centrado-vertical"
+												value="No publicidad" />
+										</div>
+
+										<h:panelGroup id="panelOficina">
+											<div class="grid_10">
+												<p:selectBooleanCheckbox styleClass="centrado-vertical"
+													id="oficina"
+													value="#{personaMoralController.personaMoralBean.constitucionBean.correspondencia}">
+													<p:ajax global="false" event="change"
+														listener="#{personaMoralController.actualizarOficina()}"
+														update=":formAltaMoral:panelOficina" />
+													<f:param name="disableValidation" value="true" />
+												</p:selectBooleanCheckbox>
+												<h:outputLabel styleClass="centrado-vertical"
+													value="En la Oficina" />
+											</div>
+
+											<div class="grid_28">
+												<h:panelGroup id="oficinaNumPanelActivo"
+													rendered="#{personaMoralController.personaMoralBean.constitucionBean.correspondencia}">
+													<b:autoComplete id="oficinaNum"
+														placeholder="Número de oficina"
+														value="#{personaMoralController.centroSelected}"
+														disabled="#{!personaMoralController.personaMoralBean.constitucionBean.correspondencia}"
+														maxlength="60" catalogSource="catalogoCentrosLoaderTask"
+														var="item" itemLabel="#{item.descripcionL}"
+														itemValue="#{item}" converter="catalogoConverter"
+														forceSelection="true"
+														required="#{param['disableValidation']==null}"
+														onblur="value=value.toUpperCase()">
+														<p:ajax event="query" global="false"></p:ajax>
+													</b:autoComplete>
+													<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" for="oficinaNum" />
+												</h:panelGroup>
+												<h:panelGroup id="oficinaNumPanelInactivo"
+													rendered="#{!personaMoralController.personaMoralBean.constitucionBean.correspondencia}">
+													<b:autoComplete id="oficinaNumInac"
+														placeholder="Número de oficina"
+														value="#{personaMoralController.centroSelected}"
+														disabled="#{!personaMoralController.personaMoralBean.constitucionBean.correspondencia}"
+														maxlength="60" catalogSource="catalogoCentrosLoaderTask"
+														var="item" itemLabel="#{item.descripcionL}"
+														itemValue="#{item}" converter="catalogoConverter"
+														forceSelection="true"
+														required="#{param['disableValidation']==null}">
+														<p:ajax event="query" global="false"></p:ajax>
+													</b:autoComplete>
+												</h:panelGroup>
+											</div>
+										</h:panelGroup>
+									</div>
+									<div class="clear-row"></div>
+
+									<!-- Distribución -->
+									<div class="grid_40">
+										<p:outputLabel for="observacionesmasDatos"
+											id="observacionesmasDatosLabel" value="Observaciones"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="observacionesmasDatos"
+											value="#{personaMoralController.personaMoralBean.constitucionBean.observaciones}"
+											maxlength="60" onblur="value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+											<f:validator validatorId="camposValidator"/>
+											<f:attribute name="tipoValidacion" value="A"/>
+										</p:inputMask>
+									</div>
+
+								</p:fieldset>
+
+							</div>
+							<div class="wiz-siguiente">
+								<!--aqui va el boton de "paso siguiente" del wizard-->
+								<p:commandButton icon="ui-icon-arrow-1-e" id="siguiente"
+									action="#{personaMoralController.irCedulaConocimientoDesdeConstitucion()}"
+									ajax="true" update="formAltaMoral">
+								</p:commandButton>
+							</div>
+						</div>
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion ne true}">
+							<p:commandButton styleClass="btn_secundario margin-top-10 push_1"
+								id="cancelarA" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarAlta').show();" />
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion eq true}">
+							<p:commandButton styleClass="btn_secundario margin-top-10 push_1"
+								id="cancelarM" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarModificacion').show();" />
+						</h:panelGroup>
+
+						<ui:include src="../store.xhtml">
+							<ui:param name="storeBean" value="#{personaMoralController}" />
+						</ui:include>
+
+					</h:form>
+				</div>
+
+				<p:dialog widgetVar="dlgRegistrales" id="dlgRegistrales"
+					appendTo="@(body)" modal="true" visible="false" closable="false"
+					resizable="false" draggable="false" showEffect="fade"
+					hideEffect="fade">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal-->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="Debe informar tipo de registro y municipio si incluye dirección registral." />
+					<div class="clear"></div>
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="aceptarFinA" value="Aceptar" immediate="true"
+						onclick="PF('dlgRegistrales').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgCancelarModificacion"
+					id="dlgCancelarModificacion" appendTo="@(body)"
+					header="Cancelar Modificación de persona moral" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atención! Está a punto de cancelar la modificación de persona moral" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarModificacion').hide();" id="VolverM" -->
+<!-- 						value="Continuar con la modificación" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartarM" value="No guardar" immediate="true" -->
+<!-- 						action="#{personaMoralController.botonCancelar()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardarM" value="Guardar" onclick="return storeData();" /> -->
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta"
+					appendTo="@(body)" header="Cancelar Alta de persona moral"
+					modal="true" visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atencion! Está a punto de cancelar el alta de persona moral" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarAlta').hide();" id="Volver" -->
+<!-- 						value="Continuar con el alta" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartar" value="No guardar" immediate="true" -->
+<!-- 						action="#{personaMoralController.botonCancelar()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardar" value="Guardar" onclick="return storeData();" /> -->
+
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+				</p:dialog>
+
+			</div>
+			<!--termina container 48-->
+		</h:body>
+	</ui:define>
+</ui:composition>

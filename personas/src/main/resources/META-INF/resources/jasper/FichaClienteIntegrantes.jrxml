@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FichaClienteIntegrantes" columnCount="2" printOrder="Horizontal" pageWidth="760" pageHeight="595" orientation="Landscape" columnWidth="380" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4c9a27fc-97c3-4912-927e-6c9458b8c52b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="fechaNacimiento" class="java.util.Date"/>
+	<field name="domicilios" class="java.util.List"/>
+	<field name="nombreCompleto" class="java.lang.String"/>
+	<field name="numIdentificacion" class="java.lang.String"/>
+	<field name="tipoIdentificacion" class="java.lang.String"/>
+	<field name="lugarNacimiento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="243" splitType="Immediate">
+			<rectangle>
+				<reportElement x="-1" y="5" width="371" height="225" backcolor="#E6E3E3" uuid="1d91407e-338d-460d-a916-af5e0d96af5f"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="20" uuid="8f1b574a-1435-4b97-bbb9-652efc92a2ca"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="161" width="160" height="20" uuid="1d1a22b2-db73-478c-930d-f6f021dae82a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Lugar de nacimiento:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="100" width="360" height="20" uuid="52b6a0a4-9bce-4b56-ac09-bcc31e99af09"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[!$F{domicilios}.isEmpty()? $F{domicilios}.get(0).toString(): ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="160" height="20" uuid="213a5389-5bbf-4fc6-9a84-b60f319bfd71"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[NIF:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="180" width="360" height="20" uuid="aa815f84-cd5e-400c-84d0-4f9ce53e353c"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lugarNacimiento}.isEmpty()? "DESCONOCIDO": $F{lugarNacimiento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="80" width="160" height="20" uuid="69cec5ba-5934-40f7-b53a-514c3877e0e8"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Domicilio Fiscal:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="160" height="20" uuid="dd8cd2c0-4310-4f9e-b73f-0ee531281aed"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha de nacimiento:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="60" width="360" height="20" uuid="020bb9bb-5e2f-4b59-bdd4-f9b03cda16dc"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoIdentificacion} + $F{numIdentificacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="200" width="160" height="20" uuid="a531bda8-7293-4a9a-bab7-792a4785aa08"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Profesión y actividades:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="140" width="360" height="20" uuid="823a3e32-62c5-47c1-9bb1-002b6fc5a7a1"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaNacimiento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="20" width="360" height="20" uuid="7c2ce5db-c42b-47f1-a6a6-543a3aeea708"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreCompleto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

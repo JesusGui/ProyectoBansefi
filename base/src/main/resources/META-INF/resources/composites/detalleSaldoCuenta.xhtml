@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	
+    	<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" value="Imprimir" icon="ui-icon-print" action="#{bean[action]}"></p:commandButton>
+
+	<div class="clear margin-bottom-10"></div>
+
+	<div class="marco-componente">
+
+    <div class="margin-top-20"></div>
+
+    <div class="grid_22 push_1">
+        <div class="grid_48">
+            <h:outputLabel value="Número de cuenta:" />
+        </div>
+        <div class="clear"></div>
+        <div class="grid_48 detalle">
+            <h:outputText value="#{detalleCuentaUtils.numeroCuenta}" />
+        </div>
+        <div class="clear"></div>
+        <div class="grid_48">
+            <h:outputLabel value="Cliente:" />
+        </div>
+        <div class="clear"></div>
+        <div class="grid_48 detalle">
+            <!--  <h:outputText value="#{saldoCuenta.titular}" />-->
+             <h:outputText value="#{detalleCuentaUtils.nombreTitular}" />
+        </div>
+    </div>
+
+
+    <div class="grid_26 contenedor-totales pull_1">
+    <div class="clear-row"></div>
+
+        <div class="grid_20">
+            <h:outputLabel value="Saldo Contable:" />
+        </div>
+        <div class="grid_28">
+            <h:outputLabel value="#{saldoCuenta.saldoContable}">
+                <f:convertNumber pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN"/>
+            </h:outputLabel>
+        </div>
+        <div class="clear-row"></div>
+        <div class="grid_20">
+            <h:outputLabel value="Total Retenido:" />
+        </div>
+        <div class="grid_28">
+            <h:outputLabel value="#{saldoCuenta.totalRetenido}">
+                <f:convertNumber pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN"/>
+            </h:outputLabel>
+        </div>
+        <div class="clear-row"></div>
+        <div class="grid_48 saldo-disponible">
+            <div class="grid_20">
+                <h:outputLabel value="Saldo Disponible:" />
+            </div>
+            <div class="grid_28">
+                <h:outputLabel value="#{saldoCuenta.disponible}">
+                    <f:convertNumber pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN"/>
+            </h:outputLabel>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+    </div>
+
+    <div class="clear-row"></div>
+
+</div>
+
+</ui:composition>

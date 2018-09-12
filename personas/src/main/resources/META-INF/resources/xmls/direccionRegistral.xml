@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="consultaDireccionReg" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.listadireccionesregistralespersona.ResponseBansefi.OTRDRREGLSCNSTRNO.TRDRREGLSCNSEVTZ.TRDRREGLSCNSEVTV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.DireccionRegistralBean
+		</class-b>
+		<field>
+			<a>nomblocalidadag</a>
+			<b>nombreLocalidad</b>
+		</field>
+		<field>
+			<a>codrgstro</a>
+			<b>codDatoResgistral</b>
+		</field>
+		<field>
+			<a>numrgstro</a>
+			<b>numRegistro</b>
+		</field>
+		<field>
+			<a>numdir</a>
+			<b>numDir</b>
+		</field>
+	</mapping>
+	<mapping map-id="consultaDetalleDireccionReg" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultadetalledirecregistralpersona.ResponseBansefi.OTRDRRGSTROCNSTRNO.TRDRRGSTROCNSEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.DireccionRegistralBean
+		</class-b>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="02">
+			<a>drcomprgstrov</a>
+			<b>tomo</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="03">
+			<a>drcomprgstrov</a>
+			<b>libro</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="04">
+			<a>drcomprgstrov</a>
+			<b>folio</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="01">
+			<a>drcomprgstrov</a>
+			<b>numRegistral</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="06">
+			<a>drcomprgstrov</a>
+			<b>finca</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="05">
+			<a>drcomprgstrov</a>
+			<b>numInscripcion</b>
+		</field>
+		
+	</mapping>
+	<mapping map-id="mantenimientoDireccionReg" wildcard="false"
+		map-null="false"  map-empty-string="true" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.DireccionRegistralBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.mantenimientodireccionesregistrales.Ejecutar.ITRDRREGMNTTRNI.TRDRREGMNTTRNY.DRRGSTROV2
+		</class-b>
+		<field>
+			<a>actionType</a>
+			<b>actiontype</b>
+		</field>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codDatoResgistral</a>
+			<b>codrgstro</b>
+		</field>
+		<field>
+			<a>numRegistro</a>
+			<b>numrgstro</b>
+		</field>
+		<field>
+			<a>localidad.numArGeo</a>
+			<b>numargeo</b>
+		</field>
+		<field>
+			<a>localidad.codArGeo</a>
+			<b>codargeo</b>
+		</field>
+	</mapping>
+	<mapping map-id="mantenimientoDetalleDireccionReg" wildcard="false"
+		map-null="false" map-empty-string="true" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.DireccionRegistralBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.mantenimientodireccionesregistrales.Ejecutar.ITRDRREGMNTTRNI.TRDRREGMNTTRNY
+		</class-b>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="02">
+			<a>tomo</a>
+			<b>drcomprgstrov2</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="03">
+			<a>libro</a>
+			<b>drcomprgstrov2</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="04">
+			<a>folio</a>
+			<b>drcomprgstrov2</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="01">
+			<a>numRegistral</a>
+			<b>drcomprgstrov2</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="06">
+			<a>finca</a>
+			<b>drcomprgstrov2</b>
+		</field>
+		
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.personas.utils.DetalleDireccionRegistralConverter"
+			custom-converter-param="05">
+			<a>numInscripcion</a>
+			<b>drcomprgstrov2</b>
+		</field>
+	</mapping>
+</mappings>

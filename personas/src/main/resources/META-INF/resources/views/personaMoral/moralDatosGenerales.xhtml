@@ -1,0 +1,570 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:outputScript name="/js/personas.js" />
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formAltaMoral" styleClass="contenedor-form">
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion ne true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<!--botón volver al dashboard-->
+
+								<h:panelGroup
+									rendered="#{personaMoralController.esModificacion ne true}">
+									<p:commandButton immediate="true" icon="ui-icon-arrow-1-w" title="Regresar"
+										onclick="PF('dlgCancelarAlta').show();" />
+								</h:panelGroup>
+
+								
+								<h1>Alta de persona moral</h1>
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion eq true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<h:panelGroup
+									rendered="#{personaMoralController.esModificacion eq true}">
+									<p:commandButton immediate="true" icon="ui-icon-arrow-1-w" title="Regresar"
+										onclick="PF('dlgCancelarModificacion').show();" />
+								</h:panelGroup>
+								<div>
+									<h2 class="gris-b">Modificación de</h2>
+									<h2 class="azul-b">#{personaMoralController.personaMoralBean.razonSocial}
+									</h2>
+									<h3 class="gris-b">(#{personaMoralController.obtenerDescripcionTpDoc()}
+										#{personaMoralController.personaMoralBean.numIdentificacion})</h3>
+								</div>
+							</div>
+						</h:panelGroup>
+
+						<div class="wiz-pasos">
+							<p:commandButton id="anteriorCab1" value="Datos Generales"
+								styleClass="activo" />
+							<p:commandButton id="anteriorCab2" value="Datos de constitución"
+								action="#{personaMoralController.irDatosConstitucion()}"
+								ajax="true" onclick="acordionMoral()"
+								update="formAltaMoral :dlgEliminados"
+								styleClass="inactivo">
+							</p:commandButton>
+							<p:commandButton value="Cédula de conocimiento"
+								action="#{personaMoralController.irCedulaConocimiento()}"
+								ajax="true" disabled="true" update="formAltaMoral"
+								styleClass="inactivo">
+							</p:commandButton>
+						</div>
+						<!--contenedor del wizard-->
+						<div class="wiz-contenedor">
+							<div class="contenedor-campos">
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios"></p:outputLabel>
+								<div class="margin-top-10"></div>
+								<h:outputLabel styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+								<p:messages for="formCliente" showIcon="false"
+									rendered="#{facesContext.validationFailed}"/>
+								<p:accordionPanel widgetVar="accordionMoral1" multiple="true"
+									dynamic="true" id="datosGenerales" activeIndex="0,1">
+									<!-- Tab de Datos Generales -->
+									<p:tab title="Datos Generales">
+										<!-- Razón social -->
+										<div class="grid_36">
+											<p:outputLabel for="razonSocial" id="razonSocialLabel"
+												value="Razón Social"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="razonSocial"
+												value="#{personaMoralController.personaMoralBean.razonSocial}"
+												maxlength="50"
+												required="#{param['disableValidation']==null}">
+												<f:param name="disableValidation" value="true" />
+												<pe:keyFilter preventPaste="true"/>
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="A"/>
+												<p:ajax global="false" onstart="value=value.toUpperCase()" process="@form"
+													event="change" listener="#{personaMoralController.validarClienteExistente()}" 
+													update=":dlgEliminados :dlgRedireccion">
+												</p:ajax>
+											</p:inputMask>
+										</div>
+
+										<!-- Razón alta -->
+										<div class="grid_12">
+											<p:outputLabel for="razonAlta" id="razonAltaLabel"
+												value="Razón de alta"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="razonAlta"
+												value="#{personaMoralController.personaMoralBean.razonAlta}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true"
+													itemDisabled="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_RZN_ALTA_PERS')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="row-flex">
+
+											<!-- Tipo de Identificación -->
+
+											<div class="grid_20">
+
+												<div class="grid_28 alpha">
+													<p:outputLabel for="tipoIdentificacion"
+														id="tipoIdentificacionLabel" value="Identificación"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:selectOneMenu id="tipoIdentificacion"
+														value="#{personaMoralController.personaMoralBean.tipoIdentificacion}"
+														required="#{param['disableValidation']==null}">
+														<f:param name="disableValidation" value="true" />
+														<f:selectItem itemLabel="Seleccione un valor"
+															itemDisabled="true" />
+														<f:selectItems var="codigo"
+															value="#{personaMoralController.tiposIdentificacion}"
+															itemLabel="#{codigo.descripcionL}"
+															itemValue="#{codigo.claveFila}" />
+														<p:ajax global="false" event="change" partialSubmit="true" process="@form"
+															listener="#{personaMoralController.validarClienteExistente()}" update=":dlgEliminados :dlgRedireccion" />
+													</p:selectOneMenu>
+												</div>
+
+												<!-- Numero de identificacion -->
+												<div class="grid_20 omega float-right">
+													<div class="label-vacio"></div>
+													<div class="clear-3"></div>
+													<p:inputMask id="numIdentificacion"
+														value="#{personaMoralController.personaMoralBean.numIdentificacion}"
+														maxlength="14"
+														required="#{param['disableValidation']==null}"
+														placeholder="Número">
+														<f:param name="disableValidation" value="true" />
+														<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+														<f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+														<p:ajax global="false" onstart="value=value.toUpperCase()" process="@form"
+															event="change" listener="#{personaMoralController.validarClienteExistente()}" 
+															update=":dlgEliminados :dlgRedireccion">
+														</p:ajax>
+													</p:inputMask>
+												</div>
+
+											</div>
+
+											<!-- RFC -->
+											<div class="grid_8">
+												<p:message id="rfcVal" for="rfc" display="icon"></p:message>
+												<p:outputLabel for="rfc" id="rfcLabel" value="RFC"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputText id="rfc"
+													value="#{personaMoralController.personaMoralBean.rfc}"
+													maxlength="12"
+													required="#{param['disableValidation']==null}"
+													requiredMessage="" onblur="value=value.toUpperCase()">
+													<f:validator binding="#{personaMoralRFCValidator}" />
+													<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ ]*$/" />
+												</p:inputText>
+											</div>
+
+											<!-- País de Residencia -->
+											<div class="grid_8">
+												<p:outputLabel for="paisResidencia" id="paisResidenciaLabel"
+													value="País de residencia"></p:outputLabel>
+												<div class="clear-3"></div>
+												<b:autoComplete id="paisResidencia"
+													value="#{personaMoralController.paisResidenciaSelected}"
+													maxlength="50" catalogSource="catalogoPaisesUtils"
+													var="item" itemLabel="#{item.descripcionL}"
+													itemValue="#{item}" converter="catalogoConverter"
+													forceSelection="true"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<p:ajax global="false" event="blur" process="@this" />
+													<p:ajax event="query" global="false"></p:ajax>
+												</b:autoComplete>
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" for="paisResidencia" />
+											</div>
+
+											<!-- Sector -->
+											<div class="grid_10">
+												<p:outputLabel for="sector" id="sectorLabel" value="Sector"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneRadio id="sector"
+													value="#{personaMoralController.personaMoralBean.sector}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="2" itemLabel="Privado"
+														selected="true" />
+													<f:selectItem itemValue="1" itemLabel="Público" />
+												</p:selectOneRadio>
+											</div>
+
+										</div>
+
+										<!-- Estructura legal -->
+										<div class="grid_20">
+											<p:outputLabel for="estructuraLegal"
+												id="estructuraLegalLabel" value="Estructura Legal"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="estructuraLegal"
+												value="#{personaMoralController.personaMoralBean.estructuraLegal}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemLabel="Seleccione un valor"
+													itemDisabled="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_ESTRCT_LGL_ORG')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="grid_28">
+											<p:outputLabel for="cnae" id="cnaeLabel" value="CNAE"></p:outputLabel>
+											<div class="clear-3"></div>
+											<b:autoComplete id="cnae"
+												value="#{personaMoralController.cnaeSelected}"
+												maxlength="60" catalog="TP_CNAE_PERS" var="item"
+												itemLabel="#{item.descripcionL}" itemValue="#{item}"
+												converter="catalogoConverter" forceSelection="true"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<p:ajax event="query" global="false"></p:ajax>
+											</b:autoComplete>
+											<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" for="cnae"/>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<!-- Disponibilidad Bursátil -->
+										<div class="contenedor-fijo-formulario">
+											<p:outputLabel for="disponibilidadBursatil"
+												id="disponibilidadBursatilLabel"
+												value="Disponibilidad bursátil"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneRadio id="disponibilidadBursatil"
+												value="#{personaMoralController.personaMoralBean.disponibilidadBursatil}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="D" itemLabel="Desconocido"
+													selected="true" />
+												<f:selectItem itemValue="C" itemLabel="Cotiza" />
+												<f:selectItem itemValue="N" itemLabel="No cotiza" />
+											</p:selectOneRadio>
+										</div>
+
+										<!-- Ambito (Internacional o Nacional) -->
+										<div class="grid_12">
+											<p:outputLabel for="ambito" id="ambitoLabel" value="Ámbito"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="ambito"
+												value="#{personaMoralController.personaMoralBean.ambito}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemLabel="Seleccione un valor"
+													itemDisabled="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_AMBTO_ORG')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="contenedor-fijo-formulario">
+											<div class="float-left margin-left-10 margin-right-10">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<p:selectBooleanCheckbox styleClass="centrado-vertical"
+													id="importador"
+													value="#{personaMoralController.personaMoralBean.importador}" />
+												<h:outputLabel styleClass="centrado-vertical"
+													value="Importador" />
+											</div>
+
+											<div class="float-left margin-left-10">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<p:selectBooleanCheckbox styleClass="centrado-vertical"
+													id="exportador"
+													value="#{personaMoralController.personaMoralBean.exportador}" />
+												<h:outputLabel styleClass="centrado-vertical"
+													value="Exportador" />
+											</div>
+										</div>
+										<div class="clear-row"></div>
+										<!-- Situación Económica -->
+										<div class="grid_12">
+											<p:outputLabel for="situacionEconomica"
+												id="situacionEconomicaLabel" value="Situación económica"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="situacionEconomica"
+												value="#{personaMoralController.personaMoralBean.situacionEconomica}">
+												<p:ajax global="false" event="change"
+													update="situacionEconomica" />
+												<f:selectItem itemLabel="Seleccione un valor"
+													itemDisabled="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_SIT_ECON_PERS')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="clear-row"></div>
+
+									</p:tab>
+									<!-- Datos de Domicilio -->
+									<p:tab title="Domicilio">
+
+										<!-- Comprobante de domicilio -->
+
+										<div class="row-flex">
+
+											<h:panelGroup
+												rendered="#{personaMoralController.esModificacion ne true}">
+												<div class="grid_16">
+													<p:outputLabel for="comprobanteDomicilio"
+														id="comprobanteDomicilioLabel"
+														value="Comprobante de domicilio"></p:outputLabel>
+													<div class="clear"></div>
+													<p:selectOneMenu id="comprobanteDomicilio"
+														value="#{personaMoralController.personaMoralBean.domicilios[0].comprobanteDomicilio}"
+														required="#{param['disableValidation']==null}">
+														<f:selectItem itemLabel="Seleccione un valor"
+															itemDisabled="true" />
+														<f:selectItems var="codigo"
+															value="#{personaMoralController.comprobantesDomicilio}"
+															itemLabel="#{codigo.descripcionL}"
+															itemValue="#{codigo.claveFila}" />
+													</p:selectOneMenu>
+												</div>
+
+												<!-- Descripción del comprobante -->
+												<div class="grid_14">
+													<p:outputLabel for="descripcion" value="Descripción"></p:outputLabel>
+													<p:inputMask id="descripcion"
+														value="#{personaMoralController.personaMoralBean.domicilios[0].descripcion}"
+														maxlength="60"
+														required="#{param['disableValidation']==null}"
+														onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+														<f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+													</p:inputMask>
+												</div>
+											</h:panelGroup>
+
+											<!-- Régimen Ocupacional -->
+											<div class="grid_10">
+												<p:outputLabel for="regimenOcupacion"
+													value="Régimen de Ocupación"></p:outputLabel>
+												<p:selectOneMenu id="regimenOcupacion"
+													value="#{personaMoralController.personaMoralBean.domicilios[0].regimenOcupacion}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemLabel="Seleccione un valor"
+														itemDisabled="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_OCUPACION_VIV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<!-- Teléfono -->
+											<div class="grid_8">
+												<p:outputLabel for="telefono" value="Teléfono"></p:outputLabel>
+												<p:inputMask id="telefono"
+													value="#{personaMoralController.personaMoralBean.domicilios[0].telefono}"
+													maxlength="12"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[0-9]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="C"/>
+												</p:inputMask>
+											</div>
+
+										</div>
+
+										<componente:domicilio controller="#{personaMoralController}"
+											codigoPostalRequerido="#{param['disableValidation']==null}"
+											municipioRequerido="#{param['disableValidation']==null}"
+											estadoRequerido="#{param['disableValidation']==null}"
+											paisRequerido="#{param['disableValidation']==null}"
+											tipoCalleRequerido="#{param['disableValidation']==null}"
+											calleRequerido="#{param['disableValidation']==null}"
+											numExtRequerido="#{param['disableValidation']==null}"
+											coloniaRequerido="#{param['disableValidation']==null}"
+											estadoReadOnly="#{param['disableValidation']==null}"
+											paisReadOnly="#{param['disableValidation']==null}">
+											<f:param name="disableValidation" value="true" />
+										</componente:domicilio>
+									</p:tab>
+									<!-- Fin Tabs -->
+
+								</p:accordionPanel>
+							</div>
+							<div class="wiz-siguiente">
+								<!--aqui va el boton de "paso siguiente" del wizard-->
+								<p:commandButton icon="ui-icon-arrow-1-e" id="siguiente"
+									title="Siguiente"
+									action="#{personaMoralController.irDatosConstitucion()}"
+									onclick="acordionMoral()" ajax="true"
+									update="formAltaMoral :dlgEliminados">
+								</p:commandButton>
+							</div>
+						</div>
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion ne true}">
+							<p:commandButton styleClass="btn_secundario  margin-top-10"
+								id="cancelarA" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarAlta').show();" />
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{personaMoralController.esModificacion eq true}">
+							<p:commandButton styleClass="btn_secundario margin-top-10"
+								id="cancelarM" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarModificacion').show();" />
+						</h:panelGroup>
+
+						<ui:include src="../store.xhtml">
+							<ui:param name="storeBean" value="#{personaMoralController}" />
+						</ui:include>
+
+						<p:dialog widgetVar="dlgAltaClienteExistente"
+							id="dlgAltaClienteExistente" appendTo="@(body)"
+							header="Aviso cliente ya existente" modal="true" visible="false"
+							closable="false" resizable="false" draggable="false"
+							showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="¡Atención! Está intentando dar de alta a un cliente ya existente" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								onclick="PF('dlgAltaClienteExistente').hide();" id="VolverAlta1"
+								value="Aceptar" immediate="true" />
+						</p:dialog>
+
+					</h:form>
+				</div>
+
+				<p:dialog widgetVar="dlgEliminados" id="dlgEliminados"
+					appendTo="@(body)" dynamic="true" modal="true" showEffect="fade"
+					hideEffect="fade" visible="#{personaMoralController.dialogoGuardado.mostrar}"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="#{personaMoralController.dialogoGuardado.mensaje}." />
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						update="formAltaMoral" value="Aceptar" onclick="PF('dlgEliminados').hide();" />
+				</p:dialog>
+				
+				<p:dialog widgetVar="dlgRedireccion" id="dlgRedireccion"
+					appendTo="@(body)" dynamic="true" modal="true" showEffect="fade"
+					hideEffect="fade" visible="#{personaMoralController.mensajeRedireccion.mostrar}"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="#{personaMoralController.mensajeRedireccion.mensaje}." />
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						update="formAltaMoral" value="Aceptar" action="#{personaMoralController.redireccionarBusqueda()}" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgCancelarModificacion"
+					id="dlgCancelarModificacion" appendTo="@(body)"
+					header="Cancelar Modificación de persona moral" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atención! Está a punto de cancelar la modificación de persona moral" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarModificacion').hide();" id="VolverM" -->
+<!-- 						value="Continuar con la modificación" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartarM" value="No guardar" immediate="true" -->
+<!-- 						action="#{personaMoralController.botonCancelar()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardarM" value="Guardar" onclick="return storeData();" /> -->
+
+					<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta"
+					appendTo="@(body)" header="Cancelar Alta de persona moral"
+					modal="true" visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atencion! Está a punto de cancelar el alta de persona moral" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarAlta').hide();" id="Volver" -->
+<!-- 						value="Continuar con el alta" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartar" value="No guardar" immediate="true" -->
+<!-- 						action="#{personaMoralController.botonCancelar()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardar" value="Guardar" onclick="return storeData();" /> -->
+
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+				</p:dialog>
+
+			</div>
+			<!--termina container 48-->
+		</h:body>
+	</ui:define>
+
+</ui:composition>

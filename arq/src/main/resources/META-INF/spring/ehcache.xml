@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+ 
+ 	<diskStore path="java.io.tmpdir"/>
+ 
+ 	<defaultCache
+        maxElementsInMemory="1000" 
+        eternal="false" 
+        overflowToDisk="false" 
+        memoryStoreEvictionPolicy="LFU"
+        timeToIdleSeconds="1200" 
+        timeToLiveSeconds="1200"  statistics="true">
+	 <persistence strategy="localTempSwap"/>
+    </defaultCache>
+    
+    <cache name="catalogoCache"       
+        maxBytesLocalHeap="10M"
+        eternal="true"    
+        memoryStoreEvictionPolicy="LFU"  
+        statistics="true">
+	    	<sizeOfPolicy maxDepth="500000000" maxDepthExceededBehavior="continue"/>
+	    	<persistence strategy="localTempSwap"/>
+    </cache>
+    
+     <cache name="catalogoGeoCache"       
+        maxBytesLocalHeap="60M"
+        eternal="true"    
+        memoryStoreEvictionPolicy="LFU"  
+        statistics="true">
+	    	<sizeOfPolicy maxDepth="500000000" maxDepthExceededBehavior="continue"/>
+	    	<persistence strategy="localTempSwap"/>
+    </cache>
+    
+    
+    
+</ehcache>         

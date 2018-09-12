@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!-- Parametros -->
+	<ui:param name="controller" value="#{anulacionConstitucionController}" />
+	<ui:param name="bean" value="#{controller.cuentaBean}" />
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="form" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{controller.volver()}"></p:commandButton>
+							<h1>Anular constituación de #{bean.tipoCuenta}
+								(#{bean.numeroCuenta})</h1>
+						</div>
+						<div class="contenedor-campos">
+							<p:dataTable
+								value="#{controller.consultaAnulacionCuentaBean.listaApuntes}"
+								var="consulta">
+								<p:column headerText="CONCEPTO">
+									<h:outputText value="#{consulta.concepto}" />
+								</p:column>
+								<p:column headerText="SIGNO">
+									<h:outputText
+										value="#{controller.imprimeSigno(consulta.tipoOperacion)}" />
+								</p:column>
+								<p:column headerText="IMPORTE FACTURADO">
+									<h:outputText value="#{consulta.importe}">
+										<f:convertNumber type="currency" groupingUsed="true"
+											maxFractionDigits="2" maxIntegerDigits="12"
+											minIntegerDigits="1" minFractionDigits="2" currencyCode="MXN" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" action="#{controller.volver()}" />
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Aceptar" action="#{controller.anularConstitucion()}" />
+					</h:form>
+				</div>
+
+				<!--
+plantilla de ventana de di�logo
+-->
+
+				<p:dialog id="dlgRespuestaCambio" widgetVar="dlgRespuestaCambio"
+					appendTo="@(body)" closable="false" dynamic="true"
+					showEffect="fade" hideEffect="fade"
+					draggable="false" modal="true" resizable="false" header="Error">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="#controller.mensaje}" />
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="aceptarRespuesta" widgetVar="btnAceptarRespuesta"
+						update=":frmFichaCuenta"
+						onclick="PF('btnAceptarRespuesta').disable()"
+						oncomplete="PF('btnAceptarRespuesta').enable()" value="Aceptar"
+						action="#{controller.confirmaRespuesta()}" />
+				</p:dialog>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

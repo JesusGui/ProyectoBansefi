@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="form" styleClass="contenedor-form col-60">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo">
+							<!--bot�n atras-->
+							<p:commandButton action="#{detallePersonaController.regresar}"
+								icon="ui-icon-arrow-1-w"></p:commandButton>
+							<h1>Detalle Persona</h1>
+						</div>
+						<div class="contenedor-campos" id="contenedor">
+							<p:commandButton styleClass="btn-icono btn-impresion" icon="ui-icon-print"
+								onclick="printContenedorCamposId('contenedor');" />
+								
+							<div class="titulo-compuesto">
+								<h2 class="azul-b display-inlineflex">#{detallePersonaController.domicilioCompartidoBean.getTipoPersonaToString()}</h2>
+								<h2 class="rojo-b display-inlineflex">#{detallePersonaController.domicilioCompartidoBean.nombre}</h2>
+								<h3 class="gris-b display-inlineflex">#{detallePersonaController.getDomicilioCompartidoIdExternoToString()}</h3>
+							</div>
+							
+							<div class="clear-row"></div>
+							
+							<div class="marco-datospersonales">
+							<p:outputLabel
+								value="ID Interna: #{detallePersonaController.consultaMinimaPersonaBean.idInternoPersona}"></p:outputLabel>
+							<div class="margin-top-5"></div>
+							<!-- Persona fisica -->
+							<c:if test="#{detallePersonaController.domicilioCompartidoBean.isPersonaFisica()}">
+								<p:outputLabel
+									value="Sexo: #{detallePersonaController.consultaMinimaPersonaBean.getSexoToString()}"></p:outputLabel>
+								<div class="margin-top-5"></div>
+								<p:outputLabel value="CNO: #{detallePersonaController.getCNO()}"></p:outputLabel>
+								<div class="margin-top-5"></div>
+								<p:outputLabel
+									value="Fecha de Nacimiento: #{detallePersonaController.consultaMinimaPersonaBean.getFechaNacCons()}"></p:outputLabel>
+								<div class="margin-top-5"></div>
+							</c:if>
+							<!-- /Persona Fisica -->
+
+							<!-- Persona moral -->
+							<c:if test="#{detallePersonaController.domicilioCompartidoBean.isPersonaMoral()}">
+								<p:outputLabel
+									value="Estructura legal: #{detallePersonaController.getEstructuraLegal()}"></p:outputLabel>
+								<div class="margin-top-5"></div>
+								<p:outputLabel
+									value="CNAE: #{detallePersonaController.getCNAE()}"></p:outputLabel>
+								<div class="margin-top-5"></div>
+								<p:outputLabel
+									value="Fecha de Constitución: #{detallePersonaController.consultaMinimaPersonaBean.getFechaNacCons()}"></p:outputLabel>
+								<div class="margin-top-5"></div>
+
+							</c:if>
+							<!-- /Persona moral -->
+
+							<p:outputLabel
+								value="Oficina: #{detallePersonaController.consultaMinimaPersonaBean.codigoOficina}"></p:outputLabel>
+							<div class="margin-top-5"></div>
+							<p:outputLabel
+								value="Teléfonos: #{detallePersonaController.consultaMinimaPersonaBean.getTelefonosToString()}"></p:outputLabel>
+								
+							</div>
+							
+							<div class="margin-top-10"></div>
+							
+							<h3 class="azul-b">#{detallePersonaController.tipoDomicilio()}:</h3>
+							
+							<div class="margin-top-10"></div>
+							
+							<div class="marco-datospersonales">
+							<p:outputLabel
+								value="Domicilio: #{detallePersonaController.consultaMinimaPersonaBean.domicilio}"></p:outputLabel>
+							<div class="margin-top-5"></div>
+							<p:outputLabel
+								value="CP: #{detallePersonaController.consultaMinimaPersonaBean.codigoPostal}"></p:outputLabel>
+							<div class="margin-top-5"></div>
+							<p:outputLabel
+								value="Municipio/Delegación/Localidad: #{detallePersonaController.consultaMinimaPersonaBean.nombreLocalidad}"></p:outputLabel>
+							<div class="margin-top-5"></div>
+							<p:outputLabel
+								value="Ciudad: #{detallePersonaController.consultaMinimaPersonaBean.nombreProvincia}"></p:outputLabel>
+							<div class="margin-top-5"></div>
+							<p:outputLabel
+								value="País: #{detallePersonaController.consultaMinimaPersonaBean.nombrePais}"></p:outputLabel>
+							</div>
+
+
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario float-right margin-top-10"
+							value="Cancelar" action="#{detallePersonaController.regresar}" />
+
+					</h:form>
+				</div>
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

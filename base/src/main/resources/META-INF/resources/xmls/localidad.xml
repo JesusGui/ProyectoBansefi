@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<!-- Mapeo de clases -->
+	<mapping map-id="localidad" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultalocalidad.ResponseBansefi.OTRAGLOCALIDADCNSTRN.TRAGLOCALIDADCNSEVTZ.AGLOCALIDADV
+		</class-a>
+		<class-b>mx.babel.arq.catalogo.beans.CatalogoGeoBean
+		</class-b>
+		<field>
+			<a>nomblocalidadag</a>
+			<b>nombreLocalidad</b>
+		</field>
+		<field>
+			<a>nombprovinciaag</a>
+			<b>nombreProvincia</b>
+		</field>		
+		<field>
+			<a>codprovinciaag</a>
+			<b>codigoProvincia</b>
+		</field>
+		<field>
+			<a>codpostalag</a>
+			<b>codigoPostal</b>
+		</field>
+		<field>
+			<a>nombpaisag</a>
+			<b>nombrePais</b>
+		</field>
+		<field>
+			<a>codpaisag</a>
+			<b>codigoPais</b>
+		</field>
+		<field>
+			<a>numargeocomaut</a>
+			<b>caNumArGeo</b>
+		</field>
+		<field>
+			<a>nombcomautnmaag</a>
+			<b>nombreComunidadAutonoma</b>
+		</field>
+		<field>
+			<a>codcomautnmaag</a>
+			<b>codigoComunidadAutonoma</b>
+		</field>		
+		<field>
+			<a>codmunicipioag</a>
+			<b>codigoMunicipio</b>
+		</field>
+		<field>
+			<a>codentcolecag</a>
+			<b>codigoEntidadColectiva</b>
+		</field>
+		<field>
+			<a>nombmunicipioag</a>
+			<b>nombreMunicipio</b>
+		</field>		
+	</mapping>
+</mappings>

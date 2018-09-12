@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaContadoresPuesto" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.beans.ContadoresCentroBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.webservices.contadorespuestohost.Ejecutar.ITRTNCONTHOSTCNSTRN.TRCONSCONTHOSTEVTY.TNCONTHOSTP</class-b>
+		<field>
+			<a>codigoEntidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codigoCentro</a>
+			<b>codinternouo</b>
+		</field>
+		<field>
+			<a>codigoTerminal</a>
+			<b>idinternotermtn</b>
+		</field>
+		<field>
+			<a>codigoMoneda</a>
+			<b>codnumrcomoneda</b>
+		</field>		
+	</mapping>	
+</mappings>

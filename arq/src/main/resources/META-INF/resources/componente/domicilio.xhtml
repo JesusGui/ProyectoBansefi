@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:b="http://mx.babel.arq.components.bansefi/ui" xmlns:pe="http://primefaces.org/ui/extensions">
+
+<composite:interface>
+    <composite:attribute name="controller" required="true" />
+    <composite:attribute name="append" required="false" />
+    
+    <composite:attribute name="codigoPostalHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="codigoPostalRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="codigoPostalReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="municipioHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="municipioRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="municipioReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="estadoHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="estadoRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="estadoReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="paisHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="paisRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="paisReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="tipoCalleHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="tipoCalleRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="tipoCalleDisabled" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="calleHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="calleRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="calleReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="numExtHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="numExtRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="numExtReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="interiorHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="interiorRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="interiorReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="departamentoHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="departamentoRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="departamentoReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="coloniaHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="coloniaRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="coloniaReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="otrosDatosHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="otrosDatosRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="otrosDatosReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="unidadHabitacionalHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="unidadHabitacionalRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="unidadHabitacionalReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="edificioHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="edificioRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="edificioReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+    <composite:attribute name="manzanaHabilitado" required="false" type="java.lang.Boolean" default="true"/>
+    <composite:attribute name="manzanaRequerido" required="false" type="java.lang.Boolean" default="false"/>
+    <composite:attribute name="manzanaReadOnly" required="false" type="java.lang.Boolean" default="false"/>
+    
+</composite:interface>
+
+<composite:implementation>
+
+	<div class="row-flex">
+	    <div class="grid_4">
+	        <p:outputLabel for="codigoPostal#{cc.attrs.append}" value="Código Postal" rendered="#{cc.attrs.codigoPostalHabilitado}" />
+	        <div class="clear-3"></div>
+			<p:autoComplete id="codigoPostal#{cc.attrs.append}"
+				value="#{cc.attrs.controller.domicilioController.domicilioBean.codigoPostalCatGeo}" 
+				maxResults="5" 
+				maxlength="5"
+				minQueryLength="0"
+				completeMethod="#{cc.attrs.controller.getCodigosPostales}" 
+				var="cp"
+				itemLabel="#{cp.codigoPostal}" 
+				itemValue="#{cp}"
+				converter="#{catalogoBeanConverter}"
+				rendered="#{cc.attrs.codigoPostalHabilitado}"
+				required="#{cc.attrs.codigoPostalRequerido}" 
+				readonly="#{cc.attrs.codigoPostalReadOnly}"
+				widgetVar="acCodigoPostal"
+				>
+				
+				<f:attribute name="filter" value="CODIGOS POSTALES" />
+				<p:ajax process="@this" partialSubmit="true" resetValues="true" global="false"/>
+				<p:ajax event="itemSelect" listener="#{cc.attrs.controller.manejarComponenteDomicilio}" process="@this"
+					update="municipio#{cc.attrs.append},estado#{cc.attrs.append},pais#{cc.attrs.append}" resetValues="true" global="false"/>
+				<p:ajax event="blur" listener="#{cc.attrs.controller.manejarComponenteDomicilio}" process="@this"
+					update="municipio#{cc.attrs.append},estado#{cc.attrs.append},pais#{cc.attrs.append}" resetValues="true" global="false"/>
+				
+			</p:autoComplete>
+			<pe:keyFilter for="codigoPostal#{cc.attrs.append}" testFunction="return justNumbers(c);"/>
+		</div>
+	
+	    <div class="grid_24">
+	        <p:outputLabel for="municipio#{cc.attrs.append}" value="Municipio/Localidad/Delegación" rendered="#{cc.attrs.municipioHabilitado}"  />
+	        <div class="clear-3"></div>
+	        <p:autoComplete id="municipio#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.municipioCatGeo}" 
+		        maxResults="5"  
+				minQueryLength="0"
+	        	rendered="#{cc.attrs.municipioHabilitado}" 
+	        	completeMethod="#{cc.attrs.controller.getMunicipios}" var="mun"
+	        	itemLabel="#{mun.municipioLocalidad}" 
+	        	itemValue="#{mun}" converter="#{catalogoBeanConverter}"
+	        	required="#{cc.attrs.municipioRequerido}"
+	        	readonly="#{cc.attrs.municipioReadOnly}"
+	        	onkeyup="value=value.toUpperCase()"
+	        	widgetVar="acMpio"
+	        	styleClass="alfanumericos_ene">
+	        	
+	        	<f:attribute name="filter" value="MUNICIPIOS" />
+	        	<p:ajax process="@this" partialSubmit="true" resetValues="true" global="false"/>
+	            <p:ajax event="itemSelect" onstart="manejarComponenteDomicilio()" listener="#{cc.attrs.controller.manejarComponenteDomicilio}" process="@this"  
+	            	update="estado#{cc.attrs.append},pais#{cc.attrs.append}" resetValues="true" global="false"/>
+				<p:ajax event="blur" onstart="manejarComponenteDomicilio()" listener="#{cc.attrs.controller.manejarComponenteDomicilio}" process="@this" 
+					update="estado#{cc.attrs.append},pais#{cc.attrs.append}" resetValues="true" global="false"/>
+					
+	        </p:autoComplete>
+	        <p:remoteCommand name="manejarComponenteDomicilio" 
+	        	actionListener="#{cc.attrs.controller.manejarComponenteDomicilio}" process=""></p:remoteCommand>
+	        <pe:keyFilter regEx="/^[a-zA-ZñÑ\-/() ]*$/" for="municipio#{cc.attrs.append}" />
+	    </div>
+
+	    <div class="grid_10">
+	        <p:outputLabel for="estado#{cc.attrs.append}" value="Estado" rendered="#{cc.attrs.estadoHabilitado}" />
+	        <div class="clear-3"></div>
+	        <p:inputText id="estado#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.estado}" rendered="#{cc.attrs.estadoHabilitado}" 
+	        	required="#{cc.attrs.estadoRequerido}" readonly="#{cc.attrs.estadoReadOnly}" maxlength="35">
+	            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	        </p:inputText>
+	    </div>
+	
+	    <div class="grid_10">
+	        <p:outputLabel for="pais#{cc.attrs.append}" value="País" rendered="#{cc.attrs.paisHabilitado}"/>
+	        <div class="clear-3"></div>
+	        <p:inputText id="pais#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.pais}" rendered="#{cc.attrs.paisHabilitado}" readonly="#{cc.attrs.paisReadOnly}" 
+	        	required="#{cc.attrs.paisRequerido}" maxlength="35">
+	        	<p:ajax process="@this" partialSubmit="true" global="false"/>
+	        </p:inputText>
+	    </div>
+    
+	</div>
+
+    <div class="clear-row"></div>
+
+
+	<div class="row-flex">
+	    <div class="grid_6">
+	        <p:outputLabel for="tipoCalle#{cc.attrs.append}" value="Tipo de Calle" rendered="#{cc.attrs.tipoCalleHabilitado}" />
+	        <div class="clear-3"></div>
+	        <p:selectOneMenu id="tipoCalle#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.tipoCalle}" rendered="#{cc.attrs.tipoCalleHabilitado}"
+	        	required="#{cc.attrs.tipoCalleRequerido}" disabled="#{cc.attrs.tipoCalleDisabled}">
+	        	<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+	            <f:selectItems value="#{catalogoUtils.getCatalogo('TP_VIA')}" var="entry" itemValue="#{entry.claveFila}" itemLabel="#{entry.descripcionC}" />
+	            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	        </p:selectOneMenu>
+	    </div>
+	
+	    <div class="grid_30">
+	    
+	        <p:outputLabel for="calle#{cc.attrs.append}" value="Calle" rendered="#{cc.attrs.calleHabilitado}" />
+	        <div class="clear-3"></div>
+	        <p:inputText id="calle#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.nombreCalle}" rendered="#{cc.attrs.calleHabilitado}" maxlength="45" onblur="value=value.toUpperCase()"
+	        	required="#{cc.attrs.calleRequerido}"
+	        	readonly="#{cc.attrs.calleReadOnly}"  styleClass="alfanumericos_ene" >
+	            <pe:keyFilter regEx="/^[\da-zA-ZñÑ\- ]*$/" />
+	            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	            <f:validator validatorId="camposValidator"/>
+				<f:attribute name="tipoValidacion" value="A"/>
+	        </p:inputText>
+	    </div>
+	
+	    <div class="grid_4">
+	        <p:outputLabel for="numExterior#{cc.attrs.append}" value="Num. Exterior" rendered="#{cc.attrs.numExtHabilitado}" />
+	        <div class="clear-3"></div>
+	        <p:inputText id="numExterior#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.numeroExterior}" rendered="#{cc.attrs.numExtHabilitado}" maxlength="4" onblur="value=value.toUpperCase()"
+	        	required="#{cc.attrs.numExtRequerido}" readonly="#{cc.attrs.numExtReadOnly}" styleClass="letrasnumeros">
+	            <pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+	            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	            <f:validator validatorId="camposValidator"/>
+				<f:attribute name="tipoValidacion" value="A"/>
+	        </p:inputText>
+	    </div>
+	
+	    <div class="grid_4">
+	        <p:outputLabel for="interior#{cc.attrs.append}" value="Num. Interior" rendered="#{cc.attrs.interiorHabilitado}" />
+	        <div class="clear-3"></div>
+	        <p:inputText id="interior#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.interior}" rendered="#{cc.attrs.interiorHabilitado}" maxlength="2" onblur="value=value.toUpperCase()"
+	        	required="#{cc.attrs.interiorRequerido}" readonly="#{cc.attrs.interiorReadOnly}" styleClass="letrasnumeros" >
+	            <pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+	            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	            <f:validator validatorId="camposValidator"/>
+				<f:attribute name="tipoValidacion" value="A"/>
+	        </p:inputText>
+	    </div>
+	
+	    <div class="grid_4">
+	        <p:outputLabel for="dpto#{cc.attrs.append}" value="Dpto." rendered="#{cc.attrs.departamentoHabilitado}" />
+	        <div class="clear-3"></div>
+	        <p:inputText id="dpto#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.departamento}" rendered="#{cc.attrs.departamentoHabilitado}" maxlength="3" onblur="value=value.toUpperCase()"
+	        	required="#{cc.attrs.departamentoRequerido}" readonly="#{cc.attrs.departamentoReadOnly}" styleClass="letrasnumeros">
+	            <pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+	            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	            <f:validator validatorId="camposValidator"/>
+				<f:attribute name="tipoValidacion" value="A"/>
+	        </p:inputText>
+	    </div>
+    </div>
+
+    <div class="grid_24">
+        <p:outputLabel for="colonia#{cc.attrs.append}" value="Colonia" rendered="#{cc.attrs.coloniaHabilitado}" />
+        <div class="clear-3"></div>
+        <p:inputText id="colonia#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.colonia}" 
+        	rendered="#{cc.attrs.coloniaHabilitado}" maxlength="45" onblur="value=value.toUpperCase()"
+        	required="#{cc.attrs.coloniaRequerido}" readonly="#{cc.attrs.coloniaReadOnly}" styleClass="alfanumericos_ene">
+            <pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	        <f:validator validatorId="camposValidator"/>
+			<f:attribute name="tipoValidacion" value="A"/>
+        </p:inputText>
+    </div>
+
+    <div class="grid_24">
+        <p:outputLabel for="otrosDatos#{cc.attrs.append}" value="Otros Datos" rendered="#{cc.attrs.otrosDatosHabilitado}" />
+        <div class="clear-3"></div>
+        <p:inputText id="otrosDatos#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.otrosDatos}" 
+        	rendered="#{cc.attrs.otrosDatosHabilitado}" maxlength="100" onblur="value=value.toUpperCase()"
+        	required="#{cc.attrs.otrosDatosRequerido}" readonly="#{cc.attrs.otrosDatosReadOnly}" styleClass="alfanumericos_ene">
+            <pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+            <p:ajax process="@this" partialSubmit="true" global="false"/>
+	        <f:validator validatorId="camposValidator"/>
+			<f:attribute name="tipoValidacion" value="A"/>
+        </p:inputText>
+    </div>
+
+    <div class="clear-row"></div>
+
+
+    <p:fieldset legend="Datos Adicionales" toggleable="true" toggleSpeed="500" collapsed="true" rendered="#{cc.attrs.unidadHabitacionalHabilitado or cc.attrs.edificioHabilitado}">
+
+        <div class="grid_18">
+            <p:outputLabel for="unidadHabitacional#{cc.attrs.append}" value="Unidad habitacional" rendered="#{cc.attrs.unidadHabitacionalHabilitado}" />
+            <div class="clear-3"></div>
+            <p:inputText id="unidadHabitacional#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.unidadHabitacional}" 
+            	maxlength="45" rendered="#{cc.attrs.unidadHabitacionalHabilitado}" onblur="value=value.toUpperCase()"
+            	required="#{cc.attrs.unidadHabitacionalRequerido}" readonly="#{cc.attrs.unidadHabitacionalReadOnly}">
+                <pe:keyFilter regEx="/[\d\-\. a-zA-ZñÑ]/" />
+                <p:ajax process="@this" partialSubmit="true" global="false"/>
+	            <f:validator validatorId="camposValidator"/>
+				<f:attribute name="tipoValidacion" value="A"/>
+            </p:inputText>
+        </div>
+
+        <div class="grid_12">
+            <p:outputLabel for="edificio#{cc.attrs.append}" value="Edificio" rendered="#{cc.attrs.edificioHabilitado}" />
+            <div class="clear-3"></div>
+            <p:inputText id="edificio#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.edificio}" 
+            	rendered="#{cc.attrs.edificioHabilitado}" maxlength="45" onblur="value=value.toUpperCase()"
+            	required="#{cc.attrs.edificioRequerido}" readonly="#{cc.attrs.edificioReadOnly}">
+                <pe:keyFilter regEx="/[\d\-\. a-zA-ZñÑ]/" />
+                <p:ajax process="@this" partialSubmit="true" global="false"/>
+	            <f:validator validatorId="camposValidator"/>
+				<f:attribute name="tipoValidacion" value="A"/>
+            </p:inputText>
+        </div>
+
+        <div class="grid_18">
+            <p:outputLabel for="manzana#{cc.attrs.append}" value="Manzana" rendered="#{cc.attrs.manzanaHabilitado}" />
+            <div class="clear-3"></div>
+            <p:inputText id="manzana#{cc.attrs.append}" value="#{cc.attrs.controller.domicilioController.domicilioBean.manzana}" 
+            	maxlength="45" onblur="value=value.toUpperCase()"
+                rendered="#{cc.attrs.manzanaHabilitado}" required="#{cc.attrs.manzanaRequerido}" readonly="#{cc.attrs.manzanaReadOnly}">
+                <pe:keyFilter regEx="/[\d\-\. a-zA-ZñÑ]/" />
+                <p:ajax process="@this" partialSubmit="true" global="false"/>
+	            <f:validator validatorId="camposValidator"/>
+				<f:attribute name="tipoValidacion" value="A"/>
+            </p:inputText>
+        </div>
+
+    </p:fieldset>
+</composite:implementation>
+
+</html>

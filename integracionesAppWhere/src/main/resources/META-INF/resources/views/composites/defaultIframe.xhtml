@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:outputScript name="js/integracionesAppWhere.js"/>
+	<h:outputStylesheet name="css/integracionesAppWhere.css"/>
+
+	<div hidden="">
+		<p:commandButton icon="ui-icon-arrow-1-w"
+						 id="regresarMenuFrecuenteButton"
+						 action="#{commonController.irInicio()}"
+						 immediate="true">
+			<f:param name="disableValidation" value="true" />
+		</p:commandButton>
+	</div>
+
+	<iframe name="framePrincipal"
+			id="framePrincipal"
+			class="embed-responsive-item"
+			scrolling="no"
+			onload="onLoadHandlerIframe(this);"/>
+
+	<p:dialog widgetVar="dlgCancelar" id="dlgCancelar" showEffect="fade"
+			  hideEffect="fade" appendTo="@(body)"
+			  header="Cancelar" modal="true" visible="false"
+			  closable="false" resizable="false" dynamic="true">
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+					   value="¡Atención! Si continúa perderá todos los cambios" />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion"
+					   value="¿Desea continuar de todos modos?" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+						 id="Volver"
+						 action="#{commonController.irInicio()}"
+						 value="Continuar" immediate="true" />
+		<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+						 value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+
+	</p:dialog>
+
+</ui:composition>

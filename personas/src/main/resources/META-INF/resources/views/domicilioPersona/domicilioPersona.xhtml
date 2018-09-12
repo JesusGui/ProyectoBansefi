@@ -1,0 +1,385 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<ui:debug hotkey="x" />
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<!-- 		<o:importConstants -->
+		<!-- 			type="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum" /> -->
+		<pe:importConstants
+			className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+			var="EstadoListadosEnum" />
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="form" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{domicilioPersonaController.volverCancelar()}" immediate="true"
+								title="Volver atrás"></p:commandButton>
+							<div>
+								<h2 class="gris-b">Domicilios de cliente </h2>
+								<h2 class="azul-b">#{domicilioPersonaController.nombreCliente}</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos" id="contenedor">
+						
+							<p:outputLabel styleClass="txt-instruccion"
+								value="Seleccione la opción deseada. Recuerde que únicamente puede haber un domicilio fiscal."></p:outputLabel>
+
+							<div class="margin-top-10"></div>
+
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="*Datos Obligatorios"></p:outputLabel>
+							<div class="margin-top-10"></div>
+
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+								
+							<!-- Se agrega componente messages para mostrar errores en validaciones de campos -->
+							<p:messages showIcon="false" id="formCliente"
+
+								rendered="#{facesContext.validationFailed}" />
+
+							<div class="grid_15 alpha">
+								<p:outputLabel value="Añadir domicilio:"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectOneMenu id="tipoAlta" panelStyleClass="combo-estandar"
+									onchange="try{PF('btnAnadir').disable();}catch(e){} try{PF('btnBuscar').disable()}catch(e){}"
+									value="#{domicilioPersonaController.tipoAlta}"
+									style="width:125px">
+									<f:selectItem itemLabel="Nuevo" itemValue="nuevo" />
+									<f:selectItem itemLabel="Existente" itemValue="existente" />
+									<p:ajax global="false" process="@this" update="@form"
+										partialSubmit="true"
+										listener="#{domicilioPersonaController.cambiaTipoAlta()}" />
+								</p:selectOneMenu>
+							</div>
+							<div class="grid_3">
+								<div class="label-vacio"></div>
+								<div class="clear-3"></div>
+								<p:commandButton id="btnAnadir" widgetVar="btnAnadir"
+									styleClass="btn-icono btn-anadir" icon="ui-icon-circle-plus"
+									rendered="#{'nuevo' eq domicilioPersonaController.tipoAlta}"
+									actionListener="#{domicilioPersonaController.anadirDomicilio()}"
+									update="@form" process="@form" immediate="true"
+									onclick="PF('btnAnadir').disable()" title="Añadir"
+									oncomplete="PF('btnAnadir').enable(); scrollTo('#form\\:panelNuevoDomicilio');" />
+								
+								<p:commandButton id="btnBuscar" widgetVar="btnBuscar"
+									styleClass="btn-icono-conbackground" icon="ui-icon-search"
+									action="#{domicilioPersonaController.buscarDomicilio()}"
+									rendered="#{'existente' eq domicilioPersonaController.tipoAlta}"
+									immediate="true" onclick="PF('btnBuscar').disable()"
+									oncomplete="PF('btnBuscar').enable()" title="Buscar" />
+								
+							</div>
+
+							<div class="clear-row"></div>
+
+							<p:outputLabel styleClass="margin-left-10"
+								rendered="#{empty domicilioPersonaController.domicilioController.domiciliosList}"
+								value="Esta persona no tiene domicilios relacionados"></p:outputLabel>
+							
+							<!--  Acordeon/panel -->
+							<h:panelGroup id="domiciliosConsultados">
+								<c:forEach
+									items="#{domicilioPersonaController.domicilioController.domiciliosList}"
+									var="domicilio" varStatus="activeIndex">
+									<ui:include src="formaEdicionDomicilio.xhtml" />
+								</c:forEach>
+							</h:panelGroup>
+
+							<!-- Añadir nuevo domicilio -->
+							<h:panelGroup id="nuevoDomicilio">
+								<ui:include src="formaNuevoDomicilio.xhtml" />
+							</h:panelGroup>
+
+							<h:panelGroup id="compartirDomicilio">
+								<!-- Añadir domicilio compartido -->
+								<p:panel id="panelCompartirDomicilio"
+									styleClass="panel-dinamico nuevo"
+									rendered="#{'existente' eq domicilioPersonaController.tipoAlta and domicilioPersonaController.renderCompartirDomicilio}">
+									<f:facet name="actions">
+										<h:panelGroup layout="block" styleClass="boton-panel-domicilio">
+											<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+												icon="ui-icon-trash" alt="Eliminar domicilio"
+												title="Eliminar domicilio" immediate="true" update="@form"
+												process="@form"
+												actionListener="#{domicilioPersonaController.eliminarDomicilioCompartido()}"
+												partialSubmit="true">
+											</p:commandButton>
+										</h:panelGroup>
+									</f:facet>
+									<f:facet name="header">
+										<h:panelGroup layout="block" styleClass="resumen-panel-domicilio">
+											<div class="grid_12 alpha">
+												<p:outputLabel value="Tipo domicilio:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{domicilioPersonaController.compartirDomicilio.tipoDomicilioToString()}" />
+											</div>
+											<div class="grid_12">
+												<p:outputLabel value="Nombre de la calle:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{domicilioPersonaController.compartirDomicilio.nombreCalle}" />
+											</div>
+											<div class="grid_12">
+												<p:outputLabel value="Localidad:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{domicilioPersonaController.compartirDomicilio.codigoPostalCatGeo.nombreLocalidad}" />
+											</div>
+										</h:panelGroup>
+									</f:facet>
+									
+									<h:panelGroup>
+										<div class="grid_22">
+											<p:message id="msgAltaTags" for="altaTags" display="icon" />
+											<p:outputLabel for="altaTags" value="Tipo de domicilio"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectManyCheckbox
+												value="#{domicilioPersonaController.compartirDomicilio.tagsTipoDomicilio}"
+												required="true" id="altaTags">
+												<f:selectItem itemLabel="Habitual" itemValue="HABITUAL"
+													itemDisabled="#{domicilioPersonaController.isPersonaMoral() or domicilioPersonaController.isDomicilioHabitual(-1)}" />
+												<f:selectItem itemLabel="Fiscal" itemValue="FISCAL"
+													itemDisabled="#{domicilioPersonaController.isDomicilioFiscal(-1)}" />
+												<f:selectItem itemLabel="Postal" itemValue="POSTAL" />
+												<f:selectItem itemLabel="Social" itemValue="SOCIAL"
+													itemDisabled="#{domicilioPersonaController.isPersonaFisica() or domicilioPersonaController.isDomicilioSocial(-1)}" />
+												<!-- 										<f:selectItem itemLabel="Habitual" itemValue="HABITUAL" -->
+												<!-- 											itemDisabled="#{domicilioPersonaController.isPersonaMoral()}" /> -->
+												<!-- 										<f:selectItem itemLabel="Fiscal" itemValue="FISCAL" /> -->
+												<!-- 										<f:selectItem itemLabel="Postal" itemValue="POSTAL" /> -->
+												<!-- 										<f:selectItem itemLabel="Social" itemValue="SOCIAL" -->
+												<!-- 											itemDisabled="#{domicilioPersonaController.isPersonaFisica()}" /> -->
+												<p:ajax process="@this" global="false" partialSubmit="true"
+													update="@form"
+													listener="#{domicilioPersonaController.onCheckClick()}" />
+											</p:selectManyCheckbox>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+							</h:panelGroup>
+						</div>
+						<!--Botones  -->
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar" update="@form"
+							action="#{domicilioPersonaController.validaEliminacionDomicilios()}"
+							widgetVar="btnGuardarTodo"
+							onclick="PF('btnGuardarTodo').disable();"
+							oncomplete="PF('btnGuardarTodo').enable()" />
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" immediate="true"
+							action="#{domicilioPersonaController.volverCancelar()}" />
+
+						<!-- 						<p>v1.6 Miercoles 15/07/2015</p> -->
+					</h:form>
+					
+
+					<!-- Confirm para eliminar domicilios -->
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						widgetVar="dlgConfirmacionEliminacion" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Va a eliminar #{domicilioPersonaController.nEliminaciones()} domicilio(s) de #{domicilioPersonaController.nombreCliente}" />
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar"
+							onclick="PF('dlgConfirmacionEliminacion').hide()" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							action="#{domicilioPersonaController.guardar()}"
+							widgetVar="btnGuardarUno" onclick="PF('btnGuardarUno').disable()"
+							oncomplete="PF('dlgConfirmacionEliminacion').hide(); PF('btnGuardarUno').enable()"
+							update=":form" />
+					</p:dialog>
+					
+					<!-- Confirm para eliminar domicilios -->
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						widgetVar="dlgAnadirDomicilio" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Debe guardar el domicilio actual antes de añadir uno nuevo." />
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+<!-- 						<p:outputLabel styleClass="modal-accion" -->
+<!-- 							value="¿Está seguro que desea continuar?" /> -->
+						<!--botones de la modal primarios y secundarios -->
+<!-- 						<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 							value="Cancelar" -->
+<!-- 							onclick="PF('dlgConfirmacionEliminacion').hide()" /> -->
+						<!-- Se quita update que ocasionaba que los campos se borraban -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							widgetVar="btnGuardarUno" onclick="PF('dlgAnadirDomicilio').hide();" />
+
+
+
+					</p:dialog>
+
+					<!-- Ventana de confirmación de guardado -->
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						widgetVar="dlgConfirmacionGuardado" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los cambios se han guardado correctamente" />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true" widgetVar="btnAceptar"
+							onclick="PF('btnAceptar').disable()"
+
+
+							oncomplete="PF('dlgConfirmacionGuardado').hide(); PF('btnAceptar').enable()" />
+					</p:dialog>
+
+					<!-- Ventana de confirmación de guardado -->
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						widgetVar="dlgConfirmacionNoGuardado" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No se ha realizado ningún cambio" />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true" widgetVar="btnAceptarNo"
+							onclick="PF('btnAceptarNo').disable()"
+							oncomplete="PF('dlgConfirmacionNoGuardado').hide(); PF('btnAceptarNo').enable()"
+							update=":form" />
+					</p:dialog>
+
+					<p:dialog widgetVar="dlgCancelar" id="dlgCancelar"
+						appendTo="@(body)" header="Volver Domicilio de Personas"
+						modal="true" visible="false" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						dynamic="true">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{domicilioPersonaController.volver()}" id="VolverAlta"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+							value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+					</p:dialog>
+
+					<p:dialog widgetVar="dlgCancelar2" id="dlgCancelar2"
+						appendTo="@(body)" header="Cancelar Domicilio de Personas"
+						modal="true" visible="false" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						dynamic="true">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{domicilioPersonaController.volver()}" id="VolverAlta2"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							id="descartar2" value="Cancelar"
+							onclick="PF('dlgCancelar2').hide();" />
+					</p:dialog>
+					
+					<p:dialog widgetVar="dlgErrorDatos" id="dlgErrorDatos"
+						appendTo="@(body)" header="Error"
+						modal="true" visible="false" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						dynamic="true">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{domicilioPersonaController.mensajeError}" />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar"
+							action="#{domicilioPersonaController.inicio()}" />
+					</p:dialog>
+					
+					<p:dialog widgetVar="dlgErrorDato" id="dlgErrorDato"
+						appendTo="@(body)" header="Error"
+						modal="true" visible="false" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						dynamic="true">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{domicilioPersonaController.mensajeError}" />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar"
+							onclick="PF('dlgErrorDato').hide();" />
+					</p:dialog>
+					
+					<p:dialog widgetVar="dlgInfoDomicilios" id="dlgInfoDomicilios"
+						appendTo="@(body)" header="Error"
+						modal="true" visible="false" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						dynamic="true">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{domicilioPersonaController.mensajeInfo}" />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar"
+							onclick="PF('dlgInfoDomicilios').hide();" />
+					</p:dialog>
+					
+				</div>
+
+				<!--
+plantilla de ventana de di�logo
+-->
+
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

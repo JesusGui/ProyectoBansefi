@@ -1,0 +1,280 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body onunload="#{arqueoCentroController.resultadoArqueo()}">
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formResultadoArqueoCentro" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" title="Volver atrás"
+								action="#{arqueoCentroController.inicio()}"></p:commandButton>
+							<div>
+									<h2 class="gris-b">Resultado de arqueo de centro </h2>
+									<h3 class="rojo-b">#{arqueoCentroController.arqueoCentroBean.numeroCentro}</h3>
+	                        </div>
+						</div>
+							
+						<div class="contenedor-campos">
+                            	<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" value="Imprimir"
+                            		action="#{arqueoCentroController.printReport()}">
+                            	</p:commandButton>
+                            
+                            <div class="clear margin-bottom-10"></div>
+							
+							<p:messages showDetail="true" for="arqueoCentro"
+								autoUpdate="true" escape="false" closable="false" />
+								
+							<h3 class="azul-b">Caja</h3>
+							
+							<div class="margin-bottom-5"></div>
+								
+							<div class="contenedor-totales">
+							    <div class="clear-row"></div>
+							
+							        <div class="grid_20">
+							            <p:outputLabel>Saldo contable de caja anterior:</p:outputLabel>
+							        </div>
+							        <div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.saldoContableCajaAnterior}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+							        </div>
+							        <div class="clear-row"></div>
+							        <div class="grid_20">
+							            <p:outputLabel>+Cobros On:</p:outputLabel>
+							        </div>
+							        <div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.cobrosOn}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+							        </div>
+							        <div class="clear-row"></div>
+							        <div class="grid_20">
+							            <p:outputLabel>-Pagos On:</p:outputLabel>
+							        </div>
+							        <div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.pagosOn}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+							        </div>
+							        <div class="clear-row"></div>
+							        <div class="grid_20">
+							            <p:outputLabel>Saldo contable de caja actual:</p:outputLabel>
+							        </div>
+							        <div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.saldoContableCajaActual}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+							        </div>
+							        <div class="clear-row"></div>
+							        <div class="grid_20">
+							            <p:outputLabel>Total arqueo de centro:</p:outputLabel>
+							        </div>
+							        <div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.totalArqueo}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+							        </div>
+							        <div class="clear-row"></div>
+							        <div class="grid_48 saldo-disponible">
+							        	<div class="grid_20">
+							            <p:outputLabel>Saldo Resultante:</p:outputLabel>
+							        	</div>
+							        	<div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.saldoResultante}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+										</div>
+							        </div>
+							
+							        <div class="clear"></div>
+						    </div>
+						    
+						    <div class="margin-top-15"></div>
+						    
+							<h3 class="azul-b">Cuenta intervención</h3>
+							
+							<div class="margin-bottom-5"></div>
+								
+							<div class="contenedor-totales">
+							    <div class="clear-row"></div>
+							    
+							     	<div class="grid_20">
+							            <p:outputLabel>Haber On:</p:outputLabel>
+							        </div>
+							        <div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.haberOn}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+							      	</div>
+							      	<div class="clear-row"></div>
+							      	<div class="grid_20">
+							            <p:outputLabel>Debe On:</p:outputLabel>
+							        </div>
+							        <div class="grid_28">
+							            <p:outputLabel
+											value="#{arqueoCentroController.arqueoCentroBean.debeOn}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</p:outputLabel>
+							      	</div>
+							      	<div class="clear-row"></div>
+							</div>
+							<h:panelGroup rendered="#{arqueoCentroController.arqueoCentroBean.debeOn.compareTo(arqueoCentroController.arqueoCentroBean.haberOn) != 0}">
+							<div class="centrar-objeto margin-top-10">
+								<p:outputLabel styleClass="rojo-b">El Debe y Haber de la cuenta de intervención no coincide.</p:outputLabel>
+								<div class="clear-3"></div>
+							</div>	
+							</h:panelGroup>
+							
+								<h:panelGroup layout="block"
+									rendered="#{!arqueoCentroController.arqueoCentroBean.cuadrada}">
+									<div class="margin-top-15"></div>
+									<h3 class="rojo-b">Caja Descuadrada</h3>
+									<div class="margin-bottom-5"></div>
+									<div class="contenedor-totales">
+									<div class="grid_48 saldo-disponible bg-rojo-b">
+							        	<div class="grid_20">
+							            <p:outputLabel>Falta:</p:outputLabel>
+							        	</div>
+							        	<div class="grid_28">
+							            <p:outputLabel
+										value="#{arqueoCentroController.arqueoCentroBean.restante}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+									</p:outputLabel>
+										</div>
+							        </div>
+							        </div>
+								</h:panelGroup>
+								
+							<div class="clear-row"></div>
+							
+							
+								<p:commandButton styleClass="btn-mostrar float-right"
+									icon="fa #{arqueoCentroController.mostrarPuestos? 'fa-angle-up':'fa fa-angle-down'}"
+									value="#{arqueoCentroController.mostrarPuestos? 'Ocultar':'Mostrar'} Cuadres Puesto"
+									update="@form"
+									action="#{arqueoCentroController.toogleMostrarPuestos()}" />
+									
+								<div class="margin-top-15"></div>
+								
+								<h:panelGroup
+									rendered="#{arqueoCentroController.mostrarPuestos}">
+									<h2 class="azul-b display-inlineflex">Cuadre de puestos de centro</h2>
+									<h3 class="rojo-b display-inlineflex">#{arqueoCentroController.arqueoCentroBean.numeroCentro}</h3>
+									
+									<div class="clear-row"></div>
+									
+									<div class="display-flex totales-puestos-centro">
+									<p:outputLabel styleClass="saldo-disponible white border-right">Totales:</p:outputLabel>
+									<p:outputLabel styleClass="saldo-disponible white border-right"
+										value="#{arqueoCentroController.arqueoCentroBean.totalArqueoPuestos}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+									</p:outputLabel>
+									<p:outputLabel styleClass="saldo-disponible white border-left"
+										value="#{arqueoCentroController.arqueoCentroBean.netoTraspasosPuestos}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+									</p:outputLabel>
+									<p:outputLabel styleClass="saldo-disponible white border-left"
+										value="#{arqueoCentroController.arqueoCentroBean.saldoPuestos}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+									</p:outputLabel>
+									</div>
+									
+									<div class="margin-top-15"></div>
+									
+									<p:dataTable var="puesto" styleClass="tabla-contadores-centro"
+										value="#{arqueoCentroController.arqueoCentroBean.cuadrePuestos}"
+										rows="#{arqueoCentroController.resultados}" id="cuadresPuesto">
+										<p:column headerText="Terminal">
+											<h:outputText value="#{puesto.terminal}" />
+										</p:column>
+										<p:column headerText="Puesto">
+											<h:outputText value="#{puesto.terminal.substring(6)}" />
+										</p:column>
+										<p:column headerText="Total arqueo">
+											<h:outputText styleClass="float-right" value="#{puesto.totalArqueo}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Saldo caja">
+											<h:outputText styleClass="float-right" value="#{puesto.saldoCaja}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Diferencia">
+											<h:outputText styleClass="float-right" value="#{puesto.diferencia}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+											</h:outputText>
+										</p:column>
+									</p:dataTable>
+									<div class="margin-top-10"></div>
+									<h:panelGroup layout="block" styleClass="centrar-objeto"
+										rendered="#{!(!arqueoCentroController.paginacionPuestos.masDatos and 
+                                    			(arqueoCentroController.arqueoCentroBean.cuadrePuestos.size() lt arqueoCentroController.resultados))}">
+										<!--<p:commandButton value="Ver más resultados"-->
+												<!--styleClass="btn-mostrar" icon="fa fa-refresh"-->
+												<!--iconPos="right"-->
+												<!--update="@form"-->
+												<!--actionListener="#{arqueoCentroController.masResultados()}">-->
+											<!--</p:commandButton>-->
+									</h:panelGroup>
+								</h:panelGroup>
+							
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10 margin-right-10"
+							value="Cancelar" immediate="true"
+							action="#{arqueoCentroController.rutaInicio()}" />
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							disabled="#{!arqueoCentroController.arqueoCentroBean.cuadrada}"
+							action="#{arqueoCentroController.arqueaCentro()}"
+							update=":dialogArqueoCentro @form" value="Ejecutar Arqueo" />
+						<p:commandButton
+							styleClass="btn_secundario margin-top-10"
+							value="Anterior" immediate="true"
+							action="#{arqueoCentroController.inicio()}" />
+
+					</h:form>
+				</div>
+
+				<!--
+			plantilla de ventana de di�logo
+			-->
+
+				<p:dialog widgetVar="dialogArqueoCentro" id="dialogArqueoCentro"
+					appendTo="@(body)" modal="true" dynamic="true" showEffect="fade" hideEffect="fade"
+					visible="#{arqueoCentroController.muestraDialogo}" closable="false"
+					resizable="false">
+					<span class="ui-messages-exito-icon exito-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡El arqueo de centro se ha ejecutado exitosamente!" />
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar"
+						update=":formResultadoArqueoCentro dialogArqueoCentro"
+						action="#{arqueoCentroController.cierraDialogo()}" />
+				</p:dialog>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

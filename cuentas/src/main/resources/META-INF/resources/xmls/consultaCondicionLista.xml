@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoConsultaCondicionLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionlista.ResponseBansefi.OTRCONSVALKALSTTRNO.TRCONSVALKALSTEVTZ
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionListaBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KACOMUNV.CODECVKA</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>IDCCPS1V.IDCCPS</a>
+      <b>idCcps</b>
+    </field>
+  </mapping>
+  <mapping map-id="resultadoConsultaCondicionListaItems" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionlista.ResponseBansefi.OTRCONSVALKALSTTRNO.TRCONSVALKALSTEVTZ.KAKARLPKDOMV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.PreferenceItemBean
+    </class-b>
+    <field>
+      <a>CODDOMPARMCD</a>
+      <b>id</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToBinaryConverter">
+      <a>DOMINDPREF</a>
+      <b>preferente</b>
+    </field>
+  </mapping>
+  <mapping map-id="resultadoConsultaCondicionListaPlazo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionlistaplazo.ResponseBansefi.OTRCONSVALKSLSTTRNO.TRCONSVALKSLSTEVTZ
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionListaBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCOMUNV.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCOMUNV.FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KSCOMUNV.CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>IDCCPS1V.IDCCPS</a>
+      <b>idCcps</b>
+    </field>
+  </mapping>
+  <mapping map-id="resultadoConsultaCondicionListaPlazoItems" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionlistaplazo.ResponseBansefi.OTRCONSVALKSLSTTRNO.TRCONSVALKSLSTEVTZ.KSKSRLPKDOMV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.PreferenceItemBean
+    </class-b>
+    <field>
+      <a>CODDOMPARMCD</a>
+      <b>id</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToBinaryConverter">
+      <a>DOMINDPREF</a>
+      <b>preferente</b>
+    </field>
+  </mapping>
+</mappings>

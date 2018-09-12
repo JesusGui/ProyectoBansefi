@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="relacionPersonaCuenta" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultarelacionpersonascuenta.ResponseBansefi.OTRCONSULTARPPANTTRN.TRCONSULTARPPANTEVTZ.RPPERSRLACE</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.relacioncuenta.RelacionadoBean</class-b>
+		<field>
+			<a>idinternope</a>
+			<b>persona.idInterna</b>
+		</field>
+		<field>
+			<a>numrlorden</a>
+			<b>numero</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaalta</a>
+			<b>fechaAlta</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechainicio</a>
+			<b>fechaInicio</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechacrre</a>
+			<b>fechaInactivo</b>
+		</field>
+		<field>
+			<a>codecvpersac</a>
+			<b>estado</b>
+		</field>
+		<field>
+			<a>indrepresentante</a>
+			<b>representante</b>
+		</field>	
+	</mapping>
+	<mapping map-id="relacionPersonaCuentaCliente" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultarelacionpersonascuenta.ResponseBansefi.OTRCONSULTARPPANTTRN.TRCONSULTARPPANTEVTZ.RPPERSV</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.relacioncuenta.RelacionadoBean</class-b>
+		<field>
+			<a>idextpe</a>
+			<b>persona.numIdentificacion</b>
+		</field>
+		<field>
+			<a>nomb50</a>
+			<b>persona.nombre</b>
+		</field>
+		<field>
+			<a>codidextpers</a>
+			<b>persona.tipoIdentificacion</b>
+		</field>			
+	</mapping>
+</mappings>

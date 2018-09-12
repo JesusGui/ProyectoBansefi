@@ -1,0 +1,532 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<o:importConstants
+			type="mx.babel.bansefi.banksystem.base.beans.domain.TipoCliente" />
+		<pe:importConstants
+			className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+			var="EstadoListadosEnum" />
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<h:form id="otrosDatos" styleClass="contenedor-form">
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								immediate="true" title="Regresar" action="#{otrosDatosController.validarAccionCancelar()}">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+							<div>
+								<h2 class="gris-b">Otros datos de </h2>
+								<h2 class="azul-b">
+									<h:outputText
+										value=" #{otrosDatosController.cliente.nombreCompleto}" />
+								</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="* Datos Obligatorios" />
+							<div class="clear-row"></div>
+
+							<h:panelGroup id="panelSelects">
+								<div class="grid_15 alpha">
+									<p:outputLabel value="Tipo de dato"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:selectOneMenu id="tipoListaMoral" panelStyleClass="combo-estandar"
+										value="#{otrosDatosController.tipoLista}"
+										rendered="#{otrosDatosController.cliente.tipo == TipoCliente.PERSONA_MORAL}">
+										<f:selectItem itemValue="N" itemLabel="Otros nombres" />
+										<f:selectItem itemValue="T"
+											itemLabel="Otros teléfonos, faxes o emails" />
+										<p:ajax event="change" update="otrosDatos:panelSelects"
+											process="otrosDatos:panelSelects">
+											<f:param name="disableValidation" value="true" />
+										</p:ajax>
+									</p:selectOneMenu>
+
+									<p:selectOneMenu id="tipoListaFisica" panelStyleClass="combo-estandar"
+										value="#{otrosDatosController.tipoLista}"
+										rendered="#{otrosDatosController.cliente.tipo != TipoCliente.PERSONA_MORAL}">
+										<f:selectItem itemValue="I" itemLabel="Otras identificaciones" />
+										<f:selectItem itemValue="T"
+											itemLabel="Otros teléfonos, faxes o emails" />
+										<p:ajax event="change" update="otrosDatos:panelSelects"
+											process="otrosDatos:panelSelects">
+											<f:param name="disableValidation" value="true" />
+										</p:ajax>
+									</p:selectOneMenu>
+								</div>
+
+								<h:panelGroup layout="block" styleClass="grid_9"
+									rendered="#{('N').equals(otrosDatosController.tipoLista)}">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:selectOneMenu value="#{otrosDatosController.claveTipoLista}" panelStyleClass="combo-estandar"> 
+										<f:selectItems value="#{otrosDatosController.listaNombres}"
+											var="item" itemValue="#{item.claveFila}"
+											itemLabel="#{item.descripcionL}" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+
+								<h:panelGroup layout="block" styleClass="grid_9"
+									rendered="#{('I').equals(otrosDatosController.tipoLista)}">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:selectOneMenu value="#{otrosDatosController.claveTipoLista}" panelStyleClass="combo-estandar">
+										<f:selectItems
+											value="#{otrosDatosController.listaIndentificaciones}"
+											var="item" itemValue="#{item.claveFila}"
+											itemLabel="#{item.descripcionL}" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+
+								<h:panelGroup layout="block" styleClass="grid_9"
+									rendered="#{('T').equals(otrosDatosController.tipoLista)}">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:selectOneMenu value="#{otrosDatosController.claveTipoLista}" panelStyleClass="combo-estandar">
+										<f:selectItems
+											value="#{otrosDatosController.getCatalogoDirecciones()}"
+											var="item" itemValue="#{item.claveFila}"
+											itemLabel="#{item.descripcionL}" />
+									</p:selectOneMenu>
+								</h:panelGroup>
+
+								<div class="grid_3">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:commandButton title="Añadir"
+										styleClass="btn-icono btn-anadir" id="btnNuevoDato"
+										icon="ui-icon-circle-plus"
+										actionListener="#{otrosDatosController.addObjetoNuevo()}"
+										update="otrosDatos:panelListas">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+								</div>
+							</h:panelGroup>
+
+
+							<div class="clear-row"></div>
+							<h:panelGroup id="panelListas">
+								<!-- Otros Nombres -->
+								<h:panelGroup
+									rendered="#{otrosDatosController.otrosNombresLista ne null}">
+									<c:forEach var="registroNombre"
+										items="#{otrosDatosController.otrosNombresLista}"
+										varStatus="myVarIndex">
+										<p:focus context="panelOtrosNombres#{myVarIndex.index}" />
+										<p:panel id="panelOtrosNombres#{myVarIndex.index}"
+											styleClass="#{registroNombre.estado.styleClass}">
+
+											<h:panelGroup
+												rendered="#{registroNombre.estado == EstadoListadosEnum.CONSULTADO or registroNombre.estado == EstadoListadosEnum.ELIMINADO}">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left" alt="Deshacer" title="Deshacer"
+													actionListener="#{otrosDatosController.restoreValueExistente(registroNombre)}"
+													rendered="#{registroNombre.estado == EstadoListadosEnum.ELIMINADO}"
+													update="otrosDatos:panelListas">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar actividad"
+													title="Eliminar actividad"
+													actionListener="#{otrosDatosController.removeOtroValorExistente(registroNombre)}"
+													rendered="#{registroNombre.estado == EstadoListadosEnum.CONSULTADO}"
+													update="otrosDatos:panelListas">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-pencil" alt="Editar actividad"
+													title="Editar actividad">
+													<p:ajax event="click"
+														listener="#{otrosDatosController.editarFila(registroNombre)}"
+														update="otrosDatos:panelListas"></p:ajax>
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+
+												<div class="clear-row"></div>
+												<div class="grid_18">
+													<h:outputLabel value="Descripción"></h:outputLabel>
+													<div class="clear-3"></div>
+													<h:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroNombre.descripcion}"></h:outputLabel>
+												</div>
+												<div class="grid_10">
+													<h:outputLabel value="Nombre"></h:outputLabel>
+													<div class="clear-3"></div>
+													<h:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroNombre.valor}"></h:outputLabel>
+												</div>
+												<div class="clear"></div>
+											</h:panelGroup>
+
+											<h:panelGroup
+												rendered="#{registroNombre.estado == EstadoListadosEnum.MODIFICADO or registroNombre.estado == EstadoListadosEnum.NUEVO}">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left" alt="Deshacer edición"
+													title="Deshacer edición"
+													actionListener="#{otrosDatosController.restaurarModificado(registroNombre)}"
+													update="otrosDatos:panelListas"
+													rendered="#{registroNombre.estado == EstadoListadosEnum.MODIFICADO}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar nombre"
+													title="Eliminar nombre"
+													actionListener="#{otrosDatosController.removeOtroNombre(registroNombre)}"
+													update="otrosDatos:panelListas"
+													rendered="#{registroNombre.estado == EstadoListadosEnum.NUEVO}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<div class="clear-row"></div>
+												<div class="grid_18">
+													<h:outputLabel value="Descripción"></h:outputLabel>
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroNombre.descripcion}"></p:outputLabel>
+												</div>
+												<div class="grid_18">
+													<p:outputLabel value="Nombre"></p:outputLabel>
+													<span class="ui-outputlabel-rfi">*</span>
+													<div class="clear-3"></div>
+													<p:inputText id="nombre#{myVarIndex.index}"
+														value="#{registroNombre.valor}" maxlength="60"
+														onblur="value=value.toUpperCase()"
+														required="#{param['disableValidation']==null}">
+														<pe:keyFilter regEx="/^[0-9a-zA-ZáéíóúÁÉÍÓÚ\- ]*$/" />
+														<p:ajax event="blur"
+															listener="#{registroNombre.valueChanged}" />
+													</p:inputText>
+												</div>
+												<div class="clear"></div>
+											</h:panelGroup>
+										</p:panel>
+									</c:forEach>
+								</h:panelGroup>
+								<!-- End Otros Nombres -->
+
+
+								<!--  Otras Identificaciones -->
+								<h:panelGroup
+									rendered="#{otrosDatosController.otrosIdsLista ne null}">
+									<c:forEach var="registroId"
+										items="#{otrosDatosController.otrosIdsLista}"
+										varStatus="myVarIndex">
+										<p:focus context="panelOtrosIds#{myVarIndex.index}" />
+										<p:panel id="panelOtrosIds#{myVarIndex.index}"
+											styleClass="#{registroId.estado.styleClass}">
+											<h:panelGroup
+												rendered="#{registroId.estado == EstadoListadosEnum.CONSULTADO or registroId.estado == EstadoListadosEnum.ELIMINADO}">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left" alt="Deshacer" title="Deshacer"
+													actionListener="#{otrosDatosController.restoreValueExistente(registroId)}"
+													rendered="#{registroId.estado == EstadoListadosEnum.ELIMINADO}"
+													update="otrosDatos:panelListas">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar identificación"
+													title="Eliminar identificación"
+													actionListener="#{otrosDatosController.removeOtroValorExistente(registroId)}"
+													rendered="#{registroId.estado == EstadoListadosEnum.CONSULTADO}"
+													update="otrosDatos:panelListas">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-pencil" alt="Editar actividad"
+													title="Editar actividad">
+													<p:ajax event="click"
+														listener="#{otrosDatosController.editarFila(registroId)}"
+														update="otrosDatos:panelListas"></p:ajax>
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<div class="clear-row"></div>
+												<div class="grid_18">
+													<h:outputLabel value="Descripción"></h:outputLabel>
+													<div class="clear-3"></div>
+													<h:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroId.descripcion}"></h:outputLabel>
+												</div>
+												<div class="grid_10">
+													<h:outputLabel value="N° de identificación"></h:outputLabel>
+													<div class="clear-3"></div>
+													<h:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroId.valor}"></h:outputLabel>
+												</div>
+												<div class="clear"></div>
+											</h:panelGroup>
+
+											<h:panelGroup
+												rendered="#{registroId.estado == EstadoListadosEnum.MODIFICADO or registroId.estado == EstadoListadosEnum.NUEVO}">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left" alt="Deshacer edición"
+													title="Deshacer edición"
+													actionListener="#{otrosDatosController.restaurarModificado(registroId)}"
+													update="otrosDatos:panelListas"
+													rendered="#{registroId.estado == EstadoListadosEnum.MODIFICADO}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar identificación"
+													title="Eliminar identificación"
+													actionListener="#{otrosDatosController.removeOtroId(registroId)}"
+													update="otrosDatos:panelListas"
+													rendered="#{registroId.estado == EstadoListadosEnum.NUEVO}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<div class="clear-row"></div>
+												<div class="grid_18">
+													<h:outputLabel value="Descripción"></h:outputLabel>
+													<div class="clear-3"></div>
+													<h:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroId.descripcion}"></h:outputLabel>
+												</div>
+												<div class="grid_9">
+													<h:outputLabel value="N° de identificación"></h:outputLabel>
+													<span class="ui-outputlabel-rfi">*</span>
+													<div class="clear-3"></div>
+													<p:inputText id="txtId#{myVarIndex.index}"
+														value="#{registroId.valor}" maxlength="14"
+														onblur="value=value.toUpperCase()"
+														required="#{param['disableValidation']==null}">
+														<pe:keyFilter regEx="/^[0-9a-zA-Z]*$/" />
+														<p:ajax event="blur" listener="#{registroId.valueChanged}" />
+													</p:inputText>
+												</div>
+												<div class="clear"></div>
+											</h:panelGroup>
+										</p:panel>
+									</c:forEach>
+								</h:panelGroup>
+								<!--  End Otras Identificaciones -->
+
+
+								<!--  Otros telefonos, faxes o e-mails -->
+								<h:panelGroup>
+									<c:forEach var="registroContacto"
+										items="#{otrosDatosController.otrosContactosLista}"
+										varStatus="myVarIndex">
+										<p:focus context="panelOtrosContactos#{myVarIndex.index}" />
+										<p:panel id="panelOtrosContactos#{myVarIndex.index}"
+											styleClass="#{registroContacto.estado.styleClass}">
+											<h:panelGroup
+												rendered="#{registroContacto.estado == EstadoListadosEnum.CONSULTADO or registroContacto.estado == EstadoListadosEnum.ELIMINADO}">
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar contacto"
+													title="Eliminar contacto"
+													actionListener="#{otrosDatosController.removeOtroValorExistente(registroContacto)}"
+													rendered="#{registroContacto.estado == EstadoListadosEnum.CONSULTADO and registroContacto.pintarEdicion}"
+													update="otrosDatos:panelListas">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left" alt="Deshacer" title="Deshacer"
+													actionListener="#{otrosDatosController.restoreValueExistente(registroContacto)}"
+													rendered="#{registroContacto.estado == EstadoListadosEnum.ELIMINADO}"
+													update="otrosDatos:panelListas">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-pencil" alt="Editar contacto"
+													title="Editar contacto"
+													rendered="#{registroContacto.pintarEdicion}">
+													<p:ajax event="click"
+														listener="#{otrosDatosController.editarFila(registroContacto)}"
+														update="otrosDatos:panelListas"></p:ajax>
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<div class="clear-row"></div>
+												<div class="grid_18">
+													<p:outputLabel value="Descripción"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroContacto.descripcion}"></p:outputLabel>
+												</div>
+												<h:panelGroup rendered="#{not registroContacto.isEmail()}">
+													<div class="grid_9">
+														<p:outputLabel value="Número"></p:outputLabel>
+														<div class="clear-3"></div>
+														<p:outputLabel styleClass="label-valor texto-sininput"
+															value="#{registroContacto.numero}"></p:outputLabel>
+													</div>
+													<div class="grid_12">
+														<p:outputLabel value="Texto"></p:outputLabel>
+														<div class="clear-3"></div>
+														<p:outputLabel styleClass="label-valor texto-sininput"
+															value="#{registroContacto.valor}"></p:outputLabel>
+													</div>
+												</h:panelGroup>
+
+												<h:panelGroup rendered="#{registroContacto.isEmail()}">
+													<div class="grid_25">
+														<p:outputLabel value="Dirección"></p:outputLabel>
+														<div class="clear-3"></div>
+														<p:outputLabel styleClass="label-valor texto-sininput"
+															value="#{registroContacto.valor}"></p:outputLabel>
+													</div>
+												</h:panelGroup>
+												<div class="clear"></div>
+											</h:panelGroup>
+
+											<h:panelGroup
+												rendered="#{registroContacto.estado == EstadoListadosEnum.MODIFICADO or registroContacto.estado == EstadoListadosEnum.NUEVO}">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left" alt="Deshacer edición"
+													title="Deshacer edición"
+													actionListener="#{otrosDatosController.restaurarModificado(registroContacto)}"
+													update="otrosDatos:panelListas"
+													rendered="#{registroContacto.estado == EstadoListadosEnum.MODIFICADO}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar contacto"
+													title="Eliminar contacto"
+													actionListener="#{otrosDatosController.removeOtroContacto(registroContacto)}"
+													rendered="#{registroContacto.estado == EstadoListadosEnum.NUEVO}"
+													update="otrosDatos:panelListas">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<div class="clear-row"></div>
+												<div class="grid_9">
+													<p:outputLabel value="Descripción"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														value="#{registroContacto.descripcion}"></p:outputLabel>
+												</div>
+
+												<h:panelGroup rendered="#{not registroContacto.isEmail()}">
+													<div class="grid_9">
+														<p:outputLabel value="Número"></p:outputLabel>
+														<span class="ui-outputlabel-rfi">*</span>
+														<div class="clear-3"></div>
+														<p:inputMask id="txtNumero#{myVarIndex.index}"
+															value="#{registroContacto.numero}"
+															onblur="value=value.toUpperCase()" maxlength="20"
+															required="#{param['disableValidation']==null}">
+															<pe:keyFilter regEx="/[\d\-\.]/" />
+															<p:ajax event="blur"
+																listener="#{registroContacto.valueChanged}" />
+														</p:inputMask>
+													</div>
+													<div class="grid_15">
+														<p:outputLabel value="Texto"></p:outputLabel>
+														<span class="ui-outputlabel-rfi">*</span>
+														<div class="clear-3"></div>
+														<p:inputText id="txtTexto#{myVarIndex.index}"
+															value="#{registroContacto.valor}" maxlength="30"
+															onblur="value=value.toUpperCase()"
+															required="#{param['disableValidation']==null}">
+															<pe:keyFilter regEx="/^[0-9a-zA-ZáéíóúÁÉÍÓÚ\- ]*$/" />
+															<p:ajax event="blur"
+																listener="#{registroContacto.valueChanged}" />
+														</p:inputText>
+													</div>
+												</h:panelGroup>
+
+												<h:panelGroup rendered="#{registroContacto.isEmail()}">
+													<div class="grid_20">
+														<p:message id="txtDireccionVal#{myVarIndex.index}"
+															for="txtDireccion#{myVarIndex.index}" display="icon"></p:message>
+														<p:outputLabel value="Dirección"></p:outputLabel>
+														<span class="ui-outputlabel-rfi">*</span>
+														<div class="clear-3"></div>
+														<p:inputText id="txtDireccion#{myVarIndex.index}"
+															value="#{registroContacto.valor}" maxlength="50"
+															onblur="value=value.toUpperCase()"
+															required="#{param['disableValidation']==null}"
+															requiredMessage="">
+															<pe:keyFilter regEx="/^[0-9a-zA-Z\-\_\.\@ ]*$/" />
+															<p:ajax event="blur"
+																listener="#{registroContacto.valueChanged}"
+																update="txtDireccion#{myVarIndex.index},txtDireccionVal#{myVarIndex.index}" />
+															<f:validator validatorId="emailValidator"
+																disabled="#{param['disableValidation']==true}" />
+															<f:param name="disableValidation" value="true" />
+														</p:inputText>
+													</div>
+												</h:panelGroup>
+												<div class="clear"></div>
+											</h:panelGroup>
+										</p:panel>
+									</c:forEach>
+								</h:panelGroup>
+								<!--  End Otros telefonos, faxes o e-mails -->
+							</h:panelGroup>
+							<div class="clear"></div>
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" action="#{otrosDatosController.validarAccionCancelar()}">
+							<f:param name="disableValidation" value="true" />
+						</p:commandButton>
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar" action="#{otrosDatosController.validarGuardar()}"
+							update=":dlgGuardado :dlgEliminados otrosDatos">
+						</p:commandButton>
+					</h:form>
+				</div>
+
+				<!-- plantilla de ventana de diálogo -->
+				<ui:include src="../../composites/listadosDialogo.xhtml">
+					<ui:param name="dialogoGuardado"
+						value="#{otrosDatosController.dialogoGuardado}" />
+				</ui:include>
+
+				<ui:include src="../../composites/listadosDialogoEliminar.xhtml">
+					<ui:param name="managedBean" value="#{otrosDatosController}" />
+					<ui:param name="aceptar" value="guardar" />
+					<ui:param name="form" value="otrosDatos" />
+					<ui:param name="mensajeEliminados"
+						value="#{otrosDatosController.mensajeEliminados}" />
+				</ui:include>
+
+				<p:dialog widgetVar="dlgCancelar" id="dlgCancelar" showEffect="fade" hideEffect="fade"
+					appendTo="@(body)" header="Cancelar Otros Datos" modal="true"
+					visible="false" closable="false" resizable="false" dynamic="true">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! Si continua perderá todos los cambios" />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Desea continuar de todos modos?" />
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						action="#{otrosDatosController.irAHome()}" id="VolverAlta"
+						value="Continuar" immediate="true" />
+					<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+						value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+				</p:dialog>
+				<p:dialog widgetVar="dlgDestDuplicado" id="dlgDestDuplicado" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+                      modal="true" visible="false" closable="false" resizable="false"  draggable="false">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+                      <p:outputLabel  styleClass="modal-mensaje" value="No se permite tipo de dato duplicado." />
+                      <div class="clear"></div>
+                      <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgDestDuplicado').hide();" value="Aceptar" immediate="true"/>
+            	</p:dialog>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

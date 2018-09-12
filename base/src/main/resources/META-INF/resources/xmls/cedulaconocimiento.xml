@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+   <!-- Mapeo de clases -->
+	<mapping map-id="transaccionalidad" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaperfiltransaccional.ResponseBansefi.OPECONSTRANESTIMTRNO.PECONSTRANESTIMEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.TransaccionalidadBean
+		</class-b>
+		<field>
+			<a>PEPERSTRANESTIME.numdepositos</a>
+			<b>numDepositos</b>
+		</field>		
+		<field>
+			<a>PEPERSTRANESTIME.impdepositos</a>
+			<b>montoDepositos</b>
+		</field>	
+		<field>
+			<a>PEPERSTRANESTIME.numretiros</a>
+			<b>numRetiros</b>
+		</field>	
+		<field>
+			<a>PEPERSTRANESTIME.impretiros</a>
+			<b>montoRetiros</b>
+		</field>	
+		<field>
+			<a>PEPERSFNTEINGRE.meningresos</a>
+			<b>montoMensualIngresos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+			<a>PEPERSFNTEINGRE.honorarios</a>
+			<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>PEPERSFNTEINGRE.arrendamiento</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>PEPERSFNTEINGRE.premios</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>PEPERSFNTEINGRE.sueldos</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="4">
+		 	<a>PEPERSFNTEINGRE.prestamos</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="5">
+		 	<a>PEPERSFNTEINGRE.donativos</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="6">
+		 	<a>PEPERSFNTEINGRE.inversiones</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="7">
+		 	<a>PEPERSFNTEINGRE.herencia</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="8">
+		 	<a>PEPERSFNTEINGRE.actcomercial</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="9">
+		 	<a>PEPERSFNTEINGRE.comisiones</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="10">
+		 	<a>PEPERSFNTEINGRE.beca</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="11">
+		 	<a>PEPERSFNTEINGRE.recterceros</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="12">
+		 	<a>PEPERSFNTEINGRE.ventas</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="13">
+		 	<a>PEPERSFNTEINGRE.pension</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="Otros">
+		 	<a>PEPERSFNTEINGRE.otros</a>
+		 	<b>transaccionalidad</b>
+		</field>
+		<field>		 	
+			<a>PEPERSFNTEINGRE.otrosesp</a>
+			<b>provieneOtros</b>
+		</field>
+	</mapping>
+	<mapping map-id="usocuenta" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultausocuenta.ResponseBansefi.OPECONSINDVUSOCTATRN.PECONSINDVUSOCTAEVT.PEPERSUSOCTAE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.UsoCuentaBean
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>admingrgto</a>
+		 	<b>usos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>concdispfond</a>
+		 	<b>usos</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>pagprovcomi</a>
+		 	<b>usos</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>pagserv</a>
+		 	<b>usos</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="4">
+		 	<a>ctapnteinver</a>
+		 	<b>usos</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="5">
+		 	<a>pagcred</a>
+		 	<b>usos</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="6">
+		 	<a>fideicomisos</a>
+		 	<b>usos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="7">
+		 	<a>inversiones</a>
+		 	<b>usos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="8">
+		 	<a>depnomina</a>
+		 	<b>usos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="Otros">
+		 	<a>otros</a>
+		 	<b>usos</b>
+		</field>
+		<field>
+			<a>otrosesp</a>
+		 	<b>otrosUsos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>depositos</a>
+		 	<b>operaciones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>cobrogiros</a>
+		 	<b>operaciones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>retiros</a>
+		 	<b>operaciones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>transferencias</a>
+		 	<b>operaciones</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToIntegerConverter">
+			<a>porcpropios</a>
+		 	<b>manejoRecursosPropios</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToIntegerConverter">
+			<a>porcterceros</a>
+		 	<b>manejoRecursosTerceros</b>			
+		</field>	
+	</mapping>	
+</mappings>

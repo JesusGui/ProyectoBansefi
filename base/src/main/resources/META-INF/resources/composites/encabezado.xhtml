@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:h5="http://java.sun.com/jsf/composite/h5">
+
+	<h:outputScript name="js/storage.js" />
+	<h:outputScript name="js/integracionAppWhere/alertas.js"/>
+
+	<div class="menu-bansefi">
+
+		<div class="bansefi-logos">
+			<div class="logo-bansefi">
+				<img src="#{contextoUtils.getLogo()}"/>
+			</div>
+			<div class="logo-oficina-bansefi" >
+
+				<span>
+					<p:outputLabel styleClass="sucursal" value="Sucursal: " />
+					<p:outputLabel styleClass="sucursal" value="#{contextoUtils.getSucursal()}" />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="terminal" value="Terminal: " />
+					<p:outputLabel styleClass="terminal" value="#{contextoUtils.getTerminal()}" />
+					<div class="clear-row"></div>
+					<p:outputLabel styleClass="terminal" value="Fecha de sistema: " />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="terminal" value="#{contextoUtils.getFechaContableActual()}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+					<div class="clear-row"></div>
+					<p:outputLabel styleClass="terminal" value="Versión: " />
+					<p:outputLabel styleClass="terminal" value="#{contextoUtils.getBanksystemVersion()}" />
+				</span>
+			</div>
+		</div>
+
+		<div class="">
+
+			<div class="box-usuario">
+
+<!-- 				<div class="lista-alertas"> -->
+
+<!-- 					<h:form id="frmTareas"> -->
+<!-- 						<p:commandButton id="btnTareas" styleClass="tarea-link margin-top-30" -->
+<!-- 							widgetVar="btnTareas" value="" icon="cbs-e007-tareas-o" -->
+<!-- 							alt="Tareas pendientes" title="" -->
+<!-- 							action="#{menuController.redirigirATareas()}" -->
+<!-- 							onclick="cargarListaDeTareasPendientes();" -->
+<!-- 							update=":frmTareas:btnTareas" disabled="true" > -->
+<!-- 							<f:attribute name="store" value="true" /> -->
+<!-- 						</p:commandButton> -->
+<!-- 						<p:inputText id="listaDatosOculta" type="hidden" -->
+<!-- 							value="#{tareaController.tareas}" /> -->
+<!-- 					</h:form> -->
+
+<!-- 				</div> -->
+
+					<h:form styleClass="opciones-avatar" id="frmOpciones">
+						<p:menuButton styleClass="boton-avatar" id="btnNotificaciones"
+							value="#{contextoUtils.getNotificacionesUsuario().size() > 0 ? contextoUtils.getNotificacionesUsuario().size():''}">
+							<p:menuitem styleClass="opcion-notificaciones" id="mnuVerNotificaciones" value="Ver notificaciones"
+								icon="fa fa-bell"
+								action="#{menuController.redirigirANotificaciones()}" />
+							<p:menuitem styleClass="opcion-notificaciones" name="mnuVerSolicitudesName" id="mnuSolicitudes" value="Solicitudes"
+								icon="fa fa-thumb-tack"
+										action="#{limitesAutorizacionesController.solicitudes()}"/>
+							<!--<span id="alertaSolicitudes" class="alertaContador">3</span>-->
+							<p:menuitem styleClass="opcion-avatar" id="mnuRegistroAsistencia" value="Registro Asistencia"
+										icon="fa fa-clock-o"
+										action="#{checadorController.inicio()}" />
+							<p:menuitem styleClass="opcion-avatar" id="mnuModificar" value="Cambiar contraseña"
+								icon="ui-icon-locked"
+								action="#{menuController.redirigirACambioContrasena()}" />
+							<p:menuitem styleClass="opcion-avatar" id="mnuCerrar" value="Cerrar sesión"
+								icon="ui-icon-close"
+								onclick="PF('dlgConfirmarCierreSesion').show();" />
+						</p:menuButton>
+
+						<div class="datos-avatar">
+							<div>
+								<p:outputLabel styleClass="usuario" value="#{contextoUtils.getNombre()}" />
+								<div class="identificacion">
+									<p:outputLabel value="ID: " />
+									<p:outputLabel id="lblId" value="#{contextoUtils.getId()}" />
+								</div>
+								
+								<p:outputLabel styleClass="perfil-encabezado" value="PERFIL: #{contextoUtils.getPerfil()}" />
+							</div>
+						</div>
+
+					</h:form>
+					<p:dialog id="dlgConfirmarCierreSesion" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgConfirmarCierreSesion" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="Confirmación requerida">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Está a punto de cerrar su sesión." />
+						<div class="margin-bottom-30"></div>
+						<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgConfirmarCierreSesion').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" action="#{menuController.cerrarSesion}"
+							oncomplete="PF('dlgConfirmarCierreSesion').hide();" />
+					</p:dialog>
+					<p:dialog id="dlgError" widgetVar="dlgError" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="¡Atención!">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Ha ocurrido un error al intentar cerrar su sesión." />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgError').hide();" />
+					</p:dialog>
+
+			</div>
+			<div class="toolbox">
+				<h:panelGroup id="btnHerramientas" layout="block" styleClass="icon cbs-e003-herramientas iconos-tools darkgrey"></h:panelGroup>
+				<h:panelGroup id="btnCal" layout="block" onclick="PF('dlg2').show();" styleClass="options ui-icon-calculator iconos-tools"></h:panelGroup>
+				<h:panelGroup id="btnConversion" layout="block" onclick="PF('dlg1').show();" styleClass="options fa fa-retweet iconos-tools"></h:panelGroup>
+				<pe:tooltip for="btnHerramientas" value="Herramientas" myPosition="top left" targetPosition="center center"/>
+				<pe:tooltip for="btnCal" value="Calculadora" myPosition="top left" targetPosition="center center"/>
+				<pe:tooltip for="btnConversion" value="Conversión de cuentas" myPosition="top left" targetPosition="center center"/>  
+			</div>
+		</div>
+	</div>
+
+	<h:form id="msgsForm">
+		<p:growl id="msgsGrowl" for="sysMsgs" showDetail="true" />
+		<h:inputHidden id="hdnParam" value="#{contextoUtils.mensajeJSON}" />
+		<p:commandButton id="hdnBtn"
+			actionListener="#{contextoUtils.guardaMensaje()}"
+			style="display: none;"
+			update="msgsGrowl, :frmOpciones:btnNotificaciones #{menuController.actualizarTablaNotificaciones()?',:frmNotificaciones:tblNotificaciones':''}" />
+	</h:form>
+
+	<ui:include src="conversion.xhtml" />
+	<ui:include src="calculadora.xhtml" />
+
+	<pe:tooltip global="true" position="left center"
+		targetPosition="center center" />
+
+</ui:composition>

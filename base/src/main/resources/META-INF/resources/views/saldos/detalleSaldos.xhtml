@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+	
+	<ui:define name="contenido">
+    <h:body>
+        <div class="container_48">
+            <!-- Se agregó div contenedores -->
+            <div class="contenedor">
+                <div class="contenedor-form">
+
+                    <div class="titulo centrar-objeto btn-inline-set">
+                        <p:commandButton icon="ui-icon-home" action="#{saldosController.irInicio()}"></p:commandButton>
+                        <h1>Consulta de saldos</h1>
+                    </div>
+
+
+                    <div class="contenedor-campos">
+
+                        <ui:include src="../../composites/detalleSaldoCuenta.xhtml">
+                            <ui:param name="saldoCuenta" value="#{saldosController.saldoBean.saldoCuenta}" />
+                            <ui:param name="detalleCuentaUtils" value="#{saldosController.saldoBean.detalleCuentaUtils}" />
+                            <ui:param name="bean" value="#{saldosController}" />
+                            <ui:param name="action" value="imprimirReporte" />
+                        </ui:include>
+
+
+                        <div class="margin-top-20"></div>
+                                               
+                        
+
+                    </div>
+
+                    <div class="margin-top-10"></div>
+                    <p:commandButton styleClass="btn_secundario" value="Volver al inicio" action="#{saldosController.irInicio()}"></p:commandButton>
+
+                    <p:commandButton styleClass="btn_principal_derecha" value="Realizar otra consulta" action="#{saldosController.otraConsulta()}"></p:commandButton>
+
+
+                </div>
+                <!--termina contenedor-form-->
+            </div>
+            <!--termina contenedor-->
+        </div>
+        <!--termina container-48-->
+    </h:body>
+</ui:define>
+</ui:composition>

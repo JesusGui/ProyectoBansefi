@@ -1,0 +1,225 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+	<ui:define name="contenido">
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+
+					<h:form id="formBalance" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" value=""
+								action="#{balanceController.volver()}"></p:commandButton>
+						<div>
+							<h2 class="gris-b">
+								<h:outputText value="Alta de " rendered="#{balanceController.indicador=='A'}" />
+								<h:outputText value="Balance de " />
+								<h:outputText styleClass="azul-b"
+									value=" #{balanceController.cliente.nombre} " />
+								<h:outputText styleClass="rojo-b"
+									value="#{balanceController.cliente.tipoIdentificacion}: " />
+								<h:outputText styleClass="gris-b sub-h"
+									value=" (#{balanceController.cliente.numIdentificacion})" />
+							</h2>
+						</div>
+						</div>
+						<div class="contenedor-campos">
+
+							<h:panelGroup id="panelBalance" layout="block">
+																
+									<p:outputLabel
+										styleClass="txt-campo-obligatorio margin-left-10"
+										value="*Datos Obligatorios" />
+									<div class="margin-bottom-10"></div>
+									<div class="grid_48">
+									<h:outputLabel styleClass="txt-campos-oblg"
+										value="Los campos marcados en rojo son requeridos"
+										rendered="#{facesContext.validationFailed}" />
+									</div>
+								<div class="clear"></div>
+
+								<div class="grid_25">
+									<p:outputLabel for="descripcion" value="Descripción" rendered="#{balanceController.balanceSel.indVigencia == 'S' or balanceController.indicador=='A'}"></p:outputLabel>
+									<p:outputLabel value="Descripción"  rendered="#{balanceController.balanceSel.indVigencia != 'S' and balanceController.indicador!='A'}"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:inputMask styleClass="label-valor" id="descripcion" rendered="#{balanceController.balanceSel.indVigencia == 'S' or balanceController.indicador=='A'}"
+										value="#{balanceController.balanceSel.descripcion}"
+										maxlength="60" onblur="value=value.toUpperCase()" required="true" tabindex="10">
+										<pe:keyFilter regEx="/^[a-zA-Z0-9áéíóúÁÉÍÓÚ ]*$/" />
+									</p:inputMask>
+									<p:outputLabel styleClass="label-valor texto-sininput" value="#{balanceController.balanceSel.descripcion} " 
+										rendered="#{balanceController.balanceSel.indVigencia != 'S' and balanceController.indicador!='A'}"/>
+								</div>
+								
+								<div class="grid_8">
+									<p:outputLabel value="Fecha de Revisión" rendered="#{balanceController.indicador!='A'}"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:outputLabel styleClass="label-valor texto-sininput" value="#{balanceController.balanceSel.fechaRevision}" rendered="#{balanceController.indicador!='A'}" />
+								</div>								
+								<div class="grid_4">
+									<p:outputLabel value="Vigente" rendered="#{balanceController.indicador!='A'}"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:outputLabel styleClass="label-valor texto-sininput" value="Sí " rendered="#{balanceController.balanceSel.indVigencia == 'S' and balanceController.indicador!='A'}"/>
+                       				<p:outputLabel styleClass="label-valor texto-sininput" value="No " rendered="#{balanceController.balanceSel.indVigencia == 'N' and balanceController.indicador!='A'}"/>
+								</div>								
+								<div class="clear"></div>
+								<p:tabView id="vistaTabs" value="#{balanceController.tabs}"
+									var="tab" activeIndex="#{balanceController.activeTab}">
+									<p:tab title="#{tab.nombre}">
+										<div class="tabla-balances-encabezado">
+												<h:outputLabel styleClass="grid_30" value="Descripción"/>
+												<h:outputLabel styleClass="grid_12" value="Importe" rendered="#{!(tab.posicion>2)}" />
+												<h:outputLabel class="grid_6 alpha" value="Porcentaje" rendered="#{!(tab.posicion>2)}" />
+												<h:outputLabel class="grid_18" value="Valor" rendered="#{tab.posicion>2}" />
+										</div>
+										<div class="clear"></div>
+										
+											<p:dataList styleClass="tabla-balances"
+												value="#{balanceController.balance}" var="reg"
+												itemStyleClass="#{reg.estilo}">
+													
+													<p:commandButton styleClass="tabla-balances-btn"
+														icon="fa fa-angle-#{reg.visible? 'up':'down'}"
+														action="#{balanceController.verGrupo(reg.grupo,tab.posicion)}"
+														partialSubmit="true" oncomplete="changeBalance()" immediate="true"
+														rendered="#{!(tab.posicion>2) and reg.tab==tab.posicion and reg.nivel==1}"></p:commandButton>
+																																						
+													<p:commandLink styleClass="balances-label-descripcion" 
+														rendered="#{reg.tab==tab.posicion and reg.nivel==1}"
+														partialSubmit="true" oncomplete="changeBalance()" immediate="true"
+														action="#{balanceController.verGrupo(reg.grupo,tab.posicion)}"> #{reg.texto}</p:commandLink>
+													
+													<p:outputLabel
+														rendered="#{reg.tab==tab.posicion and reg.nivel>=2 and reg.visible}"
+														partialSubmit="true" oncomplete="changeBalance()" immediate="true"
+														styleClass="#{reg.estiloTitulo}"> #{reg.texto}</p:outputLabel>
+												
+													<pe:inputNumber styleClass="balances-input pe-inputNumber"
+														rendered="#{reg.tab==tab.posicion and reg.editable and reg.visible}"
+														value="#{reg.valor}" maxlength="14" id="texto" maxValue="999999999999.99"
+														disabled="#{balanceController.balanceSel.indVigencia != 'S' and balanceController.indicador!='A'}"
+														decimalSeparator="." thousandSeparator=","  decimalPlaces="2">
+														<p:ajax event="change" partialSubmit="true"
+															oncomplete="changeBalance()"
+															listener="#{balanceController.cambiarBalance(tab.posicion)}" global="false">
+														</p:ajax>
+													</pe:inputNumber>
+													<p:watermark for="texto" value="0.00" />
+													<p:outputLabel rendered="#{reg.tab==tab.posicion and reg.editable and reg.visible}"
+														styleClass="pe-inputNumber-suffix">MXN</p:outputLabel>
+												
+													<h:outputText styleClass="balances-importe"
+														rendered="#{reg.tab==tab.posicion and reg.nivel==1 and !reg.editable}"
+														value="#{reg.valor}">
+														<f:convertNumber pattern="#,##0.00" minFractionDigits="2"
+															maxFractionDigits="2" />
+													</h:outputText>
+												
+													<p:outputLabel styleClass="balances-mxn"
+														rendered="#{(!(tab.posicion>2) and reg.tab==tab.posicion and reg.nivel==1 and !reg.editable) or (tab.posicion==4 and reg.resumen and !reg.ratio)}"
+														value="MXN" />
+												
+													<h:outputText styleClass="balances-porcentaje"
+														rendered="#{!(tab.posicion>2) and reg.tab==tab.posicion and reg.editable and reg.visible}"
+														value="#{reg.porcentaje} %">
+														<f:convertNumber pattern="#,##0.00" minFractionDigits="2"
+															maxFractionDigits="2" />
+													</h:outputText>
+												
+												<div class="clear"></div>
+
+											</p:dataList>
+										<div class="clear"></div>
+									</p:tab>
+									<div class="clear"></div>
+								</p:tabView>
+								<div class="clear"></div>
+
+								<div class="grid_17 alpha margin-top-10 #{balanceController.styleDif}">
+								<p:outputLabel value="TOTAL ACTIVO: " />
+								<h:outputText value="#{balanceController.totalAP[0]}">
+									<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+										minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+								</div>
+
+								<div class="grid_20 omega margin-top-10 float-right #{balanceController.styleDif}">
+								<p:outputLabel value="TOTAL PASIVO Y CAPITAL: " />
+								<h:outputText value="#{balanceController.totalAP[1]}">
+									<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+										minFractionDigits="2" maxFractionDigits="2" />
+								</h:outputText>
+								</div>
+
+								<div class="clear"></div>
+							</h:panelGroup>
+							<div class="clear"></div>
+						</div>
+
+						<div class="clear"></div>
+						<p:remoteCommand name="changeBalance" immediate="true"
+							update="@form" oncomplete=""/>
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							id="cancelar" value="Cancelar" immediate="true"
+							action="#{balanceController.volver()}"/>
+						<p:commandButton
+							styleClass="btn_principal_derecha margin-top-10" id="guardar"
+							value="Guardar Balance" update="formBalance"
+							rendered="#{balanceController.balanceSel.indVigencia == 'S' or balanceController.indicador=='A'}"
+							actionListener="#{balanceController.guardarBalance()}" />
+					</h:form>
+
+					<p:dialog closable="false" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" widgetVar="dlgConfirmacion"
+						dynamic="true" modal="true">
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="El balance se creó correctamente." />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							widgetVar="btnAceptar" onclick="PF('btnAceptar').disable()"
+							oncomplete="PF('dlgConfirmacion').hide();" update=":formBalance" />
+					</p:dialog>
+
+					<p:dialog closable="false" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" widgetVar="dlgNoCambios"
+						dynamic="true" modal="true">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No se han realizado cambios." />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							widgetVar="btnAceptar" onclick="PF('btnAceptar').disable()"
+							oncomplete="PF('dlgNoCambios').hide();" update=":formBalance" />
+					</p:dialog>
+
+					<p:dialog closable="false" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" header="¡Atención!"
+						widgetVar="dlgAlerta" dynamic="true" modal="true">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" immediate="true" widgetVar="btnCancelar"
+							oncomplete="PF('dlgAlerta').hide();" update=":formBalance" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							action="#{balanceController.volverConfirmacion()}"
+							widgetVar="btnAceptar" oncomplete="PF('dlgAlerta').hide();"
+							update=":formBalance" />
+					</p:dialog>
+
+				</div>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

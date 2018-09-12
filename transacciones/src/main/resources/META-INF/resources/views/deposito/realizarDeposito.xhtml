@@ -1,0 +1,453 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<div class="contenedor-form">
+					
+					<pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" var="ConstantesFuncionales" />
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton immediate="true"
+								action="#{depositoController.irMenu()}"
+								icon="ui-icon-arrow-1-w"></p:commandButton>
+							<h1>Depósito</h1>
+						</div>
+
+						<h:form id="formDeposito">
+							<pe:tooltip global="true" position="left center" targetPosition="right center" />
+							<div class="contenedor-campos">
+							
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" value="*Campos Obligatorios"></p:outputLabel>
+                                <div class="margin-top-10"></div>
+                                
+                                <h:outputLabel styleClass="txt-campos-oblg grid_40"
+											value="Los campos marcados en rojo son requeridos"
+											rendered="#{facesContext.validationFailed}" />
+											
+								<div class="grid_40 alpha">
+								
+									<h:panelGroup id="panelAnotaciones" rendered="#{depositoController.deposito.anotaciones.size() > 0 ? true: false}">
+											<div class="ui-messages-warn anotaciones">
+												<h3>Anotaciones</h3>
+												<div class="clear"></div>
+												<div class="contenedor-wrap">
+													<c:forEach var="anotacion" items="#{depositoController.deposito.anotaciones.subList(0,depositoController.anotacionesVisibles)}">
+														<div class="#{anotacion.prioridad.equals(ConstantesFuncionales.COD_PRIORIDAD_ANOTACION_ALTA)? 'elementos-anotaciones anotaciones-aviso' : 'elementos-anotaciones'}">
+															<p:commandLink value="#{depositoController.getTipoAnotacion(anotacion.tipo)}:
+															#{(anotacion.descripcionCorta != null and anotacion.descripcionCorta.trim().length() != 0) ? anotacion.descripcionCorta : depositoController.obtenerSubCodigoAnotacion(anotacion.subcodigo)}"
+																action="#{depositoController.detalleAnotacion(anotacion)}" process="@this"/>
+															<h:outputLabel rendered="#{anotacion.respuestas != null and !anotacion.respuestas.isEmpty()}"><i class="fa fa-reply margin-left-5"></i></h:outputLabel>
+														</div>
+													</c:forEach>
+												</div>
+												<div class="margin-bottom-15"></div>
+												<p:commandButton styleClass="btn-mostrar float-right"
+													icon="fa fa-angle-down" value="Ver todas las anotaciones"
+													action="#{depositoController.mostrarTodasAnotaciones()}" immediate="true"
+													update="@form" proccess="@this"
+													rendered="#{depositoController.deposito.anotaciones.size() gt depositoController.anotacionesVisibles}"/>
+													
+												<p:commandButton styleClass="btn-mostrar float-right"
+													icon="fa fa-angle-up" value="Ocultar anotaciones"
+													action= "#{depositoController.establecerAnotacionesVisibles()}" immediate="true"
+													update="@form" proccess="@this"
+													rendered="#{(depositoController.deposito.anotaciones.size() eq depositoController.anotacionesVisibles) and
+														(depositoController.deposito.anotaciones.size() gt 6)}"/>
+											</div>
+									</h:panelGroup>
+								
+									
+									<div class="grid_9">
+										<p:outputLabel for="cuentaDeposito" value="N° de cuenta" id="txt-cuenta"/>
+										<div class="clear-3"></div>
+										<p:inputMask id="cuentaDeposito" 
+											value="#{depositoController.deposito.cuentaDeposito}"
+											label="Cuenta" maxlength="10" required="true" disabled="#{depositoController.esDepositoIPF or depositoController.origenFichaCuenta}">
+											<pe:keyFilter regEx="/[0-9_]/i" preventPaste="false"/>
+											<p:ajax event="blur"
+												listener="#{depositoController.buscaTitular()}"
+												update="txt-cuenta cuentaDeposito titularCuenta titularCuentaNombre titularCuentaError 
+													nivelCuentaValor aceptar :formDeposito" global="false"></p:ajax>
+										</p:inputMask>
+									</div>
+									<div class="grid_3">
+										<div class="label-vacio"></div>
+											<div class="clear-3"></div>
+										<p:commandButton id="btnBuscarCuenta" icon="ui-icon-search" styleClass="btn-icono-conbackground" 
+											immediate="true" action="#{depositoController.buscarCuentas()}" title="Buscar cuenta"
+											disabled="#{depositoController.esDepositoIPF}"></p:commandButton>										
+									</div>
+									
+									<div class="grid_3">
+										<h:outputLabel id="nivelCuenta" value="Nivel"/>
+										<div class="clear-3"></div>
+										<div class="input-label-valor">
+											<h:outputLabel styleClass="label-valor"
+												id="nivelCuentaValor"
+												value="#{depositoController.deposito.nivelCuenta}"
+												style="display:#{(depositoController.muestraTitular) ? 'flex' : 'none' }" />
+										</div>
+									</div>
+									
+									<div class="grid_33">
+										<h:outputLabel id="titularCuentaError" styleClass="mensaje-incorrecto"
+											value="El número de cuenta es incorrecto"
+											style="display:#{(depositoController.muestraTitularError) ? 'block' : 'none' }" />
+									
+										<h:outputLabel id="titularCuenta" value="Titular de la cuenta:"/>
+										<div class="clear-3"></div>
+										<div class="input-label-valor">
+											<h:outputLabel styleClass="label-valor"
+												id="titularCuentaNombre"
+												value="#{depositoController.deposito.titular}"
+												style="display:#{(depositoController.muestraTitular) ? 'flex' : 'none' }" />
+										</div>
+									</div>
+									
+									<div class="clear-row"></div>
+									
+									<div class="grid_24">
+									
+										<div class="grid_33 alpha">
+											<p:outputLabel for="identificacionClienteDeposito"
+												value="Identificación" id="txt-identificacion"/>
+												<div class="clear-3"></div>
+											<p:selectOneMenu id="identificacionClienteDeposito"
+												value="#{depositoController.deposito.identificacionClienteDeposito}"
+												required="false">
+												<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<c:forEach items="#{catalogoUtils.getCatalogo('TP_ID_EXT_PERS')}" var="item">
+													<c:if test="#{item.claveFila != 'F3'}">
+														<f:selectItem
+															itemValue="#{item.claveFila}"
+		                                        			itemLabel="#{item.descripcionL}" />
+													</c:if>
+												</c:forEach>
+											</p:selectOneMenu>
+										</div>
+										
+										<div class="grid_15">
+											<div class="label-vacio"></div>
+											<div class="clear-3"></div>
+											<p:inputMask placeholder="Número"
+												id="numeroIdentificacionClienteDeposito"
+												value="#{depositoController.deposito.numeroIdentificacionClienteDeposito}"
+												required="false" maxlength="14"
+												onblur="value=value.toUpperCase()">
+												<p:ajax event="change" 
+													update="@this" global="false"></p:ajax>
+												<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" />
+											</p:inputMask>
+										</div>
+										
+									</div>
+									
+									<div class="grid_24">
+										<p:outputLabel for="ordenanteDeposito" value="Ordenante" />
+										<div class="clear-3"></div>
+										<p:inputText id="ordenanteDeposito"
+											value="#{depositoController.deposito.ordenanteDeposito}"
+											label="Ordenante" maxlength="50" required="false"
+											onblur="this.value=this.value.toUpperCase()">
+										</p:inputText>
+									</div>
+									
+									<div class="clear-row"></div>
+									
+									<div class="grid_24">
+										<p:growl id="growl" showDetail="true" sticky="true" for="operacionDeposito"/>
+										<p:outputLabel for="operacionDeposito" value="Operación" id="txt-operacion"/>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="operacionDeposito" panelStyleClass="combo-estandar"
+											value="#{depositoController.deposito.operacionDeposito}" required="true">
+											<!-- Se quita 'disabled' por incidencia -->
+											<!-- disabled="#{depositoController.deposito.operacionDeposito == '990002' ? true : false}" -->
+											<p:ajax event="change" update="operacionDeposito conceptoDeposito txt-concepto cuentaPuenteDeposito" 
+												resetValues="true" listener="#{depositoController.calculaConcepto()}" global="false" />
+											<c:forEach items="#{catalogoUtils.getCatalogo('OPERACION_DEPOSITO')}" var="item">
+												<f:selectItem 
+													itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}"/>
+											</c:forEach>
+										</p:selectOneMenu>
+									</div>
+									
+									<div class="grid_12">
+										<p:message id="importeDepositoVal" display="icon" for="importeDeposito"></p:message>
+										<p:outputLabel id="warningIPF" title="Importe necesario para realizar el depósito IPF mínimo"
+										   styleClass="fa fa-info-circle azul-b" rendered="#{depositoController.esDepositoIPF}"/>
+										<p:outputLabel for="importeDeposito" value="Importe" id="txt-deposito"/>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="importeDeposito"
+											label="Importe" maxValue="999999999999.99" required="true" 
+											decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+											styleClass="pe-inputNumber" placeholder="Importe"
+											value="#{depositoController.deposito.importeDeposito}" onkeydown="$('label[id$=\'warningIPF\']').hide();">
+											<f:validateDoubleRange minimum="0.01"/>
+											<p:ajax event="blur" 
+												listener="#{depositoController.mostrarUnidadesMillon()}" 
+												process="@this,unidadesMillon"
+												update="unidadesMillonLabel unidadesMillon unidadesMillonMsg 
+													@this importeDepositoVal txt-deposito"
+												oncomplete="$(document.getElementById('formDeposito:unidadesMillon_input')).removeClass('ui-state-error'); 
+												$(document.getElementById('formDeposito:unidadesMillonLabel')).removeClass('ui-state-error');" global="false" >
+											</p:ajax>
+											<f:param name="disableValidation" value="true" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">MXN</span>
+									</div>
+
+									<div class="grid_10">
+
+										<div class="grid_48">
+											<p:message for="unidadesMillon" display="icon"
+												id="unidadesMillonMsg" />
+											<p:outputLabel id="unidadesMillonLabel" for="unidadesMillon"
+												value="Unidades de millón"  />
+												<div class="clear-3"></div>
+										</div>
+
+										<div class="grid_34">
+										
+											<pe:inputNumber emptyValue="0" id="unidadesMillon"
+												thousandSeparator="," decimalPlaces="0" decimalSeparator=""
+												value="#{depositoController.deposito.unidadesMillon}"
+												minValue="0" maxValue="999999" 
+												disabled="#{not (depositoController.deposito.mostrarUnidadesMillon)}"
+												label="UnidadesMillon" maxlength="14"
+												required="#{param['disableValidation']==null}">
+												<f:attribute name="importe"
+													value="#{depositoController.deposito.importeDeposito}" />
+												<f:param name="disableValidation" value="true" />
+												<f:validator validatorId="unidadesMillonValidator" disabled="#{param['disableValidation']==true}"/>
+											</pe:inputNumber>
+										</div>
+										
+									</div>
+									
+									<div class="clear-row"></div>
+									
+									<div class="grid_24">
+										<p:outputLabel for="conceptoDeposito" value="Concepto" id="txt-concepto"/>
+										<div class="clear-3"></div>
+										<p:inputText id="conceptoDeposito"
+											value="#{depositoController.deposito.conceptoDeposito}"
+											label="Concepto" maxlength="100" required="true"
+											onblur="this.value=this.value.toUpperCase()">
+										</p:inputText>
+									</div>
+									
+									<div class="grid_8">
+									<p:message id="fechaValorDepositoVal" for="fechaValorDeposito" display="icon"></p:message>
+										<p:outputLabel for="fechaValorDeposito" value="Fecha Valor" />
+										<div class="clear-3"></div>
+										<p:calendar id="fechaValorDeposito" locale="es" value="#{depositoController.deposito.fechaValorDeposito}"
+											required="true" pattern="dd/MM/yyyy" maxdate="#{depositoController.contextoUtils.fechaContableActual}" mask="true" showOn="button"
+											requiredMessage="Es necesario introducir una fecha" >
+											<f:attribute name="beginDate"
+												value="#{depositoController.fechaMinima}" />
+											<f:attribute name="endDate"
+												value="#{depositoController.contextoUtils.fechaContableActual}" />
+											  <f:validator validatorId="fechaValorValidator" /> 
+											  	<p:ajax event="change" process="@this" 
+												update="@this fechaValorDepositoVal"
+												partialSubmit="true" global="false" />
+											    <p:ajax event="dateSelect" process="fechaValorDeposito" 
+												update="fechaValorDeposito,fechaValorDepositoVal"
+												partialSubmit="true" />
+												
+										</p:calendar>
+									</div>
+									<div class="grid_11">
+										<p:outputLabel for="cuentaPuenteDeposito" value="Utilizar cuenta puente"/>
+										<div class="clear-3"></div>
+										<div class="label-switch">
+											<p:inputSwitch id="cuentaPuenteDeposito" 
+												value="#{depositoController.deposito.cuentaPuenteDeposito}"
+												required="true" onLabel="Si" offLabel="No">
+												<p:ajax event="change" update="operacionDeposito conceptoDeposito" 
+													resetValues="true" listener="#{depositoController.cambiarOperacion()}" global="false"/>
+											</p:inputSwitch>
+										</div>
+									</div>
+									
+								</div>
+
+								<div class="posicion-absoluta-btn">
+									<p:commandButton styleClass="btn-consultar" id="aceptar"
+										icon="ui-icon-arrow-1-s" validateClient="true"
+										value="Realizar depósito" update="growl formDeposito :dlgConfirmarDeposito"
+										actionListener="#{depositoController.mostrarDialogo()}" />
+								</div>
+
+								<div class="clear"></div>
+
+							</div>
+							<!--termina contenedor-campos-->
+
+							<div class="margin-bottom-10"></div>
+
+							<p:commandButton id="volverInicio" styleClass="btn_secundario"
+								value="Cancelar" immediate="true"
+								action="#{depositoController.irMenu()}" />
+						</h:form>
+
+					</div>
+					<!--termina contenedor-form-->
+				</div>
+				<!--termina contenedor-->
+			</div>
+			<!--termina container 48-->
+
+
+			<p:dialog widgetVar="dlgConfirmarDeposito" id="dlgConfirmarDeposito" showEffect="fade" hideEffect="fade"
+				header="Depósito" modal="true" appendTo="@(body)"
+				visible="#{depositoController.muestraDialogo and (not facesContext.validationFailed)}"
+				closable="false" resizable="false" dynamic="true">
+				<span class="ui-messages-info-icon info-dialog"></span>
+				<div class="modal-mensaje">
+				<p:outputLabel value="Va a realizar un depósito a la cuenta " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="#{depositoController.deposito.cuentaDeposito}"
+					id="dlgCuentaDeposito" />
+
+				<br />
+
+				<p:outputLabel value="con titular " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="#{depositoController.deposito.titular}" id="dlgTitular" />
+
+				<br />
+
+				<p:outputLabel value="por valor de " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					id="dlgImporteDeposito"
+					value="#{depositoController.deposito.importeDeposito}">
+					<f:convertNumber minFractionDigits="2" currencySymbol=""
+						locale="es_MX" type="currency" />
+				</p:outputLabel>
+				<p:outputLabel styleClass="modal-mensaje-detalle" value=" MXN" />
+				</div>
+				<div class="margin-top-10"></div>
+
+				<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+
+				<div class="margin-bottom-20"></div>
+
+				<p:commandButton styleClass="btn_secundario_dialog"
+					onclick="PF('dlgConfirmarDeposito').hide();" id="cancelar"
+					value="Cancelar" immediate="true" />
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					id="continuar" value="Continuar"
+					action="#{depositoController.continuarDeposito()}" 
+					oncomplete="PF('dlgConfirmarDeposito').hide()" />
+			</p:dialog>
+			
+			<!-- MENSAJE CUENTA INVALIDA -->
+	        <p:dialog widgetVar="dlgAvisoCuentaInvalida" id="dlgAvisoCuentaInvalida" header="Depósito"
+	        		modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true" showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! La cuenta introducida no es válida para realizar el depósito." />
+	            <div class="margin-top-20"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoCuentaInvalida').hide();" />            
+	        </p:dialog>
+			
+			<!-- MENSAJE CUENTA INCORRECTA -->
+	        <p:dialog widgetVar="dlgAvisoCuentaIncorrecta" id="dlgAvisoCuentaIncorrecta" header="Depósito"
+	        			modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true" showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! Error al consultar el saldo autorizado." />
+	            <div class="margin-top-20"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoCuentaIncorrecta').hide();" />            
+	        </p:dialog>
+	        
+	        <!-- MENSAJE CUENTA INACTIVA -->
+	        <p:dialog widgetVar="dlgAvisoCuentaInactiva" id="dlgAvisoCuentaInactiva" header="Depósito"
+	        			modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true" showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! La cuenta introducida se encuentra Inactiva." />
+	            <div class="margin-top-20"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoCuentaInactiva').hide();" />            
+	        </p:dialog>
+	        
+	        <!-- MENSAJE CUENTA NO VISTA -->
+	        <p:dialog widgetVar="dlgAvisoCuentaNoVista" id="dlgAvisoCuentaNoVista" header="Depósito"
+	        			modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true" showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! La cuenta introducida no es vista." />
+	            <div class="margin-top-20"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoCuentaNoVista').hide();" />            
+	        </p:dialog>
+	        
+	        <!-- MENSAJE CUENTA EXCESO SALDO -->
+	        <p:dialog widgetVar="dlgAvisoExcesoSaldo" id="dlgAvisoExcesoSaldo" header="Depósito"
+	        			modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true" showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! El importe introducido sobrepasa al máximo permitido." />
+	            <div class="margin-top-20"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Ok" immediate="true" onclick="PF('dlgAvisoExcesoSaldo').hide();" />            
+	        </p:dialog> 
+			
+			<!-- MENSAJE ERROR EN LA CUENTA -->
+			<p:dialog widgetVar="dlgCuentaError" id="dlgCuentaError" showEffect="fade" hideEffect="fade"
+				header="Depósito" modal="true" appendTo="@(body)" 
+				closable="false" resizable="false" dynamic="true">
+				<span class="ui-messages-info-icon info-dialog"></span>
+				<div class="modal-mensaje">
+				<p:outputLabel value="La cuenta " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="#{depositoController.deposito.cuentaDeposito}"
+					id="dlgCuentaDepositoError" />
+				<p:outputLabel value=" se encuentra " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="#{depositoController.estatus}"/>
+				<br />
+				<p:outputLabel value="Titular " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="#{depositoController.deposito.titular}" id="dlgTitularError" />
+				</div>
+				
+				<div class="margin-top-20"></div>
+
+				<p:outputLabel styleClass="modal-accion" value="¿Qué desea realizar?" />
+
+				<div class="margin-bottom-20"></div>
+
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					value="Otro depósito" immediate="true" 
+					action="#{depositoController.irDeposito()}"
+					onclick="PF('dlgCuentaError').hide();" id="otroDeposito"/>
+					
+				<p:commandButton styleClass="btn_secundario_dialog"
+					id="volverInicio" value="Volver a inicio"
+					action="#{depositoController.irMenu()}"/>
+			</p:dialog>
+			
+			<!-- MENSAJE CUENTAS NIVEL 2 -->
+			<p:dialog widgetVar="dlgAvisoNivelDos" id="dlgAvisoNivelDos" header="Depósito" modal="true" showEffect="fade" hideEffect="fade"
+					resizable="false" closable="false" appendTo="@(body)" dynamic="true">
+            <span class="ui-messages-warn-icon warn-dialog"></span>
+            <p:outputLabel styleClass="modal-mensaje" 
+            	value="#{depositoController.estatus}" />
+            <div class="margin-top-20"></div>
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoNivelDos').hide();" />            
+        </p:dialog>
+
+		</h:body>
+	</ui:define>
+
+</ui:composition>

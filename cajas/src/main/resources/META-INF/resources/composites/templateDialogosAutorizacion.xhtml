@@ -1,0 +1,179 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<p:dialog id="dlgConfirmarAutorizacionUrgente"
+		widgetVar="dlgConfirmarAutorizacionUrgente" showEffect="fade"
+		hideEffect="fade" appendTo="@(body)" closable="false" dynamic="true"
+		draggable="false" modal="true" resizable="false" header="Resultado">
+		<span class="ui-messages-warn-icon warn-dialog" />
+		<div class="modal-mensaje">
+			<p:outputLabel
+				value="Esta a punto de autorizar una petición urgente por valor de " />
+			<p:outputLabel styleClass="modal-mensaje-detalle"
+				value="#{autorizacionPeticionUrgenteController.autorizacionPeticionUrgenteBean.totalAutorizado}">
+				<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+					currencySymbol="MXN" />
+			</p:outputLabel>
+		</div>
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Continuar" immediate="true" update=":formAutorizacionPeticionEfectivo"
+			onclick="autorizarPeticionUrgente(), PF('dlgConfirmarAutorizacionUrgente').hide();" />
+		<p:commandButton styleClass="btn_secundario_dialog" value="Cancelar"
+			onclick="PF('dlgConfirmarAutorizacionUrgente').hide();"
+			oncomplete="resizeParrillaColumns()" />
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgSuprimirAutorizacionUrgente"
+		id="dlgSuprimirAutorizacionUrgente" appendTo="@(body)"
+		header="Cancelar autorización" modal="true" visible="false"
+		closable="false" resizable="false" draggable="false" showEffect="fade"
+		hideEffect="fade">
+		<span class="ui-messages-warn-icon warn-dialog" />
+		<div class="modal-mensaje">
+			<p:outputLabel
+				value="Esta a punto de eliminar una petición urgente por valor pedido de " />
+			<p:outputLabel styleClass="modal-mensaje-detalle"
+				value="#{autorizacionPeticionUrgenteController.autorizacionPeticionUrgenteBean.totalPedido}">
+				<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+					currencySymbol="MXN" />
+			</p:outputLabel>
+			<p:outputLabel
+				value=", valor autorizado de  " />
+			<p:outputLabel styleClass="modal-mensaje-detalle"
+				value="#{autorizacionPeticionUrgenteController.autorizacionPeticionUrgenteBean.totalAutorizado}">
+				<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+					currencySymbol="MXN" />
+			</p:outputLabel>
+		</div>
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion"
+			value="¿Desea continuar de todos modos?" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Continuar" immediate="true"
+			oncomplete="resizeParrillaColumns()">
+			<p:ajax event="click"
+				listener="#{autorizacionPeticionUrgenteController.suprimirPeticionUrgente()}"
+				process="@this" update=":formAutorizacionPeticionEfectivo"
+				oncomplete="PF('dlgSuprimirAutorizacionUrgente').hide();" />
+		</p:commandButton>
+		<p:commandButton styleClass="btn_secundario_dialog" value="Cancelar"
+			onclick="PF('dlgSuprimirAutorizacionUrgente').hide(); resizeParrillaColumns();" />
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgOperacionExitosaSupr" id="dlgOperacionExitosaSupr"
+		appendTo="@(body)" modal="true" visible="false" closable="false"
+		resizable="false" draggable="false" showEffect="fade"
+		hideEffect="fade">
+		<span class="ui-messages-exito-icon exito-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="La petición se eliminó correctamente." />
+		<div class="clear"></div>
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" immediate="true"
+			onclick="PF('dlgOperacionExitosaSupr').hide(); resizeParrillaColumns();" />
+	</p:dialog>
+
+	<p:dialog widgetVar="dlgOperacionExitosa" id="dlgOperacionExitosa"
+		appendTo="@(body)" modal="true" visible="false" closable="false"
+		resizable="false" draggable="false" showEffect="fade"
+		hideEffect="fade">
+		<span class="ui-messages-exito-icon exito-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="OPERACIÓN REALIZADA CORRECTAMENTE." />
+		<div class="clear"></div>
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" immediate="true"
+			onclick="irDetalle()"/>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgErrorUrgente" id="dlgErrorUrgente"
+		appendTo="@(body)" modal="true" visible="false" closable="false"
+		resizable="false" draggable="false" showEffect="fade"
+		hideEffect="fade">
+		<span class="ui-messages-error-icon error-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="#{autorizacionPeticionUrgenteController.mensajeError}" />
+		<div class="clear"></div>
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" immediate="true"
+			onclick="PF('dlgErrorUrgente').hide(); resizeParrillaColumns();" />
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgImporteCero" id="dlgImporteCero"
+		appendTo="@(body)" modal="true" visible="false" closable="false"
+		resizable="false" draggable="false" showEffect="fade"
+		hideEffect="fade">
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="El importe total no puede ser cero." />
+		<div class="clear"></div>
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" immediate="true"
+			onclick="PF('dlgImporteCero').hide(); resizeParrillaColumns();" />
+	</p:dialog>
+	
+	<p:dialog id="dlgConfirmarAutorizacionTotales"
+		widgetVar="dlgConfirmarAutorizacionTotales" showEffect="fade"
+		hideEffect="fade" appendTo="@(body)" closable="false" dynamic="true"
+		draggable="false" modal="true" resizable="false" header="Resultado">
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<div class="modal-mensaje">
+			<p:outputLabel
+				value="Esta a punto de autorizar una petición de efectivo por valor total de " />
+			<p:outputLabel styleClass="modal-mensaje-detalle"
+				value="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.totalAutorizado}">
+				<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+					currencySymbol="MXN" />
+			</p:outputLabel>
+		</div>
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Continuar" immediate="true" id="btnAceptar"
+			onclick="autorizarPeticionTotales(), PF('dlgConfirmarAutorizacionTotales').hide();"/>
+		<p:commandButton styleClass="btn_secundario_dialog" value="Cancelar"
+			onclick="PF('dlgConfirmarAutorizacionTotales').hide();" />
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgOperacionCorrectaTotales"
+		id="dlgOperacionCorrectaTotales" appendTo="@(body)"
+		header="Cancelar autorización" modal="true" visible="false"
+		closable="false" resizable="false" draggable="false" showEffect="fade"
+		hideEffect="fade">
+		<span class="ui-messages-exito-icon exito-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="OPERACIÓN REALIZADA CORRECTAMENTE" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" immediate="true" onclick="irResumenTotales()"/>
+	</p:dialog>
+	
+	<p:dialog widgetVar="dlgMensajeErrorTotales"
+		id="dlgMensajeErrorTotales" appendTo="@(body)"
+		header="Cancelar autorización" modal="true" visible="false"
+		closable="false" resizable="false" draggable="false" showEffect="fade"
+		hideEffect="fade">
+		<span class="ui-messages-error-icon error-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="#{autorizacionPeticionTotalesController.mensajeError}" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" immediate="true" onclick="PF('dlgMensajeErrorTotales').hide()"/>
+	</p:dialog>
+	
+</ui:composition>

@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								onclick="PF('dlgSalir').show();"></p:commandButton>
+							<h1>Autorización de petición de efectivo</h1>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<h:form id="formAutorizacionPeticionEfectivo">
+							
+								<div class="grid_48">								
+								
+								<p:outputLabel
+									value="Seleccione el tipo de autorización que desea realizar" />
+
+								<div class="margin-top-10"></div>
+								
+									<h4>
+										<p:selectOneRadio id="tipoAutorizacion"
+											value="#{autorizacionPeticionController.tipoAutorizacion}"
+											required="#{param['disableValidation']==null}" columns="3">
+											<f:selectItem itemLabel="PETICIÓN DE EFECTIVO" itemValue="PE" />
+											<f:selectItem itemLabel="POR TOTALES" itemValue="PT" />
+											<f:selectItem itemLabel="URGENTES" itemValue="PU" />
+											<p:ajax event="valueChange" process="@this" global="false"
+												update="tipoAutorizacion @form"
+												immediate="true"/>
+												<!--  oncomplete="resizeParrillaColumns()" -->
+											<p:ajax event="change" process="tipoAutorizacion" global="false"
+												update="tipoAutorizacion @form" />
+										</p:selectOneRadio>
+									</h4>
+								</div>
+
+								<div class="margin-top-10"></div>
+
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios"></p:outputLabel>
+
+								<div class="margin-top-10"></div>
+
+								<h:outputText styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+
+								<div class="margin-top-10"></div>
+								<div class="clear-3"></div>
+
+								<c:if
+									test="#{autorizacionPeticionController.tipoAutorizacion.equals('PE')}">
+									<ui:include src="../../composites/autorizacionPeticion.xhtml" />
+									
+								</c:if>
+
+								<c:if
+									test="#{autorizacionPeticionController.tipoAutorizacion.equals('PT')}">
+									<ui:include
+										src="../../composites/autorizacionPeticionTotales.xhtml" />
+								</c:if>
+
+								<c:if
+									test="#{autorizacionPeticionController.tipoAutorizacion.equals('PU')}">
+									<ui:include
+										src="../../composites/autorizacionPeticionUrgente.xhtml" />
+								</c:if>
+
+							</h:form>
+							
+							<p:dialog widgetVar="dlgSalir" id="dlgSalir"
+									appendTo="@(body)" header="Cancelar autorización" modal="true"
+								visible="false" closable="false" resizable="false"
+								draggable="false" showEffect="fade" hideEffect="fade">
+								<span class="ui-messages-warn-icon warn-dialog" />
+								<p:outputLabel styleClass="modal-mensaje"
+									value="¡Atención! Si continua perderá todos los cambios" />
+								<div class="clear" />
+								<p:outputLabel styleClass="modal-accion"
+									value="¿Desea continuar de todos modos?" />
+								<div class="margin-bottom-20" />
+								<p:commandButton styleClass="btn_principal_dialog_derecha"
+									value="Continuar" immediate="true"
+									action="#{autorizacionPeticionController.irInicio()}" />
+								<p:commandButton styleClass="btn_secundario_dialog"
+									value="Cancelar" onclick="PF('dlgSalir').hide();" />
+							</p:dialog>
+							
+							<ui:include src="../../composites/templateDialogosAutorizacion.xhtml" />
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

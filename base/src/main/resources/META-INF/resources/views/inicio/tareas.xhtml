@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmListaTareas" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás"
+								action="#{tareaController.volver()}" />
+							<h1>Tareas pendientes</h1>
+						</div>
+
+						<div class="contenedor-campos">
+							<h:panelGroup id="pnlGrpTareas">
+								<p:outputLabel id="lblNotificacion"
+									value="Ahora mismo no tiene tareas pendientes."
+									rendered="#{tareaController.tareasPendientes.size() == 0}" />
+								<p:inputText id="datosOcultos" type="hidden"
+									value="#{tareaController.datosARestaurar}" />
+								<p:dataTable styleClass="tabla-columna-oculta tabla-tareas"
+									id="tblTareas" widgetVar="tblTareas" var="tarea"
+									value="#{tareaController.tareasPendientes}"
+									rowKey="#{tarea.clave}" paginator="false"
+									rendered="#{tareaController.tareasPendientes.size() > 0}">
+									<p:column width="0">
+										<p:outputLabel value="#{tarea.clave}" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{tarea.hora}" />
+									</p:column>
+									<p:column>
+										<p:commandButton icon="ui-icon-pencil" alt="Continuar tarea"
+											title="Continuar tarea" styleClass="btn-icono"
+											action="#{tareaController.restaurarFlujoOperativo(tarea.clave)}"
+											onclick="cargarDatosARestaurar('#{tarea.clave}');"
+											update=":frmListaTareas, :frmTareas:btnTareas" />
+										<p:commandButton icon="ui-icon-trash" alt="Eliminar tarea"
+											title="Eliminar tarea" styleClass="btn-icono"
+											actionListener="#{tareaController.eliminarTarea(tarea)}"
+											onclick="PF('dlgConfirmarEliminacion').show();" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{tarea.nombre}" />
+									</p:column>
+	
+								</p:dataTable>
+							</h:panelGroup>
+						</div>
+						
+            <p:inputText id="listaDatosOculta2" type="hidden" value="#{tareaController.tareas}" />
+            <p:commandButton id="btnReloadTareas" process="listaDatosOculta2" update=":frmListaTareas:pnlGrpTareas" style="display: none;">
+			      </p:commandButton>
+						<script>
+			        //<![CDATA[
+			        $(function () {
+			          var contextData = "#{tareaController.tareas}";
+			          if( contextData === null || contextData === "" ){
+			            var listado = storage.listSavedData();
+			            document.getElementById("frmListaTareas:listaDatosOculta2").value = listado;
+			            document.getElementById("frmListaTareas:btnReloadTareas").click();
+			          }
+			        });
+			        //]]>
+		        </script>
+
+					</h:form>
+
+				</div>
+
+				<p:dialog id="dlgConfirmarEliminacion"
+					widgetVar="dlgConfirmarEliminacion" appendTo="@(body)"
+					closable="false" dynamic="true" draggable="false" modal="true"
+					showEffect="fade" hideEffect="fade"
+					resizable="false" header="Confirmación requerida">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! Está a punto de eliminar una tarea pendiente." />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Está seguro que desea continuar?" />
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_secundario_dialog"
+						value="Cancelar" onclick="PF('dlgConfirmarEliminacion').hide();" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Continuar"
+						action="#{tareaController.confirmarEliminacion()}"
+						oncomplete="PF('dlgConfirmarEliminacion').hide();"
+						update=":frmListaTareas" />
+				</p:dialog>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="../../templates/plantilla-inicio.xhtml">
+
+<f:metadata>
+    <f:viewAction action="#{balanceController.navegar}"/>
+</f:metadata>
+
+<ui:define name="contenido">
+<h:body>
+<div class="container_48">
+    <div class="contenedor">
+    
+        <!--inicia el hform-->
+       <h:form id="formBalances" styleClass="contenedor-form">
+           <!--titulo d ela ventana-->
+           <div class="titulo centrar-objeto btn-inline-set">
+               <!--boton atras-->
+               <p:commandButton icon="ui-icon-arrow-1-w" value="" action="#{balanceController.volverFicha}"></p:commandButton>
+           <div>
+	           <h2 class="gris-b">
+	           		<h:outputText value="Balances de " />
+	                <h:outputText styleClass="azul-b" value="#{ balanceController.cliente.nombre} " /> 
+	                <h:outputText styleClass="rojo-b" value="#{balanceController.cliente.tipoIdentificacion}: " /> 
+	                <h:outputText styleClass="gris-b sub-h" value=" (#{balanceController.cliente.numIdentificacion})"/>
+	            </h2>
+            </div>
+            </div>
+               <div class="contenedor-campos">
+               
+                    <p:outputLabel value="A continuación se muestran los balances del cliente:" />
+                 <div class="margin-top-10"></div>
+                 
+                 <p:dataTable styleClass="tabla-buscador" var="balance"
+                 	value="#{balanceController.listaBalances}"
+                 	selectionMode="single" selection="#{balance}"
+                 	rowKey="#{balance}">
+                 	<p:ajax event="rowSelect"
+                 		listener="#{balanceController.modificarBalance}"/>
+                 	<p:column headerText="Descripción">
+                 		<h:outputText value="#{balance.descripcion} "></h:outputText>
+                 	</p:column>
+                 	<p:column headerText="Vigente">
+                 		<h:outputText value="Sí" rendered="#{balance.indVigencia == 'S'}"></h:outputText>
+                 		<h:outputText value="No" rendered="#{balance.indVigencia == 'N'}"></h:outputText>
+                 	</p:column>
+                 	<p:column headerText="Año">
+                 		<h:outputText value="#{balance.anyo} "></h:outputText>
+                 	</p:column>
+                 	<p:column headerText="Fecha de revisión">
+                 		<h:outputText value="#{balance.fechaRevision} "></h:outputText>
+                 	</p:column>
+                 </p:dataTable>
+                                 
+               </div>
+           <!--Botones  -->
+             <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Añadir Nuevo Balance" action="#{balanceController.altaBalance}"/>
+         </h:form>
+     </div>
+     <div class="clear"></div>
+  </div>
+ </h:body>
+</ui:define>
+</ui:composition>

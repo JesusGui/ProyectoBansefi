@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmNotificaciones" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás"
+								action="#{notificacionController.redirigirAInicio()}" />
+							<h1>Notificaciones</h1>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<h:outputText id="lblNotificacion"
+								value="Ahora mismo no tiene notificaciones vigentes."
+								rendered="#{notificacionController.notificaciones.size() == 0}" />
+							<h:panelGroup layout="block" styleClass="display-flex"
+								rendered="#{notificacionController.notificaciones.size() > 0}">
+								<p:dataTable id="tblNotificaciones"
+									styleClass="tabla-notificaciones-inicio"
+									widgetVar="tblNotificaciones" var="notificacion"
+									value="#{notificacionController.notificaciones}"
+									rowKey="#{notificacion.clave}" selectionMode="single"
+									selection="#{notificacionController.notificacionSeleccionada}">
+									<p:ajax event="rowSelect"
+										listener="#{notificacionController.onRowSelect}"
+										update=":frmNotificaciones:panelContenedor" />
+									<p:column>
+										<h:outputText value="#{notificacion.clave}" />
+									</p:column>
+									<p:column>
+										<h:outputText styleClass="notificacion-fecha"
+											value="#{notificacion.fechaCreacion}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+									<p:column>
+										<h:panelGroup layout="block"
+											styleClass="float-left notificacion-urgente"
+											alt="Notificación urgente" title="Notificación urgente"
+											rendered="#{notificacion.indUrgencia == 'SI'}">
+											<i class="fa fa-exclamation-triangle"></i>
+										</h:panelGroup>
+										<h:outputText styleClass="notificacion-destinatario"
+											value="#{notificacion.destinatario}" />
+										<div class="clear"></div>
+										<h:outputText styleClass="notificacion-texto"
+											value="#{notificacion.texto}" />
+									</p:column>
+								</p:dataTable>
+
+								<div id="printArea"
+									class="descripcion-notificacion marco-componente">
+
+									<div class="impresion notificaciones">
+										<h:panelGroup layout="block" id="panelContenedor"
+											widgetVar="panelContenedor"
+											visible="#{notificacionController.panelDetalleDisponible}">
+											<p:commandButton
+												styleClass="btn_secundario btn-icono-texto float-right ocultar-en-impresion margin-bottom-10"
+												id="btnImprimir" widgetVar="btnImprimir"
+												icon="ui-icon-print" value="Imprimir"
+												rendered="#{notificacionController.panelDetalleDisponible}"
+												onclick="printContenedorCamposId('printArea');" />
+												<div></div>
+											
+												<h:panelGroup layout="block"
+													styleClass="float-left notificacion-urgente-descripcion"
+													alt="Notificación urgente" title="Notificación urgente"
+													rendered="#{notificacionController.notificacionSeleccionada.indUrgencia == 'SI'}">
+													<i class="fa fa-exclamation-triangle"></i>
+												</h:panelGroup>
+												<h:outputText styleClass="notificacion-selec-destinatario"
+													value="#{notificacionController.notificacionSeleccionada.destinatario}" />
+												<div class="clear"></div>
+												<h:outputText styleClass="notificacion-selec-texto"
+													value="#{notificacionController.notificacionSeleccionada.texto}" />
+											
+										</h:panelGroup>
+									</div>
+
+								</div>
+
+							</h:panelGroup>
+							<div class="clear"></div>
+						</div>
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

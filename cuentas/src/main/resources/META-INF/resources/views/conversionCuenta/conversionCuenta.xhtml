@@ -1,0 +1,91 @@
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+<!-- <ui:composition xmlns="http://www.w3.org/1999/xhtml" -->
+<!-- 	xmlns:ui="http://java.sun.com/jsf/facelets" -->
+<!-- 	xmlns:f="http://java.sun.com/jsf/core" -->
+<!-- 	xmlns:h="http://java.sun.com/jsf/html" -->
+<!-- 	xmlns:p="http://primefaces.org/ui" -->
+<!-- 	xmlns:pe="http://primefaces.org/ui/extensions" -->
+<!-- 	template="../../templates/plantilla-inicio.xhtml"> -->
+<!-- 	<ui:define name="contenido"> -->
+<!-- 		<h:body> -->
+<!-- 			<h:form id="formConversioncuenta" styleClass="contenedor-form"> -->
+
+
+
+<!-- 				<p:commandButton value="Conversión" type="button" -->
+<!-- 					onclick="PF('dlg1').show();" /> -->
+
+<!-- 				<p:dialog id="CpnversionCuentaPopUp" header="Conversión Cuenta" -->
+<!-- 					widgetVar="dlg1" modal="false" styleClass="contenedor-form" -->
+<!-- 					closeOnEscape="true" resizable="false" closable="true"> -->
+<!-- 					<div class="titulo"> -->
+<!-- 						<h1>Conversion Cuenta</h1> -->
+<!-- 					</div> -->
+
+<!-- 					<h:panelGrid id="uno" columns="5" style="margin:  25px 50px;" -->
+<!-- 						cellpadding="10" cellspacing="10"> -->
+<!-- 						<div class="clear-3"> -->
+<!-- 							<h4>Tipo de cuenta inicial&nbsp;&nbsp;&nbsp;</h4> -->
+<!-- 						</div> -->
+
+<!-- 						<div class="clear-3"> -->
+<!-- 							<h4>&nbsp;&nbsp;&nbsp;Cuenta</h4> -->
+<!-- 						</div> -->
+<!-- 						<div class="clear-3"> -->
+<!-- 							<h4>Centro</h4> -->
+<!-- 						</div> -->
+
+<!-- 						<div class="clear-3"> -->
+<!-- 							<p:selectOneRadio id="rbtCuentaActual" -->
+<!-- 								value="#{conversionCuentaController.conversionCuentaBean.seleccion}"> -->
+<!-- 								<f:selectItem itemLabel="Antigua" itemValue="antiguaRB" /> -->
+<!-- 								<f:selectItem itemLabel="Nueva" itemValue="nuebaRB" /> -->
+<!-- 							</p:selectOneRadio> -->
+<!-- 						</div> -->
+
+<!-- 						<div class="clear-3"> -->
+<!-- 							<p:autoComplete id="cuenta" maxResults="8" -->
+<!-- 								value="#{conversionCuentaController.conversionCuentaBean.cuenta}" -->
+<!-- 								completeMethod="#{conversionCuentaController.complete}" /> -->
+<!-- 						</div> -->
+
+<!-- 						<div class="clear-3"> -->
+<!-- 							<p:autoComplete id="centro" maxResults="8" -->
+<!-- 								value="#{conversionCuentaController.conversionCuentaBean.centro}" -->
+<!-- 								completeMethod="#{conversionCuentaController.complete}" /> -->
+<!-- 						</div> -->
+<!-- 						<div class="clear-3"> -->
+<!-- 							<p:commandButton value="Convertir Cuenta  " -->
+<!-- 								actionListener="#{conversionCuentaController.Entro()}" -->
+<!-- 								process="rbtCuentaActual, cuenta, centro,@this" -->
+<!-- 								update="tableSource" ajax="true" /> -->
+<!-- 						</div> -->
+<!-- 					</h:panelGrid> -->
+<!-- 					<h:panelGrid id="dos" columns="1" style="margin:  25px 50px;" -->
+<!-- 						cellpadding="10" cellspacing="1"> -->
+<!-- 						<div class="clear-3"> -->
+
+<!-- 							<p:dataTable id="tableSource" var="dato" -->
+<!-- 								value="#{conversionCuentaController.results}"> -->
+<!-- 								<p:column headerText="  Cuenta Convertida  "> -->
+<!-- 									<h:outputText value="#{dato.cuenta}" style=" width : 264px;" /> -->
+<!-- 								</p:column> -->
+<!-- 								<p:column headerText="  Centro Asociado "> -->
+<!-- 									<h:outputText -->
+<!-- 										value="#{conversionCuentaController.conversionCuentaBean.centro}" -->
+<!-- 										style=" width : 264px;" /> -->
+<!-- 								</p:column> -->
+<!-- 							</p:dataTable> -->
+<!-- 						</div> -->
+
+<!-- 						<div class="clear-3"> -->
+<!-- 							<p:commandButton value=" Cerrar "></p:commandButton> -->
+<!-- 						</div> -->
+<!-- 					</h:panelGrid> -->
+<!-- 				</p:dialog> -->
+<!-- 			</h:form> -->
+<!-- 		</h:body> -->
+<!-- 	</ui:define> -->
+<!-- </ui:composition> -->
+
+

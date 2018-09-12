@@ -1,0 +1,133 @@
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://10.200.14.125:3095/WebServices/ADMINGEO"
+	xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	targetNamespace="http://10.200.14.125:3095/WebServices/ADMINGEO">
+	<wsdl:types>
+		<s:schema elementFormDefault="qualified"
+			targetNamespace="http://10.200.14.125:3095/WebServices/ADMINGEO">
+			<s:element name="Ejecutar">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="1" maxOccurs="1" name="USERHEADER"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="PASSHEADER"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="IPHEADER"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="ACCION"
+							type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="CLAVE"
+							type="s:integer" />
+						<s:element minOccurs="1" maxOccurs="1" name="PAGINACION"
+							type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="EjecutarResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="EjecutarResult"
+							type="tns:EjecutarResult" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:complexType name="EjecutarResult">
+				<s:sequence>
+					<s:element minOccurs="1" maxOccurs="1" name="TRANID"
+						type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" name="ESTATUS"
+						type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" name="CODIGO"
+						type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" name="MENSAJE"
+						type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" name="NUMTASK"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="ResponseBansefi"
+						type="tns:ArrayOfResponseBansefi" />
+				</s:sequence>
+			</s:complexType>
+			<s:complexType name="ArrayOfResponseBansefi">
+				<s:sequence>
+					<s:element minOccurs="0" maxOccurs="unbounded" name="ResponseBansefi"
+						type="tns:ResponseBansefi" />
+				</s:sequence>
+			</s:complexType>
+			<s:complexType name="ResponseBansefi">
+				<s:sequence>
+					<s:element minOccurs="0" maxOccurs="1" name="CP_NUM_AR_GEO"
+						type="s:integer" />
+					<s:element minOccurs="0" maxOccurs="1" name="CP_COD_POSTAL"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="CP_SUBCD_POSTAL"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="CP_NUM_AG_LOCINE"
+						type="s:integer" />
+					<s:element minOccurs="0" maxOccurs="1" name="CP_COD_PROVINCIA"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="LI_NOMB_LOCALIDAD"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="LI_IND_PZA_BNCRIA"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="LI_COD_MUNICIPIO"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="LI_COD_ENT_COLEC"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="MU_NOMB_MUNICIPIO"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="PR_NUM_AR_GEO"
+						type="s:integer" />
+					<s:element minOccurs="0" maxOccurs="1" name="PR_COD_COM_AUTNMA"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="PR_NOMB_PROVINCIA"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="PR_PREF_TLFNO"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="PR_MATRICULA"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="PR_COD_IMPTO"
+						type="s:string" />
+					<s:element minOccurs="0" maxOccurs="1" name="CA_NUM_AR_GEO"
+						type="s:integer" />
+					<s:element minOccurs="0" maxOccurs="1" name="CA_NOMB_COM_AUTNMA"
+						type="s:string" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="EjecutarResult" type="tns:EjecutarResult" />
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="EjecutarSoapIn">
+		<wsdl:part name="parameters" element="tns:Ejecutar" />
+	</wsdl:message>
+	<wsdl:message name="EjecutarSoapOut">
+		<wsdl:part name="parameters" element="tns:EjecutarResponse" />
+	</wsdl:message>
+	<wsdl:portType name="SoapPort">
+		<wsdl:operation name="Ejecutar">
+			<wsdl:input message="tns:EjecutarSoapIn" />
+			<wsdl:output message="tns:EjecutarSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SoapBinding" type="tns:SoapPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Ejecutar">
+			<soap:operation
+				soapAction="http://10.200.14.125:3095/WebServices/ADMINGEO/Ejecutar"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ADMINGEO">
+		<wsdl:port name="SoapPort" binding="tns:SoapBinding">
+			<soap:address
+				location="http://10.200.14.125:3095/WebServices/BANSEFI/ADMINGEO" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

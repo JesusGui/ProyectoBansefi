@@ -1,0 +1,201 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="../../templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+<ui:define name="contenido">
+
+<h:body>
+            	    <div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formPeticionEfectivo" styleClass="contenedor-form">
+					<div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás"
+                            	action="#{peticionEfectivoController.limpiaBean()}"></p:commandButton>
+	                        <div>
+									<h2 class="gris-b">Petición de efectivo </h2>
+									
+							</div>
+                        </div>
+					
+					    <div class="contenedor-campos">
+					    <p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" value="Imprimir"
+                            		action="#{peticionEfectivoController.printReport()}">
+                            	</p:commandButton>
+                            	<div class="clear margin-bottom-10"></div>
+					    
+					    <div class="grid_10">
+											<p:outputLabel for="peticion" value="Tipo de petición"></p:outputLabel>
+											<div class="clear"></div>
+											<p:selectOneRadio id="peticion" disabled="true"
+												value="#{peticionEfectivoController.peticionEfectivoBean.tipoPeticion}">
+												<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="formPeticionEfectivo:fecha_abastecimiento formPeticionEfectivo"
+														listener="#{peticionEfectivoController.cambiaTipoPeticion()}"></p:ajax>
+														<p:ajax event="blur" update="importeDenominacion @(.prueba) @(.btn_primario)"></p:ajax>
+												<f:selectItem itemValue="1" itemLabel="Ordinaria" />
+												<f:selectItem itemValue="2" itemLabel="Urgente" />
+											</p:selectOneRadio>
+										</div>
+										
+								<h:panelGroup id="pindicadorUrgente" rendered="#{peticionEfectivoController.muestraComboUrgente}" >		
+									<div class="grid_10">
+									
+														<p:outputLabel for="indicadorUrgente" value="Indicador urgente"></p:outputLabel>
+														<div class="clear-3"></div>
+														<p:selectOneMenu id="indicadorUrgente"
+															value="#{peticionEfectivoController.peticionEfectivoBean.indicadorUrgencia}">
+															<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="formPeticionEfectivo:fecha_abastecimiento formPeticionEfectivo"
+														listener="#{peticionEfectivoController.loadPeticionUrgente()}"></p:ajax>
+															<f:selectItem itemValue="#{0}"
+																itemLabel="Seleccione un valor" noSelectionOption="true" />
+															<f:selectItems
+																value="#{peticionEfectivoController.peticionEfectivoBean.comboUrgenteBean.listaIndicadoresUrgentes}"
+																var="item" itemValue="#{item.indicadorUrgente}"
+																itemLabel="#{item.descripcionL}" />
+														</p:selectOneMenu>
+														<p:commandButton id="btnguardarUrgente"
+							styleClass="btn_primario float-right margin-top-10"  
+							value="Nueva Petición"  update="formPeticionEfectivo" 
+							action="#{peticionEfectivoController.nuevaPeticionUrgente()}" />
+										
+										</div>	
+										
+							</h:panelGroup>			
+					    
+					    <div class="grid_10">
+													<p:outputLabel for="fecha_abastecimiento"
+														value="Fecha de abastecimiento" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														id="fecha_abastecimiento"
+														value="#{peticionEfectivoController.peticionEfectivoBean.fechaAbastecimiento}">
+														<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+													</p:outputLabel>
+												</div>
+					   
+									<div class="grid_10">
+									<p:outputLabel value="Estatus: "></p:outputLabel>
+									<h:outputLabel styleClass="bold"
+										value="#{peticionEfectivoController.peticionEfectivoBean.estatusDescripcion}">
+										</h:outputLabel>
+					    </div>
+				   
+										
+								
+										<h:panelGroup layout="block">
+								<div class="margin-top-15"></div>
+								
+								<div class="clear-row"></div>
+								<div class="contenedor-totales">
+									<div class="grid_48 saldo-disponible" id="idTotal" >
+										<div class="grid_20">
+											<p:outputLabel value="Total de peticion de efectivo:"></p:outputLabel>
+										</div>
+										<div class="grid_28">
+											<p:outputLabel class="prueba" id="labelTotalPeticion"  
+												value="#{peticionEfectivoController.peticionEfectivoBean.totalPeticion}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												
+											</p:outputLabel>
+										</div>
+									</div>
+								</div>
+							
+								<div class="contenedor-arqueopuesto">
+										
+											
+									<div class="ui-datatable ui-widget">
+										<div class="ui-datatable-tablewrapper">
+											<table>
+												<thead>
+													<tr>
+														<th><h:outputLabel value="Valor Facial"></h:outputLabel></th>
+														<th><h:outputLabel value="Soporte"></h:outputLabel></th>
+														<th><h:outputLabel value="Formato"></h:outputLabel></th>
+														<th><h:outputLabel value="D/V"></h:outputLabel></th>
+														<th><h:outputLabel value="Unidades"></h:outputLabel></th>
+														<th><h:outputLabel value="Importe pedido"></h:outputLabel></th>
+													</tr>
+												</thead>
+											</table>
+										</div>
+									</div>
+
+                                      <h:panelGroup id="contenedorDenominaciones">
+									<ui:repeat var="denominacion"
+										value="#{peticionEfectivoController.peticionEfectivoBean.parillaBean.listaDenominaciones}">
+										<h:panelGroup rendered="#{peticionEfectivoController.peticionEfectivoBean.parillaBean.isVisible(denominacion)}">
+										<div class="cuerpo-arqueopuesto">
+											<div>
+												<h:outputLabel styleClass="float-right"
+													value="#{denominacion.valor}">
+													<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												</h:outputLabel>
+											</div>
+											<div>
+												<h:outputLabel
+													value="#{denominacion.moneda? 'Moneda':'Billete'}" />
+											</div>
+											<div>
+												<h:outputLabel value="#{denominacion.formato}" />
+											</div>
+											<div>
+												<h:outputLabel
+													value="#{'V'.equals(denominacion.origen)? 'Ventanilla':'Dispensador'}" />
+											</div>
+										
+											<div >
+																						
+												<h:outputLabel styleClass="float-right" value="#{denominacion.unidades}" />
+												
+											</div>
+											<div>
+											<h:outputLabel styleClass="float-right"
+													value="#{denominacion.importePedido}">
+													<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												</h:outputLabel>
+																						
+											</div>
+										</div>
+									   </h:panelGroup>
+									</ui:repeat>
+								  </h:panelGroup>
+								
+								<div >
+											<p:outputLabel value="Observaciones" />
+											<div class="clear-3"></div>
+											<p:outputLabel value="#{peticionEfectivoController.peticionEfectivoBean.observacion}" />
+											
+										</div>
+								
+								</div>
+							</h:panelGroup>
+						
+								
+					    </div>
+					  <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" value="Cerrar" 
+                        	action="#{peticionEfectivoController.rutaInicio()}"/>
+					  
+					  
+					</h:form>
+					
+					
+					
+					</div>
+					</div>
+            
+ </h:body>               
+
+</ui:define>
+</ui:composition>

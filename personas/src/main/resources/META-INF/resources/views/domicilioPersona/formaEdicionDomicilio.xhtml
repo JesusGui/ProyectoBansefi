@@ -1,0 +1,425 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<p:panel id="panelEdicion#{activeIndex.index}"
+		widgetVar="panelEdicion#{activeIndex.index}" collapsed="true"
+		toggleable="true"
+		styleClass="panel-dinamico consultado panel-domicilio">
+		<p:ajax event="toggle" global="false"
+			listener="#{domicilioPersonaController.onPanelToogle(activeIndex.index)}"
+			update="@this" />
+		<p:ajax event="close" global="false"
+			listener="#{domicilioPersonaController.onPanelClose(activeIndex.index)}"
+			update="@this" />
+
+		<f:facet name="actions">
+			<h:panelGroup layout="block" styleClass="boton-panel-domicilio">
+				<p:commandButton styleClass="btn-icono btn-panel"
+					icon="fa fa-pencil" alt="Editar domicilio" title="Editar domicilio"
+					update="panelEdicion#{activeIndex.index} :form:formCliente"
+					process="panelEdicion#{activeIndex.index}" immediate="true"
+					actionListener="#{domicilioPersonaController.habilitarEdicion(domicilio, component.parent.parent.clientId, activeIndex.index)}"
+					rendered="#{domicilio.estadoBean ne EstadoListadosEnum.MODIFICADO and domicilio.estadoBean ne EstadoListadosEnum.ELIMINADO}"
+					oncomplete="scrollTo('#form\\:panelEdicion#{activeIndex.index}');">
+				</p:commandButton>
+				<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+					icon="ui-icon-trash" alt="Eliminar domicilio"
+					title="Eliminar domicilio" immediate="true"
+					update="panelEdicion#{activeIndex.index} :form:formCliente"
+					process="panelEdicion#{activeIndex.index}"
+					rendered="#{not domicilio.isDomicilioHabitualGrouping() and not domicilio.isDomicilioSocialGrouping() and domicilio.estadoBean ne EstadoListadosEnum.ELIMINADO}"
+					actionListener="#{domicilioPersonaController.eliminarDomicilio(domicilio, component.parent.parent.clientId)}"
+					partialSubmit="true" ajax="true">
+				</p:commandButton>
+				<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+					icon="fa fa-rotate-left" alt="Restaurar domicilio"
+					title="Restaurar domicilio" immediate="true"
+					update="panelEdicion#{activeIndex.index} :form:formCliente" ajax="true"
+					process="panelEdicion#{activeIndex.index}"
+					actionListener="#{domicilioPersonaController.restaurarDomicilio(activeIndex.index, component.parent.parent.clientId)}"
+					rendered="#{domicilio.estadoBean eq EstadoListadosEnum.MODIFICADO or domicilio.estadoBean eq EstadoListadosEnum.ELIMINADO}">
+				</p:commandButton>
+			</h:panelGroup>
+		</f:facet>
+
+		<f:facet name="header">
+			<h:panelGroup layout="block" styleClass="grid_48 alpha resumen-panel-domicilio"
+				rendered="#{domicilio.estadoBean ne EstadoListadosEnum.MODIFICADO}">
+				<div class="grid_12 alpha">
+					<p:outputLabel value="Tipo domicilio:" />
+					<div class="clear-3"></div>
+					<p:outputLabel styleClass="label-valor texto-sininput"
+						value="#{domicilio.tipoDomicilioToString()}" />
+				</div>
+				<div class="grid_12">
+					<p:outputLabel value="Nombre de la calle:" />
+					<div class="clear-3"></div>
+					<p:outputLabel styleClass="label-valor texto-sininput"
+						value="#{domicilio.nombreCalle}" />
+				</div>
+				<div class="grid_12">
+					<p:outputLabel value="Localidad:" />
+					<div class="clear-3"></div>
+					<p:outputLabel styleClass="label-valor texto-sininput"
+						value="#{domicilio.codigoPostalCatGeo.nombreLocalidad}" />
+				</div>
+			</h:panelGroup>
+		</f:facet>
+
+		<h:panelGroup>
+			<div class="margin-top-30"></div>
+			<!-- Formulario de edición -->
+			<c:if test="#{domicilio.loadedAllData}">
+				<div class="grid_22">
+					<p:message id="msgEditTags#{activeIndex.index}"
+						for="editTags#{activeIndex.index}" display="icon" />
+					<p:outputLabel for="editTags#{activeIndex.index}" value="Tipo de domicilio:"></p:outputLabel>
+					<div class="clear-3"></div>
+					<p:selectManyCheckbox styleClass="checkTipoDomicilio" value="#{domicilio.tagsTipoDomicilio}"
+						required="true" id="editTags#{activeIndex.index}" label="Tipo de domicilio"
+						widgetVar="editaTipoDomicilio#{activeIndex.index}" onchange="">
+						<f:selectItem itemLabel="Habitual" itemValue="HABITUAL"
+							itemDisabled="#{not domicilioPersonaController.isPersonaFisica() or domicilioPersonaController.isDomicilioHabitual(activeIndex.index)}" />
+						<f:selectItem itemLabel="Fiscal" itemValue="FISCAL"
+							itemDisabled="#{domicilioPersonaController.isDomicilioFiscal(activeIndex.index)}" />
+						<f:selectItem itemLabel="Postal" itemValue="POSTAL" />
+						<f:selectItem itemLabel="Social" itemValue="SOCIAL"
+							itemDisabled="#{not domicilioPersonaController.isPersonaMoral() or domicilioPersonaController.isDomicilioSocial(activeIndex.index)}" />
+						<p:ajax process="@this" partialSubmit="true" immediate="true"
+							update="@(.checkTipoDomicilio)" global="false" />
+					</p:selectManyCheckbox>
+					
+				</div>
+
+				<!-- ROW -->
+				<div class="grid_14">
+					<p:message id="msgEditRegimenOcupacion#{activeIndex.index}"
+						for="editRegimenOcupacion#{activeIndex.index}" display="icon" />
+					<p:outputLabel value="Regimen de ocupación"
+						for="editRegimenOcupacion#{activeIndex.index}"></p:outputLabel>
+					<div class="clear-3"></div>
+					<p:selectOneMenu value="#{domicilio.regimenOcupacion}"
+						required="true" id="editRegimenOcupacion#{activeIndex.index}">
+						<f:selectItem itemLabel="Seleccione un regimen de ocupación"
+							itemValue="" />
+						<f:selectItems
+							value="#{catalogoUtils.getCatalogo('TP_OCUPACION_VIV')}"
+							var="item" itemValue="#{item.claveFila}"
+							itemLabel="#{item.descripcionL}" />
+						<p:ajax process="@this" partialSubmit="true" global="false" />
+					</p:selectOneMenu>
+				</div>
+				<div class="grid_8">
+					<p:message id="msgEditTelefono#{activeIndex.index}"
+						for="editTelefono#{activeIndex.index}" display="icon" />
+					<p:outputLabel value="Teléfono"
+						for="editTelefono#{activeIndex.index}"></p:outputLabel>
+					<div class="clear-3"></div>
+					<p:inputText value="#{domicilio.telefono}" maxlength="10"
+						required="true" id="editTelefono#{activeIndex.index}">
+						<p:ajax process="@this" partialSubmit="true" global="false" />
+					</p:inputText>
+					<pe:keyFilter for="editTelefono#{activeIndex.index}"
+						regEx="/^[0-9\.\(\)\-\ ]*$/" />
+					<!-- 					<pe:keyFilter for="editTelefono#{activeIndex.index}" regEx="/[\d\-\.\(\)\ ]/" /> -->
+					
+				</div>
+				<!-- ROW -->
+				<div class="clear-row"></div>
+
+				<!-- Copia componente de domicilio -->
+				<div class="row-flex">
+					<div class="grid_4">
+						<p:outputLabel for="codigoPostal#{activeIndex.index}"
+							value="Código Postal" />
+						<div class="clear-3"></div>
+						<p:autoComplete id="codigoPostal#{activeIndex.index}"
+							value="#{domicilio.codigoPostalCatGeo}" maxResults="5"
+							maxlength="5" minQueryLength="0"
+							completeMethod="#{domicilioPersonaController.getCodigosPostales}"
+							var="cp" itemLabel="#{cp.codigoPostal}" itemValue="#{cp}"
+							converter="#{catalogoBeanConverter}"
+							widgetVar="acCodigoPostal#{activeIndex.index}">
+
+							<f:attribute name="filter" value="CODIGOS POSTALES" />
+							<p:ajax process="@this" partialSubmit="true" resetValues="true"
+								global="false" />
+							<p:ajax event="itemSelect"
+								listener="#{domicilioPersonaController.manejarComponenteDomicilio(domicilio)}"
+								process="@this"
+								update="municipio#{activeIndex.index},estado#{activeIndex.index},pais#{activeIndex.index}"
+								resetValues="true" global="false" />
+							<p:ajax event="blur"
+								listener="#{domicilioPersonaController.manejarComponenteDomicilio(domicilio)}"
+								process="@this"
+								update="municipio#{activeIndex.index},estado#{activeIndex.index},pais#{activeIndex.index}"
+								resetValues="true" global="false" />
+
+						</p:autoComplete>
+						<pe:keyFilter for="codigoPostal#{activeIndex.index}"
+							testFunction="return justNumbers(c);" />
+					</div>
+
+					<div class="grid_24">
+						<p:outputLabel for="municipio#{activeIndex.index}"
+							value="Municipio/Localidad/Delegación" />
+						<div class="clear-3"></div>
+						<p:autoComplete id="municipio#{activeIndex.index}"
+							value="#{domicilio.municipioCatGeo}" maxResults="5"
+							minQueryLength="0"
+							completeMethod="#{domicilioPersonaController.getMunicipios}"
+							var="mun" itemLabel="#{mun.municipioLocalidad}"
+							itemValue="#{mun}" converter="#{catalogoBeanConverter}"
+							onkeyup="value=value.toUpperCase()">
+
+							<f:attribute name="filter" value="MUNICIPIOS" />
+							<p:ajax process="@this" partialSubmit="true" resetValues="true"
+								global="false" />
+							<p:ajax event="itemSelect"
+								listener="#{domicilioPersonaController.manejarComponenteDomicilio(domicilio)}"
+								process="@this"
+								update="estado#{activeIndex.index},pais#{activeIndex.index}"
+								resetValues="true" global="false" />
+							<p:ajax event="blur"
+								listener="#{domicilioPersonaController.manejarComponenteDomicilio(domicilio)}"
+								process="@this"
+								update="estado#{activeIndex.index},pais#{activeIndex.index}"
+								resetValues="true" global="false" />
+
+						</p:autoComplete>
+					</div>
+
+
+					<div class="grid_10">
+						<p:outputLabel for="estado#{activeIndex.index}" value="Estado" />
+						<div class="clear-3"></div>
+						<p:inputText id="estado#{activeIndex.index}"
+							value="#{domicilio.estado}" maxlength="35" readonly="true">
+							<p:ajax process="@this" partialSubmit="true" global="false" />
+						</p:inputText>
+					</div>
+
+					<div class="grid_10">
+						<p:outputLabel for="pais#{activeIndex.index}" value="País" />
+						<div class="clear-3"></div>
+						<p:inputText id="pais#{activeIndex.index}"
+							value="#{domicilio.pais}" maxlength="35" readonly="true">
+							<p:ajax process="@this" partialSubmit="true" global="false" />
+						</p:inputText>
+					</div>
+				</div>
+
+				<div class="clear-row"></div>
+
+
+				<div class="row-flex">
+					<div class="grid_6">
+						<p:message id="msgtipoCalle#{activeIndex.index}"
+							for="tipoCalle#{activeIndex.index}" display="icon" />
+						<p:outputLabel for="tipoCalle#{activeIndex.index}"
+							value="Tipo de Calle" />
+						<div class="clear"></div>
+						<p:selectOneMenu id="tipoCalle#{activeIndex.index}"
+							value="#{domicilio.tipoCalle}" required="true">
+							<f:selectItem itemLabel="Seleccione un valor" />
+							<f:selectItems value="#{catalogoUtils.getCatalogo('TP_VIA')}"
+								var="entry" itemValue="#{entry.claveFila}"
+								itemLabel="#{entry.descripcionC}" />
+							<p:ajax process="@this" partialSubmit="true" global="false" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="grid_30">
+						<p:message id="msgcalle#{activeIndex.index}"
+							for="calle#{activeIndex.index}" display="icon" />
+						<p:outputLabel for="calle#{activeIndex.index}" value="Calle" />
+						<div class="clear"></div>
+						<p:inputText id="calle#{activeIndex.index}"
+							value="#{domicilio.nombreCalle}" maxlength="45"
+							onblur="value=value.toUpperCase()" required="true">
+							<pe:keyFilter regEx="/^[\da-zA-ZñÑ\- ]*$/" />
+							<!-- Se agrega validador de campos -->
+							<f:validator validatorId="camposValidator"/>
+							<f:attribute name="tipoValidacion" value="A"/>
+							<p:ajax process="@this" update="msgcalle#{activeIndex.index}" partialSubmit="true" />
+						</p:inputText>
+					</div>
+
+					<div class="grid_4">
+						<p:message id="msgnumExterior#{activeIndex.index}"
+							for="numExterior#{activeIndex.index}" display="icon" />
+						<p:outputLabel for="numExterior#{activeIndex.index}"
+							value="Num. Exterior" />
+						<div class="clear"></div>
+						<p:inputText id="numExterior#{activeIndex.index}"
+							value="#{domicilio.numeroExterior}" maxlength="4"
+							onblur="value=value.toUpperCase()" required="true">
+							<pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+							<p:ajax process="@this" partialSubmit="true" global="false" />
+						</p:inputText>
+					</div>
+
+					<div class="grid_4">
+						<p:outputLabel for="interior#{activeIndex.index}"
+							value="Num. Interior" />
+						<div class="clear"></div>
+						<p:inputText id="interior#{activeIndex.index}"
+							value="#{domicilio.interior}" maxlength="2"
+							onblur="value=value.toUpperCase()">
+							<pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+							<p:ajax process="@this" partialSubmit="true" />
+						</p:inputText>
+					</div>
+
+					<div class="grid_4">
+						<p:outputLabel for="dpto#{activeIndex.index}" value="Dpto." />
+						<div class="clear"></div>
+						<p:inputText id="dpto#{activeIndex.index}"
+							value="#{domicilio.departamento}" maxlength="3"
+							onblur="value=value.toUpperCase()">
+							<pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+							<p:ajax process="@this" partialSubmit="true" />
+						</p:inputText>
+					</div>
+				</div>
+
+				<div class="grid_24">
+					<p:message id="msgcolonia#{activeIndex.index}"
+						for="colonia#{activeIndex.index}" display="icon" />
+					<p:outputLabel for="colonia#{activeIndex.index}" value="Colonia" />
+					<div class="clear"></div>
+					<p:inputText id="colonia#{activeIndex.index}"
+						value="#{domicilio.colonia}" maxlength="45"
+						onblur="value=value.toUpperCase()" required="true">
+						<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+						<!-- Se agrega validador de campos -->
+						<f:validator validatorId="camposValidator"/>
+						<f:attribute name="tipoValidacion" value="A"/>
+						<p:ajax process="@this" partialSubmit="true" />
+					</p:inputText>
+				</div>
+
+				<div class="grid_24">
+					<p:outputLabel for="otrosDatos#{activeIndex.index}"
+						value="Otros Datos" />
+					<div class="clear"></div>
+					<p:inputText id="otrosDatos#{activeIndex.index}"
+						value="#{domicilio.otrosDatos}" maxlength="100"
+						onblur="value=value.toUpperCase()">
+						<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+						<p:ajax process="@this" partialSubmit="true" />
+					</p:inputText>
+				</div>
+
+				<div class="clear-row"></div>
+
+				<p:fieldset legend="Datos Adicionales" toggleable="true"
+					toggleSpeed="500" collapsed="true">
+
+					<div class="grid_18">
+						<p:outputLabel for="unidadHabitacional#{activeIndex.index}"
+							value="Unidad habitacional" />
+						<div class="clear"></div>
+						<p:inputText id="unidadHabitacional#{activeIndex.index}"
+							value="#{domicilio.unidadHabitacional}" maxlength="45"
+							onblur="value=value.toUpperCase()">
+							<pe:keyFilter regEx="/[\d\-\. a-zA-ZñÑ]/" />
+							<p:ajax process="@this" partialSubmit="true" />
+						</p:inputText>
+					</div>
+
+					<div class="grid_12">
+						<p:outputLabel for="edificio#{activeIndex.index}" value="Edificio" />
+						<div class="clear"></div>
+						<p:inputText id="edificio#{activeIndex.index}"
+							value="#{domicilio.edificio}" maxlength="45"
+							onblur="value=value.toUpperCase()">
+							<pe:keyFilter regEx="/[\d\-\. a-zA-ZñÑ]/" />
+							<p:ajax process="@this" partialSubmit="true" />
+						</p:inputText>
+					</div>
+
+					<div class="grid_18">
+						<p:outputLabel for="manzana#{activeIndex.index}" value="Manzana" />
+						<div class="clear"></div>
+						<p:inputText id="manzana#{activeIndex.index}"
+							value="#{domicilio.manzana}" maxlength="45"
+							onblur="value=value.toUpperCase()">
+							<pe:keyFilter regEx="/[\d\-\. a-zA-ZñÑ]/" />
+							<p:ajax process="@this" partialSubmit="true" />
+						</p:inputText>
+					</div>
+
+				</p:fieldset>
+
+				<!-- /Copia componente de domicilio -->
+
+
+				<!-- Domicilios comaprtidos -->
+				<c:if test="#{not empty domicilio.domiciliosCompartidos}">
+					<div class="margin-top-20"></div>
+					<p:outputLabel>¿Desea guardar los cambios para todas las personas asociadas a este domicilio?</p:outputLabel>
+					<div class="clear-row"></div>
+					<p:selectOneRadio value="#{domicilio.editaCompartidos}"
+						required="true">
+						<f:selectItem itemLabel="Guardar para todos" itemValue="true" />
+						<f:selectItem itemLabel="Guardar sólo para esta persona"
+							itemValue="false" />
+					</p:selectOneRadio>
+
+					<div class="clear-row"></div>
+
+					<h3 class="azul-b">Domicilio compartido con...</h3>
+					<div class="clear-row"></div>
+					<p:outputLabel>Para ver más detalle seleccione la opción que desea
+						consultar</p:outputLabel>
+
+					<div class="margin-bottom-10"></div>
+
+					<p:dataTable var="compartido" styleClass="tabla-domicilios"
+						value="#{domicilio.domiciliosCompartidos}"
+						selection="#{domicilioPersonaController.domicilioCompartidoSeleccionado}"
+						selectionMode="single" rowKey="#{compartido.nombre}">
+
+						<p:ajax event="rowSelect"
+							listener="#{domicilioPersonaController.onRowSelectEvent}"
+							global="false" />
+
+						<p:column headerText="TIPO PERSONA">
+							<h:outputText value="#{compartido.getTipoPersonaToString()}" />
+						</p:column>
+
+						<p:column headerText="ID">
+							<h:outputText
+								value="#{domicilioPersonaController.getDomicilioCompartidoIdExternoToString(compartido)}" />
+						</p:column>
+
+						<p:column headerText="NOMBRE/RAZÓN SOCIAL">
+							<h:outputText value="#{compartido.nombre}" />
+						</p:column>
+
+						<p:column headerText="FECHA DE NACIMIENTO/CONSTITUCIÓN">
+							<h:outputText value="#{compartido.fechaToString()}" />
+						</p:column>
+
+						<p:column headerText="OFICINA">
+							<h:outputText value="#{compartido.codigoOficina}" />
+						</p:column>
+					</p:dataTable>
+				</c:if>
+			</c:if>
+			<c:otherwise>
+				<p:outputLabel value="..."
+					rendered="#{not domicilio.isLoadedAllData() and domicilio.estadoBean ne EstadoListadosEnum.MODIFICADO}"></p:outputLabel>
+			</c:otherwise>
+			<div class="clear"></div>
+		</h:panelGroup>
+	</p:panel>
+
+</ui:composition>

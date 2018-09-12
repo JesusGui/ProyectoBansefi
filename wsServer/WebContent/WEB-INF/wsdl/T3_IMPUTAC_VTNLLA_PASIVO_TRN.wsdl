@@ -1,0 +1,2434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://BansefiNSS/WebServicesNSS/T3_IMPUTAC_VTNLLA_PASIVO_TRN" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://BansefiNSS/WebServicesNSS/T3_IMPUTAC_VTNLLA_PASIVO_TRN" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+		<s:schema elementFormDefault="qualified" targetNamespace="http://BansefiNSS/WebServicesNSS/T3_IMPUTAC_VTNLLA_PASIVO_TRN">
+			<s:element name="Ejecutar">
+				<s:complexType>
+					<s:sequence>
+						<s:element name="TR_IMPUTAC_VTNLLA_PASIVO_TRN_I" nillable="false">
+							<s:complexType mixed="false">
+								<s:sequence>
+									<s:element name="STD_TRN_I_PARM_V" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="ID_INTERNO_TERM_TN" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000008"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="ID_EMPL_AUT" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000008"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="NUM_SEC" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:integer">
+															<s:maxInclusive value="9999999"/>
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="COD_TX" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000008"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="COD_TX_DI" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000004"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+									<s:element name="STD_AUTORIZA_V" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="IND_BORRADO_AR" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="DESCR_TX" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000050"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IND_AUT_SOLIC" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IND_ATRIB_MANC_EP" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="COD_ESTADO_AR" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="ID_EMPL_SOL_AUT" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000008"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IND_VERIF_ATRIB" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IND_URG_AR" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="MOTIVO_ACCION_AUT" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000200"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IND_ESCALABLE" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IMP_AUT" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:decimal">
+															<s:totalDigits value="0000000014"/>
+															<s:fractionDigits value="02"/>
+															<s:maxInclusive value="999999999999.99" />
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IMPORTE_AR" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:decimal">
+															<s:totalDigits value="0000000014"/>
+															<s:fractionDigits value="02"/>
+															<s:maxInclusive value="999999999999.99" />
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="AR_AUT_REMOTA_P" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_INTERNO_TERM_TN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000008"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="FECHA_OPRCN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="HORA_OPRCN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="AR_TRN_MSJ_PARM_V" nillable="false" maxOccurs="00010">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="TEXT_CODE" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="TEXT_ARG1" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000018"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="STD_TARGET_TERMINAL_V" nillable="false" maxOccurs="00050">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="ID_INTERNO_EMPL_EP" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000008"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_INTERNO_TERM_TN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000008"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_ECV_SESION" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="AR_ID_SALTADO_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="ID_INTERNO_EMPL_EP" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000008"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+									<s:element name="PSV_PAGO_PARC_DA" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="NOMB_50" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000050"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="NIF" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000009"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="FECHA_EMISION" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:integer">
+															<s:maxInclusive value="99999999"/>
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="DOMIC" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000040"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+									<s:element name="PSV_LIBRETA_V" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="STD_CHAR_01" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+									<s:element name="PSV_INTERVENCION_V" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="STD_CHAR_01" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+									<s:element name="TR_IMPUTAC_VTNLLA_PASIVO_EVT_Y" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="AC_AC_P" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_CENT_UO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_SEC_AC" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="COD_APLCCN_SUBAPL" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000003"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="PSV_ENTIDAD_DESTINO_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="COD_INTERNO_UO" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000004"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="TIPO_OPRCN" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000002"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="FECHA_VALOR" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:integer">
+															<s:maxInclusive value="99999999"/>
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IMP_NOMINAL" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:decimal">
+															<s:totalDigits value="0000000014"/>
+															<s:fractionDigits value="02"/>
+															<s:maxInclusive value="999999999999.99" />
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="PSV_TP_CLOP_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_CLOP_SIST" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000002"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="TIPO_SBCLOP" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="IND_EMITE_DETALLE" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="TEXTO_REMITENTE" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000045"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="CP_CHQ_PAG_PROPIO_P" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_CJ_CHQ_PG" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000002"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_CHQ_PAG_CP" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000007"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_CENT_UO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_SEC_AC" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PSV_ERROR_V" nillable="false" maxOccurs="00005">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_ERROR" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000005"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_EMPL_AUT" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000008"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ATRIBUIDO_S_N" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PSV_IMP_AUT_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="IMP_AUT" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PSV_ANULACION_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="ID_INTERNO_TERM_TN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000008"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="FECHA_OPRCN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="HORA_OPRCN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="IND_PAG_PARCIAL_CP" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000001"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="NUM_TARJETA" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000016"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="PSV_COD_NUMRCO_MONEDA_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NUMRCO_MONEDA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000003"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="WD_B_NUM_COL_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="MI_NUM_COL" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="INF_RECIBO_BANSEFI_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="NOMB_PDV" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000030"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_PLZ_BANCARIA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000003"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_SEC_AC" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_DIG_CR_UO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000002"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_INTERES_V" nillable="false">
+																<s:complexType mixed="false">
+																	<s:sequence>
+																		<s:element name="STD_DEC_15Y2" nillable="false">
+																			<s:simpleType>
+																				<s:restriction base="s:decimal">
+																					<s:totalDigits value="0000000014"/>
+																					<s:fractionDigits value="02"/>
+																					<s:maxInclusive value="999999999999.99" />
+																					<s:minInclusive value="0"/>
+																				</s:restriction>
+																			</s:simpleType>
+																		</s:element>
+																	</s:sequence>
+																</s:complexType>
+															</s:element>
+															<s:element name="IMP_RETENCION_V" nillable="false">
+																<s:complexType mixed="false">
+																	<s:sequence>
+																		<s:element name="STD_DEC_15Y2" nillable="false">
+																			<s:simpleType>
+																				<s:restriction base="s:decimal">
+																					<s:totalDigits value="0000000014"/>
+																					<s:fractionDigits value="02"/>
+																					<s:maxInclusive value="999999999999.99" />
+																					<s:minInclusive value="0"/>
+																				</s:restriction>
+																			</s:simpleType>
+																		</s:element>
+																	</s:sequence>
+																</s:complexType>
+															</s:element>
+															<s:element name="NOMB_50" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000050"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="STD_CHAR_40" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000040"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="CODIGO_SEGURIDAD" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:integer">
+															<s:maxInclusive value="999"/>
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+									<s:element name="TR_LB_VALIDAR_LB_EVT_Y" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="LB_TIPO_SEL_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="STD_CHAR_10" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000010"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="LB_LIBRETA_P" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_CENT_UO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_SEC_AC" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_LIBRETA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="IMP_SDO" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:decimal">
+															<s:totalDigits value="0000000014"/>
+															<s:fractionDigits value="02"/>
+															<s:maxInclusive value="999999999999.99" />
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="PG_ACTLZD" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:integer">
+															<s:maxInclusive value="9999"/>
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="ULT_LIN_ACTLZN" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:integer">
+															<s:maxInclusive value="9999"/>
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="IP_OPCION_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="OPCION" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="COD_NUMRCO_MONEDA" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000003"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+								</s:sequence>
+							</s:complexType>
+						</s:element>
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="EjecutarResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element name="EjecutarResult" type="tns:EjecutarResult" maxOccurs="1" minOccurs="0" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:complexType name="EjecutarResult">
+				<s:sequence>
+					<s:element name="ResponseBansefi" type="tns:ArrayOfResponseBansefi" maxOccurs="1" minOccurs="0" />
+				</s:sequence>
+			</s:complexType>
+			<s:complexType name="ArrayOfResponseBansefi">
+				<s:sequence>
+					<s:element name="ResponseBansefi" type="tns:ResponseBansefi" maxOccurs="unbounded" minOccurs="0" />
+				</s:sequence>
+			</s:complexType>
+			<s:complexType name="ResponseBansefi">
+				<s:sequence>
+					<s:element name="TR_IMPUTAC_VTNLLA_PASIVO_TRN_O" nillable="false">
+						<s:complexType mixed="false">
+							<s:sequence>
+								<s:element name="RTRN_CD" nillable="false">
+									<s:simpleType>
+										<s:restriction base="s:integer">
+											<s:maxInclusive value="9999"/>
+											<s:minInclusive value="0"/>
+										</s:restriction>
+									</s:simpleType>
+								</s:element>
+								<s:element name="PSV_ERROR_V" nillable="false" maxOccurs="00005">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="COD_ERROR" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000005"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="ID_EMPL_AUT" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000008"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="ATRIBUIDO_S_N" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="TR_IMPUTAC_VTNLLA_PASIVO_EVT_Z" nillable="false">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="COD_CSB_OF" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000004"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="PSV_CENTRO_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="COD_INTERNO_UO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_APUNTE_V" nillable="false" maxOccurs="00002">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="COD_NRBE_EN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_CENT_UO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="PRPDAD_CTA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="NUM_SEC_AC" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_CTA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000002"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_NUMRCO_MONEDA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000003"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="NUM_SEC" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_SDO_CONT_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="IMP_SDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_SDO_DISP_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="IMP_SDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_SDO_CONECT_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="IMP_SDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_IMP_AUT_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="IMP_AUT" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="SGN" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IMP_APNTE" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:decimal">
+														<s:totalDigits value="0000000014"/>
+														<s:fractionDigits value="02"/>
+														<s:maxInclusive value="999999999999.99" />
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="PSV_COD_ESTADO_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="OPCION" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_NOMBRE_TITULAR_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="NOMB_50" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000050"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_INDIC_INCIDENCIAS_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="STD_CHAR_01" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_IND_DISPOSI_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="OPCION" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="STD_DEC_3" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_IND_ANOTAC_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="OPCION" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="COD_SIT_IRREG" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="SITU_TX" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000002"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="NOMB_PROVINCIA_AG" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000035"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="NOMB_LOCALIDAD_AG" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000045"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="COD_POSTAL_AG" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000005"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="FECHA_VALOR" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="99999999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="PSV_CONTRAVALOR_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="COD_NUMRCO_MONEDA1" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000003"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="IMP_OPRCN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_OPRCN_ORGNAL_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="COD_NUMRCO_MONEDA1" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000003"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="IMP_OPRCN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="WD_B_NUM_COL_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="MI_NUM_COL" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="INF_RECIBO_BANSEFI_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="NOMB_PDV" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000030"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_NRBE_EN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_PLZ_BANCARIA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000003"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="NUM_SEC_AC" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_DIG_CR_UO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000002"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="IMP_INTERES_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_DEC_15Y2" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:decimal">
+																				<s:totalDigits value="0000000014"/>
+																				<s:fractionDigits value="02"/>
+																				<s:maxInclusive value="999999999999.99" />
+																				<s:minInclusive value="0"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="IMP_RETENCION_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_DEC_15Y2" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:decimal">
+																				<s:totalDigits value="0000000014"/>
+																				<s:fractionDigits value="02"/>
+																				<s:maxInclusive value="999999999999.99" />
+																				<s:minInclusive value="0"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="NOMB_50" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000050"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="STD_CHAR_40" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000040"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_ULT_APNTE_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="IMP_MOVTO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="SIGNO_IMPORTE" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="FECHA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="PSV_SDO_RETEN_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="IMP_SDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="ID_INTERNO_PE" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="99999999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="TR_LB_ACTUALIZA_LB_EVT_Z" nillable="false">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="PSV_ACCION_REDENOM_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="OPCION" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_NUM_LINEAS_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="STD_SMALL_INT" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_MAS_DATOS_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="STD_CHAR_01" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="TXT_CONCPT" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000060"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="TIPO_LIBRETA" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000002"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="NUM_LIBRETA" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="9999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="LB_NUEVA_LIB_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="STD_CHAR_01" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_DATOS_AC_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="COD_LINEA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000002"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="ID_GRP_PD" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000002"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_NUMRCO_MONEDA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000003"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_INTERNO_UO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="NOMB_50_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="NOMB_50" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000050"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_SDO_APAR_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="IMP_SDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="FECHA_SDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="CNTR_D" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="CNTR_H" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="ULT_APNTE_INCLUIDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_DATOS_TIPO_LB_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="PG_ACTLZD" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="ULT_LIN_ACTLZN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_DATOS_LB_ACTUAL_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="PG_ACTLZD" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="ULT_LIN_ACTLZN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_DATOS_CARATULA_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="CCC_AC" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000023"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="PSV_CTA_VIVIENDA_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_CHAR_01" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000001"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="PSV_IND_DISPOSI_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="OPCION" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000001"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																	<s:element name="STD_DEC_3" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:integer">
+																				<s:maxInclusive value="999"/>
+																				<s:minInclusive value="0"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="LB_TITULARES_V" nillable="false" maxOccurs="00007">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="NOMB_50" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000050"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																	<s:element name="ID_EXT_PE" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000014"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																	<s:element name="COD_RL_PERS_AC" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000002"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_DATOS_LINEAS_V" nillable="false" maxOccurs="00060">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="FECHA_CTBLE" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="NUM_SUBAC" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="IMP_APNTE" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="SGN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="IMP_SDO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000014"/>
+																	<s:fractionDigits value="02"/>
+																	<s:maxInclusive value="999999999999.99" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="INT_VALOR" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000005"/>
+																	<s:fractionDigits value="03"/>
+																	<s:maxInclusive value="99.999" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="TAE" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:decimal">
+																	<s:totalDigits value="0000000005"/>
+																	<s:fractionDigits value="03"/>
+																	<s:maxInclusive value="99.999" />
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="IP_FREC_LIQ_IP_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="RNG_VALOR" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:decimal">
+																				<s:totalDigits value="0000000014"/>
+																				<s:fractionDigits value="02"/>
+																				<s:maxInclusive value="999999999999.99" />
+																				<s:minInclusive value="0"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																	<s:element name="COD_UM" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000001"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																	<s:element name="IP_IND_LIQ_VTO_V" nillable="false">
+																		<s:complexType mixed="false">
+																			<s:sequence>
+																				<s:element name="STD_CHAR_01" nillable="false">
+																					<s:simpleType>
+																						<s:restriction base="s:string">
+																							<s:length value="0000000001"/>
+																							<s:whiteSpace value="preserve"/>
+																						</s:restriction>
+																					</s:simpleType>
+																				</s:element>
+																			</s:sequence>
+																		</s:complexType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="FECHA_VTO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="TXT_TIPO_CLOP_BREV" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000020"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_INTERNO_UO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="PSV_TXT_INT_LIB_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_CHAR_01" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000001"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="IP_DURAC_IP_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="RNG_VALOR" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:decimal">
+																				<s:totalDigits value="0000000014"/>
+																				<s:fractionDigits value="02"/>
+																				<s:maxInclusive value="999999999999.99" />
+																				<s:minInclusive value="0"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																	<s:element name="COD_UM" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000001"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="FECHA_VALOR" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="LB_IND_LISTA_IP_ESP_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_CHAR_01" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000001"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_DATOS_LB_NUEVOS_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="PG_ACTLZD" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="ULT_LIN_ACTLZN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="TR_LB_VALIDAR_LB_EVT_Y" nillable="false">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="LB_TIPO_SEL_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="STD_CHAR_10" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000010"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="LB_LIBRETA_P" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="COD_NRBE_EN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_CENT_UO" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="NUM_SEC_AC" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="NUM_LIBRETA" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="IMP_SDO" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:decimal">
+														<s:totalDigits value="0000000014"/>
+														<s:fractionDigits value="02"/>
+														<s:maxInclusive value="999999999999.99" />
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="PG_ACTLZD" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="9999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="ULT_LIN_ACTLZN" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="9999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IP_OPCION_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="OPCION" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="COD_NUMRCO_MONEDA" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000003"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="STD_AUTORIZA_V" nillable="false">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="IND_BORRADO_AR" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="DESCR_TX" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000050"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IND_AUT_SOLIC" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IND_ATRIB_MANC_EP" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="COD_ESTADO_AR" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="ID_EMPL_SOL_AUT" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000008"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IND_VERIF_ATRIB" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IND_URG_AR" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="MOTIVO_ACCION_AUT" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000200"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IND_ESCALABLE" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000001"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IMP_AUT" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:decimal">
+														<s:totalDigits value="0000000014"/>
+														<s:fractionDigits value="02"/>
+														<s:maxInclusive value="999999999999.99" />
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="IMPORTE_AR" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:decimal">
+														<s:totalDigits value="0000000014"/>
+														<s:fractionDigits value="02"/>
+														<s:maxInclusive value="999999999999.99" />
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="AR_AUT_REMOTA_P" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="COD_NRBE_EN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000004"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="ID_INTERNO_TERM_TN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000008"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="FECHA_OPRCN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="HORA_OPRCN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="99999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="AR_TRN_MSJ_PARM_V" nillable="false" maxOccurs="00010">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="TEXT_CODE" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="9999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="TEXT_ARG1" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000018"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="STD_TARGET_TERMINAL_V" nillable="false" maxOccurs="00050">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="ID_INTERNO_EMPL_EP" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000008"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="ID_INTERNO_TERM_TN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000008"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_ECV_SESION" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="AR_ID_SALTADO_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="ID_INTERNO_EMPL_EP" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000008"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="STD_TRN_MSJ_PARM_V" nillable="false" maxOccurs="00005">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="TEXT_CODE" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="9999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="TEXT_ARG1" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000018"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="STD_TRN_O_PARM_V" nillable="false">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="FECHA_OPRCN" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="99999999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="HORA_OPRCN" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="99999999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="STD_AN_AV_MSJ_V" nillable="false">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="AN_NUM_ANOTACIONES_V" nillable="false">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="STD_DEC_3" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+											<s:element name="STD_AN_AV_MSJ_LS" nillable="false" maxOccurs="00005">
+												<s:complexType mixed="false">
+													<s:sequence>
+														<s:element name="NUMERO_ANTCN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:integer">
+																	<s:maxInclusive value="999999999999999"/>
+																	<s:minInclusive value="0"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="COD_ANTCN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="DESCRIP_ANTCN_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_CHAR_11" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000011"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="IND_PRDAD" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000001"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="DESC_IND_PRDAD_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_CHAR_07" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000007"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+														<s:element name="SUBCD_ANTCN" nillable="false">
+															<s:simpleType>
+																<s:restriction base="s:string">
+																	<s:length value="0000000002"/>
+																	<s:whiteSpace value="preserve"/>
+																</s:restriction>
+															</s:simpleType>
+														</s:element>
+														<s:element name="STD_DESCR_C_ANTCN_V" nillable="false">
+															<s:complexType mixed="false">
+																<s:sequence>
+																	<s:element name="STD_CHAR_30" nillable="false">
+																		<s:simpleType>
+																			<s:restriction base="s:string">
+																				<s:length value="0000000030"/>
+																				<s:whiteSpace value="preserve"/>
+																			</s:restriction>
+																		</s:simpleType>
+																	</s:element>
+																</s:sequence>
+															</s:complexType>
+														</s:element>
+													</s:sequence>
+												</s:complexType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+							</s:sequence>
+						</s:complexType>
+					</s:element>
+				</s:sequence>
+			</s:complexType>
+			<s:element name="EjecutarResult" type="tns:EjecutarResult"/>
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="EjecutarSoapIn">
+		<wsdl:part name="parameters" element="tns:Ejecutar" />
+	</wsdl:message>
+	<wsdl:message name="EjecutarSoapOut">
+		<wsdl:part name="parameters" element="tns:EjecutarResponse" />
+	</wsdl:message>
+	<wsdl:portType name="SoapPort">
+		<wsdl:operation name="Ejecutar">
+			<wsdl:input message="tns:EjecutarSoapIn" />
+			<wsdl:output message="tns:EjecutarSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SoapBinding" type="tns:SoapPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Ejecutar">
+			<soap:operation soapAction="http://10.200.14.110:3300/WebServicesNSS/T3_IMPUTAC_VTNLLA_PASIVO_TRN/Ejecutar" style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="T3_IMPUTAC_VTNLLA_PASIVO_TRN">
+		<wsdl:port name="SoapPort" binding="tns:SoapBinding">
+			<soap:address location="http://10.200.14.110:3300/WebServicesNSS/T3_IMPUTAC_VTNLLA_PASIVO_TRN"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

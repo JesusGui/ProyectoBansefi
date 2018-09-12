@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<p:dialog widgetVar="dlgEliminados" id="dlgEliminados" appendTo="@(body)" dynamic="true" modal="true" showEffect="fade" hideEffect="fade"
+		visible="#{mensajeEliminados.mostrar}" closable="false" resizable="false" draggable="false">
+		<!--icono de la modal -->
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<!--mensaje de la modal styleClass="modal-mensaje" -->
+		<p:outputLabel styleClass="modal-mensaje"
+			value="¡Atención! Está a punto de eliminar #{mensajeEliminados.mensaje}." />
+		<!--mensaje de la modal styleClass="modal-mensaje" -->
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion" 
+			value="¿Está seguro que desea continuar?" />
+        <div class="margin-bottom-20"></div>
+		<!--botones de la modal primarios y secundarios -->
+		<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+			value="Cancelar" immediate="true"
+			oncomplete="PF('dlgEliminados').hide();">
+			<f:setPropertyActionListener target="#{mensajeEliminados.mostrar}" value="false"/>	
+		</p:commandButton>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			update=":#{form} :dlgGuardado"
+			action="#{managedBean[aceptar]}"
+			value="Aceptar" oncomplete="PF('dlgEliminados').hide();"/>
+	</p:dialog>
+</ui:composition>

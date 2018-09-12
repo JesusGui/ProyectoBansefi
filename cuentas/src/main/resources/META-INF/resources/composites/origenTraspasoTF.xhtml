@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<h:panelGroup layout="block"
+		styleClass="marco-datospersonales sin-margen">
+		<div class="grid_24">
+			<p:outputLabel value="ID TRANSFERENCIA: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.idTransferencia}" />
+			<div class="clear"></div>
+			<p:outputLabel value="FECHA DE RECEPCIÓN: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.fechaRecepcion}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</p:outputLabel>
+			<div class="clear"></div>
+			<p:outputLabel value="FECHA VALOR: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.fechaValor}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</p:outputLabel>
+			<div class="clear"></div>
+			<p:outputLabel value="Importe: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.importe}">
+				<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+					currencySymbol="MXN" />
+			</p:outputLabel>
+			<div class="clear"></div>
+			<p:outputLabel value="TIPO DE TRANSFERENCIA: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.tipoTransferencia}" />
+		</div>
+		<div class="grid_24">
+			<p:outputLabel value="CONCEPTO: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.concepto}" />
+			<div class="clear"></div>
+			<p:outputLabel value="CLASE TRAN: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.claseTransaccion}" />
+			<div class="clear"></div>
+			<p:outputLabel value="MOTIVO DEVOLUCIÓN: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.motivoDevolucion}" />
+		</div>
+		<div class="clear"></div>
+	</h:panelGroup>
+	<div class="clear-row"></div>
+	<div class="contenedor-espacioobjetos">
+		<h:panelGroup layout="block"
+			styleClass="marco-datospersonales col-49">
+				<p:outputLabel styleClass="bold" value="Origen" />
+				<div class="clear-3"></div>
+				<p:outputLabel value="ENTIDAD: " />
+				<p:outputLabel styleClass="bold"
+					value="#{apunteController.traspasoTFBean.origenEntidad}    " />
+				<div class="clear"></div>
+				<p:outputLabel value="CENTRO: " />
+				<p:outputLabel styleClass="bold"
+					value="#{apunteController.traspasoTFBean.origenCentro}" />
+				<div class="clear"></div>
+				<p:outputLabel value="ORDENANTE: " />
+				<p:outputLabel styleClass="bold"
+					value="#{apunteController.traspasoTFBean.origenOrdenante}" />
+				<div class="clear"></div>
+				<p:outputLabel value="FECHA EMISIÓN: " />
+				<p:outputLabel styleClass="bold"
+					value="#{apunteController.traspasoTFBean.origenFechaEmision}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+			<div class="clear"></div>
+		</h:panelGroup>
+		<h:panelGroup layout="block"
+			styleClass="marco-datospersonales col-49">
+				<p:outputLabel styleClass="bold" value="Destino" />
+				<div class="clear"></div>
+				<p:outputLabel value="CUENTA: " />
+				<p:outputLabel styleClass="bold"
+					value="#{apunteController.traspasoTFBean.destinoCuenta}" />
+				<div class="clear"></div>
+				<p:outputLabel value="CENTRO: " />
+				<p:outputLabel styleClass="bold"
+					value="#{apunteController.traspasoTFBean.destinoCentro}" />
+				<div class="clear"></div>
+				<p:outputLabel value="BENEFICIARIO: " />
+				<p:outputLabel styleClass="bold"
+					value="#{apunteController.traspasoTFBean.destinoBeneficiario}" />
+			<div class="clear"></div>
+		</h:panelGroup>
+	</div>
+	<div class="clear-row margin-top-10"></div>
+
+	<h:panelGroup layout="block"
+		styleClass="marco-datospersonales sin-margen col-49"
+		rendered="#{apunteController.traspasoTFBean.codigoTransferencia ge 20 and apunteController.traspasoTFBean.codigoTransferencia le 40}">
+		<div class="grid_24">
+			<p:outputLabel styleClass="bold" value="Nómina o pensión" />
+			<div class="clear-3"></div>
+			<p:outputLabel value="REFERENCIA ORDENANTE: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.referenciaOrdenante}" />
+			<div class="clear"></div>
+			<p:outputLabel value="REFERENCIA BENEFICIARIO: " />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.referenciaBeneficiario}" />
+			<div class="clear"></div>
+			<p:outputLabel value="ID BENEFICIARIO: "
+				rendered="#{apunteController.traspasoTFBean.tipoIdBeneficiario != null}" />
+			<p:outputLabel styleClass="bold"
+				value="#{apunteController.traspasoTFBean.idBeneficiario}"
+				rendered="#{apunteController.traspasoTFBean.tipoIdBeneficiario != null}" />
+		</div>
+		<div class="clear"></div>
+	</h:panelGroup>
+
+	<div class="clear"></div>
+
+</ui:composition>

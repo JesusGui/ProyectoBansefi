@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="llamadaModificaCondicionValorLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.modificacondicionvalorlista.Ejecutar.ITRMODIFICARKAVLSTRN.TRMODIFICARKAVLSEVTY
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorListaBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACDACE.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACDACE.FECHAINICVAL</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KAESTRCTVLISTAV.CODDOMPARMCD</a>
+      <b>codDomParmcd</b>
+    </field>
+  </mapping>
+  <mapping map-id="llamadaModificaCondicionValorListaPlazo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.modificacondicionvalorlistaplazo.Ejecutar.ITRMODIFICARKSVLSTRN.TRMODIFICARKSVLSEVTY
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorListaBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCDSBE.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCDSBE.FECHAINICVAL</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KSESTRCTVLISTAV.CODDOMPARMCD</a>
+      <b>codDomParmcd</b>
+    </field>
+  </mapping>
+</mappings>

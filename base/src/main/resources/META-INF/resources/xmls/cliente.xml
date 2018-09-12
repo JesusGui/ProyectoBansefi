@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="altaClientePerfilTransaccional" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.ClientePersonaFisicaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.altaperfiltransaccional.Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		 	<a>usoCuenta.funcionarioPublico</a>
+			<b>peindvfuncpublcds.indtxt1</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.funcionarioPublicoCargo</a>
+			<b>peindvfuncpublcds.txtrespuesta1</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		 	<a>usoCuenta.asociadoFuncionarioPublico</a>
+			<b>peindvfuncpublcds.indtxt2</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.asociadoFuncionarioPublicoCargo</a>
+			<b>peindvfuncpublcds.txtrespuesta2</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.asociadoFuncionarioPublicoNombre</a>
+			<b>peindvfuncpublcds.nombrerespuesta2</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.numDepositos</a>
+			<b>peindvtranestids.numdepositos</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.montoDepositos</a>
+			<b>peindvtranestids.impdepositos</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.numRetiros</a>
+			<b>peindvtranestids.numretiros</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.montoRetiros</a>
+			<b>peindvtranestids.impretiros</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.montoMensualIngresos</a>
+			<b>peindvtranestids.meningresos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.honorarios</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.arrendamiento</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.premios</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.sueldos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="4">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.prestamos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="5">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.donativos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="6">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.inversiones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="7">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.herencia</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="8">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.actcomercial</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="9">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.comisiones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="10">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.beca</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="11">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.recterceros</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="12">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.ventas</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="13">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.pension</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="Otros">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.otros</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.provieneOtros</a>
+			<b>peindvtranestids.otrosesp</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.admingrgto</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.concdispfond</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.pagprovcomi</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.pagserv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="4">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.ctapnteinver</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="5">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.pagcred</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="6">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.fideicomisos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="7">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.inversiones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="8">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.depnomina</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="Otros">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.otros</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.otrosUsos</a>
+			<b>peindvusoctads.otrosesp</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.depositos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.cobrogiros</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.retiros</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.transferencias</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToIntegerConverter">
+		 	<a>usoCuenta.manejoRecursosPropios</a>
+			<b>peindvusoctads.porcpropios</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToIntegerConverter">
+		 	<a>usoCuenta.manejoRecursosTerceros</a>
+			<b>peindvusoctads.porcterceros</b>
+		</field>					
+	</mapping>
+	<mapping map-id="modificacionClientePerfilTransaccional" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.ClientePersonaFisicaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.modificacionperfiltransaccional.Ejecutar.IPEMODIINDVPERFTRANT.PEMODIINDVPERFTRANEV
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		 	<a>usoCuenta.funcionarioPublico</a>
+			<b>peindvfuncpublcds.indtxt1</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.funcionarioPublicoCargo</a>
+			<b>peindvfuncpublcds.txtrespuesta1</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		 	<a>usoCuenta.asociadoFuncionarioPublico</a>
+			<b>peindvfuncpublcds.indtxt2</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.asociadoFuncionarioPublicoCargo</a>
+			<b>peindvfuncpublcds.txtrespuesta2</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.asociadoFuncionarioPublicoNombre</a>
+			<b>peindvfuncpublcds.nombrerespuesta2</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.numDepositos</a>
+			<b>peindvtranestids.numdepositos</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.montoDepositos</a>
+			<b>peindvtranestids.impdepositos</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.numRetiros</a>
+			<b>peindvtranestids.numretiros</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.montoRetiros</a>
+			<b>peindvtranestids.impretiros</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.montoMensualIngresos</a>
+			<b>peindvtranestids.meningresos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.honorarios</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.arrendamiento</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.premios</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.sueldos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="4">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.prestamos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="5">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.donativos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="6">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.inversiones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="7">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.herencia</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="8">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.actcomercial</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="9">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.comisiones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="10">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.beca</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="11">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.recterceros</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="12">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.ventas</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="13">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.pension</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="Otros">
+		 	<a>transaccionalidad.transaccionalidad</a>
+			<b>peindvtranestids.otros</b>
+		</field>
+		<field>
+		 	<a>transaccionalidad.provieneOtros</a>
+			<b>peindvtranestids.otrosesp</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.admingrgto</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.concdispfond</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.pagprovcomi</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.pagserv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="4">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.ctapnteinver</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="5">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.pagcred</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="6">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.fideicomisos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="7">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.inversiones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="8">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.depnomina</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="Otros">
+		 	<a>usoCuenta.usos</a>
+			<b>peindvusoctads.otros</b>
+		</field>
+		<field>
+		 	<a>usoCuenta.otrosUsos</a>
+			<b>peindvusoctads.otrosesp</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="0">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.depositos</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="1">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.cobrogiros</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="2">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.retiros</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.PerteneceAListaConverter" custom-converter-param="3">
+		 	<a>usoCuenta.operaciones</a>
+			<b>peindvusoctads.transferencias</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToIntegerConverter">
+		 	<a>usoCuenta.manejoRecursosPropios</a>
+			<b>peindvusoctads.porcpropios</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToIntegerConverter">
+		 	<a>usoCuenta.manejoRecursosTerceros</a>
+			<b>peindvusoctads.porcterceros</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.opcion1</a>
+			<b>peinffinanpzav.plazaoper01</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.opcion2</a>
+			<b>peinffinanpzav.plazaoper02</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.opcion3</a>
+			<b>peinffinanpzav.plazaoper03</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.opcion4</a>
+			<b>peinffinanpzav.plazaoper04</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.opcion5</a>
+			<b>peinffinanpzav.plazaoper05</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.opcion6</a>
+			<b>peinffinanpzav.plazaoper06</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.producto</a>
+			<b>peinffinanadicv.descrprocto</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.numEmpleados</a>
+			<b>peinffinanadicv.numempleado</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.numSucursales</a>
+			<b>peinffinanadicv.numsucursal</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.activo</a>
+			<b>peinffinanadicv.impactivo</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.pasivo</a>
+			<b>peinffinanadicv.imppasivo</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.factAnual</a>
+			<b>peinffinanadicv.impanualfac</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.capital</a>
+			<b>peinffinanadicv.impcapital</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.exportaciones</a>
+			<b>peinffinanadicv.impexprtcn</b>
+		</field>	
+		<field>
+		 	<a>datosRiesgo.denominacionEmpresa</a>
+			<b>pedatosempleov.denomlegalor</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.calle</a>
+			<b>pedatosempleov.nombrevia</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.numExterior</a>
+			<b>pedatosempleov.valdomicnumero</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.numInterior</a>
+			<b>pedatosempleov.valdomicplanta</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.municipio</a>
+			<b>pedatosempleov.nomblocalidadag</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.codigoPostal</a>
+			<b>pedatosempleov.codpostalag</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.colonia</a>
+			<b>pedatosempleov.nombcolonia</b>
+		</field>
+		<field>
+		 	<a>datosRiesgo.estado</a>
+			<b>pedatosempleov.nombcomautnmaag</b>
+		</field>				
+	</mapping>
+	<mapping map-id="validaIdInterna" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.validaidinterna.ResponseBansefi.OTRCONSMINIMAPERSONAT.TRCONSMINIMAPERSONAEV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.ClientePersonaFisicaBean
+		</class-b>
+		<field>
+		 	<a>idinternope</a>
+			<b>idInterna</b>
+		</field>
+		<field>
+		    <a>codidextpers</a>
+		    <b>tipoIdentificacion</b>
+		</field>
+		<field>
+		    <a>idextpe</a>
+		    <b>numIdentificacion</b>
+		</field>
+		<field>
+		    <a>nombinnombpila</a>
+		    <b>nombre</b>
+		</field>
+		<field>
+		    <a>nombinape1IN</a>
+		    <b>apePaterno</b>
+		</field>
+		<field>
+		    <a>nombinape2IN</a>
+		    <b>apeMaterno</b>
+		</field>
+		<field>
+			<a>sexoin</a>
+			<b>sexo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecnctoconstpe</a>
+			<b>fechaNacimiento</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="cuenta" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultacuentascliente.ResponseBansefi.OTRCONSULTARPPANT5TR.TRCONSULTARPPANT5EVT.RPPERSRLACE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.CuentaClienteBean
+		</class-b>
+		<field>
+			<a>numsecac</a>
+			<b>cuenta.numeroCuenta</b>
+		</field>
+		<field>
+			<a>idinternope</a>
+			<b>idCliente</b>
+		</field>
+		<field>
+			<a>codrlpersac</a>
+			<b>relacion</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaExistenciaIdInterno" wildcard="false" map-null="false"
+	  trim-strings="true" map-empty-string="false">
+    <class-a>mx.babel.bansefi.banksystem.base.webservices.busquedaidinterna.ResponseBansefi.OTRPECLCBDACNSTRNO.TRPECLCBDACNSEVTZ
+    </class-a>
+    <class-b>mx.babel.bansefi.banksystem.base.beans.domain.ClienteBean
+    </class-b>
+    <field>
+      <a>IDINTERNOPE</a>
+      <b>idInterna</b>
+    </field>
+    <field>
+      <a>IDEXTPE</a>
+      <b>numIdentificacion</b>
+    </field>
+    <field>
+      <a>NOMB50</a>
+      <b>nombre</b>
+    </field>
+  </mapping>
+  
+  <mapping map-id="documentoPersonaLista" wildcard="false"
+		trim-strings="true" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultalistadocumentos.ResponseBansefi.OTRDCLSCNSTRNO.TRDCLSCNSEVTZ.TRDCLSCNSEVTV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.DocumentoPersonaBean
+		</class-b>
+		<field>
+			<a>idinternodc</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a>coddoc</a>
+			<b>tipo</b>
+		</field>
+		<field>
+			<a>txtdc</a>
+			<b>descripcion</b>
+		</field>
+	</mapping>
+</mappings>

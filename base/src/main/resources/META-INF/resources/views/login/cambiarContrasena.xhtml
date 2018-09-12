@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<title>Cambiar contraseña</title>
+	<h:outputScript name="js/main.js?v=#{now}" />
+</h:head>
+
+<h:body styleClass="body-login">
+
+	<f:facet name="last">
+		<h:outputStylesheet name="css/base.css" />
+	</f:facet>
+	
+	<p:dialog styleClass="dialog-barra-cargando" widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+		<div class="progress-container">
+			<div class="progress">
+				<div class="progress-bar">
+					<div class="progress-shadow"></div>
+				</div>
+			</div>
+		</div>
+	</p:dialog>
+	<p:dialog styleClass="dialog-barra-cargando" widgetVar="redirectDialog" id="redirectDialog" modal="true" 
+		draggable="false" showEffect="fade" hideEffect="fade" appendTo="@(body)" focus="focusOnRedirectDialog"
+		closable="false" resizable="false" showHeader="false">
+			<div class="progress-container">
+				<div class="progress">
+					<div class="progress-bar">
+						<div class="progress-shadow"></div>
+					</div>
+				</div>
+			</div>
+			<p:inputText value="" id="focusOnRedirectDialog" />
+	</p:dialog>
+	<p:ajaxStatus onstart="showAjaxDialog()" 
+		oncomplete="clearTimeout(ajaxStatusTimeout);PF('statusDialog').hide()" />
+
+	<h:form id="frmCambioContrasena1" styleClass="form-cambio">
+
+		<div class="logo-entidad-login"></div>
+
+		<p:messages id="messages" closable="false" showDetail="true"
+			showSummary="true" rendered="#{loginController.vistaMostrar != null}" />
+
+		<div>
+			<span class="input-group-addon"><i class="fa fa-user"></i></span>
+			<p:inputText id="txtUsuario" widgetVar="txtUsuario"
+				styleClass="inputs-login" label="Usuario"
+				value="#{loginController.usuario}"
+				onblur="value=value.toUpperCase()" maxlength="8">
+				<p:focus for="txtUsuario" />
+				<p:watermark for="txtUsuario" value="Usuario" />
+			</p:inputText>
+		</div>
+
+		<div class="margin-top-20"></div>
+
+		<div>
+			<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+			<p:password id="txtContrasenaAnterior"
+				widgetVar="txtContrasenaAnterior" styleClass="inputs-login"
+				label="Contraseña Anterior"
+				value="#{loginController.contrasenaAnterior}" maxlength="8">
+				<p:watermark for="txtContrasenaAnterior" value="Contraseña Anterior" />
+			</p:password>
+		</div>
+
+		<div class="margin-top-20"></div>
+
+		<div>
+			<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+			<p:password id="txtNuevaContrasena" widgetVar="txtNuevaContrasena"
+				styleClass="inputs-login" label="Nueva Contraseña"
+				value="#{loginController.nuevaContrasena}" maxlength="8">
+				<p:watermark for="txtNuevaContrasena" value="Nueva Contraseña" />
+			</p:password>
+		</div>
+
+		<div class="margin-top-20"></div>
+
+		<div>
+			<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+			<p:password id="txtConfirmarContrasena"
+				widgetVar="txtConfirmarContrasena" styleClass="inputs-login"
+				label="Confirmar Contraseña"
+				value="#{loginController.confirmarContrasena}" maxlength="8">
+				<p:watermark for="txtConfirmarContrasena"
+					value="Confirmar Contraseña" />
+			</p:password>
+		</div>
+
+		<div class="margin-top-30"></div>
+
+		<div class="btn-set">
+			<p:commandButton id="btnCancelar" widgetVar="btnCancelar"
+				styleClass="btn_secundario" value="Cancelar"
+				action="#{loginController.cancelarInicioSesion()}" />
+
+			<p:commandButton id="btnIniciarSesion" widgetVar="btnIniciarSesion"
+				styleClass="btn_principal_derecha float-right"
+				value="Iniciar Sesión"
+				actionListener="#{loginController.guardarNuevaContrasena()}"
+				update="messages, :dlgNotificacion, :dlgSesionAbierta" />
+		</div>
+		<h:inputHidden id="width" value="#{loginController.width}" />
+		<script>
+        //<![CDATA[
+        $(function () {
+          $("input[id$='width']").attr("value",$(window).width());
+        });
+        //]]>
+      </script>
+	</h:form>
+
+	<p:dialog id="dlgNotificacion" widgetVar="dlgNotificacion"
+		appendTo="@(body)" closable="false" draggable="false" dynamic="true"
+		header="Contraseña Modificada" modal="true" resizable="false"
+		visible="#{loginController.actualizoContrasena}">
+		<span class="ui-messages-exito-icon exito-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="Su contraseña ha sido actualizada correctamente." />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" action="#{loginController.continuarInicioSesion()}"
+			onclick="PF('dlgNotificacion').hide();" />
+	</p:dialog>
+
+	<p:dialog id="dlgSesionAbierta" widgetVar="dlgSesionAbierta"
+		appendTo="@(body)" closable="false" draggable="false" dynamic="true"
+		header="Inicio de Sesión" modal="true" resizable="false"
+		visible="#{loginController.tipoDialogo == 1}">
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="¡Atención! Está apunto de cerrar una sesión abierta con su usuario en otro equipo." />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion"
+			value="¿Está seguro que desea continuar?" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_secundario_dialog" value="Cancelar"
+			action="#{loginController.cancelarInicioSesion()}" />
+		<br></br>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Continuar" action="#{loginController.iniciarSesion('S')}"
+			onclick="PF('dlgSesionAbierta').hide();" />
+	</p:dialog>
+
+</h:body>
+
+</html>

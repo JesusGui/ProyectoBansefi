@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+xmlns:cc="http://java.sun.com/jsf/composite/composites"
+template="../../templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:body>
+            <f:metadata>
+              <f:viewAction action="#{pagoCuotaController.iniciaPaso1()}" phase="APPLY_REQUEST_VALUES" />
+            </f:metadata>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="pagoCuota" styleClass="contenedor-form">
+                      <pe:importConstants className="mx.babel.bansefi.banksystem.cuentas.enums.TipoCargoEnum"
+                        var="TipoCargo" />
+                        <!--titulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <div>
+                              <h2 class="gris-b">#{pagoCuotaController.cuotaIPF.descripcion}</h2>
+                              <h2 class="azul-b">(#{pagoCuotaController.cuotaIPF.numAcuerdo}):</h2>
+                              <h2 class="gris-b">Pago cuota para </h2>
+                              <h2 class="rojo-b">IPF #{pagoCuotaController.ipfsActivas.size()>1?'':pagoCuotaController.cuotaIPF.numSubAc}</h2>
+                            </div>
+                        </div>
+                        <!--contenedor del wizard-->
+                        <div class="contenedor-campos">
+                           <div class="margin-top-20"></div>
+                            <div class="txt-relaciones-oblg grid_39">
+                          <p:outputLabel
+                            value="Importe mínimo de cuota permitido:" />
+                       <p:outputLabel id="importeMinimo" styleClass="bold" value="#{pagoCuotaController.cuotaIPF.importeMinimo}">
+                                      <f:convertNumber pattern="#,##0.00 ¤" locale="es_MX" 
+                                        currencySymbol="MXN"/>
+                                  </p:outputLabel>
+                </div>
+                
+                <div class="clear-row"></div>
+                <h:panelGroup rendered="#{pagoCuotaController.ipfsActivas.size()>1}">
+                              <div class="grid_10">
+                                <p:outputLabel for="comboIPFs" value="IPF"/>
+                                <div class="clear-3"></div>                              
+                                  <p:selectOneMenu id="comboIPFs" value="#{pagoCuotaController.cuotaIPF.numSubAc}">
+                                    <f:selectItem itemLabel="Seleccione una cuenta" value="#{null}"/>
+                                    <f:selectItems value="#{pagoCuotaController.ipfsActivas}" var="ipf" 
+                                      itemValue="#{ipf.numSubAc}"  itemLabel="IPF #{ipf.numSubAc}"/>
+                                    <p:ajax event="change" update="importeMinimo importeDeposito" 
+                                      listener="#{pagoCuotaController.recalculaDatosIPF()}" global="false" />
+                                  </p:selectOneMenu>
+                              </div>
+              </h:panelGroup>
+                            <div class="grid_12">
+                              <p:outputLabel for="importeDeposito" value="Importe" id="txt-deposito"/>
+                              <div class="clear-3"></div>
+                              <pe:inputNumber emptyValue="0" id="importeDeposito"
+                                label="Importe" maxValue="999999999999.99" required="true" 
+                                decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+                                styleClass="pe-inputNumber" placeholder="Importe"
+                                value="#{pagoCuotaController.cuotaIPF.importeDeposito}">  
+                                <f:attribute name="minRange"
+                                    value="#{pagoCuotaController.cuotaIPF.importeMinimo}" />
+                                <p:ajax event="blur" update="txt-deposito @this" partialSubmit="true" global="false"  />
+                                <f:validator validatorId="bigDecimalRangeValidator" />
+                              </pe:inputNumber>
+                              <span class="pe-inputNumber-suffix">MXN</span>
+                          </div>
+                              
+                              <div class="grid_12">
+                                    <p:outputLabel value="Con cargo a" for="itemRadio"></p:outputLabel>
+                                    <div class="clear-3"></div>
+                                    <p:selectOneRadio id="itemRadio" value="#{pagoCuotaController.cuotaIPF.tipoCargo}" styleClass="arq-update">
+                                        <f:selectItem itemValue="#{TipoCargo.ACUERDO}" itemLabel="#{TipoCargo.ACUERDO.descripcion}"/>
+                                        <f:selectItem itemValue="#{TipoCargo.CAJA}" itemLabel="#{TipoCargo.CAJA.descripcion}" itemDisabled="true"/>
+                                    </p:selectOneRadio>
+                                  </div>
+                                  
+                            <div class="clear-row"></div>
+                            
+                            <div class="posicion-absoluta-btn">
+                  <p:commandButton styleClass="btn-consultar"
+                    icon="ui-icon-arrow-1-s" 
+                    value="Realizar pago de cuota"
+                    update="importeDeposito txt-deposito"
+                    action="#{pagoCuotaController.realizarDeposito()}" />
+                </div>
+                <div class="margin-top-20"></div>
+                        </div>
+                        <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" 
+                           value="Cancelar" action="#{pagoCuotaController.irAHome()}" immediate="true"/>
+                    </h:form>
+                </div>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

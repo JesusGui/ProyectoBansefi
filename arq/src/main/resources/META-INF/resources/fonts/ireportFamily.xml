@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies> 
+  <fontFamily name="Courier New">
+    <normal>META-INF/resources/fonts/CourierNew/cour.ttf</normal>
+    <bold>META-INF/resources/fonts/CourierNew/courbd.ttf</bold>
+    <italic>META-INF/resources/fonts/CourierNew/couri.ttf</italic>
+    <boldItalic>
+      <ttf>META-INF/resources/fonts/CourierNew/courbi.ttf</ttf>
+      <pdf>Courier New</pdf>
+    </boldItalic>
+    <pdfEncoding>Cp1252</pdfEncoding>
+    <pdfEmbedded>true</pdfEmbedded>
+    <exportFonts>
+    </exportFonts>
+  </fontFamily>
+  <fontFamily name="OpenSans">
+    <normal>META-INF/resources/fonts/OpenSans/OpenSans-Light.ttf</normal>
+    <bold>META-INF/resources/fonts/OpenSans/OpenSans-Regular.ttf</bold>
+    <italic>META-INF/resources/fonts/OpenSans/OpenSans-Italic.ttf</italic>
+    <boldItalic>META-INF/resources/fonts/OpenSans/OpenSans-SemiboldItalic.ttf</boldItalic>
+    <pdfEncoding>Cp1252</pdfEncoding>
+    <pdfEmbedded>true</pdfEmbedded>
+    <exportFonts>
+    </exportFonts>
+  </fontFamily>
+  <fontFamily name="Arial">
+    <normal>META-INF/resources/fonts/Arial/arial.ttf</normal>
+    <bold>META-INF/resources/fonts/Arial/arialbd.ttf</bold>
+    <pdfEncoding>Cp1252</pdfEncoding>
+    <pdfEmbedded>true</pdfEmbedded>
+    <exportFonts>
+    </exportFonts>
+  </fontFamily>
+</fontFamilies>

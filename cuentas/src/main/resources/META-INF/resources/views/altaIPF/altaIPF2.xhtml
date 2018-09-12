@@ -1,0 +1,257 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+  xmlns:o="http://omnifaces.org/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+	<!--
+plantilla de wizard
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<f:metadata>
+				<f:viewAction action="#{altaIPFController.iniciaPaso2()}"
+					phase="APPLY_REQUEST_VALUES" />
+			</f:metadata>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<o:form id="altaIPF2Form" styleClass="contenedor-form">
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+							var="EstadoListadosEnum" />
+						<!--titulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">							
+							<div>
+							<h2 class="gris-b">Alta de depósito</h2>
+							<h2 class="azul-b">IPF #{altaIPFController.depositoIPF.numSubAc}</h2>
+							<h2 class="gris-b">para</h2>
+							<h2 class="rojo-b">#{altaIPFController.depositoIPF.descripcion}</h2>
+							<h3 class="gris-b">(#{altaIPFController.depositoIPF.numAcuerdo})</h3>
+							</div>
+						</div>
+						<!--Wizard Botones circulares superiores -->						
+							<div class="wiz-pasos">
+								<p:commandButton styleClass="inactivo" value="Negociar tarifa"
+									action="#{altaIPFController.irAPaso1()}">
+                  <o:ignoreValidationFailed/>
+                </p:commandButton>
+								<p:commandButton styleClass="activo" value="Relacionar otras cuentas" />
+							</div>
+							<!--contenedor del wizard-->
+						<div class="wiz-contenedor">
+							<div class="contenedor-campos">
+
+
+								<div class="txt-relaciones-oblg sin-margen">
+									<h:outputLabel
+										value="Para cada tipo de relación se mostrarán las cuentas que cumplan los requisitos." />
+								</div>
+								<div class="clear-row"></div>
+									<div class="grid_15 alpha">
+										<h:outputLabel value="Tipo de relación:" />
+										<br />
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="tipoRelacion">
+											<f:selectItem itemValue="ConstantesFuncionales.REL_AC_AC_ABONO_INTERES"
+											  itemLabel="Recibe abono de intereses"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="grid_3">
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton id="anadirRelacion"
+											styleClass="btn-icono btn-anadir" icon="ui-icon-circle-plus"
+                      action="#{altaIPFController.adicionarRelacion()}"
+											update="@form" immediate="true" disabled="#{altaIPFController.relacionesCuenta.size() > 1}"></p:commandButton>
+										<p:tooltip for="anadirRelacion" value="Añadir" />
+									</div>
+								<div class="clear-row"></div>
+								<h:outputText styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+                <h:panelGroup rendered="#{not empty altaIPFController.relacionesCuenta}">
+                  <ui:repeat var="relAc" value="#{altaIPFController.relacionesCuenta}">
+                    <p:panel styleClass="#{relAc.estadoListado.styleClass}">
+                      <div class="grid_2 alpha">
+												<p:commandButton styleClass="btn-icono btn-panel btn-eliminar" icon="ui-icon-trash" id="eliminar"
+													action="#{altaIPFController.removerRelacionado(relAc)}"
+													rendered="#{EstadoListadosEnum.ELIMINADO != relAc.estadoListado 
+													and relAc.tipoRelacion == ConstantesFuncionales.REL_AC_AC_ABONO_INTERES and altaIPFController.isRelacionesCuentaAbonoNoEliminadosMayor2()}"
+													update="@form">
+													   <o:ignoreValidationFailed/>
+												</p:commandButton>
+												<p:tooltip for="eliminar" value="Eliminar" />
+											</div>
+											<div class="grid_2 alpha">
+												<p:commandButton update="@form" id="editar"
+													styleClass="btn-icono btn-panel" icon="fa fa-pencil"
+													action="#{altaIPFController.editarRelacionado(relAc)}"
+													rendered="#{(EstadoListadosEnum.NUEVO != relAc.estadoListado) 
+													and (EstadoListadosEnum.MODIFICADO != relAc.estadoListado)
+													and (EstadoListadosEnum.ELIMINADO != relAc.estadoListado)}">
+                             <o:ignoreValidationFailed/>
+												</p:commandButton> 
+												<p:tooltip for="editar" value="Editar" />
+											</div>
+											<div class="grid_2 alpha">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-undo" id="deshacer"
+													action="#{altaIPFController.recuperarDatosRelacionado(relAc)}"
+													rendered="#{not(EstadoListadosEnum.NUEVO == relAc.estadoListado) 
+													and ((EstadoListadosEnum.MODIFICADO == relAc.estadoListado)
+													or (EstadoListadosEnum.ELIMINADO == relAc.estadoListado))}"
+													update="@form">
+                             <o:ignoreValidationFailed/>
+                        </p:commandButton>
+												<p:tooltip for="deshacer" value="Recuperar" />
+											</div>
+											<div class="clear-row"></div>
+											<div class="grid_12">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{relAc.tipoRelacionDesc}" />
+											</div>
+											<h:panelGroup rendered="#{EstadoListadosEnum.INACTIVO == relAc.estadoListado
+											                      or EstadoListadosEnum.ELIMINADO == relAc.estadoListado}">
+												<div class="grid_8">
+													<h:outputLabel value="Cuenta"/>
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"  
+													value="#{relAc.numAcuerdo}" />
+												</div>
+											</h:panelGroup>
+											<h:panelGroup rendered="#{EstadoListadosEnum.NUEVO == relAc.estadoListado
+												or EstadoListadosEnum.MODIFICADO == relAc.estadoListado}">
+												<div class="grid_8">
+													<p:outputLabel value="Cuenta" for="cuenta"/>
+													<div class="clear-3"></div>
+													<p:selectOneMenu id="cuenta" value="#{relAc.numAcuerdo}" 
+													required="#{!param['disableValidation']}" >
+														<f:selectItem itemLabel="Seleccione una cuenta" value="#{null}"/>
+														<f:selectItems value="#{altaIPFController.cuentasRelacionables}" />
+													</p:selectOneMenu>
+												</div>
+												<div class="grid_3">
+													<div class="label-vacio"></div>
+													<div class="clear-3"></div>
+														<p:commandButton id="altaCuenta" styleClass="btn-icono-conbackground" icon="cbs-e002-acuerdo-rel" 
+														 action="#{altaIPFController.altaCuenta(relAc)}">
+														  <o:ignoreValidationFailed/>
+														</p:commandButton>
+														<p:tooltip for="altaCuenta" value="Dar de alta cuenta" />
+												</div>
+											</h:panelGroup>
+											<h:panelGroup rendered="#{relAc.tipoRelacion == ConstantesFuncionales.REL_AC_AC_ABONO_INTERES}">
+                        <div class="grid_8">
+													<p:outputLabel value="% Abono" for="abono"/>
+													<div class="clear-3"></div>
+													<h:panelGroup rendered="#{(EstadoListadosEnum.NUEVO == relAc.estadoListado)
+													or (EstadoListadosEnum.MODIFICADO == relAc.estadoListado)}">
+														<pe:inputNumber id="abono" value="#{relAc.porcentaje}" 
+														decimalPlaces="2" minValue="0" maxValue="100.00" emptyValue="0" decimalSeparator="." thousandSeparator=","
+														symbol="%" symbolPosition="suffix" converter="javax.faces.BigDecimal"
+														required="true">
+															<p:ajax event="blur" partialSubmit="true" update="@this" global="false">
+															</p:ajax>
+														</pe:inputNumber>
+													</h:panelGroup>
+													<h:panelGroup rendered="#{(EstadoListadosEnum.NUEVO != relAc.estadoListado)
+													and (EstadoListadosEnum.MODIFICADO != relAc.estadoListado)}">
+														<h:outputLabel styleClass="label-valor texto-sininput"  
+														value="#{relAc.porcentaje}" >
+														  <f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"  currencySymbol="%" />
+														</h:outputLabel>
+													</h:panelGroup>
+												</div>
+											</h:panelGroup>
+											<div class="clear"></div>
+                    </p:panel>
+                  </ui:repeat>
+                </h:panelGroup>
+							</div>
+						</div>
+						<!--Botones secundarios de Cancelar u otros -->
+						<p:commandButton styleClass="btn_secundario margin-top-10" 
+						   value="#{altaIPFController.origenFichaCuenta?'Cancelar':'Ir a la ficha de cuenta'}"
+						   onclick="PF('dlgCancelar').show();"/>
+                 <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Constituir IPF"
+                    actionListener="#{altaIPFController.activarPlazo()}" />
+                 <p:commandButton styleClass="btn_primario float-right margin-top-10 margin-right-10" value="Guardar relaciones" update="@form"
+                    actionListener="#{altaIPFController.guardarSoloCuentas()}" />
+					</o:form>
+				</div>
+			</div>			
+       <p:dialog widgetVar="dlgNoGuardar" id="dlgNoGuardar" showEffect="fade" hideEffect="fade"
+         appendTo="@(body)" header="Negocación de tarifa" modal="true"
+         visible="false" closable="false" resizable="false"
+         draggable="false">
+         <span class="ui-messages-warn-icon warn-dialog"></span>
+         <p:outputLabel styleClass="modal-mensaje"
+           value="¡Atencion! No ha guardado las negociaciones. Si continua perderá todos los cambios." />
+         <div class="clear"></div>
+         <p:outputLabel styleClass="modal-accion"
+           value="¿Desea continuar de todos modos?" />
+         <div class="margin-bottom-20"></div>
+         <p:commandButton styleClass="btn_secundario_dialog"
+           id="stay1" onclick="PF('dlgNoGuardar').hide();"
+           value="Cancelar"/>
+         <p:commandButton styleClass="btn_principal_dialog_derecha"
+           id="continue1" value="Continuar" onclick="PF('dlgNoGuardar').hide();"
+           action="#{altaIPFController.irAFlujo()}">
+         </p:commandButton>
+       </p:dialog>
+            
+        <p:dialog widgetVar="dlgCancelar" id="dlgCancelar" showEffect="fade" hideEffect="fade"
+          appendTo="@(body)" header="Negocación de tarifa" modal="true"
+          visible="false" closable="false" resizable="false"
+          draggable="false">
+          <span class="ui-messages-warn-icon warn-dialog"></span>
+          <p:outputLabel styleClass="modal-mensaje"
+            value="¡Atencion! No ha guardado las negociaciones. Si continua perderá todos los cambios." />
+          <div class="clear"></div>
+          <p:outputLabel styleClass="modal-accion"
+            value="¿Desea continuar de todos modos?" />
+          <div class="margin-bottom-20"></div>
+          <p:commandButton styleClass="btn_secundario_dialog"
+            onclick="PF('dlgCancelar').hide();"
+            value="Cancelar"/>
+          <p:commandButton styleClass="btn_principal_dialog_derecha"
+            value="Continuar" immediate="true" onclick="PF('dlgCancelar').hide();"
+            action="#{altaIPFController.irAHome()}">
+          </p:commandButton>
+        </p:dialog>
+        
+        <p:dialog widgetVar="dlgSuccessActivation" id="dlgSuccessActivation" appendTo="@(body)" header="Negociación de tarifa" showEffect="fade" hideEffect="fade"
+             modal="true" visible="false" closable="false" resizable="false" draggable="false">
+            <!--icono de la modal -->
+            <span class="ui-messages-exito-icon exito-dialog"></span>
+            <!--mensaje de la modal styleClass="modal-mensaje" -->
+            <p:outputLabel styleClass="modal-mensaje" value="La IPF se activó correctamente." />
+            <div class="clear"></div>
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" onclick="PF('dlgSuccessActivation').hide();"
+             immediate="true" action="#{altaIPFController.irAFichaCuenta()}" />
+        </p:dialog>
+        
+        <p:dialog widgetVar="dlgSuccess" id="dlgSuccess" appendTo="@(body)" header="Negociación de tarifa" showEffect="fade" hideEffect="fade"
+           modal="true" visible="false" closable="false" resizable="false" draggable="false">
+             <!--icono de la modal -->
+             <span class="ui-messages-exito-icon exito-dialog"></span>
+             <!--mensaje de la modal styleClass="modal-mensaje" -->
+             <p:outputLabel styleClass="modal-mensaje" value="Las negociaciones se guardaron correctamente." />
+             <div class="clear"></div>
+             <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" 
+             onclick="PF('dlgSuccess').hide();" />
+         </p:dialog>
+			<!--termina container 48-->
+		</h:body>
+	</ui:define>
+</ui:composition>

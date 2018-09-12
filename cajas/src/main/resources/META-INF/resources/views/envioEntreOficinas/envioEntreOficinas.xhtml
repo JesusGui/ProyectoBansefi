@@ -1,0 +1,541 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								onclick="PF('dlgCancelar').show();"></p:commandButton>
+							<h1>Envío entre oficinas</h1>
+						</div>
+						
+						<h:form id="formEnvioEntreOficinas">
+
+							<div class="contenedor-campos">
+
+								<p:outputLabel
+									value="Introduzca los datos correspondientes para realizar un envío entre oficinas." />
+								
+								<div class="margin-top-10"></div>
+								
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios"></p:outputLabel>
+
+								<div class="clear-row" />
+								<div class="clear-3"></div>
+								
+								<h:outputText styleClass="txt-campos-oblg grid_48"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+
+								<div class="clear-row" />
+								<div class="clear-3" />
+
+								<div class="grid_48 alpha">
+
+									<div class="grid_10">
+										<p:outputLabel for="centroDestino" value="Centro destino"
+											id="lblCentroDestino" />
+										<div class="clear-3"></div>
+										<p:inputText id="centroDestino" required="true"
+											value="#{envioEntreOficinasController.envioEntreOficinasBean.centroDestino}">
+											<p:ajax event="change" process="@this" update="@this"></p:ajax>
+										</p:inputText>
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel for="fechaContableEnvio" value="Fecha contable de envío"/>
+										<div class="clear-3"></div>
+										<p:selectOneRadio id="fechaContableEnvio" required="true"
+											value="#{envioEntreOficinasController.envioEntreOficinasBean.tipoFechaEnvio}">
+											<f:selectItem itemValue="1" itemLabel="Día actual" />
+											<f:selectItem itemValue="2" itemLabel="Día siguiente" />
+											<p:ajax event="change" process="@this parri btnLimpia btnGuardarModificar btnConfirmar btnSuprimir"
+												update="estatus btnBuscar parri observaciones estatus btnLimpia btnGuardarModificar btnConfirmar btnSuprimir" oncomplete="resizeParrillaColumns()"
+												listener="#{envioEntreOficinasController.cambiaFechaEnvio()}" />
+										</p:selectOneRadio>
+									</div>
+									
+									<div class="grid_5">
+										<p:outputLabel value="Estatus" />
+										<h:panelGroup rendered="#{not envioEntreOficinasController.envioEntreOficinasBean.estatusC.equals('')}">
+											<div class="clear-3"></div>
+											<div class="clear-3"></div>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="azul-b" id="estatus"
+												value="#{envioEntreOficinasController.envioEntreOficinasBean.estatusL}" />
+										</h:panelGroup>
+									</div>
+
+									<div class="float-right">
+										<p:commandButton id="btnBuscar"
+											styleClass="btn_primario margin-top-10" value="Buscar"
+											action="#{envioEntreOficinasController.consultarEnvio()}"
+											update="@form" icon="fa fa-search"
+											onsuccess="resizeParrillaColumns()"
+											oncomplete="resizeParrillaColumns()">
+										</p:commandButton>
+									</div>
+									
+								</div>
+								
+								<div class="clear-row" />
+								<div class="clear-3" />
+								
+								<h:panelGroup id="parri" rendered="#{envioEntreOficinasController.envioEntreOficinasBean.filtro}">
+									<div class="grid_10">
+										<p:outputLabel value="Filtro" />
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="filtroDenominaciones"
+											disabled="#{envioEntreOficinasController.envioEntreOficinasBean.filtroDisabled}"
+											value="#{envioEntreOficinasController.envioEntreOficinasBean.parrilla.filtro}">
+											<p:ajax event="change" process="@this"
+												update="contenedorDenominaciones"
+												oncomplete="resizeParrillaColumns()" />
+											<f:selectItem itemLabel="Todos" itemValue="0" />
+											<f:selectItem itemLabel="Ventanilla" itemValue="1" />
+											<f:selectItem itemLabel="Dispensador" itemValue="2" />
+											<f:selectItem itemLabel="Billetes" itemValue="3" />
+											<f:selectItem itemLabel="Monedas" itemValue="4" />
+										</p:selectOneMenu>
+									</div>
+								</h:panelGroup>
+
+								<div class="clear-row" />
+								<div class="clear-3" />
+
+								<div class="grid_48 saldo-disponible">
+
+									<div class="clear-row"></div>
+									<div class="grid_37" style="text-align: right;">
+										<p:outputLabel value="Total del envío: " for="totalAEnviar"></p:outputLabel>
+									</div>
+									<div class="grid_11" style="text-align: right;">
+										<p:outputLabel id="totalAEnviar"
+											value="#{envioEntreOficinasController.envioEntreOficinasBean.totalAEnviar}">
+											<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+												currencySymbol="MXN" />
+										</p:outputLabel>
+									</div>
+									<div class="clear-row"></div>
+								</div>
+
+								<h:panelGroup id="pgParrilla">
+
+									<p:remoteCommand name="onload"
+										oncomplete="resizeParrillaColumns()"
+										onsuccess="resizeParrillaColumns()">
+									</p:remoteCommand>
+
+									<div class="contenedor-arqueopuesto">
+										<script>
+										//<![CDATA[
+										function resizeParrillaColumns() {
+											var w = Math.floor(100/$('.parrillaTitle').children().size());
+											$('.cuerpo-denominacion-parrilla').each(function() {
+											  $(this).children().each(function(){
+											     $(this).css({'width':w+'%'});
+											   });
+											});
+										}
+										//]]>
+										</script>
+										<ui:insert />
+										
+										<div class="ui-datatable ui-widget">
+											<div class="ui-datatable-tablewrapper">
+												<table>
+													<thead>
+														<tr class="parrillaTitle">
+															<th><h:outputLabel value="Valor facial" /></th>
+															<th><h:outputLabel value="Soporte" /></th>
+															<th><h:outputLabel value="Formato" /></th>
+															<th><h:outputLabel value="D/V" /></th>
+															<th><h:outputLabel value="Unidades" /></th>
+															<th><h:outputLabel value="Importe a enviar" /></th>
+															<th><h:outputLabel value="Precinto" /></th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+										</div>
+										<h:panelGroup id="contenedorDenominaciones">
+											<ui:repeat var="denominacion"
+												value="#{envioEntreOficinasController.envioEntreOficinasBean.parrilla.listaDenominaciones}">
+												<h:panelGroup
+													rendered="#{envioEntreOficinasController.envioEntreOficinasBean.parrilla.isVisible(denominacion)}">
+													<div
+														class="cuerpo-arqueopuesto cuerpo-denominacion-parrilla">
+														<div>
+															<h:outputLabel styleClass="float-right"
+																value="#{denominacion.valor}">
+																<f:convertNumber pattern="#,##0.00 ¤"
+																	currencySymbol="MXN" />
+															</h:outputLabel>
+														</div>
+														<div>
+															<h:outputLabel
+																value="#{denominacion.moneda? 'Moneda':'Billete'}" />
+														</div>
+														<div>
+															<h:outputLabel value="#{denominacion.formato}" />
+														</div>
+														<div>
+															<h:outputLabel
+																value="#{'V'.equals(denominacion.origen)? 'Ventanilla':'Dispensador'}" />
+														</div>
+
+														<ui:repeat var="columna"
+															value="#{envioEntreOficinasController.envioEntreOficinasBean.parrilla.columnas}">
+															<h:panelGroup rendered="#{columna.currency}">
+																<div>
+																	<h:outputLabel
+																		value="#{denominacion[columna.nombreAtributo]}">
+																		<f:convertNumber pattern="#,##0.00 ¤"
+																			currencySymbol="MXN" />
+																	</h:outputLabel>
+																</div>
+															</h:panelGroup>
+															<h:panelGroup rendered="#{!columna.currency}">
+																<div>
+																	<h:outputLabel
+																		value="#{denominacion[columna.nombreAtributo]}">
+																		<f:convertNumber pattern="#,###" />
+																	</h:outputLabel>
+																</div>
+															</h:panelGroup>
+														</ui:repeat>
+														<h:panelGroup
+															rendered="#{envioEntreOficinasController.envioEntreOficinasBean.editable}">
+															<div class="ui-inputNum">
+																<p:inputMask id="unidades"
+																	disabled="#{envioEntreOficinasController.envioEntreOficinasBean.unidadesDisabled}"
+																	value="#{denominacion.unidades}" placeholder="0"
+																	maxlength="5">
+																	<pe:keyFilter regEx="/[0-9_]/i" />
+																	<p:ajax event="change" process="unidades"
+																		global="false"
+																		listener="#{envioEntreOficinasController.actualizaImporte(denominacion)}"
+																		update="importeDenominacion :formEnvioEntreOficinas:totalAEnviar mensajeImporte
+																			:formEnvioEntreOficinas:btnGuardarModificar :formEnvioEntreOficinas:btnConfirmar"
+																		oncomplete="resizeParrillaColumns()" />
+																</p:inputMask>
+															</div>
+															<div>
+																<pe:inputNumber id="importeDenominacion"
+																	disabled="#{envioEntreOficinasController.envioEntreOficinasBean.importeDisabled}"
+																	value="#{denominacion.importeAEnviar}"
+																	decimalPlaces="2" decimalSeparator="."
+																	thousandSeparator="," symbol=" MXN"
+																	symbolPosition="suffix" maxlength="12">
+																	<f:attribute id="importeAttribute" name="valor"
+																		value="#{denominacion.valor}" />
+																	<f:validator validatorId="importeDenominacionValidator" />
+																	<p:ajax event="change" global="false" process="@this"
+																		partialSubmit="true" update="importeDenominacion unidades 
+																			:formEnvioEntreOficinas:totalAEnviar mensajeImporte
+																			:formEnvioEntreOficinas:btnGuardarModificar 
+																			:formEnvioEntreOficinas:btnConfirmar"
+																		oncomplete="resizeParrillaColumns()"
+																		listener="#{envioEntreOficinasController.actualizaUnidades(denominacion)}" />
+																</pe:inputNumber>
+																<p:watermark for="importeDenominacion" value="0.00 MXN" />
+																<p:message for="importeDenominacion" id="mensajeImporte"
+																	display="text" />
+															</div>
+														</h:panelGroup>
+														<h:panelGroup
+															rendered="#{envioEntreOficinasController.envioEntreOficinasBean.precinto}">
+															<div>
+																<p:inputText maxlength="10" onblur="value=value.trim(); value=value.toUpperCase()"
+																	rendered="#{envioEntreOficinasController.envioEntreOficinasBean.editable}"
+																	id="precinto" value="#{denominacion.precinto}"
+																	disabled="#{envioEntreOficinasController.envioEntreOficinasBean.precintoDisabled}">
+																	<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ ]*$/" />
+																	<p:ajax event="change"
+																		oncomplete="resizeParrillaColumns()" />
+																</p:inputText>
+																<h:outputLabel
+																	rendered="#{not envioEntreOficinasController.envioEntreOficinasBean.editable}"
+																	value="#{denominacion.precinto}"></h:outputLabel>
+															</div>
+														</h:panelGroup>
+													</div>
+												</h:panelGroup>
+											</ui:repeat>
+										</h:panelGroup>
+									</div>
+									
+								</h:panelGroup>
+								
+								<div class="clear-row" />
+								<div class="clear-3" />
+								
+								<div class="grid_48">
+									<p:outputLabel value="Observaciones" for="observaciones" />
+									<div class="clear-3" />
+									<p:inputMask id="observaciones" maxlength="60" widgetVar="observaciones"
+										value="#{envioEntreOficinasController.envioEntreOficinasBean.observaciones}"
+										disabled="#{envioEntreOficinasController.envioEntreOficinasBean.observacionDisabled}"
+										onblur="value=value.trim(); value=value.toUpperCase()">
+										<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ ]*$/" />
+									</p:inputMask>
+								</div>
+								
+								<div class="clear-3" />
+
+							</div>
+							
+							<div class="grid_48 float-right">
+
+								<p:commandButton id="btnLimpia"
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									value="Limpiar" action="#{envioEntreOficinasController.limpiar()}"
+									rendered="#{envioEntreOficinasController.envioEntreOficinasBean.botonLimpiarVisible}"
+									update="@form"/>
+
+								<div class="float-right">
+									<p:commandButton id="btnGuardarModificar"
+										rendered="#{envioEntreOficinasController.envioEntreOficinasBean.botonGuardarVisible}"
+										styleClass="btn_secundario margin-top-10 margin-right-10"
+										oncomplete="resizeParrillaColumns()" update=":dlgAlta :dlgModificar"
+										disabled="#{envioEntreOficinasController.envioEntreOficinasBean.totalAEnviar.compareTo(envioEntreOficinasController.ZERO) eq 0 ? 'true' : 'false'}"
+										value="#{envioEntreOficinasController.envioEntreOficinasBean.tituloBoton}"
+										action="#{envioEntreOficinasController.validaTipoGuardado()}" />
+								</div>
+
+								<div class="float-right">
+									<p:commandButton id="btnConfirmar"
+										rendered="#{envioEntreOficinasController.envioEntreOficinasBean.botonConfirmarvisible}"
+										disabled="#{envioEntreOficinasController.envioEntreOficinasBean.totalAEnviar.compareTo(envioEntreOficinasController.ZERO) == 0 ? 'true' : 'false'}"
+										styleClass="btn_primario margin-top-10 margin-right-10"
+										oncomplete="resizeParrillaColumns()" update="@form" value="Confirmar"
+										onclick="PF('dlgConfirmar').show();" />
+								</div>
+
+								<div class="float-right">
+									<p:commandButton id="btnSuprimir"
+										rendered="#{envioEntreOficinasController.envioEntreOficinasBean.botonSuprimirVisible}"
+										styleClass="btn_secundario margin-top-10 margin-right-10"
+										oncomplete="resizeParrillaColumns()" update="@form" value="Suprimir"
+										onclick="PF('dlgSuprimir').show();" />
+								</div>
+
+							</div>
+						
+						</h:form>
+
+						<p:dialog id="dlgAlta" widgetVar="dlgAlta" showEffect="fade"
+							hideEffect="fade" appendTo="@(body)" closable="false"
+							dynamic="true" draggable="false" modal="true" resizable="false"
+							header="Resultado">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<div class="modal-mensaje">
+								<p:outputLabel
+									value="Va a solicitar un envío de efectivo por valor de " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.totalAEnviar}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<p:outputLabel value=" del centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroOrigen}" />
+								<p:outputLabel value=" al centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroDestino}" />
+							</div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true" onclick="PF('dlgAlta').hide();"
+								action="#{envioEntreOficinasController.altaEnvioEntreOficinas()}"
+								oncomplete="resizeParrillaColumns()" update="dlgMismoCentro"/>
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgAlta').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+						<p:dialog id="dlgModificar" widgetVar="dlgModificar"
+							showEffect="fade" hideEffect="fade" appendTo="@(body)"
+							closable="false" dynamic="true" draggable="false" modal="true"
+							resizable="false" header="Resultado">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<div class="modal-mensaje">
+								<p:outputLabel
+									value="Va a modificar un envío de efectivo por valor de " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.totalAEnviar}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<p:outputLabel value=" del centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroOrigen}" />
+								<p:outputLabel value=" al centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroDestino}" />
+							</div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true" onclick="PF('dlgModificar').hide();"
+								action="#{envioEntreOficinasController.modificaEnvioEntreOficinas()}"
+								oncomplete="resizeParrillaColumns()" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgModificar').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+						<p:dialog id="dlgSuprimir" widgetVar="dlgSuprimir"
+							showEffect="fade" hideEffect="fade" appendTo="@(body)"
+							closable="false" dynamic="true" draggable="false" modal="true"
+							resizable="false" header="Resultado">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<div class="modal-mensaje">
+								<p:outputLabel
+									value="Va a eliminar un envío de efectivo por valor de " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.totalAEnviar}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<p:outputLabel value=" del centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroOrigen}" />
+								<p:outputLabel value=" al centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroDestino}" />
+							</div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha" oncomplete="resizeParrillaColumns()"
+								value="Continuar" immediate="true" onclick="PF('dlgSuprimir').hide();"
+								action="#{envioEntreOficinasController.suprimirEnvioEntreOficinas()}"/>
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgSuprimir').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+						
+						<p:dialog id="dlgConfirmar" widgetVar="dlgConfirmar"
+							showEffect="fade" hideEffect="fade" appendTo="@(body)"
+							closable="false" dynamic="true" draggable="false" modal="true"
+							resizable="false" header="Resultado">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<div class="modal-mensaje">
+								<p:outputLabel
+									value="Se confirmará un envío de efectivo por valor de " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.totalAEnviar}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<p:outputLabel value=" del centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroOrigen}" />
+								<p:outputLabel value=" al centro " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{envioEntreOficinasController.envioEntreOficinasBean.centroDestino}" />
+							</div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgConfirmar').hide();"
+								value="Continuar" immediate="true" action="#{envioEntreOficinasController.confirmarEnvioEntreOficinas()}"
+								oncomplete="resizeParrillaColumns()" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgConfirmar').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgOperacionExitosa" id="dlgOperacionExitosa"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-exito-icon exito-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="OPERACIÓN REALIZADA CORRECTAMENTE" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" immediate="true" action="#{envioEntreOficinasController.irDetalle()}"
+								onclick="PF('dlgOperacionExitosa').hide();" 
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgCancelar" id="dlgCancelar"
+							appendTo="@(body)" header="Cancelar autorizaciÃ³n" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="¡Atención! Si continua perderá todos los cambios" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true"
+								action="#{envioEntreOficinasController.irInicio()}" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgCancelar').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgMismoCentro" id="dlgMismoCentro"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{envioEntreOficinasController.mensajeDialogo}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" onclick="PF('dlgMismoCentro').hide();" 
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgError1" id="dlgError1"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-error-icon error-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{envioEntreOficinasController.mensajeError}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" onclick="PF('dlgError1').hide();" 
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

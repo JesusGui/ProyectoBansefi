@@ -1,0 +1,661 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="formDetalleLiquidacion" styleClass="contenedor-form">
+
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{liquidacionesController.navegaConsultaMasiva()}" />
+							<h1>Detalle de liquidación</h1>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<h2 class="rojo-b display-inline">#{liquidacionesController.cuentaBean.tipoCuenta}</h2>
+
+							<h2 class="gris-b display-inline">
+								<h:outputText styleClass="sub-h"
+									value="(#{liquidacionesController.cuentaBean.numeroCuenta}), " />
+								<h:outputText
+									value="#{liquidacionesController.liquidacionSeleccionada.periodoDesdeLiquidacion}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText value=" - " />
+								<h:outputText
+									value="#{liquidacionesController.liquidacionSeleccionada.periodoHastaLiquidacion}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</h2>
+
+							<div class="margin-top-10"></div>
+
+							<div class="marco-datospersonales orden-2-columnas">
+								<p:outputLabel value="Titular: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.cuentaBean.nombreTitular}" />
+								<div class="clear"></div>
+
+								<p:outputLabel value="Tipo de liquidación: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.obtenerDescCatalogoTipoLiq(liquidacionesController.liquidacionSeleccionada.tipoLiquidacion) }" />
+								<div class="clear"></div>
+
+								<p:outputLabel value="Situación: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.obtenerDescCatalogoSituacionLiq(liquidacionesController.liquidacionSeleccionada.situacion)}" />
+								<div class="clear"></div>
+
+								<p:outputLabel value="Neto operación: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.netoOperacion}">
+									<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+										locale="es_MX" />
+								</p:outputLabel>
+								<div class="clear"></div>
+
+								<p:outputLabel value="Pendiente: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.importePendiente}">
+									<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+										locale="es_MX" />
+								</p:outputLabel>
+							</div>
+
+							<div class="clear-row"></div>
+
+							<h:panelGroup layout="block"
+								styleClass="sinresultados sin-margen"
+								rendered="#{liquidacionesController.liquidacionSeleccionada.listaConceptos == null or liquidacionesController.liquidacionSeleccionada.listaConceptos.size() == 0}">
+								<div>
+									<p:outputLabel
+										rendered="#{liquidacionesController.liquidacionSeleccionada.listaConceptos == null or liquidacionesController.liquidacionSeleccionada.listaConceptos.size() == 0}"
+										value="No se han encontrado registros de tramos para la liquidación. " />
+								</div>
+							</h:panelGroup>
+
+							<p:dataTable id="tblConceptos"
+								value="#{liquidacionesController.liquidacionSeleccionada.listaConceptos}"
+								var="concepto" selectionMode="single"
+								rowKey="#{concepto.rowKey}" selection="#{concepto}"
+								rendered="#{liquidacionesController.liquidacionSeleccionada.listaConceptos != null and liquidacionesController.liquidacionSeleccionada.listaConceptos.size() > 0}">
+								<p:ajax event="rowSelect"
+									listener="#{liquidacionesController.seleccionaConcepto}" />
+								<p:column headerText="Cód. Cuenta" width="0"
+									style="display:none;">
+									<h:outputText
+										value="#{concepto.codCuenta} - #{liquidacionesController.obtenerDescCatalogoConceptoMovs(concepto.codCuenta)}" />
+								</p:column>
+								<p:column headerText="Concepto">
+									<h:outputText value="#{concepto.descConcepto}" />
+								</p:column>
+								<p:column headerText="Importe facturado">
+									<h:outputText styleClass="float-right"
+										value="#{concepto.importeFacturado}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+											locale="es_MX" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Signo">
+									<h:outputText value="DEBE"
+										rendered="#{concepto.signo.equals('D')}" />
+									<h:outputText value="HABER"
+										rendered="#{concepto.signo.equals('H')}" />
+								</p:column>
+								<p:column headerText="Importe pendiente">
+									<h:outputText styleClass="float-right"
+										value="#{concepto.importePendiente}">
+										<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+											locale="es_MX" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Indicadores" width="0"
+									style="display:none;">
+									<h:outputText
+										value="#{concepto.indicadores.get(0)}, #{concepto.indicadores.get(1)}, #{concepto.indicadores.get(2)}, #{concepto.indicadores.get(3)}, #{concepto.indicadores.get(4)}, #{concepto.indicadores.get(5)}, #{concepto.indicadores.get(6)}, #{concepto.indicadores.get(7)}, #{concepto.indicadores.get(8)}, #{concepto.indicadores.get(9)}" />
+								</p:column>
+								<p:column headerText="Núm. Sec. Comisión" width="0"
+									style="display:none;">
+									<h:outputText value="#{concepto.numSecComision}" />
+								</p:column>
+								<p:column headerText="Núm. Sub. Comisión" width="0"
+									style="display:none;">
+									<h:outputText value="#{concepto.numSubAcComision}" />
+								</p:column>
+							</p:dataTable>
+
+							<div class="clear-row"></div>
+
+							<div class="marco-datospersonales orden-2-columnas sin-margen">
+								<p:outputLabel value="Modalidad de liquidación: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.obtenerDescCatalogoModalidad(liquidacionesController.liquidacionSeleccionada.indDevengo)}" />
+								<div class="clear"></div>
+
+								<p:outputLabel value="Tipo comunicado: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.obtenerDescCatalogoTipoComunicado(liquidacionesController.liquidacionSeleccionada.indSitComercial)}" />
+								<div class="clear"></div>
+
+								<p:outputLabel
+									value="Tipo bloqueo: #{liquidacionesController.obtenerDescCatalogoTipoBloqueo(liquidacionesController.liquidacionSeleccionada.tipoBloqueo)}" />
+								<div class="clear"></div>
+
+								<p:outputLabel value="Fecha último movimiento: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.fechaUltimoMov}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</p:outputLabel>
+								<div class="clear"></div>
+
+								<p:outputLabel value="Fecha último cálculo demora: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.fechaUltimoCalc}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</p:outputLabel>
+								<div class="clear"></div>
+
+								<p:outputLabel value="Imputación parcial: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.imputacionParcial == true?'Si':'No'}" />
+							</div>
+
+							<div class="clear-row"></div>
+
+							<h:panelGroup layout="block"
+								styleClass="sinresultados sin-margen"
+								rendered="#{liquidacionesController.liquidacionSeleccionada.listaInformacion == null or liquidacionesController.liquidacionSeleccionada.listaInformacion.size() == 0}">
+								<div>
+									<p:outputLabel
+										rendered="#{liquidacionesController.liquidacionSeleccionada.listaInformacion == null or liquidacionesController.liquidacionSeleccionada.listaInformacion.size() == 0}"
+										value="No se han encontrado apuntes para la liquidación. " />
+								</div>
+							</h:panelGroup>
+
+							<p:dataTable id="tblInfo"
+								value="#{liquidacionesController.liquidacionSeleccionada.listaInformacion}"
+								var="info"
+								rendered="#{liquidacionesController.liquidacionSeleccionada.listaInformacion != null and liquidacionesController.liquidacionSeleccionada.listaInformacion.size() > 0}">
+								<p:column headerText="Deposito">
+									<h:outputText value="#{info.deposito}">
+										<f:convertNumber minFractionDigits="0" maxFractionDigits="0"
+											locale="es_MX" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Tipo información">
+									<h:outputText value="#{info.tipoInformacion}" />
+								</p:column>
+								<p:column headerText="Valor">
+									<h:outputText value="#{info.valor}" />
+								</p:column>
+							</p:dataTable>
+
+							<p:accordionPanel id="acordeonConsultas"
+								widgetVar="acordeonConsultas" multiple="true" dynamic="true"
+								activeIndex="">
+								<p:ajax event="tabChange"
+									listener="#{liquidacionesController.onTabChange}"
+									update=":formDetalleLiquidacion:acordeonConsultas" />
+								<p:tab id="consultaMovimientosTab"
+									title="Consulta de movimientos">
+									<h:panelGroup layout="block"
+										styleClass="float-right centrar-objeto btn-inline-set">
+										<p:outputLabel styleClass="margin-right-10"
+											value="Incluir anulados: " for="switchAnulados" />
+										<p:inputSwitch id="switchAnulados" onLabel="Sí" offLabel="No"
+											value="#{liquidacionesController.liquidacionSeleccionada.incluirMovsAnuladosFiltro}">
+											<p:ajax event="change"
+												listener="#{liquidacionesController.consultaMovimientos()}"
+												update=":formDetalleLiquidacion:acordeonConsultas" />
+										</p:inputSwitch>
+									</h:panelGroup>
+									<div class="clear-row"></div>
+									<h:panelGroup id="panelSinMovs" layout="block"
+										styleClass="sinresultados sin-margen"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.listaMovimientos == null or liquidacionesController.liquidacionSeleccionada.listaMovimientos.size() == 0}">
+										<div>
+											<p:outputLabel
+												rendered="#{liquidacionesController.liquidacionSeleccionada.listaMovimientos == null or liquidacionesController.liquidacionSeleccionada.listaMovimientos.size() == 0}"
+												value="No se han encontrado movimientos para la liquidación. " />
+										</div>
+									</h:panelGroup>
+									<p:dataTable id="tblApuntes"
+										value="#{liquidacionesController.liquidacionSeleccionada.listaMovimientos}"
+										var="apunte" selectionMode="single" rowKey="#{apunte}"
+										selection="#{apunte}"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.listaMovimientos != null and liquidacionesController.liquidacionSeleccionada.listaMovimientos.size() > 0}">
+										<p:ajax event="rowSelect"
+											listener="#{liquidacionesController.seleccionaApunte}" />
+										<p:column headerText="Cód. Origen" width="0"
+											style="display:none;">
+											<h:outputText value="#{apunte.codigoOrigen}" />
+										</p:column>
+										<p:column headerText="Concepto">
+											<h:outputText
+												value="#{liquidacionesController.obtenerDescCatalogoConceptoMovs(apunte.codigoCuenta)}" />
+										</p:column>
+										<p:column headerText="Importe">
+											<h:outputText styleClass="float-right"
+												value="#{apunte.importe}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+													locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Signo">
+											<h:outputText value="#{apunte.signo}" />
+										</p:column>
+										<p:column headerText="Cuenta">
+											<h:outputText value="#{apunte.numCuenta}" />
+										</p:column>
+										<p:column headerText="Fecha Valor">
+											<h:outputText value="#{apunte.fechaValor}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="% abono">
+											<h:outputText
+												value="#{liquidacionesController.obtenerDescCatalogoPorcentajeMovs(apunte.porcentajeAbono)}" />
+										</p:column>
+									</p:dataTable>
+								</p:tab>
+
+								<p:tab id="consultSaldosTab" title="Saldos">
+									<div class="display-flex">
+										<div class="grid_24 display-flex">
+											<div class="marco-datospersonales sin-margen">
+												<p:outputLabel value="Situación: " />
+												<p:outputLabel styleClass="bold"
+													value="#{liquidacionesController.obtenerDescCatalogoSituacionLiq(liquidacionesController.liquidacionSeleccionada.situacion)}" />
+												<div class="clear"></div>
+												<p:outputLabel value="Periodo de liquidación: " />
+												<p:outputLabel styleClass="bold"
+													value="#{liquidacionesController.liquidacionSeleccionada.periodoDesdeLiquidacion}">
+													<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+												</p:outputLabel>
+												<p:outputLabel styleClass="bold" value=" - " />
+												<p:outputLabel styleClass="bold"
+													value="#{liquidacionesController.liquidacionSeleccionada.periodoHastaLiquidacion}">
+													<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+												</p:outputLabel>
+											</div>
+										</div>
+										<h:panelGroup layout="block"
+											styleClass="sinresultados grid_24"
+											rendered="#{liquidacionesController.liquidacionSeleccionada.listaSaldos == null or liquidacionesController.liquidacionSeleccionada.listaSaldos.size() == 0}">
+											<div>
+												<p:outputLabel
+													rendered="#{liquidacionesController.liquidacionSeleccionada.listaSaldos == null or liquidacionesController.liquidacionSeleccionada.listaSaldos.size() == 0}"
+													value="No se han encontrado saldos para la liquidación. " />
+											</div>
+										</h:panelGroup>
+										<p:dataTable id="tblSaldos" styleClass="grid_24"
+											value="#{liquidacionesController.liquidacionSeleccionada.listaSaldos}"
+											var="saldo"
+											rendered="#{liquidacionesController.liquidacionSeleccionada.listaSaldos != null and liquidacionesController.liquidacionSeleccionada.listaSaldos.size() > 0}">
+											<p:column headerText="Nombre de saldo">
+												<h:outputText
+													value="#{liquidacionesController.obtenerDescCatalogoSaldo(saldo)}" />
+											</p:column>
+											<p:column headerText="Importe saldo">
+												<h:outputText styleClass="float-right"
+													value="#{saldo.importeSaldo}">
+													<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+														locale="es_MX" />
+												</h:outputText>
+											</p:column>
+										</p:dataTable>
+									</div>
+								</p:tab>
+
+								<p:tab id="consultaNumerosTab"
+									title="Consulta números de liquidación"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.mostrarConsNumsLiquidacion}">
+									<div class="marco-datospersonales sin-margen">
+										<div class="grid_24">
+											<p:outputLabel value="Periodo de liquidación: " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.fechaPeriodoDesde}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="bold" value=" - " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.fechaPeriodoHasta}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<p:outputLabel value="Tipo de liquidación: " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.obtenerDescCatalogoTipoLiq(liquidacionesController.liquidacionSeleccionada.numerosBean.codOperacion)} " />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="margin-top-10"></div>
+									<h:panelGroup layout="block"
+										styleClass="sinresultados sin-margen"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.numerosBean.registrosNumeros == null or 
+	                                	liquidacionesController.liquidacionSeleccionada.numerosBean.registrosNumeros.size() == 0}">
+										<div>
+											<p:outputLabel
+												rendered="#{liquidacionesController.liquidacionSeleccionada.numerosBean.registrosNumeros == null or 
+											liquidacionesController.liquidacionSeleccionada.numerosBean.registrosNumeros.size() == 0}"
+												value="No se han encontrado números para la liquidación. " />
+										</div>
+									</h:panelGroup>
+									<p:dataTable id="tblNumeros"
+										value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.registrosNumeros}"
+										var="registroNum"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.numerosBean.registrosNumeros != null and 
+											liquidacionesController.liquidacionSeleccionada.numerosBean.registrosNumeros.size() gt 0}">
+										<p:column headerText="Fecha valor">
+											<h:outputText value="#{registroNum.fechaValor}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Importe">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.importe}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Saldo">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.saldo}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Días">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.dias}" />
+										</p:column>
+										<p:column headerText="Núm. acreedores">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.numAcreedores}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Núm. deudores aut.">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.numDeudoresAut}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Núm. deudores">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.numDeudores}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Núm. excedidos">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.numExcedidos}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Límites">
+											<h:outputText styleClass="float-right"
+												value="#{registroNum.limites}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+									</p:dataTable>
+									<div class="marco-datospersonales">
+										<p:outputLabel value="SM acreedores: " />
+										<h:panelGroup layout="block"
+											rendered="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smAcreedores != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smAcreedores.doubleValue() != 0.00 and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias.intValue() != 0}">
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smAcreedores}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="bold" value=" / " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}" />
+											<p:outputLabel styleClass="bold" value=" = " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smAcreedores / liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+										</h:panelGroup>
+										<div class="clear"></div>
+										<p:outputLabel value="SM autoriz.: " />
+										<h:panelGroup layout="block"
+											rendered="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudoresAut != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudoresAut.doubleValue() != 0.00 and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias.intValue() != 0}">
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudoresAut}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="bold" value=" / " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}" />
+											<p:outputLabel styleClass="bold" value=" = " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudoresAut / liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+										</h:panelGroup>
+										<div class="clear"></div>
+										<p:outputLabel value="SM deudor: " />
+										<h:panelGroup layout="block"
+											rendered="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudores != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudores.doubleValue() != 0.00 and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias.intValue() != 0}">
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudores}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="bold" value=" / " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}" />
+											<p:outputLabel styleClass="bold" value=" = " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDeudores / liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+										</h:panelGroup>
+										<div class="clear"></div>
+										<p:outputLabel value="SM Excedido: " />
+										<h:panelGroup layout="block"
+											rendered="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smExcedidos != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smExcedidos.doubleValue() != 0.00 and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias != null and liquidacionesController.liquidacionSeleccionada.numerosBean.smDias.intValue() != 0}">
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smExcedidos}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="bold" value=" / " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}" />
+											<p:outputLabel styleClass="bold" value=" = " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosBean.smExcedidos / liquidacionesController.liquidacionSeleccionada.numerosBean.smDias}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+										</h:panelGroup>
+									</div>
+								</p:tab>
+
+								<p:tab id="consultaNumerosDemoraTab"
+									title="Consulta números de demora"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.mostrarConsNumsDemora}">
+									<div class="marco-datospersonales sin-margen">
+										<div class="grid_24">
+											<p:outputLabel value="Periodo de liquidación: " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.fechaPeriodoDesde}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="bold" value=" - " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.fechaPeriodoHasta}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<p:outputLabel value="Tipo de liquidación: " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.obtenerDescCatalogoTipoLiq(liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.codOperacion)} " />
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="margin-top-10"></div>
+									<h:panelGroup styleClass="sinresultados sin-margen"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.registrosNumeros == null or 
+	                                	liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.registrosNumeros.size() == 0}">
+										<div>
+											<p:outputLabel
+												rendered="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.registrosNumeros == null or 
+											liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.registrosNumeros.size() == 0}"
+												value="No se han encontrado números para la liquidación. " />
+										</div>
+									</h:panelGroup>
+									<p:dataTable id="tblNumerosDemora"
+										value="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.registrosNumeros}"
+										var="registroNumDemora"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.registrosNumeros != null and 
+											liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.registrosNumeros.size() gt 0}">
+										<p:column headerText="Fecha valor">
+											<h:outputText value="#{registroNumDemora.fechaValor}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Importe">
+											<h:outputText styleClass="float-right"
+												value="#{registroNumDemora.importe}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Saldo">
+											<h:outputText styleClass="float-right"
+												value="#{registroNumDemora.saldo}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Días">
+											<h:outputText styleClass="float-right"
+												value="#{registroNumDemora.dias}" />
+										</p:column>
+										<p:column headerText="Núm. deudores aut.">
+											<h:outputText styleClass="float-right"
+												value="#{registroNumDemora.numDeudoresAut}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Núm. deudores">
+											<h:outputText styleClass="float-right"
+												value="#{registroNumDemora.numDeudores}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+										<p:column headerText="Límites">
+											<h:outputText styleClass="float-right"
+												value="#{registroNumDemora.limites}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</h:outputText>
+										</p:column>
+									</p:dataTable>
+									<div class="marco-datospersonales">
+										<p:outputLabel value="SM deudor: " />
+										<h:panelGroup layout="block"
+											rendered="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDeudores != null and liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDeudores.doubleValue() != 0.00 and liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDias != null and liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDias.intValue() != 0}">
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDeudores}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="bold" value=" / " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDias}" />
+											<p:outputLabel styleClass="bold" value=" = " />
+											<p:outputLabel styleClass="bold"
+												value="#{liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDeudores / liquidacionesController.liquidacionSeleccionada.numerosDemoraBean.smDias}">
+												<f:convertNumber pattern="#,##0.00" locale="es_MX" />
+											</p:outputLabel>
+										</h:panelGroup>
+									</div>
+								</p:tab>
+
+								<p:tab id="consultaAuditoriaTab" title="Auditoría">
+									<div class="marco-datospersonales orden-2-columnas">
+										<p:outputLabel value="Centro de operación: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.obtenerDescCatalogoCentro(liquidacionesController.liquidacionSeleccionada.auditoriaBean.centroOperativo)} " />
+										<div class="clear"></div>
+										<p:outputLabel value="Centro de acuerdo: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.obtenerDescCatalogoCentro(liquidacionesController.liquidacionSeleccionada.auditoriaBean.centroAc)} " />
+										<div class="clear"></div>
+										<p:outputLabel value="Empleado origen: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.liquidacionSeleccionada.auditoriaBean.empleadoOrigen} #{liquidacionesController.liquidacionSeleccionada.auditoriaBean.empleadoOrigenDesc}" />
+										<div class="clear"></div>
+										<p:outputLabel value="Empleado autorizador: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.liquidacionSeleccionada.auditoriaBean.empleadoAutorizado} #{liquidacionesController.liquidacionSeleccionada.auditoriaBean.empleadoAutorizadoDesc}" />
+										<div class="clear"></div>
+										<p:outputLabel value="Situación: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.obtenerDescCatalogoSituacionAudit(liquidacionesController.liquidacionSeleccionada.auditoriaBean.idSituacion)}" />
+										<div class="clear"></div>
+										<p:outputLabel value="Código de transacción: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.liquidacionSeleccionada.auditoriaBean.transaccion} #{liquidacionesController.obtenerDescCatalogoCodTXAudit(liquidacionesController.liquidacionSeleccionada.auditoriaBean.transaccion)} " />
+										<div class="clear"></div>
+										<p:outputLabel value="Fecha contable: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.liquidacionSeleccionada.auditoriaBean.fechaContable}">
+											<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+										</p:outputLabel>
+										<div class="clear"></div>
+										<p:outputLabel value="Terminal: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.liquidacionSeleccionada.auditoriaBean.terminal}" />
+										<div class="clear"></div>
+										<p:outputLabel value="Fecha de operación: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.liquidacionSeleccionada.auditoriaBean.fechaOperacion}">
+											<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+										</p:outputLabel>
+										<div class="clear"></div>
+										<p:outputLabel value="Hora de operación: " />
+										<p:outputLabel styleClass="bold"
+											value="#{liquidacionesController.liquidacionSeleccionada.auditoriaBean.horaOperacion}" />
+									</div>
+								</p:tab>
+							</p:accordionPanel>
+
+						</div>
+
+					</h:form>
+
+					<p:dialog id="dlgErrorGenerico" widgetVar="dlgErrorGenerico"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade" draggable="false" modal="true"
+						resizable="false" header="Resultado">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No hay más información" />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgErrorGenerico').hide();" />
+					</p:dialog>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

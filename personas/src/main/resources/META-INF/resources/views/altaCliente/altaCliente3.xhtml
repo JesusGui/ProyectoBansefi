@@ -1,0 +1,510 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+	
+	<ui:define name="contenido">
+
+		<h:outputScript name="/js/personas.js"/>
+		
+		<h:body>
+		<div class="container_48">
+		<!-- Se agregó div contenedores -->
+		    <div class="contenedor">
+		    
+			<h:form id="formAltaCliente3" styleClass="contenedor-form">
+				
+				<h:panelGroup rendered="#{altaClienteController.modificacionCliente ne true}">
+					<div class="titulo centrar-objeto btn-inline-set">
+					<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" title="Volver atrás"
+					onclick="PF('dlgCancelarAlta').show();">
+					</p:commandButton>
+					<h1>Alta de cliente</h1>
+					</div>
+				</h:panelGroup>				
+				
+				<h:panelGroup rendered="#{altaClienteController.modificacionCliente eq true}">
+					<div class="titulo centrar-objeto btn-inline-set">
+					<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" title="Volver atrás"
+					onclick="PF('dlgCancelarModificacion').show();">
+					</p:commandButton>
+					<div>
+					<h2 class="gris-b">Modificación de </h2>
+					<h2 class="azul-b">#{altaClienteController.cliente.nombre} #{altaClienteController.cliente.apePaterno !=null ?altaClienteController.cliente.apePaterno:''} #{altaClienteController.cliente.apeMaterno !=null ?altaClienteController.cliente.apeMaterno:''} </h2>
+					<h3 class="gris-b">(#{altaClienteController.obtenerDescripcionTpDoc()} #{altaClienteController.cliente.numIdentificacion}) </h3>
+					</div>
+					</div>
+				</h:panelGroup>
+
+				<br/>
+				<!--  Botones de arriba -->
+				<div class="wiz-pasos">
+					<p:commandButton styleClass="inactivo textfill" id="anteriorCab1" value="Datos Personales"
+						action="#{altaClienteController.irAPaso1()}" ajax="true" update="formAltaCliente3">
+						<f:param name="disableValidation" value="true" />  						
+					</p:commandButton>
+					<p:commandButton styleClass="inactivo textfill padding-15" id="anteriorCab2" value="Lugar de nacimiento y datos de ocupación"
+						action="#{altaClienteController.irAPaso2()}" ajax="true" update="formAltaCliente3">
+						<f:param name="disableValidation" value="true" />  	
+					</p:commandButton> 
+					<p:commandButton styleClass="activo textfill" value="Cédula de conocimiento" />				
+                </div>
+				<div class="wiz-contenedor">
+	               	<div class="wiz-atras">
+	                   <p:commandButton id="anterior" icon="ui-icon-arrow-1-w" action="#{altaClienteController.irAPaso2()}" ajax="true" update="formAltaCliente3" title="Anterior">
+						<f:param name="disableValidation" value="true" />  					
+						</p:commandButton>
+	               	</div>
+					<div class="contenedor-campos">
+									
+						<p:outputLabel styleClass="txt-campo-obligatorio" value="*Campos Obligatorios"/>
+						<br/>
+						<h:outputText styleClass="txt-campos-oblg" value="Los campos marcados en rojo son requeridos" rendered="#{facesContext.validationFailed}"/>
+						<p:messages for="formCliente" showIcon="false" rendered="#{facesContext.validationFailed}"/>
+						<br/>	
+						<p:accordionPanel widgetVar="accordionAlta3" multiple="true" dynamic="true" id="altaCliente3" activeIndex="0,1">
+					
+						<!-- Tab de Transaccionalidad -->
+						<p:tab title="Transaccionalidad">
+						
+						<p:fieldset styleClass="fieldset-requerido" legend="Monto y número mensual esperado de transacciones" toggleable="false" collapsed="false">
+							
+							<div class="row-flex">		                          
+	                            <div class="grid_7">
+								    <p:outputLabel for="numDepositos" value="Depósitos"></p:outputLabel>
+								    <div class="clear-3"></div>
+									<p:inputMask id="numDepositos" styleClass="text-align-right-input"
+										value="#{altaClienteController.cliente.transaccionalidad.numDepositos}"
+										required="#{param['disableValidation']==null}" maxlength="8" onblur="value=value.toUpperCase()"
+										placeholder="Número">
+										<pe:keyFilter regEx="/[\d]/" />
+										<f:validateLongRange minimum="1" disabled="#{param['disableValidation']!=null}"/>
+									</p:inputMask>
+	                            </div>
+	                            
+	                            <div class="grid_10">
+	                            	<p:outputLabel value=""></p:outputLabel>
+		                            <div class="clear-3"></div>
+									<pe:inputNumber id="cantidadDepositos" maxlength="15" styleClass="pe-inputNumber"
+										required="#{param['disableValidation']==null}" decimalPlaces="2" decimalSeparator="."
+										thousandSeparator="," maxValue="9999999999999.99" 
+										value="#{altaClienteController.cliente.transaccionalidad.montoDepositos}"
+										placeholder="Importe">
+										<f:validateDoubleRange minimum="0.01" disabled="#{param['disableValidation']!=null}"/>
+									</pe:inputNumber>
+									<pe:keyFilter regEx="/[\d\.]/" for="cantidadDepositos" />
+									<span class="pe-inputNumber-suffix">MXN</span>	
+	                            </div>						        
+			                       
+					            <div class="grid_7">
+		                            <p:outputLabel for="numRetiros" value="Retiros"></p:outputLabel>
+								    <div class="clear-3"></div>
+									<p:inputMask id="numRetiros" styleClass="text-align-right-input"
+										value="#{altaClienteController.cliente.transaccionalidad.numRetiros}"
+										required="#{param['disableValidation']==null}" maxlength="8" onblur="value=value.toUpperCase()"
+										placeholder="Número">
+										<pe:keyFilter regEx="/[\d]/" />
+										<f:validateLongRange minimum="1" disabled="#{param['disableValidation']!=null}"/>
+									</p:inputMask>
+	                            </div>
+	                            
+	                            <div class="grid_10">
+		                            <p:outputLabel value=""></p:outputLabel>
+								    <div class="clear-3"></div>
+									<pe:inputNumber id="cantidadRetiros" maxlength="15" styleClass="pe-inputNumber"
+										required="#{param['disableValidation']==null}" decimalPlaces="2" decimalSeparator="."
+										thousandSeparator="," maxValue="9999999999999.99" 
+										value="#{altaClienteController.cliente.transaccionalidad.montoRetiros}"
+										placeholder="Importe">
+										<f:validateDoubleRange minimum="0.01" disabled="#{param['disableValidation']!=null}"/>
+									</pe:inputNumber>
+									<pe:keyFilter regEx="/[\d\.]/" for="cantidadRetiros"/>
+									<span class="pe-inputNumber-suffix">MXN</span>	
+	                            </div>
+			                       									
+						        <div class="grid_14">				           
+						           	<div class="label-vacio"></div>
+									<p:outputLabel for="montoMensual" value="Monto mensual aproximado de los ingresos"/>
+		                            <div class="clear-3"></div>		                           
+									<pe:inputNumber id="montoMensual" maxlength="22" styleClass="pe-inputNumber"
+										required="#{param['disableValidation']==null}" decimalPlaces="2" decimalSeparator="."
+										thousandSeparator="," maxValue="9999999999999.99" 
+										value="#{altaClienteController.cliente.transaccionalidad.montoMensualIngresos}"
+										placeholder="Importe">
+										<f:validateDoubleRange minimum="0.01" disabled="#{param['disableValidation']!=null}"/>
+									</pe:inputNumber>
+									<pe:keyFilter regEx="/[\d\.]/" for="montoMensual"/>
+									<span class="pe-inputNumber-suffix">MXN</span>                            
+		                        </div>		                        
+	                        </div>
+								
+                        </p:fieldset>
+	                        
+                        <div class="clear-row"></div>
+	
+                        <p:fieldset styleClass="fieldset-requerido" legend="Que provienen de" toggleable="false" collapsed="false">
+							
+							<p:outputLabel styleClass="txt-instruccion" value="Seleccione una o varias opciones:"></p:outputLabel>
+							
+							<p:selectManyCheckbox styleClass="tabla-checkbox" id="transaccionalidad" value="#{altaClienteController.cliente.transaccionalidad.transaccionalidad}" required="#{param['disableValidation']==null}" layout="grid" columns="4">
+					            <f:selectItems value="#{altaClienteController.selectTransaccionalidad}"  var="trans" itemLabel="#{trans}" itemValue="#{altaClienteController.selectTransaccionalidad.indexOf(trans)}"/>
+					            <f:selectItem  itemValue="Otros" itemLabel=""/>
+					            <p:ajax global="false" event="change" listener="#{altaClienteController.actualizaDatosCedula()}" update="transaccionalidad,provieneOtros" process="transaccionalidad,#{altaClienteController.cliente.transaccionalidad.transaccionalidad.contains('Otros') ? 'provieneOtros':''}"/>
+					            <f:param name="disableValidation" value="true"/>
+					        </p:selectManyCheckbox>
+							
+							<div class="grid_12 push_23">
+								<p:inputMask id="provieneOtros" styleClass="check-input-3" 
+									disabled="#{!altaClienteController.cliente.transaccionalidad.transaccionalidad.contains('Otros')}"
+
+									required="#{param['disableValidation']==null or (param['formAltaCliente3:altaCliente3:transaccionalidad']==null or param['formAltaCliente3:altaCliente3:transaccionalidad'].contains('Otros'))}"
+									value="#{altaClienteController.cliente.transaccionalidad.provieneOtros}"
+									maxlength="50" onblur="value=value.toUpperCase()"
+									placeholder="Otros (especificar)">
+									<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"/>
+									<f:validator validatorId="camposValidator"/>
+									<f:attribute name="tipoValidacion" value="B"/>
+								</p:inputMask>
+                            </div>
+							
+						</p:fieldset>
+	
+						</p:tab>
+						
+						<!--  Uso de Cuenta -->
+						<p:tab title="Uso de Cuenta" id="usoDeCuenta">
+						
+						<p:fieldset styleClass="fieldset-requerido" legend="Uso que pretende dar a su cuenta" toggleable="false" collapsed="false">
+							
+							<p:outputLabel styleClass="txt-instruccion" value="Seleccione una o varias opciones:"/>
+							
+							<p:selectManyCheckbox styleClass="tabla-checkbox" id="usos" value="#{altaClienteController.cliente.usoCuenta.usos}" required="#{param['disableValidation']==null}" layout="grid" columns="4" >
+					            <f:selectItems value="#{altaClienteController.selectUsoCuenta}"  var="usos" itemLabel="#{usos}" itemValue="#{altaClienteController.selectUsoCuenta.indexOf(usos)}"/> 
+					        	<f:selectItem itemValue="Otros" itemLabel="" />
+					        	<p:ajax global="false" event="change" listener="#{altaClienteController.actualizaDatosCedula()}" update="usos,pretendeOtros" process="usos,#{altaClienteController.cliente.usoCuenta.usos.contains('Otros') ? 'pretendeOtros':''}"/>
+					        	<f:param name="disableValidation" value="true"/> 
+					        </p:selectManyCheckbox>
+					       				
+							<div class="grid_12 push_13 alpha">
+								<p:inputMask id="pretendeOtros" styleClass="check-input-2" disabled="#{!altaClienteController.cliente.usoCuenta.usos.contains('Otros')}"
+									required="#{param['disableValidation']==null or (param['formAltaCliente3:altaCliente3:usos']==null or param['formAltaCliente3:altaCliente3:usos'].contains('Otros'))}"
+									value="#{altaClienteController.cliente.usoCuenta.otrosUsos}"
+									maxlength="50" onblur="value=value.toUpperCase()"
+									placeholder="Otros (especificar)">
+									<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"/>
+									<f:validator validatorId="camposValidator"/>
+									<f:attribute name="tipoValidacion" value="B"/>
+								</p:inputMask>
+	                        </div>
+							
+                        </p:fieldset>
+                        
+						<div class="clear-row"></div>
+	           
+                        <div class="display-flex">
+			
+						<p:fieldset styleClass="fieldset-requerido grid_24 alpha" legend="La cuenta será utilizada para el manejo de recursos" toggleable="false" collapsed="false">
+						
+						<div class="clear-row"></div>
+						
+							<div class="grid_24 centrar-texto">
+		                       <p:outputLabel value="Propios en un"/>
+                           	</div>
+		                           
+	                       	<div class="grid_24 centrar-texto">
+		                       <p:outputLabel value="De un tercero en un"/>
+                            </div>
+		                           
+                            <div class="clear-row"></div>
+		                         
+		     				<div class="grid_24">  
+		                    	<div class="grid_15 push_17">
+									<p:inputText id="manejoPropios"
+										value="#{altaClienteController.cliente.usoCuenta.manejoRecursosPropios}"
+										onkeyup="handleChange($('#formAltaCliente3\\:altaCliente3\\:manejoPropios'),$('#formAltaCliente3\\:altaCliente3\\:manejoTerceros'));"
+										onkeypress="limitar($('#formAltaCliente3\\:altaCliente3\\:manejoPropios'));"
+										maxlength="3"
+										required="#{param['disableValidation']==null}">
+										<pe:keyFilter regEx="/[\d]/"/>
+										<f:validator validatorId="camposValidator"/>
+										<f:attribute name="tipoValidacion" value="C"/>					
+									</p:inputText>
+									<span class="pe-inputNumber-suffix">%</span>
+	                            </div>	
+	                        </div>
+		                           
+		                    <div class="grid_24">
+								<div class="grid_15 push_16">
+									<p:inputText id="manejoTerceros"
+										value="#{altaClienteController.cliente.usoCuenta.manejoRecursosTerceros}"
+										onkeyup="handleChange($('#formAltaCliente3\\:altaCliente3\\:manejoTerceros'),$('#formAltaCliente3\\:altaCliente3\\:manejoPropios'));"
+										onkeypress="limitar($('#formAltaCliente3\\:altaCliente3\\:manejoTerceros'));"
+										maxlength="3"
+										required="#{param['disableValidation']==null}">
+										<pe:keyFilter regEx="/[\d]/" />
+										<f:validator validatorId="camposValidator"/>
+										<f:attribute name="tipoValidacion" value="C"/>
+									</p:inputText>
+									<span class="pe-inputNumber-suffix">%</span>
+		                      	</div>
+		          			</div>		                   	
+						
+                  		</p:fieldset>
+                        
+                        <p:fieldset styleClass="fieldset-requerido grid_24 omega push_1" legend="Operaciones a realizar" toggleable="false" collapsed="false">						
+						
+							<p:outputLabel styleClass="txt-instruccion" id="selectOperaciones" value="Seleccione una o varias opciones:" />
+							
+							<p:selectManyCheckbox styleClass="tabla-checkbox" id="operaciones" value="#{altaClienteController.cliente.usoCuenta.operaciones}" required="#{param['disableValidation']==null}" layout="grid" columns="2" >
+				            	<f:selectItems value="#{altaClienteController.selectOperaciones}"  var="oper" itemLabel="#{oper}" itemValue="#{altaClienteController.selectOperaciones.indexOf(oper)}"/> 
+				        	</p:selectManyCheckbox>
+                        
+                        </p:fieldset>
+	                       
+						</div>
+							
+						<div class="clear-row"></div>
+							
+						<p:fieldset legend="Relación función pública" toggleable="false" collapsed="false">
+	
+							<!-- Relacion Funcion Publica Pregunta 1-->							
+							<div class="grid_24">		
+								<p:outputLabel value="¿El titular de la cuenta desempeña o ha desempeñado en el último año una función pública
+						        de alta jerarquía en México o en el extranjero?"/>
+						        
+						        <div class="margin-top-35"></div>
+								
+								<div class="grid_8">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:inputSwitch id="publicaCuestion1" onLabel="Si" offLabel="No" value="#{altaClienteController.cliente.usoCuenta.funcionarioPublico}">
+										<p:ajax global="false" event="change" update="cuestion1g" />
+									</p:inputSwitch>
+		                        </div>
+								<h:panelGroup id="cuestion1g">
+							        <div class="grid_40">
+										<p:outputLabel for="publicaCuestion1R" id="publicaCuestion1Cargo" value="Cargo" rendered="#{altaClienteController.cliente.usoCuenta.funcionarioPublico}"/>
+										<div class="clear"></div>
+										<p:inputMask id="publicaCuestion1R" rendered="#{altaClienteController.cliente.usoCuenta.funcionarioPublico}"
+											value="#{altaClienteController.cliente.usoCuenta.funcionarioPublicoCargo}"
+											maxlength="50"
+											required="#{param['disableValidation']==null and altaClienteController.cliente.usoCuenta.funcionarioPublico}"
+											onblur="value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+											<f:validator validatorId="camposValidator"/>
+											<f:attribute name="tipoValidacion" value="B"/>
+										</p:inputMask>
+									</div>
+								</h:panelGroup>							
+							</div>
+							
+							<!-- Relacion Funcion Publica Pregunta 2 -->
+							<div class="grid_24">
+			
+								<p:outputLabel value="¿El titular de la cuenta es socio, asociado o familiar consanguíneo o por anidad hasta el segundo
+						        grado de una persona que desempeñe o haya desempeñado en el último año una función pública de alta jerarquía en México o 
+						        en el extranjero?"/>
+						        
+						        <div class="clear"></div>
+								
+								<div class="grid_8">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:inputSwitch id="publicaCuestion2" onLabel="Si" offLabel="No" value="#{altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublico}">
+										<p:ajax global="false" event="change" update="cuestion2g" />
+									</p:inputSwitch>
+	                            </div>
+								
+								<h:panelGroup id="cuestion2g">
+									<div class="grid_40">
+										<p:outputLabel for="publicaCuestion2R" id="publicaCuestion2Cargo" value="Cargo" 
+												rendered="#{altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublico}"/>
+										<div class="clear"></div>
+										<p:inputMask id="publicaCuestion2R" rendered="#{altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublico}"
+											value="#{altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublicoCargo}"
+											maxlength="50" onblur="value=value.toUpperCase()"
+											required="#{param['disableValidation']==null and altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublico}">
+											<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+											<f:validator validatorId="camposValidator"/>
+											<f:attribute name="tipoValidacion" value="B"/>
+										</p:inputMask>
+										<div class="clear"></div>
+										<p:outputLabel for="publicaCuestion2RN" id="publicaCuestion2Nombre" value="Nombre"
+												rendered="#{altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublico}"/>
+										<div class="clear"></div>
+										<p:inputMask id="publicaCuestion2RN" rendered="#{altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublico}"
+											value="#{altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublicoNombre}"
+											maxlength="50" onblur="value=value.toUpperCase()"
+											required="#{param['disableValidation']==null and altaClienteController.cliente.usoCuenta.asociadoFuncionarioPublico}">
+											<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+											<f:validator validatorId="camposValidator"/>
+											<f:attribute name="tipoValidacion" value="B"/>
+										</p:inputMask>
+		                            </div>
+								</h:panelGroup>							
+                            </div>
+						
+                        </p:fieldset>
+	                    
+					</p:tab>
+
+					<!-- Fin Tabs -->
+				</p:accordionPanel>
+                            
+                </div>
+                    <div class="wiz-siguiente">
+                        <p:commandButton icon="fa fa-check" id="terminar" onclick="acordion3()" action="#{altaClienteController.crearModificarCliente()}" ajax="true" update="formAltaCliente3" title="Terminar"/>
+                    </div>
+                </div>				
+
+			    <!--  Boton de Cancelar -->
+			    <h:panelGroup rendered="#{altaClienteController.modificacionCliente ne true}">
+					<p:commandButton styleClass="btn_secundario  margin-top-10 push_1" id="cancelarA" immediate="true" value="Cancelar"
+					onclick="PF('dlgCancelarAlta').show();" />
+				</h:panelGroup>
+			    <h:panelGroup rendered="#{altaClienteController.modificacionCliente eq true}">
+					<p:commandButton styleClass="btn_secundario  margin-top-10 push_1" id="cancelarM" immediate="true" value="Cancelar"
+					onclick="PF('dlgCancelarModificacion').show();" />
+				</h:panelGroup>
+				
+				<ui:include src="../store.xhtml">
+			      <ui:param name="storeBean" value="#{altaClienteController}"/>
+			    </ui:include>
+			    		
+			</h:form>
+			
+			</div>
+			 	
+			 	<p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta" appendTo="@(body)"
+	                      header="Cancelar alta cliente" modal="true" visible="false" closable="false"
+	                      resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+	                     <span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 	                      <p:outputLabel  styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar el alta de cliente" /> -->
+<!-- 	                      <div class="clear"></div> -->
+<!-- 	                      <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 	                      <div class="margin-bottom-20"></div> -->
+<!-- 	                      <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarAlta').hide();" id="VolverAlta"  value="Continuar con el alta" immediate="true"/> -->
+<!-- 	                      <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartar"  value="No guardar" action="#{altaClienteController.cancelarAltaModificacion()}"/> -->
+<!-- 	                      <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardar" value="Guardar" onclick="return storeData();"/> -->
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								action="#{altaClienteController.cancelarAltaModificacion()}" 
+								value="Continuar" immediate="true" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+	            </p:dialog>
+				 
+				<p:dialog widgetVar="dlgCancelarModificacion" id="dlgCancelarModificacion" appendTo="@(body)"
+	                      header="Cancelar modificacion cliente" modal="true" visible="false" closable="false"
+	                      resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+	                      <span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 	                      <p:outputLabel styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar la modificación de cliente" /> -->
+<!-- 	                      <div class="clear"></div> -->
+<!-- 	                      <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 	                      <div class="margin-bottom-20"></div> -->
+<!-- 	                      <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarModificacion').hide();" id="VolverModificacion"  value="Continuar con la modificación" immediate="true"/> -->
+<!-- 	                      <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartarM"  value="No guardar" action="#{altaClienteController.cancelarAltaModificacion()}"/> -->
+<!-- 	                      <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardarM" value="Guardar" onclick="return storeData();"/> -->
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								action="#{altaClienteController.cancelarAltaModificacion()}" 
+								value="Continuar" immediate="true" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+	           	</p:dialog>	
+	           	
+	           	<p:dialog widgetVar="dlgPorcentajes" id="dlgPorcentajes"
+					appendTo="@(body)" modal="true" visible="false" 
+					closable="false" resizable="false" draggable="false" 
+					showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+						
+						<p:outputLabel styleClass="modal-mensaje"
+							value="La suma de los porcentajes de manejo de recursos, no es del 100%" />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							onclick="PF('dlgPorcentajes').hide();"
+							value="Aceptar" immediate="true" />
+						
+				</p:dialog>
+			 	
+				<p:dialog widgetVar="dlgRiesgoAlta" id="dlgRiesgoAlta" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="¡Atención! El cliente que ha dado de alta está catalogado como cliente de riesgo." />
+                    <div class="clear"></div>
+                    <!--acciÃ³n a tomar por el usuario-->
+                    <p:outputLabel styleClass="modal-accion" value="Deberá rellenar datos adicionales." />
+                    <div class="margin-bottom-20"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarA" value="Aceptar" 
+                    	immediate="true" action="#{altaClienteController.continuarRiesgo()}" />
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlgRiesgoMod" id="dlgRiesgoMod" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="¡Atención! El cliente que modificó está catalogado como cliente de riesgo." />
+                    <div class="clear"></div>
+                    <!--acciÃ³n a tomar por el usuario-->
+                    <p:outputLabel styleClass="modal-accion" value="Deberá rellenar datos adicionales." />
+                    <div class="margin-bottom-20"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarM" value="Aceptar" 
+                    	immediate="true" action="#{altaClienteController.continuarRiesgo()}" />
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlgFinalizacionAlta" id="dlgFinalizacionAlta" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="El cliente ha sido dado de alta correctamente." />
+                    <div class="clear"></div>
+                    <!--acciÃ³n a tomar por el usuario-->
+                    <p:outputLabel styleClass="modal-accion" value="Deberá adicionar los documentos necesarios." />
+                    <div class="margin-bottom-20"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarFinA" value="Aceptar" 
+                    	immediate="true" action="#{altaClienteController.irDocumentos()}" />
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlgFinalizacionMod" id="dlgFinalizacionMod" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="El cliente se modificó correctamente." />
+                    <div class="clear"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarFinM" value="Aceptar" 
+                    	immediate="true" action="#{altaClienteController.irFichaCliente()}" />
+                </p:dialog>
+			 	
+			</div> <!--termina container 24-->
+			
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

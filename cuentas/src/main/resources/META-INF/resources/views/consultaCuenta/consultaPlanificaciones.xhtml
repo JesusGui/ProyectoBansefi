@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="/templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="formPlanificaciones" styleClass="contenedor-form">
+                    <pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" var="ConstantesFuncionales" />
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" action="#{planificacionesController.volver()}"></p:commandButton>
+                            <div>
+                            <h2 class="gris-b">Planificaciones de </h2>
+                            <h2 class="rojo-b">#{ planificacionesController.cuentaBean.tipoCuenta} </h2>
+                            <h3 class="gris-b">(#{planificacionesController.cuentaBean.numeroCuenta})</h3>
+                            </div>
+                        </div>
+                            <div class="contenedor-campos">
+                                <!--aqui se introducen todos los campos-->
+                                <!--posible estructura de conjunto de label + input-->
+                                <div class="grid_48">
+                                <p:outputLabel value="A continuación se muestran las planificaciones pendientes de ejecución:"
+                                rendered="#{planificacionesController.tipoConsulta.equals(ConstantesFuncionales.COD_PLANIFICACIONES_PENDIENTES)}"/>
+                                <p:outputLabel value="A continuación se muestran las planificaciones ya ejecutadas:"
+                                rendered="#{planificacionesController.tipoConsulta.equals(ConstantesFuncionales.COD_PLANIFICACIONES_REALIZADAS)}"/>
+                                </div>
+                                <div class="clear-row"></div>
+
+                                    <p:tree id="planificaciones" value="#{planificacionesController.root}" var="node" animate="true" dynamic="true"
+									rendered="#{planificacionesController.planificaciones.size() gt 0}">
+										<p:ajax event="expand" listener="#{planificacionesController.muestraDetalle}" />
+								        <p:treeNode type="EVENTO" >
+								        	<span style="cursor: default;" >
+								            	<h:outputText value="#{node}" />
+								            </span>
+								        </p:treeNode>      
+								        <p:treeNode type="FECHA">
+								            <span style="cursor: pointer;" onclick="this.parentNode.parentNode.firstChild.click();">
+						                        <h:outputText value="#{node}"/>
+						                    </span>
+								        </p:treeNode>          
+								        <p:treeNode >
+								            <h:outputText value="No se han podido recuperar datos." />
+								        </p:treeNode>  
+								    </p:tree>
+								    
+								    <h:panelGroup layout="block" styleClass="sinresultados"
+											rendered="#{(planificacionesController.planificaciones.size() eq 0) and 
+								    (planificacionesController.tipoConsulta.equals(ConstantesFuncionales.COD_PLANIFICACIONES_PENDIENTES))}">
+								    <div>
+								    <p:outputLabel value="No existen planificaciones pendientes a consultar."/>
+								    </div>
+								    </h:panelGroup>
+								    <h:panelGroup layout="block" styleClass="sinresultados"
+											rendered="#{(planificacionesController.planificaciones.size() eq 0) and 
+								    (planificacionesController.tipoConsulta.equals(ConstantesFuncionales.COD_PLANIFICACIONES_REALIZADAS))}">
+								    <div>
+								    <p:outputLabel value="No existe histórico de planificaciones a consultar."/>
+								    </div>
+								    </h:panelGroup>
+                                    <div class="centrar-objeto">
+								    <p:commandButton styleClass="btn-mostrar" id="moreDataBtn" value="Mostrar más datos" icon="ui-icon-refresh" update=":formPlanificaciones"
+								    rendered="#{((planificacionesController.pagina * 10) lt planificacionesController.planificaciones.size()) ? true : false}"
+								    actionListener="#{planificacionesController.obtenerMasDatos()}"/>
+                                    </div>
+                                <div class="clear"></div>
+                            </div>
+                        <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" value="Cancelar" 
+                          action="#{planificacionesController.volver()}" immediate="true"/>
+                        <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Mostrar histórico" 
+                        rendered="#{planificacionesController.mostrarPendientes}" 
+					    action="#{planificacionesController.mostrarHistorico()}" update=":formPlanificaciones"/>
+					    <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Mostrar pendientes" 
+					    rendered="#{!planificacionesController.mostrarPendientes}" 
+					    action="#{planificacionesController.mostrarPendientes()}" update=":formPlanificaciones"/>
+                    </h:form>
+                </div>
+                
+<!--
+plantilla de ventana de di�logo
+-->
+                
+           
+            <!--termina container 24-->
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"> 
+
+<ui:define name="contenido">
+
+    <h:body>
+        <div class="contenedor">
+            <div class="contenedor-form col-60">
+
+                <div class="titulo centrar-objeto btn-inline-set">
+                    <p:commandButton icon="ui-icon-home" immediate="true" action="#{retiroController.volverInicio()}" ></p:commandButton>
+                    <h1>Retiro</h1>
+                </div>
+
+                <h:form>
+
+                    <div class="contenedor-campos">
+						
+							<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" id="btnGenerarReporte" widgetVar="btnGenerarReporte"
+										value="Imprimir"
+										action="#{retiroController.generaPlantillaRetiro()}" />		
+						
+                        <p:outputLabel styleClass="titulo-detalle" value="#{retiroController.getNombreFlujo()}" />
+
+                        <div class="margin-bottom-20"></div>
+
+                        <p:outputLabel value="Ha realizado un retiro desde la cuenta " />
+                        <div class="clear"></div>
+
+                        <p:outputLabel styleClass="detalle" value="#{retiroController.retiro.cuentaRetiro}" />
+                        <div class="clear"></div>
+
+                        <p:outputLabel value="con titular:" />
+                        <div class="clear"></div>
+
+                        <p:outputLabel styleClass="detalle" value="#{retiroController.retiro.usuarioRetiro}" />
+                        <div class="clear"></div>
+
+                        <p:outputLabel value=" por valor de: " />
+                        <div class="clear"></div>
+
+                        <h:outputText styleClass="detalle" value="#{retiroController.retiro.importeRetiro}">
+                            <f:convertNumber minFractionDigits="2" currencySymbol="" locale="es_MX" type="currency" />
+                        </h:outputText>
+                        <p:outputLabel styleClass="detalle" value=" MXN" />
+
+                        <div class="margin-bottom-20"></div>
+
+                        <p:outputLabel value="Operación: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{retiroController.retiro.operacionRetiro}" />
+                        <div class="clear"></div>
+                        <p:outputLabel value="Identificación: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{retiroController.retiro.numeroIdentificacionClienteRetiro}" />
+                        <div class="clear"></div>
+                        <p:outputLabel value="Concepto: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{retiroController.retiro.conceptoRetiro}">
+                            <f:convertNumber minFractionDigits="2" currencySymbol="" locale="es_MX" type="currency" />
+                        </p:outputLabel>
+
+                        <div class="clear"></div>
+                        <p:outputLabel value="Fecha valor: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{retiroController.retiro.fechaValorRetiro}">
+                        	 <f:convertDateTime  pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                        
+                    </div>
+
+                    <div class="margin-top-20"></div>
+
+                    <p:commandButton styleClass="btn_secundario" id="inicio" value="Volver al inicio" action="#{retiroController.volverInicio()}" />
+                    <p:commandButton styleClass="btn_principal_derecha" id="realizarRetiro" value="Realizar otro retiro" action="#{retiroController.inicio()}" />
+                </h:form>
+            </div>
+        </div>
+
+    </h:body>
+
+</ui:define>
+</ui:composition>

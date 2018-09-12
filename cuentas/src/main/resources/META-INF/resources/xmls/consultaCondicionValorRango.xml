@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoConsultaCondicionValorRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionvalorrango.ResponseBansefi.OTRCONSVALKAVRGTRNO.TRCONSVALKAVRGEVTZ
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KACOMUNV.CODECVKA</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>IDCCPS1V.IDCCPS</a>
+      <b>idCcps</b>
+    </field>
+    <field>
+      <a>KAESTRCTVRNGV.RNGVALOR</a>
+      <b>valor</b>
+    </field>
+    <field>
+      <a>KAESTRCTVRNGV.CODUM</a>
+      <b>unidades</b>
+    </field>
+  </mapping>
+  <mapping map-id="resultadoConsultaCondicionValorRangoPlazo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionvalorrangoplazo.ResponseBansefi.OTRCONSVALKSVRGTRNO.TRCONSVALKSVRGEVTZ
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCOMUNV.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCOMUNV.FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KSCOMUNV.CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>IDCCPS1V.IDCCPS</a>
+      <b>idCcps</b>
+    </field>
+    <field>
+      <a>KSESTRCTVRNGV.RNGVALOR</a>
+      <b>valor</b>
+    </field>
+    <field>
+      <a>KSESTRCTVRNGV.CODUM</a>
+      <b>unidades</b>
+    </field>
+  </mapping>
+</mappings>

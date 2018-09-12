@@ -1,0 +1,205 @@
+
+package mx.babel.bansefi.banksystem.base.webservices.altaperfiltransaccional;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
+import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
+
+
+/**
+ * This object contains factory methods for each 
+ * Java content interface and Java element interface 
+ * generated in the mx.babel.bansefi.banksystem.personas.webservices.altaperfiltransaccional package. 
+ * <p>An ObjectFactory allows you to programatically 
+ * construct new instances of the Java representation 
+ * for XML content. The Java representation of XML 
+ * content can consist of schema derived interfaces 
+ * and classes representing the binding of schema 
+ * type definitions, element declarations and model 
+ * groups.  Factory methods for each of these are 
+ * provided in this class.
+ * 
+ */
+@XmlRegistry
+public class ObjectFactory {
+
+    private final static QName EJECUTAR_RESULT_QNAME = new QName(mx.babel.arq.comun.constants.ServicioWebConstants.SOAP_PORT_URL_TRN + "PE_ALTA_INDV_PERF_TRAN_TRN", "EjecutarResult");
+
+    /**
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: mx.babel.bansefi.banksystem.personas.webservices.altaperfiltransaccional
+     * 
+     */
+    public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar }
+     * 
+     */
+    public Ejecutar createEjecutar() {
+        return new Ejecutar();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi }
+     * 
+     */
+    public ResponseBansefi createResponseBansefi() {
+        return new ResponseBansefi();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OPEALTAINDVPERFTRANT }
+     * 
+     */
+    public ResponseBansefi.OPEALTAINDVPERFTRANT createResponseBansefiOPEALTAINDVPERFTRANT() {
+        return new ResponseBansefi.OPEALTAINDVPERFTRANT();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT createEjecutarIPEALTAINDVPERFTRANT() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEV() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV();
+    }
+
+    /**
+     * Create an instance of {@link EjecutarResponse }
+     * 
+     */
+    public EjecutarResponse createEjecutarResponse() {
+        return new EjecutarResponse();
+    }
+
+    /**
+     * Create an instance of {@link EjecutarResult }
+     * 
+     */
+    public EjecutarResult createEjecutarResult() {
+        return new EjecutarResult();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OPEALTAINDVPERFTRANT.STDTRNMSJPARMV }
+     * 
+     */
+    public ResponseBansefi.OPEALTAINDVPERFTRANT.STDTRNMSJPARMV createResponseBansefiOPEALTAINDVPERFTRANTSTDTRNMSJPARMV() {
+        return new ResponseBansefi.OPEALTAINDVPERFTRANT.STDTRNMSJPARMV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OPEALTAINDVPERFTRANT.STDTRNOPARMV }
+     * 
+     */
+    public ResponseBansefi.OPEALTAINDVPERFTRANT.STDTRNOPARMV createResponseBansefiOPEALTAINDVPERFTRANTSTDTRNOPARMV() {
+        return new ResponseBansefi.OPEALTAINDVPERFTRANT.STDTRNOPARMV();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.STDTRNIPARMV }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.STDTRNIPARMV createEjecutarIPEALTAINDVPERFTRANTSTDTRNIPARMV() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.STDTRNIPARMV();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVFUNCPUBLCDS }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVFUNCPUBLCDS createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEINDVFUNCPUBLCDS() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVFUNCPUBLCDS();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERSRLFPUBLCP }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERSRLFPUBLCP createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEPERSRLFPUBLCP() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERSRLFPUBLCP();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERFILTRANSCLE }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERFILTRANSCLE createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEPERFILTRANSCLE() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERFILTRANSCLE();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVTRANESTIDS }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVTRANESTIDS createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEINDVTRANESTIDS() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVTRANESTIDS();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVUSOCTADS }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVUSOCTADS createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEINDVUSOCTADS() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDVUSOCTADS();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERSRLINFFINT }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERSRLINFFINT createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEPERSRLINFFINT() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEPERSRLINFFINT();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINFFINANPZAV }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINFFINANPZAV createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEINFFINANPZAV() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINFFINANPZAV();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINFFINANADICV }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINFFINANADICV createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEINFFINANADICV() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINFFINANADICV();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEDATOSEMPLEOV }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEDATOSEMPLEOV createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEDATOSEMPLEOV() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEDATOSEMPLEOV();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDSEGAPV }
+     * 
+     */
+    public Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDSEGAPV createEjecutarIPEALTAINDVPERFTRANTPEALTAINDVPERFTRANEVPEINDSEGAPV() {
+        return new Ejecutar.IPEALTAINDVPERFTRANT.PEALTAINDVPERFTRANEV.PEINDSEGAPV();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EjecutarResult }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = mx.babel.arq.comun.constants.ServicioWebConstants.SOAP_PORT_URL_TRN + "PE_ALTA_INDV_PERF_TRAN_TRN", name = "EjecutarResult")
+    public JAXBElement<EjecutarResult> createEjecutarResult(EjecutarResult value) {
+        return new JAXBElement<EjecutarResult>(EJECUTAR_RESULT_QNAME, EjecutarResult.class, null, value);
+    }
+
+}

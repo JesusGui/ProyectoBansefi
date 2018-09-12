@@ -1,0 +1,781 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+
+			<pe:importConstants
+				className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+				var="EstadoListadosEnum" />
+
+			<div class="container_48">
+				<!-- Se agregó div contenedores -->
+				<div class="contenedor">
+
+					<h:form id="formAtribuciones" styleClass="contenedor-form col-80">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								action="#{atribucionesController.volver()}" />
+							<div>
+								<h2>
+									<h:outputFormat styleClass="gris-b" value="Atribuciones de "></h:outputFormat>
+									<h:outputFormat styleClass="rojo-b sub-h"
+										value="#{atribucionesController.empleado.numEmpleado}"></h:outputFormat>
+								</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Datos Obligatorios"></p:outputLabel>
+							<div class="margin-top-10"></div>
+							<h:outputText styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+
+							<div class="estilo-tab">
+
+								<p:commandLink
+									styleClass="#{(atribucionesController.activeIndex == 0) ? 'link-tab-activo' : 'link-tab-inactivo' }"
+									id="afijas" value="Atribuciones fijas"
+									actionListener="#{atribucionesController.actualizarAtribuciones(0)}"
+									update="@form">
+									<f:param name="disableValidation" value="true" />
+								</p:commandLink>
+								<p:commandLink
+									styleClass="#{(atribucionesController.activeIndex == 1) ? 'link-tab-activo' : 'link-tab-inactivo' }"
+									id="atemporales" value="Atribuciones temporales"
+									actionListener="#{atribucionesController.actualizarAtribuciones(1)}"
+									update="@form"
+									disabled="#{atribucionesController.modificacionEmpleado == null}">
+									<f:param name="disableValidation" value="true" />
+								</p:commandLink>
+
+								<h:panelGroup layout="block"
+									style="display:#{(atribucionesController.activeIndex == 0) ? 'block' : 'none' }">
+
+									<h3 class="azul-b margin-left-10">Porcentajes</h3>
+
+									<div class="clear-row"></div>
+
+									<div class="grid_12">
+										<p:outputLabel for="pasivo" value="Pasivo"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="pasivo"
+											styleClass="pe-inputNumber" minValue="0" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcPasivo}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel for="activo" value="Activo"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="activo"
+											styleClass="pe-inputNumber" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcActivo}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel for="desintermediacion"
+											value="Desintermediacion"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="desintermediacion"
+											styleClass="pe-inputNumber" minValue="0" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcDesintermediacion}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel for="servicios" value="Servicios"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="servicios"
+											styleClass="pe-inputNumber" minValue="0" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcServicios}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									<div class="clear-row"></div>
+									
+									<div class="row-flex">
+									
+									<div class="grid_12">
+										<p:outputLabel for="riesgoProd" value="Riesgo Producto"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="riesgoProd"
+											styleClass="pe-inputNumber" minValue="0" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcRiesgoProducto}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel for="riesgoCli" value="Riesgo cliente"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="riesgoCli"
+											styleClass="pe-inputNumber" minValue="0" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcRiesgoCliente}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel for="riesgoGarReal"
+											value="Riesgo garantia real"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="riesgoGarReal"
+											styleClass="pe-inputNumber" minValue="0" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcRiesgoGarantiaReal}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel for="riesgoGarPer"
+											value="Riesgo garantia personal"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="riesgoGarPer"
+											styleClass="pe-inputNumber" minValue="0" maxValue="999.999"
+											required="true" decimalPlaces="3" decimalSeparator="."
+											thousandSeparator=","
+											value="#{atribucionesController.empleado.atribucionFija.porcRiesgoGarantiaPersonal}">
+											<f:validateDoubleRange minimum="0.001" />
+											<p:ajax event="change" process="@this" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">‰</span>
+									</div>
+
+									</div>
+
+									<div class="display-flex">
+
+										<p:fieldset styleClass="grid_24"
+											legend="Perfil transaccional cliente" toggleable="false"
+											collapsed="false">
+											<div class="margin-top-10"></div>
+											<p:selectBooleanCheckbox styleClass="centrado-vertical"
+												id="perfBR"
+												value="#{atribucionesController.empleado.atribucionFija.autorizacionPerfBR}">
+												<p:ajax event="change" process="@this" />
+											</p:selectBooleanCheckbox>
+											<h:outputLabel styleClass="centrado-vertical"
+												value="Autorización perfil transaccional bajo riesgo" />
+											<div class="clear"></div>
+											<p:selectBooleanCheckbox styleClass="centrado-vertical"
+												id="perfMR"
+												value="#{atribucionesController.empleado.atribucionFija.autorizacionPerfMR}">
+												<p:ajax event="change" process="@this" />
+											</p:selectBooleanCheckbox>
+											<h:outputLabel styleClass="centrado-vertical"
+												value="Autorización perfil transaccional medio riesgo" />
+											<div class="clear"></div>
+											<p:selectBooleanCheckbox styleClass="centrado-vertical"
+												id="perfAR"
+												value="#{atribucionesController.empleado.atribucionFija.autorizacionPerfAR}">
+												<p:ajax event="change" process="@this" />
+											</p:selectBooleanCheckbox>
+											<h:outputLabel styleClass="centrado-vertical"
+												value="Autorización perfil transaccional alto riesgo" />
+
+										</p:fieldset>
+
+										<p:fieldset styleClass="grid_24" legend="Otras autorizaciones"
+											toggleable="false" collapsed="false">
+											<div class="margin-top-20"></div>
+											<p:selectBooleanCheckbox styleClass="centrado-vertical"
+												id="autSE"
+												value="#{atribucionesController.empleado.atribucionFija.autorizacionSE}">
+												<p:ajax event="change" process="@this" />
+											</p:selectBooleanCheckbox>
+											<h:outputLabel styleClass="centrado-vertical"
+												value="Autorización situación especial" />
+											<div class="clear"></div>
+											<p:selectBooleanCheckbox styleClass="centrado-vertical"
+												id="autMP"
+												value="#{atribucionesController.empleado.atribucionFija.autorizacionMP}">
+												<p:ajax event="change" process="@this" />
+											</p:selectBooleanCheckbox>
+											<h:outputLabel styleClass="centrado-vertical"
+												value="Autorización modificación persona" />
+
+										</p:fieldset>
+
+									</div>
+
+									<div class="clear-row"></div>
+									
+									<div class="row-flex">
+									
+									<div class="grid_5">
+										<p:outputLabel for="nivelAtr" value="Nivel de atribución"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="nivelAtr"
+											value="#{atribucionesController.empleado.atribucionFija.nivelAtribucion}">
+											<f:selectItem itemValue="#{null}"
+												itemLabel="Seleccione un valor" noSelectionOption="true" />
+											<f:selectItem itemValue="A" itemLabel="A" />
+											<f:selectItem itemValue="B" itemLabel="B" />
+											<f:selectItem itemValue="C" itemLabel="C" />
+											<f:selectItem itemValue="D" itemLabel="D" />
+											<f:selectItem itemValue="E" itemLabel="E" />
+											<p:ajax event="change" process="@this" />
+										</p:selectOneMenu>
+									</div>
+
+									<div class="grid_5">
+										<p:outputLabel for="numDiasValor" value="Número de días valor"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber emptyValue="0" id="numDiasValor" minValue="0"
+											maxValue="999" required="true"
+											value="#{atribucionesController.empleado.atribucionFija.diasValor}">
+											<p:ajax event="change" process="@this" update="numDiasValor"  />
+										</pe:inputNumber>
+									</div>
+									
+									</div>
+
+									<div class="clear"></div>
+								</h:panelGroup>
+
+								<h:panelGroup layout="block"
+									style="display:#{(atribucionesController.activeIndex == 1) ? 'block' : 'none' }">
+
+									<div class="row-flex">
+									<div class="grid_8">
+										<p:message id="fechaInicioAtrTemVal" for="fechaInicioAtrTem"
+											display="icon" />
+										<p:outputLabel id="fechaInicioAtrTemLab"
+											for="fechaInicioAtrTem" value="Rango de fechas" />
+										<div class="clear-3"></div>
+										<p:calendar id="fechaInicioAtrTem"
+											required="#{param['disableValidation']==null}"
+											requiredMessage=""
+											value="#{atribucionesController.fechaInicio}"
+											pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es"
+											placeholder="Desde"
+											mindate="#{contextoUtils.getFechaContableActual()}">
+											<f:attribute name="beginDate"
+												value="#{contextoUtils.getFechaContableActual()}" />
+											<f:param name="disableValidation" value="true" />
+											<f:validator validatorId="dateRangeValidator"
+												disabled="#{param['disableValidation']==true}" />
+											<p:ajax event="change"
+												process="fechaInicioAtrTem,fechaFinAtrTem"
+												update="fechaInicioAtrTem,fechaInicioAtrTemVal,fechaFinAtrTem"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect"
+												process="fechaInicioAtrTem,fechaFinAtrTem"
+												update="fechaInicioAtrTem,fechaInicioAtrTemVal,fechaFinAtrTem"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+
+									<div class="grid_8">
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:message id="fechaFinAtrTemVal" for="fechaFinAtrTem"
+											display="icon" />
+										<p:calendar id="fechaFinAtrTem"
+											required="#{param['disableValidation']==null}"
+											requiredMessage="" value="#{atribucionesController.fechaFin}"
+											pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es"
+											placeholder="Hasta"
+											mindate="#{atribucionesController.obtenerFechaFinMinima(atribucionesController.fechaInicio)}" label="Fecha fin" >
+											<f:attribute name="beginDate"
+												value="#{atribucionesController.fechaInicio}" />
+											<f:attribute name="endDate"
+												value="#{atribucionesController.fechaFin}" />
+											<f:param name="disableValidation" value="true" />
+											<f:validator validatorId="dateRangeValidator"
+												disabled="#{param['disableValidation']==true}" />
+											<p:ajax event="change"
+												process="fechaFinAtrTem,fechaInicioAtrTem"
+												update="fechaInicioAtrTem,fechaInicioAtrTemVal"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect"
+												process="fechaFinAtrTem,fechaInicioAtrTem"
+												update="fechaInicioAtrTem,fechaInicioAtrTemVal"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+
+									<div class="grid_3">
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton styleClass="btn-icono btn-anadir"
+											icon="ui-icon-circle-plus" id="anadir" update="@form"
+											process="@this,fechaInicioAtrTem,fechaFinAtrTem,fechaInicioAtrTemLab,fechaInicioAtrTemVal"
+											action="#{atribucionesController.anadirAtribucionTemporal()}">
+										</p:commandButton>
+
+									</div>
+
+									</div>
+
+									<c:forEach var="atrTemporales"
+										items="#{atribucionesController.empleado.atribucionesTemporales}"
+										varStatus="myVarStatus">
+
+										<p:panel id="atribucionesLista#{myVarStatus.index}"
+											styleClass="#{atrTemporales.estado.styleClass}">
+
+											<h:panelGroup layout="block"
+												rendered="#{atrTemporales.estado == EstadoListadosEnum.CONSULTADO or atrTemporales.estado == EstadoListadosEnum.ELIMINADO}">
+
+												<p:commandButton
+													id="restauraAtribucionConsultadaEliminada#{myVarStatus.index}"
+													label="Restaurar" update="@form" immediate="true"
+													alt="Recuperar atribucion"
+													actionListener="#{atribucionesController.restauraAtribucion(atrTemporales)}"
+													styleClass="btn-icono btn-panel" icon="fa fa-rotate-left"
+													rendered="#{atrTemporales.estado == EstadoListadosEnum.ELIMINADO}"
+													title="Recuperar atribucion" />
+
+												<p:commandButton
+													id="eliminaAtribucionConsultadaEliminada#{myVarStatus.index}"
+													label="Eliminar" update="@form" immediate="true"
+													alt="Eliminar atribucion"
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash"
+													actionListener="#{atribucionesController.eliminaAtribucion(atrTemporales)}"
+													rendered="#{atrTemporales.estado == EstadoListadosEnum.CONSULTADO}"
+													title="Eliminar atribucion" />
+
+												<p:commandButton
+													id="editaAtribucionConsultadaEliminada#{myVarStatus.index}"
+													label="Editar" update="@form" immediate="true"
+													styleClass="btn-icono btn-panel" icon="fa fa-pencil"
+													alt="Editar atribucion"
+													actionListener="#{atribucionesController.editaAtribucion(atrTemporales)}"
+													rendered="#{atrTemporales.estado == EstadoListadosEnum.CONSULTADO}"
+													title="Editar atribucion" />
+
+												<div class="clear-row"></div>
+
+												<div class="grid_10">
+													<p:outputLabel for="fechaInicio#{myVarStatus.index}"
+														value="Fecha inicio" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														id="fechaInicio#{myVarStatus.index}"
+														value="#{atrTemporales.fechaInicio}">
+														<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+													</p:outputLabel>
+												</div>
+
+												<div class="grid_10">
+													<p:outputLabel for="fechaFin#{myVarStatus.index}"
+														value="Fecha fin" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														id="fechaFin#{myVarStatus.index}"
+														value="#{atrTemporales.fechaFin}">
+														<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+													</p:outputLabel>
+												</div>
+
+												<div class="clear-row"></div>
+
+											</h:panelGroup>
+
+											<h:panelGroup
+												rendered="#{atrTemporales.estado == EstadoListadosEnum.MODIFICADO or atrTemporales.estado == EstadoListadosEnum.NUEVO}">
+
+												<p:commandButton
+													id="restauraAtribucionModificadaNueva#{myVarStatus.index}"
+													label="Restaurar" update="@form" immediate="true"
+													alt="Recuperar atribucion"
+													actionListener="#{atribucionesController.restauraAtribucion(atrTemporales)}"
+													styleClass="btn-icono btn-panel" icon="fa fa-rotate-left"
+													rendered="#{atrTemporales.estado == EstadoListadosEnum.MODIFICADO}"
+													title="Recuperar atribucion" />
+
+												<p:commandButton
+													id="eliminaReferenciaModificadaNueva#{myVarStatus.index}"
+													label="Eliminar" update="@form" immediate="true"
+													alt="Eliminar atribucion"
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash"
+													actionListener="#{atribucionesController.eliminaAtribucion(atrTemporales)}"
+													title="Eliminar atribucion" />
+
+												<div class="clear-row"></div>
+
+												<div class="grid_10">
+													<p:outputLabel for="fechaInicio#{myVarStatus.index}"
+														value="Fecha inicio" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														value="#{atrTemporales.fechaInicio}">
+														<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+													</p:outputLabel>
+												</div>
+
+												<div class="grid_10">
+													<p:outputLabel for="fechaFin#{myVarStatus.index}"
+														value="Fecha fin" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+														value="#{atrTemporales.fechaFin}">
+														<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+													</p:outputLabel>
+												</div>
+
+												<div class="clear-row"></div>
+
+												<p:fieldset styleClass="grid_48" legend="Porcentajes"
+													toggleable="false" collapsed="false">
+
+													<div class="grid_12">
+														<p:outputLabel for="pasivo#{myVarStatus.index}"
+															value="Pasivo"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="pasivo#{myVarStatus.index}"
+															styleClass="pe-inputNumber" minValue="0"
+															maxValue="999.999" required="true" decimalPlaces="3"
+															decimalSeparator="." thousandSeparator=","
+															value="#{atrTemporales.porcPasivo}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="grid_12">
+														<p:outputLabel for="activo#{myVarStatus.index}"
+															value="Activo"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="activo#{myVarStatus.index}"
+															styleClass="pe-inputNumber" maxValue="999.999"
+															required="true" decimalPlaces="3" decimalSeparator="."
+															thousandSeparator="," value="#{atrTemporales.porcActivo}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="grid_12">
+														<p:outputLabel for="desintermediacion#{myVarStatus.index}"
+															value="Desintermediacion"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="desintermediacion#{myVarStatus.index}"
+															styleClass="pe-inputNumber" minValue="0"
+															maxValue="999.999" required="true" decimalPlaces="3"
+															decimalSeparator="." thousandSeparator=","
+															value="#{atrTemporales.porcDesintermediacion}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="grid_12">
+														<p:outputLabel for="servicios#{myVarStatus.index}"
+															value="Servicios"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="servicios#{myVarStatus.index}"
+															styleClass="pe-inputNumber" minValue="0"
+															maxValue="999.999" required="true" decimalPlaces="3"
+															decimalSeparator="." thousandSeparator=","
+															value="#{atrTemporales.porcServicios}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="clear-row"></div>
+
+													<div class="grid_12">
+														<p:outputLabel for="riesgoProd#{myVarStatus.index}"
+															value="Riesgo Producto"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="riesgoProd#{myVarStatus.index}"
+															styleClass="pe-inputNumber" minValue="0"
+															maxValue="999.999" required="true" decimalPlaces="3"
+															decimalSeparator="." thousandSeparator=","
+															value="#{atrTemporales.porcRiesgoProducto}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="grid_12">
+														<p:outputLabel for="riesgoCli#{myVarStatus.index}"
+															value="Riesgo cliente"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="riesgoCli#{myVarStatus.index}"
+															styleClass="pe-inputNumber" minValue="0"
+															maxValue="999.999" required="true" decimalPlaces="3"
+															decimalSeparator="." thousandSeparator=","
+															value="#{atrTemporales.porcRiesgoCliente}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="grid_12">
+														<p:outputLabel for="riesgoGarReal#{myVarStatus.index}"
+															value="Riesgo garantia real"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="riesgoGarReal#{myVarStatus.index}"
+															styleClass="pe-inputNumber" minValue="0"
+															maxValue="999.999" required="true" decimalPlaces="3"
+															decimalSeparator="." thousandSeparator=","
+															value="#{atrTemporales.porcRiesgoGarantiaReal}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="grid_12">
+														<p:outputLabel for="riesgoGarPer#{myVarStatus.index}"
+															value="Riesgo garantia personal"></p:outputLabel>
+														<div class="clear-3"></div>
+														<pe:inputNumber emptyValue="0"
+															id="riesgoGarPer#{myVarStatus.index}"
+															styleClass="pe-inputNumber" minValue="0"
+															maxValue="999.999" required="true" decimalPlaces="3"
+															decimalSeparator="." thousandSeparator=","
+															value="#{atrTemporales.porcRiesgoGarantiaPersonal}">
+															<f:validateDoubleRange minimum="0.001" />
+															<p:ajax event="blur" global="false" partialSubmit="true"
+																update="@this" process="@this"></p:ajax>
+														</pe:inputNumber>
+														<span class="pe-inputNumber-suffix">‰</span>
+													</div>
+
+													<div class="clear"></div>
+
+												</p:fieldset>
+
+												<div class="clear-row"></div>
+
+												<div class="display-flex">
+
+													<p:fieldset styleClass="grid_24"
+														legend="Perfil transaccional cliente" toggleable="false"
+														collapsed="false">
+														<div class="margin-top-10"></div>
+
+														<p:selectBooleanCheckbox styleClass="centrado-vertical"
+															id="perfBR#{myVarStatus.index}"
+															value="#{atrTemporales.autorizacionPerfBR}" >
+															<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="perfBR#{myVarStatus.index}"
+														></p:ajax>
+															</p:selectBooleanCheckbox>
+														<h:outputLabel styleClass="centrado-vertical"
+															value="Autorización perfil transaccional bajo riesgo" />
+
+														<div class="clear"></div>
+
+														<p:selectBooleanCheckbox styleClass="centrado-vertical"
+															id="perfMR#{myVarStatus.index}"
+															value="#{atrTemporales.autorizacionPerfMR}" >
+															<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="perfMR#{myVarStatus.index}"
+														></p:ajax>
+															</p:selectBooleanCheckbox>
+														<h:outputLabel styleClass="centrado-vertical"
+															value="Autorización perfil transaccional medio riesgo" />
+
+														<div class="clear"></div>
+
+														<p:selectBooleanCheckbox styleClass="centrado-vertical"
+															id="perfAR#{myVarStatus.index}"
+															value="#{atrTemporales.autorizacionPerfAR}" >
+															<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="perfAR#{myVarStatus.index}"
+														></p:ajax>
+															</p:selectBooleanCheckbox>
+														<h:outputLabel styleClass="centrado-vertical"
+															value="Autorización perfil transaccional alto riesgo" />
+
+													</p:fieldset>
+
+													<p:fieldset styleClass="grid_24"
+														legend="Otras autorizaciones" toggleable="false"
+														collapsed="false">
+														<div class="margin-top-20"></div>
+
+														<p:selectBooleanCheckbox styleClass="centrado-vertical"
+															id="autSE#{myVarStatus.index}"
+															value="#{atrTemporales.autorizacionSE}" >
+															<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="autSE#{myVarStatus.index}"
+														></p:ajax>
+															</p:selectBooleanCheckbox>
+														<h:outputLabel styleClass="centrado-vertical"
+															value="Autorización situación especial" />
+
+														<div class="clear"></div>
+
+														<p:selectBooleanCheckbox styleClass="centrado-vertical"
+															id="autMP#{myVarStatus.index}"
+															value="#{atrTemporales.autorizacionMP}">
+															<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="autMP#{myVarStatus.index}"
+														></p:ajax>
+															</p:selectBooleanCheckbox>
+														<h:outputLabel styleClass="centrado-vertical"
+															value="Autorización modificación persona" />
+
+													</p:fieldset>
+
+												</div>
+
+												<div class="clear-row"></div>
+
+												<div class="grid_5">
+													<p:outputLabel for="nivelAtr#{myVarStatus.index}"
+														value="Nivel de atribución"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:selectOneMenu id="nivelAtr#{myVarStatus.index}"
+														value="#{atrTemporales.nivelAtribucion}">
+														<f:selectItem itemValue="#{null}"
+															itemLabel="Seleccione un valor" noSelectionOption="true" />
+														<f:selectItem itemValue="A" itemLabel="A" />
+														<f:selectItem itemValue="B" itemLabel="B" />
+														<f:selectItem itemValue="C" itemLabel="C" />
+														<f:selectItem itemValue="D" itemLabel="D" />
+														<f:selectItem itemValue="E" itemLabel="E" />
+																	<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="nivelAtr#{myVarStatus.index}"
+														></p:ajax>
+													</p:selectOneMenu>
+												</div>
+
+												<div class="grid_5">
+													<p:outputLabel for="numDiasValor#{myVarStatus.index}"
+														value="Número de días valor"></p:outputLabel>
+													<div class="clear-3"></div>
+													<pe:inputNumber id="numDiasValor#{myVarStatus.index}"
+														emptyValue="0" minValue="0" maxValue="999" required="true"
+														value="#{atrTemporales.diasValor}">
+														<p:ajax event="change" process="@this"  />
+													</pe:inputNumber>
+												</div>
+
+												<div class="clear"></div>
+
+											</h:panelGroup>
+
+										</p:panel>
+
+									</c:forEach>
+								</h:panelGroup>
+
+							</div>
+						</div>
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							immediate="true" value="Cancelar"
+							action="#{atribucionesController.volver()}" />
+						<p:commandButton
+							styleClass="btn_principal float-right margin-top-10"
+							value="Guardar" action="#{atribucionesController.guardar()}"
+							update="@form">
+							<f:param name="disableValidation" value="true" />
+						</p:commandButton>
+					</h:form>
+
+					<p:dialog widgetVar="dlgFechaIncorrecta" id="dlgFechaIncorrecta"
+						appendTo="@(body)" showEffect="fade" hideEffect="fade"
+						modal="true" visible="false" closable="false" resizable="false"
+						draggable="false">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="El rango de fechas incluido no es valido. El periodo ya se encuentra ocupado con otra atribucion temporal" />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgFechaIncorrecta').hide();" />
+					</p:dialog>
+
+					<p:dialog widgetVar="dlgGuardadoCorrecto" id="dlgGuardadoCorrecto"
+						appendTo="@(body)" showEffect="fade" hideEffect="fade"
+						modal="true" visible="false" closable="false" resizable="false"
+						draggable="false">
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los datos se han guardado correctamente" />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgGuardadoCorrecto').hide()" />
+					</p:dialog>
+
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false"
+						widgetVar="dlgNoCambios" resizable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade" modal="true">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No se han realizado cambios" />
+						<div class="clear"></div>
+						<p:commandButton
+							styleClass="btn_principal_dialog_derecha margin-left-10"
+							value="Aceptar" onclick="PF('dlgNoCambios').hide()" />
+					</p:dialog>
+
+				</div>
+			</div>
+		</h:body>
+	</ui:define>
+
+</ui:composition>

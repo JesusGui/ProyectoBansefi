@@ -1,0 +1,498 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body onload="#{fichaCuentaController.verificarAlertas()}">
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+
+					<h:form id="frmFichaCuenta" styleClass="contenedor-form">
+						<!-- Simplemente se pone para que cargue la libreria de primefaces EXT -->
+						<pe:blockUI widgetVar="blockUIWidget1">
+						</pe:blockUI>
+
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+
+						<!--título de la ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--botón atras-->
+							<p:commandButton icon="ui-icon-home" immediate="true"
+								rendered="#{!fichaCuentaController.origenBusqueda}"
+								action="#{fichaCuentaController.volverInicio()}"></p:commandButton>
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								rendered="#{fichaCuentaController.origenBusqueda}"
+								action="#{fichaCuentaController.volver()}" title="Volver atrás"></p:commandButton>
+							<div>
+								<h2>
+									<h:outputText styleClass="gris-b" value="Ficha de " />
+									<h:outputFormat styleClass="rojo-b"
+										value="#{fichaCuentaController.cuentaBean.tipoCuenta} " />
+									<h:outputFormat styleClass="gris-b sub-h"
+										value="(#{fichaCuentaController.cuentaBean.numeroCuenta})" />
+								</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:messages id="messages" closable="false" showDetail="true"
+								rendered="#{!fichaCuentaController.elementosVisibles}" />
+
+							<h:panelGroup
+								rendered="#{fichaCuentaController.elementosVisibles}">
+
+								<div class="float-right">
+									<p:commandButton id="btnOpciones"
+										styleClass="btn_secundario btn-icono-texto icono-16"
+										value="Opciones" type="button" icon="ui-icon-menu" />
+									<p:menu styleClass="margin-top-10 menu-ficha"
+										id="mnuOpcFichaCuenta" widgetVar="mnuOpcFichaCuenta"
+										value="Opciones" overlay="true" trigger="btnOpciones"
+										my="left top" at="left bottom">
+										<p:submenu styleClass="submenu" label="Consultas">
+											<p:menuitem value="Comprobantes e identificaciones"
+												action="#{fichaCuentaController.consultaDocumentosCuentas()}" />
+											<p:menuitem value="Condiciones"
+												action="#{fichaCuentaController.irACondicionesTarifa()}"
+												rendered="#{fichaCuentaController.cuentaBean.estado != '1'}" />
+											<p:menuitem value="Auditoría"
+												action="#{fichaCuentaController.consultaAuditoriaCuentas()}" />
+											<p:menuitem value="Informe de derivadas"
+												action="#{fichaCuentaController.consultaDerivada()}" />
+											<p:menuitem value="Planificaciones"
+												action="#{fichaCuentaController.consultaPlanificaciones()}" />
+											<p:menuitem value="Posición"
+												action="#{fichaCuentaController.consultaPosicion()}"
+												rendered="#{fichaCuentaController.cuentaBean.estado != '7'}" />
+											<p:menuitem value="Productos simples"
+												action="#{fichaCuentaController.irAProductoSimple()}" />
+											<p:submenu styleClass="submenu" label="Situación Económica">
+												<p:menuitem styleClass="item-submenu"
+													value="Consulta de apuntes"
+													action="#{fichaCuentaController.consultaApuntes()}" />
+												<p:menuitem styleClass="item-submenu"
+													value="Consulta de liquidaciones"
+													action="#{fichaCuentaController.consultaLiquidaciones()}" />
+												<p:menuitem styleClass="item-submenu"
+													value="Consulta de saldos"
+													action="#{fichaCuentaController.consultaSaldos()}" />
+											</p:submenu>
+										</p:submenu>
+
+										<p:submenu styleClass="submenu" label="Acciones">
+											<p:menuitem value="Alta SAT"
+												rendered="#{fichaCuentaController.isMediosPago() 
+														and fichaCuentaController.cuentaBean.estado == '4'
+														and (contextoUtils.getSucursal().equals('0001')
+															or contextoUtils.getSucursal().equals(fichaCuentaController.cuentaBean.centro))}"
+												action="#{fichaCuentaController.irRelacionesPan()}" />
+											<p:menuitem value="Ampliar otros datos"
+												action="#{fichaCuentaController.consultaDatosAdicionales()}" />
+											<p:menuitem value="Añadir clasificaciones"
+												action="#{fichaCuentaController.consultaClasificacion()}" />
+											<p:menuitem value="Bloqueos"
+												rendered="#{fichaCuentaController.isVista()}"
+												action="#{fichaCuentaController.consultaBloqueos()}" />
+											<p:menuitem value="Emitir documentos"
+												rendered="#{!fichaCuentaController.isMediosPago()}"
+												action="#{fichaCuentaController.emisionDocumentos()}" />
+											<p:menuitem value="Gestionar domicilios"
+												action="#{fichaCuentaController.consultaDomicilios()}" />
+											<p:menuitem value="Modificar centro"
+												action="#{fichaCuentaController.consultaCentroAsociado()}" />
+											<p:menuitem value="Modificar condiciones"
+												action="#{fichaCuentaController.irACondicionesTarifa()}"
+												rendered="#{fichaCuentaController.cuentaBean.estado == '1'}" />
+											<p:menuitem value="Relacionar cuentas"
+												action="#{fichaCuentaController.relacionarCuentas()}" />
+											<p:menuitem value="Relacionar personas"
+												rendered="#{!fichaCuentaController.isMediosPago()}"
+												action="#{fichaCuentaController.relacionarPersonas()}" />
+											<p:menuitem value="Cambio tarifa"
+														rendered="#{true}"
+														action="#{fichaCuentaController.cambiarTarifa()}"/>
+										</p:submenu>
+
+										<!--<p:submenu styleClass="submenu" label="IPF"-->
+											<!--rendered="#{fichaCuentaController.esPlazo() or fichaCuentaController.esPlazoConIPF() or fichaCuentaController.esPlazoActivoConCuota()}">-->
+											<!--<p:menuitem value="Alta de IPF"-->
+												<!--rendered="#{fichaCuentaController.esPlazo()}"-->
+												<!--action="#{fichaCuentaController.verificarAltaIPF()}" />-->
+											<!--<p:menuitem value="Consulta de IPF"-->
+												<!--rendered="#{fichaCuentaController.esPlazoConIPF()}"-->
+												<!--action="#{fichaCuentaController.irAConsultaIPF()}" />-->
+											<!--<p:menuitem value="Pago cuota"-->
+												<!--rendered="#{fichaCuentaController.esPlazoActivoConCuota()}"-->
+												<!--action="#{fichaCuentaController.irAPagoCuotaIPF()}" />-->
+										<!--</p:submenu>-->
+
+									</p:menu>
+								</div>
+
+								<!-- Cambios de estado -->
+								<h:panelGroup layout="block"
+									styleClass="btn-estados btn-estado float-right margin-right-10">
+									<p:commandButton
+										styleClass="btn_secundario btn-icono-texto icono-16 btn-estado-#{fichaCuentaController.cuentaBean.estadoEnum.nombre}"
+										id="btnOpcionesEstado"
+										value="#{fichaCuentaController.cuentaBean.estadoEnum.nombre}"
+										type="button" icon="ui-icon-menu" />
+									<p:menu
+										rendered="#{not empty fichaCuentaController.getEstadosDisponibles()}"
+										styleClass="margin-top-10 menu-ficha" id="mnuEstados"
+										widgetVar="mnuEstados"
+										value="#{fichaCuentaController.cuentaBean.estadoEnum.nombre}"
+										overlay="true" trigger="btnOpcionesEstado" my="left top"
+										at="left bottom">
+										<c:forEach var="estatus"
+											items="#{fichaCuentaController.getEstadosDisponibles()}">
+											<p:menuitem value="#{estatus.accion}"
+												action="#{fichaCuentaController.solicitaCambiarEstadoCuenta(estatus)}"
+												update="@form" />
+										</c:forEach>
+									</p:menu>
+								</h:panelGroup>
+
+								<div class="margin-bottom-20"></div>
+								<p:outputLabel
+									styleClass="#{fichaCuentaController.titular1.persona.claseTipoPersona()}"
+									value="#{fichaCuentaController.titular1.persona.nombreCompleto}" />
+								<h:panelGroup
+									rendered="#{fichaCuentaController.cuentaBean.anotaciones != null and fichaCuentaController.cuentaBean.anotaciones.size()>0}">
+									<div class="ui-messages-warn anotaciones">
+										<h3>Anotaciones</h3>
+										<div class="clear"></div>
+										<div class="margin-top-5">
+											<c:forEach var="anotacion"
+												items="#{fichaCuentaController.cuentaBean.anotaciones.subList(0,fichaCuentaController.anotacionesVisibles)}">
+												<div
+													class="#{anotacion.prioridad.equals(ConstantesFuncionales.COD_PRIORIDAD_ANOTACION_ALTA)? 'elementos-anotaciones anotaciones-aviso':'elementos-anotaciones'}">
+													<p:commandLink
+														value="#{fichaCuentaController.getTipoAnotacion(anotacion.tipo)}: 
+												#{(anotacion.descripcionCorta != null and anotacion.descripcionCorta.trim().length() != 0) ? anotacion.descripcionCorta : fichaCuentaController.obtenerSubCodigoAnotacion(anotacion.subcodigo)}"
+														action="#{fichaCuentaController.detalleAnotacion(anotacion)}" />
+													<h:outputLabel
+														rendered="#{anotacion.respuestas != null and !anotacion.respuestas.isEmpty()}">
+														<i class="fa fa-reply margin-left-5"></i>
+													</h:outputLabel>
+												</div>
+											</c:forEach>
+										</div>
+										<div class="clear margin-bottom-15"></div>
+										<p:commandButton styleClass="btn-mostrar float-right"
+											icon="fa fa-angle-down" value="Ver todas las anotaciones"
+											action="#{fichaCuentaController.mostrarTodasAnotaciones()}"
+											update="@form" process="@this"
+											rendered="#{fichaCuentaController.cuentaBean.anotaciones.size() gt fichaCuentaController.anotacionesVisibles}" />
+
+										<p:commandButton styleClass="btn-mostrar float-right"
+											icon="fa fa-angle-up" value="Ocultar anotaciones"
+											action="#{fichaCuentaController.establecerAnotacionesVisibles()}"
+											update="@form" process="@this"
+											rendered="#{(fichaCuentaController.cuentaBean.anotaciones.size() eq fichaCuentaController.anotacionesVisibles)and
+											(fichaCuentaController.cuentaBean.anotaciones.size() gt 6)}" />
+
+									</div>
+								</h:panelGroup>
+
+								<div class="clear"></div>
+								<div class="marco-datospersonales">
+
+									<p:outputLabel value="TARIFA: " />
+									<p:outputLabel styleClass="bold"
+										value="#{fichaCuentaController.cuentaBean.codLinea} #{fichaCuentaController.cuentaBean.idGrupoProducto}
+							 #{fichaCuentaController.cuentaBean.idProducto} #{fichaCuentaController.cuentaBean.idTarifaProducto}" />
+
+									<div class="clear"></div>
+									<p:outputLabel value="CLABE: " />
+									<p:outputLabel styleClass="bold"
+										value="#{fichaCuentaController.cuentaBean.cuentaClabe}" />
+									<p:commandButton styleClass="icono-detalle float-none"
+										icon="ui-icon-print" id="btnGenerarReporte"
+										widgetVar="btnGenerarReporte" alt="Generar reporte"
+										title="Generar reporte"
+										action="#{fichaCuentaController.generarReporteCuentaClabe()}"
+										update="messages" />
+
+									<div class="clear"></div>
+									<p:outputLabel value="TITULAR: " />
+									<p:commandLink styleClass="bold"
+										value="#{fichaCuentaController.titular1.persona.nombreCompleto}, #{fichaCuentaController.obtenerDescripcionTpDoc(fichaCuentaController.titular1.persona.tipoIdentificacion)}
+							 #{fichaCuentaController.titular1.persona.numIdentificacion}"
+										action="#{fichaCuentaController.verFichaCliente(fichaCuentaController.titular1)}" />
+
+									<div class="clear"></div>
+									<p:outputLabel value="CENTRO: " />
+									<p:outputLabel styleClass="bold"
+										value="#{fichaCuentaController.cuentaBean.centro} #{fichaCuentaController.obtenerDescripcionCentro(fichaCuentaController.cuentaBean.centro)}" />
+
+									<div class="clear"></div>
+									<p:outputLabel value="ESTADO: " />
+									<p:outputLabel styleClass="bold"
+										value="#{fichaCuentaController.obtenerDescripcionEstado(fichaCuentaController.cuentaBean.estado)}, " />
+									<p:outputLabel styleClass="bold"
+										value="#{fichaCuentaController.cuentaBean.fechaEstado}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+
+									<div class="clear"></div>
+									<p:outputLabel value="NIVEL DE CUENTA: "
+										rendered="#{fichaCuentaController.isVista()}" />
+									<p:outputLabel styleClass="bold"
+										value="#{fichaCuentaController.cuentaBean.nivelCuenta}"
+										rendered="#{fichaCuentaController.isVista()}" />
+								</div>
+
+								<h:panelGroup
+									rendered="#{fichaCuentaController.mostrarPersonasRelacionadas}">
+									<div class="clear-row"></div>
+									<p:outputLabel styleClass="titulo-form"
+										value="Personas Relacionadas " />
+									<div class="clear"></div>
+									<div class="marco-datosrepresentante">
+										<c:forEach var="persona"
+											items="#{fichaCuentaController.cuentaBean.personasRelacionadas}"
+											varStatus="myVarStatus">
+											<h:panelGroup
+												rendered="#{!fichaCuentaController.isTitular1(persona)}">
+												<p:outputLabel
+													value="#{persona.tipo.nombre} #{persona.numero}: " />
+												<p:commandLink styleClass="bold"
+													value="#{persona.persona.nombre}, #{fichaCuentaController.obtenerDescripcionTpDoc(persona.persona.tipoIdentificacion)} #{persona.persona.numIdentificacion}"
+													action="#{fichaCuentaController.verFichaCliente(persona)}" />
+												<div class="clear"></div>
+											</h:panelGroup>
+										</c:forEach>
+									</div>
+								</h:panelGroup>
+
+								<div class="clear-3"></div>
+
+								<p:fieldset id="status" legend="Status" toggleable="true"
+									toggleSpeed="500" collapsed="true"
+									rendered="#{fichaCuentaController.mostrarStatus}">
+									<p:ajax event="toggle" update="status"
+										listener="#{fichaCuentaController.consultaStatusDetalle()}" />
+
+									<div class="marco-datospersonales">
+
+										<h:panelGroup
+											rendered="#{fichaCuentaController.statusVigente and fichaCuentaController.cuentaBean.statusCuentaBean !=null}">
+											<p:outputLabel styleClass="bold" value="CARTERA VIGENTE" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Capital: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.capital} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Interés: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.interes} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Total de pago: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.total} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Fecha próxima liquidación: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.fecha}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+
+										</h:panelGroup>
+
+										<h:panelGroup
+											rendered="#{!fichaCuentaController.statusVigente and fichaCuentaController.cuentaBean.statusCuentaBean !=null}">
+											<p:outputLabel value="CARTERA VENCIDA" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Capital: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.capital} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Interés Deudor: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.interes} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Iva del interés real: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.ivaInteresReal} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Interés moratorio: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.interesDemora} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Iva del interés moratorio: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.ivaDemora} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Comisión: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.interesComision} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Iva de la comisión: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.ivaDeuda} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Total deuda: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.total} MXN" />
+
+											<div class="clear"></div>
+											<p:outputLabel value="Fecha de la deuda: " />
+											<p:outputLabel styleClass="bold"
+												value="#{fichaCuentaController.cuentaBean.statusCuentaBean.fecha}">
+												<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+
+										</h:panelGroup>
+										<p:outputLabel value="No se han encontrado datos"
+											rendered="#{fichaCuentaController.cuentaBean.statusCuentaBean ==null}" />
+
+									</div>
+								</p:fieldset>
+
+								<div class="clear-3"></div>
+								<p:fieldset id="cuentasRelacionadas"
+									legend="Cuentas relacionadas" toggleable="true"
+									toggleSpeed="500" collapsed="true">
+									<p:ajax event="toggle" update="cuentasRelacionadas"
+										listener="#{fichaCuentaController.consultaCuentasRelacionadas()}" />
+									<h:panelGroup layout="block" styleClass="marco-datospersonales"
+										rendered="#{fichaCuentaController.cuentasRelacionadasDetalle and fichaCuentaController.cuentaBean.cuentasRelacionadas !=null
+															and fichaCuentaController.cuentaBean.cuentasRelacionadas.size() > 0}">
+
+										<c:forEach var="relacionada"
+											items="#{fichaCuentaController.cuentaBean.cuentasRelacionadas}">
+											<p:outputLabel
+												value="#{fichaCuentaController.obtenerDescripcionTipoRelacion(relacionada.tipoRelacion)}: " />
+											<p:commandLink styleClass="bold"
+												value="#{relacionada.cuenta.numeroCuenta}, #{relacionada.cuenta.tipoCuenta}"
+												action="#{fichaCuentaController.verFichaCuenta(relacionada)}" />
+											<div class="clear"></div>
+										</c:forEach>
+
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="sinresultados"
+										rendered="#{fichaCuentaController.cuentasRelacionadasDetalle
+									and (fichaCuentaController.cuentaBean.cuentasRelacionadas ==null or fichaCuentaController.cuentaBean.cuentasRelacionadas.size() == 0)}">
+										<div>
+											<p:outputLabel
+												value="No se han encontrado relaciones en estado activo" />
+										</div>
+									</h:panelGroup>
+								</p:fieldset>
+
+							</h:panelGroup>
+
+							<div class="clear-3"></div>
+
+
+						</div>
+					</h:form>
+
+					<p:dialog id="dlgErrorReporte" widgetVar="dlgErrorReporte"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade" draggable="false" modal="true"
+						resizable="false" header="Error">
+						<!--icono de la modal -->
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No fue posible generar el comprobante de la cuenta clabe." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="Por favor, póngase en contacto con su centro de soporte." />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							onclick="PF('dlgErrorReporte').hide();" id="Aceptar"
+							value="Aceptar" />
+					</p:dialog>
+
+					<p:dialog id="dlgConfirmacionEstado"
+						widgetVar="dlgConfirmacionEstado" appendTo="@(body)"
+						closable="false" dynamic="true" showEffect="fade"
+						hideEffect="fade" draggable="false" modal="true" resizable="false"
+						header="Error">
+						<!--icono de la modal -->
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{fichaCuentaController.mensajeConfirmacion}" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							onclick="PF('dlgConfirmacionEstado').hide();"
+							update=":frmFichaCuenta" id="cancelar" value="Cancelar"
+							immediate="true" />
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							id="aceptarCambio" widgetVar="btnAceptarCambio"
+							onclick="PF('dlgConfirmacionEstado').hide()" value="Aceptar"
+							action="#{fichaCuentaController.cambiarEstadoCuenta()}" />
+					</p:dialog>
+
+					<p:dialog id="dlgErrorEstado" widgetVar="dlgErrorEstado"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade" draggable="false" modal="true"
+						resizable="false" header="Error">
+						<!--icono de la modal -->
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Debe seleccionar el estado a cambiar de la lista desplegable." />
+						<div class="clear"></div>
+
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							id="aceptarError" value="Aceptar" update=":frmFichaCuenta"
+							onclick="PF('dlgErrorEstado').hide()" />
+					</p:dialog>
+
+					<p:dialog id="dlgRespuestaCambio" widgetVar="dlgRespuestaCambio"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade" draggable="false" modal="true"
+						resizable="false" header="Error">
+						<!--icono de la modal -->
+						<span class="#{fichaCuentaController.claseEstadoRespuesta}"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{fichaCuentaController.mensaje}" />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							id="aceptarRespuesta" widgetVar="btnAceptarRespuesta"
+							update=":frmFichaCuenta"
+							onclick="PF('btnAceptarRespuesta').disable(); PF('dlgRespuestaCambio').hide();"
+							oncomplete="PF('btnAceptarRespuesta').enable()" value="Aceptar"
+							action="#{fichaCuentaController.confirmaRespuesta()}" />
+					</p:dialog>
+
+					<ui:include src="/views/altaIPF/noSaldoIPFPopUp.xhtml">
+						<ui:param name="controllerActual" value="#{fichaCuentaController}" />
+					</ui:include>
+				</div>
+			</div>
+		</h:body>
+	</ui:define>
+
+</ui:composition>

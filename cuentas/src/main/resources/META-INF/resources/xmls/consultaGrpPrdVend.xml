@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="resultadoConsultaGrupo" wildcard="false"
+		map-null="false" map-empty-string="false" trim-strings="true">
+		<class-a>
+			mx.babel.bansefi.banksystem.cuentas.beans.TarifaBean
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.base.webservices.consultagruposproductosvendibles.ResponseBansefi.OTRCONSLISTAPDVTRNO.TRCONSLISTAPDVEVTZ.LGLISTAV
+   		</class-b>
+    <field>
+      <a>grupo</a>
+      <b>IDGRPPD</b>
+    </field>
+  </mapping>
+  <mapping map-id="resultadoConsultaProducto" wildcard="false"
+    map-null="false" map-empty-string="false">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.beans.TarifaBean
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.webservices.consultagruposproductosvendibles.ResponseBansefi.OTRCONSLISTAPDVTRNO.TRCONSLISTAPDVEVTZ.PVLISTAV
+    </class-b>
+    <field>
+      <a>producto</a>
+      <b>IDPDV</b>
+    </field>
+  </mapping>
+</mappings>

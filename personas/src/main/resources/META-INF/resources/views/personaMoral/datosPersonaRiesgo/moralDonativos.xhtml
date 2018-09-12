@@ -1,0 +1,459 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../../templates/plantilla-inicio.xhtml">
+<!--
+plantilla de wizard
+-->
+    <ui:define name="contenido">
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="formDonativos" styleClass="contenedor-form">
+                        
+						<h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion ne true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+	                            <!--botón volver al dashboard-->
+	                            <div>
+								<h2 class="gris-b">Alta de </h2>
+								<h2 class="azul-b">#{personaMoralRiesgoController.personaMoralBean.razonSocial} </h2>
+								<h3 class="gris-b">(#{personaMoralRiesgoController.obtenerDescripcionTpDoc()} #{personaMoralRiesgoController.personaMoralBean.numIdentificacion})</h3>
+								</div>
+	                      	</div>
+						</h:panelGroup>				
+						
+						<h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion eq true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+							<div>
+								<h2 class="gris-b">Modificación de </h2>
+								<h2 class="azul-b">#{personaMoralRiesgoController.personaMoralBean.razonSocial} </h2>
+								<h3 class="gris-b">(#{personaMoralRiesgoController.obtenerDescripcionTpDoc()} #{personaMoralRiesgoController.personaMoralBean.numIdentificacion})</h3>
+							</div>
+							</div>
+						</h:panelGroup>
+
+                        <!--Wizard Botones circulares superiores -->
+                        <div class="wiz-pasos">
+							<!-- Botones persona de riesgo -->
+							<p:commandButton value="Relacionar personas"
+								action="#{personaMoralRiesgoController.irPersonas()}" 
+								ajax="true" immediate="true"
+								update="formDonativos" styleClass="inactivo">
+								<f:param name="disableValidation" value="true" />   						
+							</p:commandButton>
+							<p:commandButton value="Grupo/ Filial"
+								action="#{personaMoralRiesgoController.irGrupoFilial()}" 
+								ajax="true" immediate="true"
+								update="formDonativos" styleClass="inactivo">
+								<f:param name="disableValidation" value="true" />  					
+							</p:commandButton>
+							<p:commandButton value="Donativos" styleClass="activo"/>
+                        </div>
+						
+                        <!--contenedor del wizard-->
+                        <div class="wiz-contenedor">
+                            <div class="wiz-atras">
+                                <!--aqui va el boton de "paso anterior" del wizard-->
+                                <p:commandButton icon="ui-icon-arrow-1-w" id="atras" action="#{personaMoralRiesgoController.irGrupoFilial()}" update="formDonativos">
+                                	<f:param name="disableValidation" value="true" />	
+                                </p:commandButton>
+                            </div>
+                            <div class="contenedor-campos">
+                            
+                            	<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios" />
+	
+								<div class="margin-top-10"></div>
+	
+								<p:outputLabel styleClass="titulo-form margin-left-10"
+									value="Donativos" />
+								
+								<div class="margin-top-10"></div>
+								
+								<div class="display-flex">
+								
+									<!-- Frecuencia -->
+									<p:fieldset styleClass="grid_16" legend="Su Frecuencia es" toggleable="false" collapsed="false">
+							
+										<p:selectManyCheckbox styleClass="tabla-checkbox sin-margen" id="frecuencia" value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.frecuencia}"  layout="grid" columns="1" >
+									    	<f:selectItems value="#{personaMoralRiesgoController.selectedFrecuencia}"  var="freq" itemLabel="#{freq}" itemValue="#{personaMoralRiesgoController.selectedFrecuencia.indexOf(freq)}"/>
+									    </p:selectManyCheckbox>
+									    
+									</p:fieldset>
+									
+									<!-- Forma de entrega -->
+									<p:fieldset styleClass="grid_16" legend="Forma de entrega" toggleable="false" collapsed="false">
+									
+										<p:selectManyCheckbox styleClass="tabla-checkbox sin-margen" id="entrega" value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.entrega}"  layout="grid" columns="1" >
+									    	<f:selectItems value="#{personaMoralRiesgoController.selectedEntrega}"  var="entr" itemLabel="#{entr}" itemValue="#{personaMoralRiesgoController.selectedEntrega.indexOf(entr)}"/> 
+									    </p:selectManyCheckbox>
+									
+									</p:fieldset>
+									
+									<!-- Tipos que aportan -->
+									<p:fieldset styleClass="grid_16" legend="Tipos de personas que aportan" toggleable="false" collapsed="false">
+									
+										<p:selectManyCheckbox styleClass="tabla-checkbox sin-margen" id="personas" value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.personas}"  layout="grid" columns="1" >
+									    	<f:selectItems value="#{personaMoralRiesgoController.selectedPersonas}"  var="pers" itemLabel="#{pers}" itemValue="#{personaMoralRiesgoController.selectedPersonas.indexOf(pers)}"/>
+									    	<f:selectItem  itemValue="personas" itemLabel=""/>
+									        <p:ajax global="false" event="change" listener="#{personaMoralRiesgoController.actualizaDatosPersonas()}" update="personas,personasEspecificas" process="personas,#{personaMoralRiesgoController.personaMoralBean.donativosBean.personas.contains('personas') ? 'personasEspecificas':''}"/>
+					            				<f:param name="disableValidation" value="true" />
+									    </p:selectManyCheckbox>
+										
+										<div class="grid_44 push_4">
+											<p:inputMask id="personasEspecificas" styleClass="check-input-3" 
+	                                            disabled="#{!personaMoralRiesgoController.personaMoralBean.donativosBean.personas.contains('personas')}"
+												required="#{param['disableValidation']==null and param['formDonativos:personas']==null or param['formDonativos:personas'].contains('personas')}"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.personasEspecificas}"
+												maxlength="50" onblur="value=value.toUpperCase()"
+												placeholder="Persona(s) específica(s)">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+											</p:inputMask>
+										</div>
+										
+									</p:fieldset>
+									
+								</div>
+									
+									<div class="clear-row"></div>
+									
+									<p:outputLabel styleClass="titulo-form margin-left-10"
+									value="Información financiera" />
+									<p:outputLabel styleClass="titulo-form margin-left-10"
+									value="(cifras al cierre del año anterior)" />
+									
+									<div class="clear-row"></div>
+									
+									<!-- Donativos -->
+									<p:fieldset legend="Balance" toggleable="false" collapsed="false">
+										
+										<!-- Activo fijo -->
+										<div class="grid_9">
+											<p:outputLabel for="activoFijo" id="activoFijoLabel" value="Activo Fijo"/>
+											<div class="clear-3"></div>
+                                            <pe:inputNumber id="activoFijo" maxlength="14"
+                                                    decimalPlaces="2" decimalSeparator="." thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.activoFijo}">
+											</pe:inputNumber>	
+											<pe:keyFilter regEx="/[\d\.]/" for="activoFijo" />									
+										</div>
+										
+										<!-- Activo Circulante -->
+										<div class="grid_9">
+											<p:outputLabel for="activoCirculante" id="activoCirculanteLabel" value="Activo Circulante"></p:outputLabel>
+											<div class="clear-3"></div>
+                                            <pe:inputNumber id="activoCirculante" maxlength="14"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.activoCirculante}">
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="activoCirculante" />											
+										</div>
+										
+										<!-- Pasivo corto plazo -->
+										<div class="grid_10">
+											<p:outputLabel for="pasivoCortoPlazo" id="pasivoCortoPlazoLabel" value="Pasivo corto plazo"></p:outputLabel>
+											<div class="clear-3"></div>
+                                            <pe:inputNumber id="pasivoCortoPlazo" maxlength="14"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.pasivoCortoPlazo}">
+											</pe:inputNumber>	
+											<pe:keyFilter regEx="/[\d\.]/" for="pasivoCortoPlazo" />									
+										</div>
+										
+										<!-- Pasivo largo plazo -->
+										<div class="grid_10">
+											<p:outputLabel for="pasivoLargoPlazo" id="pasivoLargoPlazoLabel" value="Pasivo largo plazo"></p:outputLabel>
+											<div class="clear-3"></div>
+                                            <pe:inputNumber id="pasivoLargoPlazo" maxlength="14"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.pasivoLargoPlazo}">
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="pasivoLargoPlazo" />											
+										</div>
+										
+										<!-- Capital contable -->
+										<div class="grid_10">
+											<p:outputLabel for="capitalContable" id="capitalContableLabel" value="Capital contable"></p:outputLabel>
+											<div class="clear-3"></div>
+                                            <pe:inputNumber id="capitalContable" maxlength="14"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.capitalContable}">
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="capitalContable" />										
+										</div>
+										
+										<div class="clear-row"></div>
+										
+										<!-- Moneda -->
+										<div class="grid_18">
+											<p:outputLabel for="moneda" id="monedaLabel" value="Moneda"></p:outputLabel>
+											<div class="clear-3"></div>
+											<b:autoComplete id="moneda" value="#{personaMoralRiesgoController.monedaSelected}"
+													maxlength="50" catalogSource="catalogoMonedaUtils" var="item"
+													itemLabel="#{item.descripcionL}" itemValue="#{item}"
+													converter="catalogoConverter" forceSelection="true"
+													onblur="value=value.toUpperCase()">
+													<p:ajax event="query" global="false"></p:ajax>													
+											</b:autoComplete>	
+											<pe:keyFilter regEx="/[A-Za-z]/" for="moneda" />										
+										</div>
+									
+									</p:fieldset>
+									
+									<div class="clear-row"></div>
+									
+									<!-- Resultados -->
+									<p:fieldset legend="Resultados" toggleable="false" collapsed="false">
+										
+										<!-- Ingreso Anual -->
+										<div class="grid_10">
+											<p:outputLabel for="ingresoAnual" id="ingresoAnualLabel" value="Ingreso anual"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="ingresoAnual" maxlength="14" styleClass="pe-inputNumber"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.ingresoAnual}">
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="ingresoAnual" />
+											<span class="pe-inputNumber-suffix">MXN</span>	
+										</div>
+										
+										<!-- Costo de ventas -->
+										<div class="grid_10">
+											<p:outputLabel for="costoVentas" id="costoVentasLabel" value="Costo de ventas"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="costoVentas" maxlength="14" styleClass="pe-inputNumber"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.costoVentas}">	
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="costoVentas" />
+											<span class="pe-inputNumber-suffix">MXN</span>
+										</div>
+										
+										<!-- Gastos -->
+										<div class="grid_10">
+											<p:outputLabel for="gastos" id="gastosLabel"
+												value="Gastos"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="gastos" maxlength="14" styleClass="pe-inputNumber"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.gastos}">	
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="gastos" />
+											<span class="pe-inputNumber-suffix">MXN</span>	
+										</div>
+										
+										<!-- Utilidad -->
+										<div class="grid_10">
+											<p:outputLabel for="utilidad" id="utilidadLabel" value="Utilidad"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="utilidad" maxlength="14" styleClass="pe-inputNumber"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                    thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.utilidad}">	
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="utilidad" />
+											<span class="pe-inputNumber-suffix">MXN</span>											
+										</div>
+										
+										<!-- Número de empleados -->
+										<div class="grid_8">
+											<p:outputLabel for="numEmpleados" id="numEmpleadosLabel" value="Nº de empleados"></p:outputLabel>
+											<div class="clear-3"></div>
+											<div class="ui-inputNum">
+												<p:inputMask id="numEmpleados"
+													value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.numEmpleados}"
+													maxlength="8" onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^-?[0-9]/" />	
+												</p:inputMask>
+											</div>
+										</div>
+									
+									</p:fieldset>
+									
+									<div class="clear-row"></div>
+									
+									<!-- Comercio Exterior -->
+									<p:fieldset legend="Comercio Exterior" toggleable="false" collapsed="false">
+									
+										<!-- Ingreso Exportaciones -->
+										<div class="grid_10">
+											<p:outputLabel for="ingresoExp" id="ingresoExpLabel" value="Ingreso exportaciones"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="ingresoExp" maxlength="14" styleClass="pe-inputNumber"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                     thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												     value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.ingresoExp}">	
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="ingresoExp" />
+											<span class="pe-inputNumber-suffix">MXN</span>			
+										</div>	
+										
+										<!-- Pago exportaciones -->
+										<div class="grid_10">
+											<p:outputLabel for="pagoExp" id="pagoExpLabel" value="Pago exportaciones"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="pagoExp" maxlength="14" styleClass="pe-inputNumber"
+                                                     decimalPlaces="2" decimalSeparator="." thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.pagoExp}">
+											</pe:inputNumber>
+											<pe:keyFilter regEx="/[\d\.]/" for="pagoExp" />                                           
+											<span class="pe-inputNumber-suffix">MXN</span>		
+										</div>
+										
+										<!-- En US Dólares -->
+										<div class="grid_10">
+											<p:outputLabel for="usDolares" id="usDolaresLabel" value="En US dólares"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="usDolares" maxlength="14"
+                                                     decimalPlaces="2" decimalSeparator="."
+                                                     thousandSeparator="," minValue="0" maxValue="999999999999.99"
+												     value="#{personaMoralRiesgoController.personaMoralBean.donativosBean.usDolares}">	
+											</pe:inputNumber> 
+											<pe:keyFilter regEx="/[\d\.]/" for="usDolares" />                           	
+										</div>
+										
+										<!-- Indicar Moneda -->
+										<div class="grid_18">
+											<p:outputLabel for="indicarMoneda" id="indicarMonedaLabel"
+												value="En caso contrario indicar la moneda"></p:outputLabel>
+											<div class="clear-3"></div>												
+											<b:autoComplete id="indicarMoneda" value="#{personaMoralRiesgoController.monedaOtraSelected}"
+													maxlength="50" catalogSource="catalogoMonedaUtils" var="item"
+													itemLabel="#{item.descripcionL}" itemValue="#{item}"
+													converter="catalogoConverter" forceSelection="true"
+													onblur="value=value.toUpperCase()">
+													<p:ajax event="query" global="false"></p:ajax>													
+											</b:autoComplete>
+											<pe:keyFilter regEx="/[a-zA-Z]/" for="indicarMoneda" />										
+										</div>
+									
+									</p:fieldset>
+									<!-- Fin Tabs -->
+								
+                            </div>
+                            <div class="wiz-siguiente">
+                                <!--aqui va el boton de "paso siguiente" del wizard-->
+                                <p:commandButton icon="fa fa-check" id="terminar" update="formDonativos" ajax="true" action="#{personaMoralRiesgoController.terminarFlujo()}" ></p:commandButton>
+                                <p:tooltip id="toolTipTerminar" for="terminar" value="Terminar" />
+                            </div>
+                        </div>
+                        
+                        <h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion ne true and personaMoralRiesgoController.elementosVisibles}">
+							<p:commandButton styleClass="btn_secundario margin-top-10 push_1" id="cancelarA" immediate="true" value="Cancelar" onclick="PF('dlgCancelarAlta').show();"/>
+						</h:panelGroup>
+					    
+					    <h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion eq true and personaMoralRiesgoController.elementosVisibles}">
+							<p:commandButton styleClass="btn_secundario margin-top-10 push_1" id="cancelarM" immediate="true" value="Cancelar" onclick="PF('dlgCancelarModificacion').show();"/>
+						</h:panelGroup>  
+                        
+                        <ui:include src="../../store.xhtml">
+					    	<ui:param name="storeBean" value="#{personaMoralRiesgoController}"/>
+						</ui:include>
+                        
+                    </h:form>
+                </div>
+              	
+                <p:dialog widgetVar="dlgCancelarModificacion" id="dlgCancelarModificacion" appendTo="@(body)" header="Cancelar Modificación de persona moral" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--                     <p:outputLabel styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar la modfificación de persona moral" /> -->
+<!--                     <div class="clear"></div> -->
+<!--                     <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--                     <div class="margin-bottom-20"></div> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarModificacion').hide();" id="VolverM"  value="Continuar con la modificación" immediate="true"/> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartarM" value="No guardar" immediate="true" action="#{personaMoralRiesgoController.botonCancelar()}"/> -->
+<!--                     <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardarM" value="Guardar" onclick="return storeData();" /> -->
+
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralRiesgoController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta" appendTo="@(body)" header="Cancelar Alta de persona moral" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--                     <p:outputLabel styleClass="modal-mensaje" value="¡Atencion! Está a punto de cancelar el alta de cliente" /> -->
+<!--                     <div class="clear"></div> -->
+<!--                     <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--                     <div class="margin-bottom-20"></div> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarAlta').hide();" id="Volver"  value="Continuar con el alta" immediate="true"/> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartar" value="No guardar" immediate="true" action="#{personaMoralRiesgoController.botonCancelar()}"/> -->
+<!--                     <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardar" value="Guardar" onclick="return storeData();" /> -->
+
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralRiesgoController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlgAltaCorrecto" id="dlgAltaCorrecto" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="El cliente ha sido dado de alta correctamente." />
+                    <div class="clear"></div>
+                    <!--acciÃ³n a tomar por el usuario-->
+                    <p:outputLabel styleClass="modal-accion" value="Deberá adicionar los documentos necesarios." />
+                    <div class="margin-bottom-20"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarFinA" value="Aceptar" 
+                    	immediate="true" action="#{personaMoralRiesgoController.irDocumentos()}" />
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlgModCorrecto" id="dlgModCorrecto" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="El cliente se modificó correctamente." />
+                    <div class="clear"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarFinM" value="Aceptar" 
+                    	immediate="true" action="#{personaMoralRiesgoController.irFichaCliente()}" />
+                </p:dialog>  
+                
+                <p:dialog widgetVar="dlgCampoPersonasRequerido" id="dlgCampoPersonasRequerido" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-warn-icon warn-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="El campo persona(s) especifica(s) es requerido." />
+                    <div class="clear"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" 
+                    	immediate="true" onclick="PF('dlgCampoPersonasRequerido').hide()" />
+                </p:dialog>                            
+            
+            </div><!--termina container 48-->
+        </h:body>
+    </ui:define>
+</ui:composition>

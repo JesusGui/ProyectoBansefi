@@ -1,0 +1,420 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../../templates/plantilla-inicio.xhtml">
+
+<ui:define name="contenido">
+    <h:body>
+        <div class="container_48">
+            <!-- Se agregó div contenedores -->
+            <div class="contenedor">
+                <div class="contenedor-form">
+                
+                <pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" var="ConstantesFuncionales" />
+
+                    <div class="titulo centrar-objeto btn-inline-set">
+                        <p:commandButton icon="ui-icon-arrow-1-w" action="#{retiroController.volverInicio()}"></p:commandButton>
+                        <h1>Retiro</h1>
+                    </div>
+                    <h:form id="formRetiro">
+
+                        <div class="contenedor-campos">
+                        	<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" value="*Campos Obligatorios"></p:outputLabel>
+							
+							<div class="margin-top-10"></div>
+                          
+                          <h:outputLabel styleClass="txt-campos-oblg grid_40"
+                                		value="Los campos marcados en rojo son requeridos" 
+                                		rendered="#{facesContext.validationFailed}"/>    		
+							
+                            <div class="grid_40 alpha">
+                            
+                            <h:panelGroup id="panelAnotaciones" rendered="#{retiroController.retiro.anotaciones != null and retiroController.retiro.anotaciones.size() > 0}">
+								<div class="ui-messages-warn anotaciones">
+									<h3>Anotaciones</h3>
+									<div class="clear"></div>
+									<div class="contenedor-wrap">
+										<c:forEach var="anotacion" items="#{retiroController.retiro.anotaciones.subList(0,retiroController.anotacionesVisibles)}">
+											<div class="#{anotacion.prioridad.equals(ConstantesFuncionales.COD_PRIORIDAD_ANOTACION_ALTA)? 'elementos-anotaciones anotaciones-aviso':'elementos-anotaciones'}">
+												<p:commandLink value="#{retiroController.getTipoAnotacion(anotacion.tipo)}: 
+												#{(anotacion.descripcionCorta != null and anotacion.descripcionCorta.trim().length() != 0) ? anotacion.descripcionCorta : retiroController.obtenerSubCodigoAnotacion(anotacion.subcodigo)}"
+													action="#{retiroController.detalleAnotacion(anotacion)}" process="@this"/>
+												<h:outputLabel rendered="#{anotacion.respuestas != null and !anotacion.respuestas.isEmpty()}"><i class="fa fa-reply margin-left-5"></i></h:outputLabel>
+											</div>
+										</c:forEach>
+									</div>
+									<div class="margin-bottom-15"></div>
+									<p:commandButton styleClass="btn-mostrar float-right"
+										icon="fa fa-angle-down" value="Ver todas las anotaciones"
+										action="#{retiroController.mostrarTodasAnotaciones()}" immediate="true"
+										update="@form" proccess="@this"
+										rendered="#{retiroController.retiro.anotaciones.size() gt retiroController.anotacionesVisibles}"/>
+										
+									<p:commandButton styleClass="btn-mostrar float-right"
+										icon="fa fa-angle-up" value="Ocultar anotaciones"
+										action= "#{retiroController.establecerAnotacionesVisibles()}" immediate="true"
+										update="@form" proccess="@this"
+										rendered="#{(retiroController.retiro.anotaciones.size() eq retiroController.anotacionesVisibles) and
+											(retiroController.retiro.anotaciones.size() gt 6)}"/>
+								</div>
+							</h:panelGroup>
+                                
+	                                <!-- Cuenta de retiro -->
+	                                <div class="grid_9">
+	                                    <p:outputLabel for="cuentaRetiro" value="N° de cuenta" />
+	                                    <div class="clear-3"></div>
+	                                    <p:inputMask id="cuentaRetiro" value="#{retiroController.retiro.cuentaRetiro}" 
+	                                    	label="Cuenta" maxlength="10" required="true" tabindex="1">
+	                                        <pe:keyFilter regEx="/[0-9_]/i" preventPaste="false"/>
+	                                        <p:ajax event="blur"
+	                                        	listener="#{retiroController.comprobarCuentaRetiro()}" 
+	                                        update="titularCuenta titularCuentaNombre titularCuentaError nivelCuentaValor 
+	                                        aceptar :formRetiro" global="false"></p:ajax>
+	                                    </p:inputMask>
+	                                </div>
+	                                
+	                                <div class="grid_3">
+		                                <!-- boton de busqueda de cuentas -->
+		                                <div class="label-vacio"></div>
+		                                <div class="clear-3"></div>
+		                                <p:commandButton styleClass="btn-icono-conbackground" id="busquedaPersona" immediate="true" 
+		                                	title="Buscar cuenta" action="#{retiroController.buscarPersona()}" 
+		                                	icon="ui-icon-search" ajax="true" update="formRetiro"></p:commandButton>
+		                                	
+		                               
+									</div>
+									
+									<div class="grid_3">
+										<h:outputLabel id="nivelCuenta" value="Nivel" />
+										<div class="clear-3"></div>
+										<div class="input-label-valor">
+											<h:outputLabel styleClass="label-valor"
+												id="nivelCuentaValor" value="#{retiroController.retiro.nivelCuenta}"
+												style="display:#{(retiroController.muestraTitular) ? 'flex' : 'none'}" />
+										</div>
+									</div>
+									
+	                                <div class="grid_33">
+	                                	<h:outputLabel styleClass="mensaje-incorrecto" id="titularCuentaError" 
+                                    	value="El número de cuenta es incorrecto" 
+                                    	style="display:#{(retiroController.muestraTitularError) ? 'block' : 'none' }" />
+	                                    <h:outputLabel id="titularCuenta" value="Titular de la cuenta:"/>
+										<div class="clear-3"></div>
+										<div class="input-label-valor">
+											<h:outputLabel styleClass="label-valor"
+												id="titularCuentaNombre" 
+												value="#{retiroController.retiro.usuarioRetiro}"
+												style="display:#{(retiroController.muestraTitular) ? 'flex' : 'none' }" />										
+										</div>
+	                                </div>
+	                                
+	                                <div class="clear-row"></div>
+	                                
+	                                <!-- Identificación del cliente -->
+	                                <div class="grid_24">
+	                                
+		                                <div class="grid_33 alpha">
+		                                    <p:outputLabel for="identificacionClienteRetiro" value="Identificación" />
+		                                    <div class="clear-3"></div>
+		                                    <p:selectOneMenu tabindex="2" id="identificacionClienteRetiro" 
+		                                    	value="#{retiroController.retiro.identificacionClienteRetiro}" required="true">
+												<f:selectItem itemValue="#{null}" itemLabel="Seleccione un tipo" itemDisabled="true" noSelectionOption="true" />
+		                                        <c:forEach items="#{catalogoUtils.getCatalogo('TP_ID_EXT_PERS')}" var="item">
+													<c:if test="#{item.claveFila != 'F3'}">
+														<f:selectItem
+															itemValue="#{item.claveFila}"
+		                                        			itemLabel="#{item.descripcionL}" />
+													</c:if>
+												</c:forEach>
+		                                    </p:selectOneMenu>
+		                                </div>
+		
+		                                <!-- Número de identificación de cliente -->
+		                                <div class="grid_15">
+		                                    <div class="label-vacio"></div>
+		                                    <div class="clear-3"></div> 
+		                                    <p:inputMask tabindex="3" placeholder="Nùmero" id="numeroIdentificacionClienteRetiro" 
+		                                    	value="#{retiroController.retiro.numeroIdentificacionClienteRetiro}" label="Cuenta" 
+		                                    	maxlength="14" required="true">
+		                                        <pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/"/>
+		                                    </p:inputMask>
+		                                </div>
+		                                
+		                            </div>
+		                            
+		                            <!-- Operación de retiro -->
+	                                <!-- Operación de retiro -->
+	                                <div class="grid_24">
+	                                	<p:growl id="growlOperacion" showDetail="true" sticky="true" for="operacionRetiro" />
+	                                    <p:outputLabel for="operacionRetiro" value="Operación" />
+	                                    <div class="clear-3"></div>
+	                                    <p:selectOneMenu panelStyleClass="combo-estandar" tabindex="4" id="operacionRetiro" value="#{retiroController.retiro.operacionRetiro}" required="true"
+	                                    	disabled="#{retiroController.retiro.operacionRetiro == '990001' ? true : false}">
+	                                        <p:ajax event="change" update="conceptoRetiro" resetValues="true"
+	                                        	listener="#{retiroController.calculaConcepto()}" />
+	                                        <p:ajax event="change" update="operacionRetiro cuentaPuenteRetiro" resetValues="true" 
+	                                        	listener="#{retiroController.cambiarPuente()}" global="false" />	                                        
+	
+	                                        <c:forEach items="#{catalogoUtils.getCatalogo('OPERACION_RETIRO')}" var="item">
+	                                        	<f:selectItem 
+	                                        		itemValue="#{item.claveFila}"
+	                                        		itemLabel="#{item.descripcionL}"/>
+	                                        </c:forEach>
+	
+	                                    </p:selectOneMenu>
+	                                    
+	                                </div>
+	                                
+	                                <div class="clear-row"></div>
+								
+	                                <!-- Importe del retiro -->
+	                                <div class="grid_12">
+	                                	<p:message id="importeRetiroVal" display="icon" for="importeRetiro"></p:message>
+	                                	<p:outputLabel for="importeRetiro" value="Importe" id="txt-retiro" />
+	                                	<div class="clear-3"></div>
+	                                    <pe:inputNumber tabindex="5" emptyValue="0" id="importeRetiro"
+											label="Importe" maxValue="999999999999.99" required="true" 
+											decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+											styleClass="pe-inputNumber" placeholder="Importe"
+											value="#{retiroController.retiro.importeRetiro}">
+	                                    	<f:validateDoubleRange minimum="0.01"/>
+											<p:ajax event="blur" partialSubmit="true"
+												listener="#{retiroController.mostrarUnidadesMillon()}" 
+	                                        	process="@this"
+	                                        	update=" unidadesMillon unidadesMillonMsg unidadesMillonLabel
+	                                        		@this importeRetiroVal txt-retiro" 
+	                                        	oncomplete="$(document.getElementById('formRetiro:unidadesMillon_input')).removeClass('ui-state-error'); 
+	                                        		$(document.getElementById('formRetiro:unidadesMillonLabel')).removeClass('ui-state-error');" global="false"> 
+											</p:ajax>
+	                                        <f:param name="disbaleValidation" value="true"/> 
+	                                    </pe:inputNumber>
+	                                    <span class="pe-inputNumber-suffix">MXN</span>
+	                                </div>
+	
+	                                <!-- Unidades de millón del retiro -->
+	                                <div class="grid_10">
+										<div class="grid_48">
+											<p:message for="unidadesMillon" display="icon"
+												id="unidadesMillonMsg" />
+	                                       	<p:outputLabel id="unidadesMillonLabel" for="unidadesMillon"
+												value="Unidades de millón"  />
+	                                       		<div class="clear-3"></div>
+	                                    </div>
+	                                    <div class="grid_34">
+	                                    	<pe:inputNumber emptyValue="0" id="unidadesMillon"
+												thousandSeparator="," decimalPlaces="0" decimalSeparator=""
+												value="#{retiroController.retiro.unidadesMillon}"
+												minValue="0" maxValue="999999" 
+												disabled="#{not (retiroController.retiro.mostrarUnidadesMillon)}"
+												label="UnidadesMillon" maxlength="14"
+												required="#{param['disableValidation']==null}">
+												<f:attribute name="importe"
+													value="#{retiroController.retiro.importeRetiro}" />
+												<f:param name="disableValidation" value="true" />
+												<f:validator validatorId="unidadesMillonValidatorRetiro" disabled="#{param['disableValidation']==true}"/>
+											</pe:inputNumber>
+	                                        </div>
+	                                </div>
+	                                
+									<pe:tooltip global="true" position="left center" targetPosition="right center" />
+                                
+                                <!-- Concepto del retiro -->
+                                <div class="grid_26">
+ 									<p:outputLabel for="conceptoRetiro" value="Concepto" />
+                                    <div class="clear-3"></div>
+                                    <p:inputText tabindex="7" id="conceptoRetiro" value="#{retiroController.retiro.conceptoRetiro}" 
+                                    	label="Concepto" maxlength="100" required="true">
+                                    </p:inputText>
+                      
+                                </div>
+                                
+                                <div class="clear-row"></div>
+                                
+                                <!-- Fecha valor del retiro -->
+	                                <div class="grid_8">
+	                                	<p:message for="fechaValorRetiro" id="fechaValorRetiroMsg" display="icon"/>
+	                                    <p:outputLabel for="fechaValorRetiro" value="Fecha Valor" />
+	                                    <div class="clear-3"></div>
+	                                    <p:calendar tabindex="8" id="fechaValorRetiro" value="#{retiroController.retiro.fechaValorRetiro}" showOn="button" 
+	                                    	pattern="dd/MM/yyyy" mask="true" required="true" mindate="#{retiroController.fechaMinima}" maxdate="#{retiroController.fechaActual}" locale="es">
+	                                    	<f:attribute name="beginDate" value="#{retiroController.fechaMinima}"/>
+	                                    	<f:attribute name="endDate" value="#{retiroController.fechaActual}" />
+	                                    	<f:validator validatorId="dateRangeValidator"/>
+	                                    	<p:ajax event="change" process="fechaValorRetiro" 
+	                                    		update="fechaValorRetiro fechaValorRetiroMsg" partialSubmit="true" global="false"/>
+	                                        
+	                                        <p:ajax event="dateSelect" process="fechaValorRetiro" 
+	                                        	update="fechaValorRetiro fechaValorRetiroMsg" partialSubmit="true" global="false" />
+	                                    </p:calendar>
+	                                    
+	                                </div>
+
+                                <!-- Imprimir el saldo -->
+                                    <!-- Retiro desde cuenta puente -->
+                                    <div class="grid_11">
+                                       <p:outputLabel for="cuentaPuenteRetiro" value="Utilizar cuenta puente" />
+                                       <div class="clear-3"></div>
+                                       <div class="label-switch">
+                                       		<p:inputSwitch id="cuentaPuenteRetiro" value="#{retiroController.retiro.cuentaPuenteRetiro}" onLabel="Si" 
+                                       		offLabel="No" required="true">
+                                       			<p:ajax  event="change" update="operacionRetiro conceptoRetiro" resetValues="true" 
+                                       				listener="#{retiroController.cambiarOperacion()}" global="false"></p:ajax>
+                                       		</p:inputSwitch>
+                                       </div>
+                                    </div>
+                                    
+                                <div class="clear"></div>
+                                
+                            </div>
+
+                            <!-- Botón de submit -->
+
+                            <div class="posicion-absoluta-btn">
+                                <p:commandButton tabindex="9" styleClass="btn-consultar" id="aceptar" icon="ui-icon-arrow-1-n"
+                                validateClient="true" value="Realizar retiro" update="growlOperacion formRetiro :dlgAvisoNoRelacionado :dlgConfirmarRetiro"
+                                 actionListener="#{retiroController.submitForm()}"/>
+                            </div>
+
+                            <div class="clear"></div>
+
+                        </div>
+                        <!--termina contenedor-campos-->
+
+                        <div class="margin-top-10"></div>
+                        <p:commandButton tabindex="10" id="volverInicio" styleClass="btn_secundario"
+                        	value="Cancelar" immediate="true"
+                        	action="/views/inicio/inicio?faces-redirect=true"/>
+                    </h:form>
+
+                </div>
+                <!--termina contenedor-form-->
+            </div>
+            <!--termina contenedor-->
+        </div>
+        <!--termina container-48-->
+        
+        <!-- MENSAJE SALDO INSUFICIENTEs -->
+        <p:dialog widgetVar="dlgAvisoNoSaldo" id="dlgAvisoNoSaldo" header="Retiro" showEffect="fade" hideEffect="fade"
+        		modal="true" resizable="false" closable="false" appendTo="@(body)" visible="#{retiroController.saldoError  and (not facesContext.validationFailed)}" dynamic="true">
+            <span class="ui-messages-warn-icon warn-dialog"></span>
+            <p:outputLabel styleClass="modal-mensaje" 
+            	value="¡Atención! La cuenta introducida no cuenta con el saldo suficiente para realizar el retiro." />
+            <div class="clear"></div>
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoNoSaldo').hide();" />            
+        </p:dialog>
+        
+        <!-- MENSAJE CUENTA INCORRECTA -->
+        <p:dialog widgetVar="dlgAvisoCuentaIncorrecta" id="dlgAvisoCuentaIncorrecta" header="Retiro" showEffect="fade" hideEffect="fade"
+        			modal="true" resizable="false" closable="false" appendTo="@(body)" visible="#{retiroController.cuentaIncorrecta  and (not facesContext.validationFailed)}" dynamic="true">
+            <span class="ui-messages-warn-icon warn-dialog"></span>
+            <p:outputLabel styleClass="modal-mensaje" 
+            	value="¡Atención! La cuenta introducida es inexistente." />
+            <div class="clear"></div>
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoCuentaIncorrecta').hide();" />            
+        </p:dialog>
+        
+        <!-- MENSAJE CUENTA NO VISTA -->
+	        <p:dialog widgetVar="dlgAvisoCuentaNoVista" id="dlgAvisoCuentaNoVista" header="Retiro" showEffect="fade" hideEffect="fade"
+	        			modal="true" resizable="false" closable="false" appendTo="@(body)"  visible="#{retiroController.cuentaNoVista and (not facesContext.validationFailed)}" dynamic="true">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! La cuenta introducida no es vista." />
+	            <div class="clear"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoCuentaNoVista').hide();" />            
+	        </p:dialog>
+	   
+	   <!-- MENSAJE CUENTA INACTIVA -->
+	        <p:dialog widgetVar="dlgAvisoCuentaInactiva" id="dlgAvisoCuentaInactiva" header="Retiro" showEffect="fade" hideEffect="fade"
+	        			modal="true" resizable="false" closable="false" appendTo="@(body)"  visible="#{retiroController.cuentaInactiva and (not facesContext.validationFailed)}" dynamic="true">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! La cuenta introducida se encuentra Inactiva." />
+	            <div class="clear"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoCuentaInactiva').hide();" />            
+	        </p:dialog>
+	    
+	    <!-- MENSAJE CUENTA EXCESO SALDO -->
+	        <p:dialog widgetVar="dlgAvisoExcesoSaldo" id="dlgAvisoExcesoSaldo" header="Retiro" showEffect="fade" hideEffect="fade"
+	        			modal="true" resizable="false" closable="false" appendTo="@(body)"  visible="#{retiroController.excesoSaldo and (not facesContext.validationFailed)}" dynamic="true">
+	            <span class="ui-messages-warn-icon warn-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value="¡Atención! El importe introducido sobrepasa al máximo permitido." />
+	            <div class="clear"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoExcesoSaldo').hide();" />            
+	        </p:dialog>      
+	   
+        <!-- Model de aviso cuando el cliente no está relacionado con la cuenta -->
+        <p:dialog widgetVar="dlgAvisoNoRelacionado" id="dlgAvisoNoRelacionado" header="Retiro" showEffect="fade" hideEffect="fade"
+        			modal="true" resizable="false" closable="false" appendTo="@(body)" visible="#{retiroController.interveniente  and (not facesContext.validationFailed)}" dynamic="true">
+            <span class="ui-messages-warn-icon warn-dialog"></span>
+            <p:outputLabel styleClass="modal-mensaje" value="¡Atención! La documentación que ha introducido no está relacionada con la cuenta." />
+            <div class="clear"></div>
+            <p:outputLabel styleClass="modal-accion" value="¿Desea continuar de todos modos?" />
+            <div class="margin-top-20"></div>
+            <p:commandButton styleClass="btn_secundario_dialog" value="Cancelar" immediate="true" onclick="PF('dlgAvisoNoRelacionado').hide();" />
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Continuar" oncomplete="PF('dlgAvisoNoRelacionado').hide();" actionListener="#{retiroController.mostrarConfirmacion()}" update=" :dlgConfirmarRetiro" />
+        </p:dialog>
+
+        <!-- Modal de confirmación del retiro -->
+        <p:dialog widgetVar="dlgConfirmarRetiro" id="dlgConfirmarRetiro" showEffect="fade" hideEffect="fade"
+        	header="Retiro" modal="true" resizable="false" closable="false" appendTo="@(body)" 
+        	visible="#{retiroController.todoOk  and (not facesContext.validationFailed)}" dynamic="true">
+            <span class="ui-messages-info-icon info-dialog"></span>
+            <div class="modal-mensaje">
+            <p:outputLabel value="Va a realizar un retiro de la cuenta " />
+            <p:outputLabel styleClass="modal-mensaje-detalle" value="#{retiroController.retiro.cuentaRetiro}" id="dlgCuentaRetiro" />
+            <br />
+            <p:outputLabel value="con titular " />
+            <p:outputLabel styleClass="modal-mensaje-detalle" value="#{retiroController.retiro.usuarioRetiro}" id="dlgTitular" />
+            <br />
+            <p:outputLabel value="por valor de " />
+            <p:outputLabel styleClass="modal-mensaje-detalle" id="dlgImporteRetiro" value="#{retiroController.retiro.importeRetiro}">
+                <f:convertNumber minFractionDigits="2" currencySymbol="" locale="es_MX" type="currency" />
+            </p:outputLabel>
+            <p:outputLabel styleClass="modal-mensaje-detalle" value=" MXN" />
+            </div>
+            <div class="margin-top-10"></div>
+            <p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+            <div class="margin-top-20"></div>
+
+            <p:commandButton styleClass="btn_secundario_dialog" value="Cancelar" immediate="true" onclick="PF('dlgConfirmarRetiro').hide();" />
+
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Continuar" oncomplete="PF('dlgConfirmarRetiro').hide();" 
+            	action="#{retiroController.continuarRetiro()}"  />
+        </p:dialog>
+        
+        <!-- MENSAJE ERROR EN LA CUENTA -->
+			<p:dialog widgetVar="dlgCuentaError" id="dlgCuentaError" showEffect="fade" hideEffect="fade"
+				header="Retiro" modal="true" appendTo="@(body)" 
+				closable="false" resizable="false" dynamic="true">
+				<span class="ui-messages-info-icon info-dialog"></span>
+				
+				<p:outputLabel styleClass="modal-mensaje"
+					value="La cuenta " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="#{retiroController.retiro.cuentaRetiro}"
+					id="dlgCuentaDepositoError" />
+				<p:outputLabel styleClass="modal-mensaje"
+					value=" se encuentra " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="BLOQUEADA O CON ERROR EN BLOQUEO"/>
+				<br />
+				<p:outputLabel styleClass="modal-mensaje" value="Titular " />
+				<p:outputLabel styleClass="modal-mensaje-detalle"
+					value="#{retiroController.retiro.usuarioRetiro}" id="dlgTitularError" />
+				<br />
+				
+				<div class="margin-top-10"></div>
+
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					value="Ok" immediate="true" 
+					onclick="PF('dlgCuentaError').hide();" id="otroDeposito"/>
+			</p:dialog>
+
+    </h:body>
+</ui:define>
+</ui:composition>

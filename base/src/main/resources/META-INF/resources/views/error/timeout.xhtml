@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<h:body>
+
+<f:facet name="last">
+		<h:outputStylesheet name="css/base.css" />
+	</f:facet>
+
+	<div id="content" class="centrado-enpantalla">
+	<h:form id="errorTimeoutForm">
+		
+		<div class="icono-sesion-haexpirado centrar-texto gris-b"><i class="ui-icon-clock"/></div>
+		
+		<div class="margin-top-20"></div>
+			
+		<p:outputPanel deferred="false">
+        	<h3 class="azul-b">La sesión ha expirado.</h3>
+    	</p:outputPanel>
+				
+		<div class="margin-top-30"></div>
+		<div class="centrar-objeto">
+    <p:commandButton styleClass="btn-volver-login" id="ligaAHome" 
+    onclick="$('#backRef').click();return false;" value="Volver a login" icon="fa fa-angle-left" /> 
+		</div>
+		<div style="display: none;">
+		  <a id="backRef" onclick="window.location.replace('http://'+ document.location.host + document.location.pathname.substring(0, document.location.pathname.indexOf('faces')-1))"></a>
+		</div>
+	</h:form>
+	</div>
+</h:body>
+</html>

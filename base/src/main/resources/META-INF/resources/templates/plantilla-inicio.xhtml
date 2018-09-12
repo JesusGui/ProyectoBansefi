@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+
+	<title>Core Banking System</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />   
+
+    <h:outputScript name="js/modernizr.js"/>
+    <h:outputScript name="js/main.js"/>
+	<h:outputScript name="js/storage.js"/>
+	<h:outputScript name="js/primefacesLocales.js"/>
+	<h:outputScript name="js/utilidades.js"/>
+	<h:outputScript name="js/jquery.textfill.js"/>
+	<h:outputScript name="js/integracionAppWhere/cargaCatalogosIDB.js"/>
+	<!-- Incluir scrpit para habilitar mostrado de notifiaciones meidante websockets -->
+<!-- 	<h:outputScript name="js/websocketNotificaciones.js"/> -->
+</h:head>
+
+<h:body onunload="PF('statusDialog').show()">
+	
+	<script>
+		//<![CDATA[	
+	$(document).ready(function(){
+		storage.setDialogTime(#{initParam['sessionTimeOut']});
+		storage.startTimeOut();
+	});
+		//]]>
+	</script>
+    <!-- end script guardado -->
+	<p:dialog widgetVar="dlgStore" id="dlgStore" showEffect="fade" hideEffect="fade"
+	   appendTo="@(body)" header="Guardar proceso" modal="true"
+	   visible="false" closable="false" resizable="false">
+	  <span class="ui-messages-info-icon info-dialog"></span>
+	  <p:outputLabel styleClass="modal-mensaje"
+	    value="La sesion esta a punto de caducar." />
+	  <div class="clear margin-bottom-10"></div>
+	  <p:commandButton styleClass="btn_principal_dialog_derecha" id="ok" value="Aceptar"
+	    onclick="storage.dlgStoreOK();storage.setDialogTime(#{initParam['sessionTimeOut']});storage.startTimeOut();PF('dlgStore').hide();" />
+	</p:dialog>
+	
+	<h:outputStylesheet name="css/base.css" />  
+	<h:outputStylesheet name="css/impresion.css"  media="print"/>  
+	
+	<!-- Barra de procesando -->
+	<p:dialog styleClass="dialog-barra-cargando dialog-barra-cargando-redirect" widgetVar="statusDialog" id="dlgStatusDialog" modal="false" 
+		draggable="false" hideEffect="fade" appendTo="@(body)" focus="focusOnStatusDialog"
+		closable="false" resizable="false" showHeader="false">
+			<div class="progress-container">
+				<div class="progress">
+					<div class="progress-bar">
+						<div class="progress-shadow"></div>
+					</div>
+				</div>
+			</div>
+			<p:inputText value="" id="focusOnStatusDialog" />
+	</p:dialog>
+	<p:dialog styleClass="dialog-barra-cargando dialog-barra-cargando-redirect" widgetVar="redirectDialog" id="redirectDialog" modal="false" 
+		draggable="false" hideEffect="fade" appendTo="@(body)" focus="focusOnRedirectDialog"
+		closable="false" resizable="false" showHeader="false">
+			<div class="progress-container">
+				<div class="progress">
+					<div class="progress-bar">
+						<div class="progress-shadow"></div>
+					</div>
+				</div>
+			</div>
+			<p:inputText value="" id="focusOnRedirectDialog" />
+	</p:dialog>
+	<p:ajaxStatus onstart="showAjaxDialog()" 
+		oncomplete="clearTimeout(ajaxStatusTimeout);PF('statusDialog').hide()" />
+	
+	<!-- Dialogo para desplegar excepciones -->
+	<p:dialog widgetVar="dlgExcepcion" id="dlgExcepcion" showEffect="fade" hideEffect="fade"
+	   appendTo="@(body)" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false">
+	  <span class="ui-messages-info-icon info-dialog"></span>
+	  <div class="modal-mensaje">
+	  <h:outputText
+	    value="#{errorGenericoController.mensajeError} " />
+	  <h:outputText
+	    value="#{errorGenericoController.mensajeDetalleError}" />
+	  </div>
+	  <div class="clear margin-bottom-10"></div>
+	  <p:commandButton styleClass="btn_principal_dialog_derecha" id="okExceptionNavigate" 
+	  value="Aceptar" action="#{errorGenericoController.navegaDestino()}"
+	  rendered="#{errorGenericoController.mostrarAceptar}"/>
+	  
+	  <p:commandButton styleClass="btn_principal_dialog_derecha" id="okExceptionDontNavigate" 
+	  value="Aceptar" onclick="PF('dlgExcepcion').hide();"
+	  rendered="#{!errorGenericoController.mostrarAceptar}"/>
+	</p:dialog>
+	
+    <!-- Frame oculto utilizado para mostrar impresión de documentos -->
+    <iframe id="iframeprint" style="display:none"></iframe>
+	
+	<h:form id="formularioPlantilla">
+		<p:commandButton style="display: none" id="cerrarSesionTimeout" action="#{loginController.cerrarSesionTimeout()}" immediate="true"/>
+	</h:form>
+
+	<main id="main"> <ui:include src="../composites/encabezado.xhtml" /> <ui:insert
+		name="contenido">
+		<ui:include src="#{menuController.recursoXHTML}" />
+	</ui:insert>
+	
+	
+	</main>
+	
+	<a href="#cd-nav" class="cd-nav-trigger"> Menu <span
+		class="cd-nav-icon" /> <svg x="0px" y="0px" width="54px"
+			height="54px" viewBox="0 0 54 54"> <circle fill="transparent"
+			stroke="#656e79" stroke-width="1" cx="27" cy="27" r="25"
+			stroke-dasharray="157 157" stroke-dashoffset="157" /> </svg>
+	</a>
+
+	<ui:include src="../composites/menu.xhtml" />
+	
+</h:body>
+
+</html>

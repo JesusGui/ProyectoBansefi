@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+	<ui:define name="contenido">
+		<h:body onunload="#{relacionesCuentaController.consultaDocumentosRelacionados()}">
+		 <div class="container_48">
+                <div class="contenedor">
+			<h:form id="relacionCuentaCuentasForm" styleClass="contenedor-form">
+			 <div class="titulo centrar-objeto btn-inline-set">
+				<p:commandButton icon="ui-icon-arrow-1-w" action="#{relacionesCuentaController.irAHome()}"></p:commandButton>
+				<div>
+					<h2 class="gris-b">Comprobantes e identificaciones de </h2>
+					<h2 class="rojo-b">#{relacionesCuentaController.cuentaBean.tipoCuenta}</h2>
+					<h3 class="gris-b">(#{relacionesCuentaController.cuentaBean.numeroCuenta})</h3>
+				</div>
+			</div>
+			 <div class="wiz-contenedor">
+			  <div class="contenedor-campos">
+				<p:outputLabel styleClass="#{relacionesCuentaController.clienteBean.claseTipoPersona()}"
+									value="#{relacionesCuentaController.clienteBean.nombreCompleto}" />
+									<div class="clear-row"></div>
+						<p:dataTable var="relacionado" value="#{relacionesCuentaController.cuentaBean.personasRelacionadas}" styleClass="tabla-documentos">
+						<p:columnGroup type="header">
+				            <p:row>
+				                <p:column headerText="Tipo de relación" />
+				                <p:column headerText="Tipo de Documento" />
+				                <p:column headerText="Descripción" />
+				                <p:column headerText="Persona" />
+				                <p:column headerText="Estado" />
+				            </p:row>
+				        </p:columnGroup>
+							<p:subTable var="documento" value="#{relacionado.persona.documentos}">
+								<p:column>
+									<h:outputText value="#{relacionado.tipo.nombre}" />
+								</p:column>	
+							    <p:column>
+							        <h:outputText value="#{relacionesCuentaController.tipoDocumento(documento.tipoDocumento)}" />
+							    </p:column>	
+							    <p:column>
+							        <h:outputText value="#{documento.descripcion}" />
+							    </p:column>	
+							    <p:column>
+							        <h:outputText value="#{relacionado.persona.nombreCompleto}" />
+							    </p:column>	
+							    <p:column>
+							        <h:outputText value="#{relacionesCuentaController.estadoRelacionado(relacionado.estado)}" />
+							    </p:column>	
+							</p:subTable>
+						</p:dataTable>
+						</div>
+			</div>
+			<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" action="#{relacionesCuentaController.irAHome()}"
+							immediate="true"/>
+			</h:form>
+			</div>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

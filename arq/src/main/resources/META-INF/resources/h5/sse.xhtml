@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+<head>
+
+<title>Server Sent Event Composite Component</title>
+
+</head>
+
+<body>
+
+	<composite:interface>
+		<composite:attribute name="url" required="true" />
+		<composite:attribute name="events" required="false" />
+	</composite:interface>
+
+	<composite:implementation>
+		<h:outputScript name="js/jsf-sse.js" />
+		<script type="text/javascript">
+        JSF.sse.connect("#{cc.attrs.url}", #{cc.attrs.events});
+        //cc es utilizado en JSF para definir el uso de un composite component
+   </script>
+
+		<h:form id="msgsForm">
+			<p:growl id="msgsGrowl" for="sysMsgs" showDetail="true" />
+			<h:inputHidden id="hdnParam" value="#{contextoUtils.mensajeJSON}" />
+			<p:commandButton id="hdnBtn"
+				actionListener="#{contextoUtils.guardaMensaje}"
+				style="display: none;"
+				update="msgsGrowl, :btnNotificaciones #{menuController.actualizarTablaNotificaciones()?',:frmNotificaciones:tblNotificaciones':''}" />
+		</h:form>
+	</composite:implementation>
+
+</body>
+
+</html>

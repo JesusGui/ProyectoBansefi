@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="resultadoClasificacionBean" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>
+			mx.babel.bansefi.banksystem.base.webservices.consultadatoscuenta.ResponseBansefi.OTRCONSUDATOSACTRNO.TRCONSUDATOSACEVTZ
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.cuentas.beans.ClasificacionBean
+		</class-b>
+		<field>
+			<a>ACACE.CODACTIVO</a>
+			<b>codigoActivo</b>
+		</field>
+		<field>
+			<a>ACACE.CODSITIRREG</a>
+			<b>situacionIrregular</b>
+		</field>
+		<field>
+			<a>ACACE.CODSITRECLAM</a>
+			<b>situacionReclama</b>
+		</field>
+		<field>
+			<a>ACACE.CODGRTIAAC</a>
+			<b>codigoGarantia</b>
+		</field>
+		<field>
+			<a>ACACE.CODGTIACTBLE</a>
+			<b>descGarantiaContable</b>
+		</field>
+		<field>
+			<a>ACACE.CODGTIACIRBE</a>
+			<b>garantiaCirbe</b>
+		</field>
+		<field>
+			<a>ACACE.CODPERSCTBLE</a>
+			<b>persContable</b>
+		</field>
+		<field>
+			<a>ACACE.SITRESDNCPE</a>
+			<b>residente</b>
+		</field>
+		<field>
+			<a>ACACE.INDSOCIOPE</a>
+			<b>socio</b>
+		</field>
+		<field>
+			<a>ACACE.CODCNAEPERS</a>
+			<b>cnae</b>
+		</field>
+		<field>
+			<a>ACACE.CODFNDADAC</a>
+			<b>finalidad</b>
+		</field>
+  </mapping>
+</mappings>

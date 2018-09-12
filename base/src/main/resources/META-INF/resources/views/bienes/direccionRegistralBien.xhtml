@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<p:fieldset legend="Dirección registral">
+
+		<div class="margin-top-10"></div>
+
+		<div class="row-flex">
+
+		<div class="grid_16">
+			<p:outputLabel value="Tipo de registro" />
+			<div class="clear-3"></div>
+			<p:selectOneMenu value="#{bien.direccionRegistral.tipoRegistro}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor"
+					noSelectionOption="true" />
+				<f:selectItems value="#{catalogoUtils.getCatalogo('TP_RGSTRO')}"
+					var="item" itemValue="#{item.claveFila}"
+					itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+		</div>
+		<div class="grid_5">
+			<p:outputLabel value="Nº de registro" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.direccionRegistral.numeroRegistro}"
+				maxlength="5">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_27">
+			<p:outputLabel value="Municipio/Localidad/Delegación" />
+			<div class="clear-3"></div>
+			<p:autoComplete value="#{bien.direccionRegistral.municipioCatGeo}" 
+				widgetVar="municipioWidget" maxResults="5" maxlength="45"
+				onblur="value=value.toUpperCase()"
+				completeMethod="#{domicilioUtils.getMunicipios}" var="mun"
+				itemLabel="#{mun.municipioLocalidad}" itemValue="#{mun}"
+				converter="#{catalogoBeanConverter}" >
+				<f:attribute name="filter" value="MUNICIPIOS" />
+			</p:autoComplete>
+			<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" preventPaste="false" />
+
+			
+		</div>
+
+		</div>
+
+
+		<div class="grid_8">
+			<p:outputLabel value="Nº registral" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.direccionRegistral.numeroRegistral}"
+				maxlength="15">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="Tomo" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.direccionRegistral.tomo}" maxlength="5">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="Libro" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.direccionRegistral.libro}" maxlength="5">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="Folio" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.direccionRegistral.folio}" maxlength="5">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="Nº inscripción" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.direccionRegistral.numeroInscripcion}"
+				maxlength="4">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_8">
+			<p:message id="fechaValExpedicion#{myVarStatus.index}"
+				for="fechaExpedicion#{myVarStatus.index}" display="icon"></p:message>
+			<p:outputLabel id="fechaExpedicionLabel#{myVarStatus.index}"
+				for="fechaExpedicion#{myVarStatus.index}" value="F. Expedición" />
+			<div class="clear-3"></div>
+			<p:calendar id="fechaExpedicion#{myVarStatus.index}"
+				requiredMessage="" pattern="dd/MM/yyyy" showOn="button"
+				value="#{bien.direccionRegistral.fechaExpedicion}" mask="true"
+				locale="es" maxdate="#{bienesController.currentDate}">
+				<f:attribute name="beginDate"
+					value="#{bien.datosGenerales.fechaAntiguedad != null ? bien.datosGenerales.fechaAntiguedad : null}"/>
+				<f:attribute name="endDate"
+					value="#{bienesController.currentDate}" />
+				<f:validator validatorId="dateRangeValidator" />
+				<p:ajax event="change" process="fechaExpedicion#{myVarStatus.index}, fechaAntiguedad#{myVarStatus.index}"
+					update="fechaExpedicion#{myVarStatus.index},fechaValExpedicion#{myVarStatus.index},fechaExpedicionLabel#{myVarStatus.index},fechaAntiguedad#{myVarStatus.index},fechaValAntiguedad#{myVarStatus.index},fechaAntiguedadLabel#{myVarStatus.index}"
+					partialSubmit="true" />
+				<p:ajax event="dateSelect"
+					process="fechaExpedicion#{myVarStatus.index}, fechaAntiguedad#{myVarStatus.index}"
+					update="fechaExpedicion#{myVarStatus.index},fechaValExpedicion#{myVarStatus.index},fechaExpedicionLabel#{myVarStatus.index},fechaAntiguedad#{myVarStatus.index},fechaValAntiguedad#{myVarStatus.index},fechaAntiguedadLabel#{myVarStatus.index}"
+					partialSubmit="true" />
+			</p:calendar>
+		</div>
+
+	</p:fieldset>
+</ui:composition>
+

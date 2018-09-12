@@ -1,0 +1,552 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!--
+plantilla de wizard
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body
+			onunload="#{relacionesCuentaController.consultaRelacionesPersonas()}">
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="relacionPersonaCuentaForm" styleClass="contenedor-form">
+						<!-- Importamos el enum de estados para los listados -->
+						<pe:importConstants className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+							var="EstadoListadosEnum" />
+						<!--t?tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot?n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" rendered="#{!relacionesCuentaController.isAlta}"
+								action="#{relacionesCuentaController.cancelar()}" update=":dlgCancelarListado" immediate="true"></p:commandButton>
+							<div>
+								<h2 class="gris-b">#{relacionesCuentaController.isAlta? 'Alta de ':'Relacionar personas con '}</h2>
+								<h:panelGroup rendered="#{!relacionesCuentaController.isAlta}">
+									<h2 class="rojo-b">#{relacionesCuentaController.cuentaBean.tipoCuenta} </h2>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{relacionesCuentaController.isAlta}">
+									<h2 class="rojo-b">#{relacionesCuentaController.tarifaSeleccionada.nombre} #{relacionesCuentaController.tarifaSeleccionada.descripcion} </h2>
+								</h:panelGroup>
+								<h3 class="gris-b"> (#{relacionesCuentaController.cuentaBean.numeroCuenta})</h3>
+							</div>
+						</div>
+						<!--Wizard Botones circulares superiores -->
+						<h:panelGroup rendered="#{relacionesCuentaController.isAlta}">
+							<div class="wiz-pasos">
+								<p:commandButton styleClass="inactivo" value="Negociar tarifa"
+									update=":dlgCancelarListado relacionPersonaCuentaForm" immediate="true"
+									action="#{relacionesCuentaController.irNegociarTarifa()}" />
+								<p:commandButton styleClass="activo" value="Relacionar personas" />
+								<p:commandButton styleClass="inactivo" value="Relacionar cuenta"
+									update=":dlgCancelarListado relacionPersonaCuentaForm :dlgDatosFaltantes"
+									action="#{relacionesCuentaController.irRelacionCuentas()}" />
+								<p:commandButton styleClass="inactivo" value="Emitir documentos"
+									update=":dlgCancelarListado relacionPersonaCuentaForm"
+									rendered="#{!relacionesCuentaController.altaSat}"
+									disabled="#{relacionesCuentaController.estadoAlta lt 3}"
+									action="#{relacionesCuentaController.irEmisionDocumentos()}" />
+							</div>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{!relacionesCuentaController.isAlta}">
+							
+						</h:panelGroup>
+						<!--contenedor del wizard-->
+						<div class="wiz-contenedor">
+							<div class="contenedor-campos">
+
+								<p:outputLabel styleClass="#{relacionesCuentaController.clienteBean.claseTipoPersona()}"
+									value="#{relacionesCuentaController.clienteBean.nombreCompleto}" />
+									
+								<div class="clear-row"></div>
+								<p:outputLabel styleClass="txt-campo-obligatorio" value="*Datos obligatorios"/>
+											<div class="clear-row"></div>
+								
+								<h:panelGroup rendered="#{not empty relacionesCuentaController.mensajeObligatorias}">
+								<div class="txt-relaciones-oblg">
+									<h:outputLabel value="#{relacionesCuentaController.mensajeObligatorias}" />
+								</div>
+								</h:panelGroup>
+								
+								<div class="clear-row"></div>
+
+								<h:panelGroup layout="block" styleClass="sinresultados" 
+								 	rendered="#{relacionesCuentaController.codigosRelaciones.isEmpty()}">
+						        	<div>
+						        	<h:outputLabel value="No se encontraron relaciones para este tipo de cuenta."/><br />
+						        	</div>
+						        </h:panelGroup>
+						        <div class="clear-row"></div>
+								<h:panelGroup rendered="#{relacionesCuentaController.cuentaOperable()
+									and !relacionesCuentaController.codigosRelaciones.isEmpty()}">
+									<div class="grid_15 alpha">
+										<h:outputLabel value="Tipo de relación:" />
+										<br />
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="tipoRelacion" panelStyleClass="combo-estandar"
+											value="#{relacionesCuentaController.tipoRelacion}">
+											<f:selectItems
+												value="#{relacionesCuentaController.codigosRelaciones}"
+												var="catalogo" itemLabel="#{catalogo.descripcionL}"
+												itemValue="#{catalogo.claveFila}" />
+											<p:ajax event="change" global="false" process="tipoRelacion"
+												partialSubmit="true"></p:ajax>
+										</p:selectOneMenu>
+									</div>
+									<div class="grid_3">
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton id="anadirRelacion" title="Añadir"
+											styleClass="btn-icono btn-anadir" icon="ui-icon-circle-plus"
+											action="#{relacionesCuentaController.adicionarRelacion}"
+											update="@form" immediate="true">
+										</p:commandButton>
+									</div>
+								</h:panelGroup>
+								<div class="clear-row"></div>
+
+								<h:outputText styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+
+								<p:remoteCommand name="actualizaForm" immediate="true"
+									update="@form" />
+								<h:panelGroup id="listadoRelacionados">
+								<ui:repeat var="relacionado"
+									value="#{relacionesCuentaController.relacionesPersonas}">
+									<p:panel id="relacionPersona" rendered="#{(EstadoListadosEnum.INACTIVO != relacionado.estadoListado) 
+										and (EstadoListadosEnum.POR_REACTIVAR != relacionado.estadoListado)}" 
+										styleClass="#{relacionado.estadoListado.styleClass}">
+										<div class="grid_2 alpha">
+											<p:commandButton id="eliminar" title="Eliminar"
+												styleClass="btn-icono btn-panel btn-eliminar"
+												icon="ui-icon-trash" 
+												action="#{relacionesCuentaController.removerRelacionPersona(relacionado)}"
+												disabled="#{relacionesCuentaController.verificaObligatorias(relacionado.tipo)}"
+												rendered="#{relacionesCuentaController.cuentaOperable() 
+													and relacionesCuentaController.verificaTitular(relacionado) 
+													and not(EstadoListadosEnum.ELIMINADO == relacionado.estadoListado)}"
+												update="@form" immediate="true" oncomplete="actualizaForm()">
+												<f:param name="disableValidation" value="true" />	
+											</p:commandButton>
+										</div>
+										<div class="grid_2 alpha">
+											<p:commandButton styleClass="btn-icono btn-panel" title="Recuperar"
+												icon="fa fa-undo" id="recuperar"
+												action="#{relacionesCuentaController.cancelarEliminacion(relacionado)}"
+												rendered="#{EstadoListadosEnum.ELIMINADO == relacionado.estadoListado}" 
+												update="relacionPersona" immediate="true">
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+										</div>
+										<div class="grid_2 alpha">
+											<p:commandButton update="relacionPersona" immediate="true" id="editar" title="Editar"
+												styleClass="btn-icono btn-panel" icon="fa fa-pencil"
+												action="#{relacionesCuentaController.editarRelacionado(relacionado)}"
+												rendered="#{relacionesCuentaController.cuentaOperable() 
+													and relacionesCuentaController.verificaTitular(relacionado) 
+													and not(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+													and not(EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}">
+											</p:commandButton>
+										</div>
+										<div class="grid_2 alpha">
+											<p:commandButton styleClass="btn-icono btn-panel" title="Recuperar"
+												icon="fa fa-undo" id="deshacer"
+												action="#{relacionesCuentaController.recuperDatosRelacionado(relacionado)}"
+												rendered="#{not(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+													and (EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}"
+												update="relacionPersona" immediate="true">
+												<f:param name="disableValidation" value="true" />	
+											</p:commandButton>
+										</div>
+										<div class="grid_2 alpha">
+											<p:commandButton styleClass="btn-icono btn-panel" icon="ui-icon-view" id="historico" title="Histórico"
+												action="#{relacionesCuentaController.getHistorico(relacionado)}"
+												rendered="#{not(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+													and not(relacionesCuentaController.isAlta)}">
+											</p:commandButton>
+										</div>
+										<div class="clear-row"></div>
+										<div class="row-flex">
+										<h:panelGroup>
+											<div class="grid_8">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{relacionado.tipo.codigo} - #{relacionado.tipo.nombre.toUpperCase()}" />
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="Id. oficial" for="idExterno"/>
+												<div class="clear-3"></div>
+												<p:inputMask id="idExterno" styleClass="sin-input 
+													#{relacionesCuentaController.relacionadoInvalido(relacionado) ? 'ui-state-error':''}" 
+													value="#{relacionado.persona.numIdentificacion}"
+													required="#{!param['disableValidation']}" maxlength="14"
+													disabled="#{not(EstadoListadosEnum.NUEVO == relacionado.estadoListado)}">
+													<p:ajax event="blur" global="false" process="@this" 
+														oncomplete="actualizaForm()" update=":dlgBusqueda"
+														listener="#{relacionesCuentaController.verificaIdExterna(relacionado)}"></p:ajax>
+													<p:ajax event="change" global="false" process="@this"
+														oncomplete="actualizaForm()" update=":dlgBusqueda"
+														listener="#{relacionesCuentaController.verificaIdExterna(relacionado)}"></p:ajax>
+													<pe:keyFilter regEx="/^[a-zA-Z0-9áéíóúÁÉÍÓÚ\- ]*$/" preventPaste="false"/>
+												</p:inputMask>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{EstadoListadosEnum.NUEVO == relacionado.estadoListado}">
+											<div class="float-left">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<div class="float-left margin-right-10">
+													<p:commandButton id="busquedaPersona" immediate="true" title="Buscar #{relacionado.tipo.nombre}"
+														styleClass="btn-icono-conbackground" icon="ui-icon-search"
+														action="#{relacionesCuentaController.buscarPersona(relacionado)}"></p:commandButton>
+												</div>
+											</div>
+
+										</h:panelGroup>
+										<h:panelGroup>
+											<div class="grid_15">
+												<h:outputLabel value="Nombre" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor input-label-valor" 
+													value="PERSONA NO ENCONTRADA"
+													rendered="#{relacionesCuentaController.relacionadoInvalido(relacionado)}"></p:outputLabel>
+												<p:inputText id="nombre"
+													value="#{relacionado.persona.nombreCompleto}"
+													rendered="#{!relacionesCuentaController.relacionadoInvalido(relacionado)}"
+													disabled="true"></p:inputText>
+												<h:inputHidden id="idInterna" required="#{!param['disableValidation']}"
+													value="#{relacionado.persona.idInterna}" />
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{relacionesCuentaController.isBeneficiario(relacionado.tipo)}">
+											<div class="grid_5">
+												<h:panelGroup>
+													<p:message for="porcentaje" display="icon"></p:message>
+													<p:outputLabel value="Porcentaje" for="porcentaje"/>
+													<div class="clear-3"></div>
+													<h:panelGroup
+														rendered="#{(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+															or (EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}">
+														<pe:inputNumber id="porcentaje"
+															value="#{relacionado.porcentaje}" decimalPlaces="2"
+															maxValue="100" emptyValue="0" decimalSeparator="."
+															symbol="%" symbolPosition="suffix" thousandSeparator=","
+															required="#{!param['disableValidation'] and relacionesCuentaController.isBeneficiario(relacionado.tipo)}">
+															<f:validator validatorId="porcentajeValidator" />
+															<f:validateRequired for="porcentaje"/>
+															<p:ajax event="blur" global="false" process="porcentaje"
+																partialSubmit="true"></p:ajax>
+														</pe:inputNumber>
+													</h:panelGroup>
+													<h:panelGroup
+														rendered="#{not(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+															and not(EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}">
+														<p:outputLabel styleClass="label-valor texto-sininput"
+															value="#{relacionado.porcentaje} %" />
+													</h:panelGroup>
+												</h:panelGroup>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{relacionesCuentaController.isAval(relacionado.tipo)}">
+											<div class="grid_8">
+												<p:outputLabel value="Garantía" for="garantia"/>
+												<div class="clear-3"></div>
+												<h:panelGroup
+													rendered="#{(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+														or (EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}">
+													<pe:inputNumber id="garantia"
+														value="#{relacionado.garantia}" decimalPlaces="2"
+														decimalSeparator="." thousandSeparator=","
+														symbol=" MXN" symbolPosition="suffix"
+														required="#{!param['disableValidation'] and relacionesCuentaController.isAval(relacionado.tipo)}">
+														<p:ajax event="blur" global="false" process="garantia"
+															partialSubmit="true"></p:ajax>
+													</pe:inputNumber>
+													<p:watermark for="garantia" value="0.00 MXN" />
+												</h:panelGroup>
+												<h:panelGroup
+													rendered="#{not(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+														and not(EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}">
+													<p:outputLabel styleClass="label-valor texto-sininput"	
+													value="#{relacionado.garantia} MXN" />
+												</h:panelGroup>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup>
+											<div class="grid_4">
+												<p:outputLabel value="Número" for="numero"/>
+												<div class="clear-3"></div>
+												<h:panelGroup
+													rendered="#{(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+														or (EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}">
+												<p:selectOneMenu id="numero" value="#{relacionado.numero}" panelStyleClass="combo-estandar"
+													disabled="#{!relacionesCuentaController.numeroEditable(relacionado)}"
+													required="#{!param['disableValidation'] 
+														and ((EstadoListadosEnum.MODIFICADO == relacionado.estadoListado) 
+														or (EstadoListadosEnum.NUEVO == relacionado.estadoListado))}">
+													<f:selectItems
+														value="#{relacionesCuentaController.obtenerNumerosRelacion(relacionado)}"
+														var="numeroC" itemLabel="#{numeroC.toString()}"
+														itemValue="#{numeroC}" />
+													<p:ajax event="change" global="false" process="numero" oncomplete="actualizaForm()" partialSubmit="true"></p:ajax>
+												</p:selectOneMenu>
+												</h:panelGroup>
+												<h:panelGroup
+													rendered="#{not(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+														and not(EstadoListadosEnum.MODIFICADO == relacionado.estadoListado)}">
+													<p:outputLabel styleClass="label-valor texto-sininput"	
+													value="#{relacionado.numero}" />
+												</h:panelGroup>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{not(EstadoListadosEnum.NUEVO == relacionado.estadoListado) 
+												and relacionesCuentaController.verificaTitular(relacionado) 
+												and ((EstadoListadosEnum.MODIFICADO == relacionado.estadoListado) 
+												or (EstadoListadosEnum.ELIMINADO == relacionado.estadoListado))}">
+											<div class="grid_7">
+												<p:outputLabel value="Razón del cambio" for="razonCambio"/>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="razonCambio" required="#{!param['disableValidation'] 
+													and ((EstadoListadosEnum.MODIFICADO == relacionado.estadoListado) 
+													or (EstadoListadosEnum.ELIMINADO == relacionado.estadoListado))}"
+													value="#{relacionado.razonCambio}" immediate="true">
+													<f:selectItem itemLabel="Seleccione un valor"
+														itemDisabled="true" />
+													<f:selectItems
+														value="#{relacionesCuentaController.razonesDeCambio}"
+														var="catalogo" itemLabel="#{catalogo.descripcionL}"
+														itemValue="#{catalogo.claveFila}" />
+													<p:ajax event="change" global="false" process="razonCambio"
+														partialSubmit="true"></p:ajax>
+												</p:selectOneMenu>
+											</div>
+										</h:panelGroup>
+										<div class="clear"></div>
+										</div>
+									</p:panel>
+								</ui:repeat>
+								<p:fieldset legend="Relaciones inactivas" rendered="#{relacionesCuentaController.tieneInactivas()}" toggleable="true" toggleSpeed="500">
+								<ui:repeat var="relacionado" 
+									value="#{relacionesCuentaController.relacionesPersonas}">
+									<p:panel id="relacionPersonaInactiva" rendered="#{(EstadoListadosEnum.INACTIVO == relacionado.estadoListado) 
+										or (EstadoListadosEnum.POR_REACTIVAR == relacionado.estadoListado)}" 
+										styleClass="#{relacionado.estadoListado.styleClass}">
+										<div class="grid_2 alpha">
+											<p:commandButton update="relacionPersonaInactiva" immediate="true" id="reactivar"
+												styleClass="btn-icono btn-panel" icon="fa fa-recycle" title="Reactivar"
+												action="#{relacionesCuentaController.reactivarRelacionado(relacionado)}"
+												rendered="#{relacionesCuentaController.cuentaOperable()}" >
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+										</div>
+										<div class="grid_2 alpha">
+											<p:commandButton styleClass="btn-icono btn-panel" icon="ui-icon-view" id="historico2" title="Histórico"
+												action="#{relacionesCuentaController.getHistorico(relacionado)}">
+											</p:commandButton>
+										</div>
+										<div class="clear-row"></div>
+										<h:panelGroup>
+											<div class="grid_8">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{relacionado.tipo.codigo} - #{relacionado.tipo.nombre.toUpperCase()}" />
+											</div>
+
+											<div class="grid_8">
+												<h:outputLabel value="Id. oficial" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{relacionado.persona.numIdentificacion}" />
+											</div>
+										</h:panelGroup>
+										<h:panelGroup>
+											<div class="grid_15">
+												<h:outputLabel value="Nombre" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor input-label-valor"
+													value="#{relacionado.persona.nombreCompleto}" />
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{relacionesCuentaController.isBeneficiario(relacionado.tipo)}">
+											<div class="grid_5">
+												<h:panelGroup>
+													<h:outputLabel value="Porcentaje" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{relacionado.porcentaje} %" />
+												</h:panelGroup>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{relacionesCuentaController.isAval(relacionado.tipo)}">
+											<div class="grid_10">
+												<h:outputLabel value="Garantía" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"	
+													value="#{relacionado.garantia} MXN" />
+											</div>
+										</h:panelGroup>
+										<div class="grid_10">
+											<h:outputLabel value="Fecha de inactividad" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"	
+												value="#{relacionado.fechaInactivo}" >
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+										</div>
+										<div class="grid_7">
+												<h:panelGroup rendered="#{EstadoListadosEnum.POR_REACTIVAR == relacionado.estadoListado}">
+													<h:outputLabel value="Fecha de actividad"/>
+													<div class="clear-3"></div>
+													 <b:calendarMonthRange locale="es" id="calendarTest_End" showOn="button" required="true" 
+											        	value="#{relacionado.fechaInicio}" pattern="dd/MM/yyyy" mask="true" restrictMinDate="true">
+						                                 <p:ajax event="dateSelect" global="false" process="calendarTest_End" partialSubmit="true"></p:ajax>
+						                                 <p:ajax event="change" global="false" process="calendarTest_End" partialSubmit="true"></p:ajax>
+						                            </b:calendarMonthRange>
+												</h:panelGroup>
+											</div>
+										<div class="clear"></div>
+									</p:panel>
+								</ui:repeat>
+								</p:fieldset>
+								</h:panelGroup>
+							</div>
+						</div>
+						<!--Botones secundarios de Cancelar u otros -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').show();"
+							immediate="true" rendered="#{relacionesCuentaController.isAlta}"/>
+						<p:commandButton styleClass="btn_secundario margin-top-10" update=":dlgCancelarListado"
+							value="Cancelar" action="#{relacionesCuentaController.cancelar()}"
+							immediate="true" rendered="#{!relacionesCuentaController.isAlta}"/>
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar" validateClient="true"
+							update="@form :dlgGuardado :dlgEliminados"
+							rendered="#{relacionesCuentaController.cuentaOperable()}"
+							action="#{relacionesCuentaController.confirmacionGuardado(false)}">
+								<f:param name="disableValidation" value="false" />
+						</p:commandButton>
+						<c:if test="#{relacionesCuentaController.isAlta}">
+							<ui:include src="../store.xhtml">
+								<ui:param name="storeBean"
+									value="#{relacionesCuentaController}" />
+							</ui:include>
+						</c:if>
+					</h:form>
+				</div>
+				<ui:include src="../../composites/listadosDialogo.xhtml">
+                    <ui:param name="dialogoGuardado" value="#{relacionesCuentaController.dialogoGuardado}" />
+                </ui:include>
+                <ui:include src="../../composites/listadosDialogoEliminar.xhtml">
+                	<ui:param name="managedBean" value="#{relacionesCuentaController}" />
+                	<ui:param name="aceptar" value="confirmacionGuardado" />
+                	<ui:param name="form" value="relacionPersonaCuentaForm" />
+                    <ui:param name="mensajeEliminados" value="#{relacionesCuentaController.mensajeEliminados}" />
+                </ui:include>
+                <ui:include src="../../composites/listadosDialogoCancelar.xhtml">
+                	<ui:param name="managedBean" value="#{relacionesCuentaController}" />
+<!-- RAV 20160307 ini -->
+<!--               	<ui:param name="aceptar" value="irAHome" />			-->
+                	<ui:param name="aceptar" value="sicancelarAlta" />
+<!-- RAV 20160307 fin -->
+
+                    <ui:param name="mostrarCancelar" value="#{relacionesCuentaController.mostrarCancelar}" />
+                </ui:include>
+                <p:dialog widgetVar="dlgBusqueda" id="dlgBusqueda" appendTo="@(body)" dynamic="true" modal="true"
+                			showEffect="fade" hideEffect="fade"
+					visible="#{relacionesCuentaController.mensajeBusqueda.mostrar}" closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-info-icon info-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="La Identificación oficial proporcionada generó varias coincidencias." />
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion" 
+						value="¿Desea ir al buscador para seleccionar el cliente correcto?" />
+			        <div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+						value="Cancelar" immediate="true"
+						oncomplete="PF('dlgBusqueda').hide();">
+						<f:setPropertyActionListener target="#{relacionesCuentaController.mensajeBusqueda.mostrar}" value="false"/>	
+					</p:commandButton>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						action="#{relacionesCuentaController.buscarPersona(relacionesCuentaController.personaBuscada)}"
+						value="Aceptar" oncomplete="PF('dlgBusqueda').hide();"/>
+				</p:dialog>
+				<p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta"
+					appendTo="@(body)" header="Cancelar alta Cuenta" modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="false" closable="false" resizable="false"
+					draggable="false">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atencion! Está a punto de cancelar el alta de cuenta" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en Tareas pendientes para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarAlta').hide();" id="volverAlta" -->
+<!-- 						value="Continuar con el Alta" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartar" value="No guardar" -->
+<!-- 						action="#{relacionesCuentaController.cancelarAlta()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardar" value="Guardar" onclick="return storeData();"> -->
+<!-- 							</p:commandButton> -->
+
+					<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{relacionesCuentaController.cancelarAlta()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+				
+				</p:dialog>
+				<p:dialog widgetVar="dlgDatosFaltantes" id="dlgDatosFaltantes"
+					appendTo="@(body)" header="Faltan datos obligatorios" modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="#{relacionesCuentaController.faltantes}" closable="false" resizable="false"
+					draggable="false">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atencion! Existen relaciones obligatorias faltantes." />
+					<div class="clear"></div>
+					<p:outputLabel rendered="#{relacionesCuentaController.mensajePersonaFaltantes.length() > 0}" styleClass="modal-accion"
+						value="Personas: #{relacionesCuentaController.mensajePersonaFaltantes}"/>
+					<div class="clear"></div>
+					<p:outputLabel rendered="#{relacionesCuentaController.mensajeCuentasFaltantes.length() > 0}" styleClass="modal-accion"
+						value="Cuentas: #{relacionesCuentaController.mensajeCuentasFaltantes}"/>
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgDatosFaltantes').hide();" id="continuar"
+						value="Aceptar" immediate="true" />
+				</p:dialog>
+			</div>
+			<!--termina container 48-->
+		</h:body>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	
+	<mapping map-id="modificarBalance" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.RegistroBalanceBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.modificacionbalance.Ejecutar.ITRMODIBLNCETRNI.TRMODIBLNCEEVTY.DCBLLINEAV
+		</class-b>
+		<field>
+			<a>id</a>
+		 	<b>CODLINBLNCEORG</b>
+		</field>
+		<field>
+			<a>texto</a>
+		 	<b>DESCRLINBLNCEOR</b>
+		</field>
+		<field>
+			<a>valor</a>
+		 	<b>IMPLINBLNCEDC</b>
+		</field>
+		<field>
+			<a>porcentaje</a>
+		 	<b>PCTLINBLNCEDC</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="altaBalance" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.RegistroBalanceBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.altabalance.Ejecutar.ITRALTABLNCETRNI.TRALTABLNCEEVTY.DCBLLINEAV
+		</class-b>
+		<field>
+			<a>id</a>
+		 	<b>CODLINBLNCEORG</b>
+		</field>
+		<field>
+			<a>texto</a>
+		 	<b>DESCRLINBLNCEOR</b>
+		</field>
+		<field>
+			<a>valor</a>
+		 	<b>IMPLINBLNCEDC</b>
+		</field>
+		<field>
+			<a>porcentaje</a>
+		 	<b>PCTLINBLNCEDC</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="listaBalances" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.listabalances.ResponseBansefi.OTRDCBL1LSCNSTRNO.TRDCBL1LSCNSEVTZ.TRDCBL1LSCNSEVTV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.BalanceBean
+		</class-b>
+		<field>
+		 	<a>TXTDC</a>
+			<b>descripcion</b>
+		</field>
+		<field>
+		 	<a>STDCHAR04</a>
+			<b>anyo</b>
+		</field>
+		<field>
+		 	<a>IDINTERNODC</a>
+			<b>codDocumento</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToStringConverter">
+			<a>FECHAREVDC</a>
+			<b>fechaRevision</b>
+		</field>
+		<field>
+		 	<a>INDVIGENDC</a>
+			<b>indVigencia</b>
+		</field>
+		<field>
+			<a>idinternodc</a>
+			<b>idInternoDoc</b>
+		</field>
+	</mapping>
+</mappings>

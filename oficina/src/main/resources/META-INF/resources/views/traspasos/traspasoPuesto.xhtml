@@ -1,0 +1,242 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+
+					<h:form id="frmTraspasoPuesto" styleClass="contenedor-form col-60">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								action="#{depositoController.irMenu()}" />
+							<div><h1>Traspaso entre puestos</h1></div>
+						</div>
+
+						<div class="contenedor-campos">
+							<h:panelGroup id="panelPeticion" layout="block"
+								rendered="#{traspasosController.panelResultadoDisponible == false}">
+
+								<div class="clear-row"></div>
+
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios" />
+
+								<div class="clear-row"></div>
+
+								<h:outputLabel styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+
+								<div class="clear-row"></div>
+
+								<div class="grid_6">
+									<p:outputLabel value="Origen" />
+									<div class="clear-3"></div>
+									<p:outputLabel id="txtPuestoOrigen"
+										styleClass="label-valor bold"
+										value="#{contextoUtils.getPuesto()}" />
+								</div>
+
+								<div class="grid_6">
+									<p:message id="msgDestino" for="txtDestino" display="icon" />
+									<p:outputLabel value="Destino" for="txtDestino" />
+									<div class="clear-3"></div>
+									<p:inputText id="txtDestino"
+										value="#{traspasosController.puestoDestino}"
+										required="#{param['disableValidation'] == null}" maxlength="2">
+										<pe:keyFilter regEx="/^[0-9]*$/" />
+										<p:ajax event="blur" global="false"
+											process="@this, msgDestino" update="@this, msgDestino"
+											listener="#{traspasosController.formatearPuestoDestino()}" />
+										<f:param name="disableValidation" value="true" />
+									</p:inputText>
+								</div>
+
+								<div class="grid_12">
+									<p:message id="msgImporte" for="txtImporte" display="icon" />
+									<p:outputLabel value="Importe de traspaso" for="txtImporte" />
+									<div class="clear-3"></div>
+									<pe:inputNumber id="txtImporte" maxlength="15"
+										styleClass="pe-inputNumber" decimalPlaces="2"
+										decimalSeparator="." thousandSeparator="," minValue="0"
+										maxValue="999999999999.99"
+										required="#{param['disableValidation'] == null}"
+										value="#{traspasosController.importeTraspaso}">
+										<p:ajax event="blur" global="false"
+											process="@this, msgImporte" update="@this, msgImporte" />
+										<f:param name="disableValidation" value="true" />
+										<f:validateDoubleRange
+											minimum="#{param['disableValidation']!=null?'0.00':'0.01'}" />
+									</pe:inputNumber>
+									<span class="pe-inputNumber-suffix">MXN</span>
+								</div>
+								<div class="clear"></div>
+
+							</h:panelGroup>
+
+
+
+							<div id="printArea">
+
+								<div class="impresion traspasos">
+
+									<h:panelGroup id="panelResultado" layout="block"
+										rendered="#{traspasosController.panelResultadoDisponible == true}">
+
+										<div class="ocultar-en-impresion">
+											<p:commandButton styleClass="btn-icono-texto btn_secundario float-right"
+												id="btnImprimir" widgetVar="btnImprimir"
+												icon="ui-icon-print" alt="Imprimir" value="Imprimir"
+												onclick="printContenedorCamposId('printArea');" />
+										</div>
+
+										<h3 class="titulo-form">Resumen de transacción</h3>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_48 alpha">
+											<p:outputLabel styleClass="traspaso-parrafo"
+												value="Ha realizado un traspaso del puesto #{contextoUtils.getPuesto()} al puesto #{traspasosController.puestoDestino} por valor de " />
+											<p:outputLabel styleClass="traspaso-monto"
+												value="#{traspasosController.importeTraspaso}">
+												<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+													currencySymbol="MXN" />
+											</p:outputLabel>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_12">
+												<p:outputLabel value="Fecha:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="bold"
+													value="#{traspasosController.currentDate}" />
+											</div>
+
+											<div class="grid_12">
+												<p:outputLabel value="Hora:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="bold"
+													value="#{traspasosController.obtenerHoraActual()}" />
+											</div>
+
+											<div class="grid_24">
+												<p:outputLabel value="Centro:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="bold"
+													value="#{traspasosController.obtenerDescCentro()}" />
+											</div>
+										</div>
+
+										<div class="clear-row margin-top-20"></div>
+
+										<div class="centrar-objeto ocultar-en-impresion">
+											<p:outputLabel styleClass="rojo-b"
+												value="¿Desea ir al arqueo de puesto ahora?" />
+											<div class="clear-3"></div>
+											<p:commandButton styleClass="btn_primario margin-top-10"
+												value="Ir a arqueo de puesto"
+												action="#{traspasosController.redirigirAArqueo()}" />
+										</div>
+
+									</h:panelGroup>
+
+									<div class="firmas mostrar-en-impresion">
+										<div class="firma-origen">
+											<p:outputLabel value="Firma Origen" />
+										</div>
+										<div class="firma-destino">
+											<p:outputLabel value="Firma recibido en destino" />
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="margin-top-10"></div>
+
+						<p:commandButton styleClass="btn_secundario" value="Cancelar"
+							action="#{traspasosController.rutaInicio()}" immediate="true">
+							<f:param name="disableValidation" value="true" />
+						</p:commandButton>
+						<p:commandButton styleClass="btn_primario float-right"
+							value="Aceptar" process=":frmTraspasoPuesto"
+							update=":frmTraspasoPuesto, :dlgConfirmarTraspaso"
+							actionListener="#{traspasosController.verificarTraspaso()}"
+							rendered="#{traspasosController.panelResultadoDisponible == false}" />
+						<p:commandButton styleClass="btn_primario float-right"
+							value="Realizar otro traspaso" update=":frmTraspasoPuesto"
+							actionListener="#{traspasosController.realizarOtroTraspaso()}"
+							rendered="#{traspasosController.panelResultadoDisponible == true}" />
+
+					</h:form>
+
+					<p:dialog id="dlgConfirmarTraspaso" showEffect="fade" hideEffect="fade"
+						widgetVar="dlgConfirmarTraspaso" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="Confirmación requerida">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<div class="modal-mensaje">
+							<p:outputLabel
+								value="Va a realizar un traspaso del puesto " />
+							<p:outputLabel styleClass="modal-mensaje-detalle"
+								value="#{contextoUtils.getPuesto()} " />
+							<p:outputLabel
+								value="al " />
+							<p:outputLabel styleClass="modal-mensaje-detalle"
+								value="#{traspasosController.puestoDestino} " />
+							<p:outputLabel
+								value="por valor de " />
+							<p:outputLabel styleClass="modal-mensaje-detalle"
+								value="#{traspasosController.importeTraspaso}">
+								<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+									currencySymbol="MXN" />
+							</p:outputLabel>
+						</div>
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgConfirmarTraspaso').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" onclick="PF('dlgConfirmarTraspaso').hide();"
+							actionListener="#{traspasosController.ejecutarTraspaso()}"
+							update=":frmTraspasoPuesto" />
+					</p:dialog>
+
+					<p:dialog id="dlgOperacionFallida" widgetVar="dlgOperacionFallida" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false"
+						header="Resultado">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Falló el traspaso entre puestos. Por favor, inténtelo más tarde." />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgOperacionFallida').hide();" />
+					</p:dialog>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

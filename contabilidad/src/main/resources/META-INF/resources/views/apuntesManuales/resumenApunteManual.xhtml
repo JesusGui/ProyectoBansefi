@@ -1,0 +1,241 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!-- Parametros -->
+	<ui:param name="altaApunteBean"
+		value="#{apuntesManualesController.altaApunteBean}" />
+	<ui:param name="controller" value="#{apuntesManualesController}" />
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="form" styleClass="contenedor-form col-70">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" action="#{controller.inicio()}"></p:commandButton>
+							<div>
+								<h2 class="rojo-b">APUNTE MANUAL </h2>
+								<h2 class="gris-b">por concepto </h2>
+								<h2 class="azul-b">#{altaApunteBean.concepto} </h2>
+								<h2 class="gris-b">a destino </h2>
+								<h2 class="azul-b">#{altaApunteBean.oficinaDestino.claveFila}</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:commandButton
+								styleClass="btn_secundario btn-icono-texto float-right"
+								icon="ui-icon-print" value="Imprimir"
+								actionListener="#{controller.printReport()}"
+								rendered="#{controller.habilitaImpresion}" />
+								
+								<div class="clear-row"></div>
+							
+								<div class="marco-datospersonales">
+									<p:outputLabel value="No. de Apunte: "></p:outputLabel>
+									<p:outputLabel styleClass="bold" value="#{altaApunteBean.numeroApunte}"></p:outputLabel>
+	
+									<div class="clear-3"></div>
+	
+									<p:outputLabel value="Fecha: "></p:outputLabel>
+									<h:outputLabel styleClass="bold"
+										value="#{altaApunteBean.fechaOperacion}">
+										<f:convertDateTime pattern="dd/MM/yyyy"
+											timeZone="America/Mexico_City" />
+									</h:outputLabel>
+	
+									<div class="clear-3"></div>
+	
+									<p:outputLabel value="Hora: "></p:outputLabel>
+									<h:outputLabel styleClass="bold"
+										value="#{altaApunteBean.horaOperacion2}">
+										<f:convertDateTime pattern="HH:mm:ss"
+											timeZone="America/Mexico_City" />
+									</h:outputLabel>
+	
+									<div class="clear-3"></div>
+	
+									<p:outputLabel value="Oficina: "></p:outputLabel>
+									<p:outputLabel styleClass="bold" value="#{altaApunteBean.centro} "></p:outputLabel>
+	
+									<div class="clear-3"></div>
+	
+									<p:outputLabel
+										value="Clave de operación: "></p:outputLabel>
+									<p:outputLabel styleClass="bold"
+										value="#{altaApunteBean.claveOperacion.claveFila} #{altaApunteBean.claveOperacion.descripcionL} "></p:outputLabel>
+
+								</div>
+								
+								<div class="clear-row"></div>
+								
+								<!-- Tabla -->
+								<div class="marco-componente">
+									<!-- Cabeceras -->
+									<div class="grid_16">
+										<div class="label-vacio"></div>
+									</div>
+									<div class="grid_16 centrar-texto">
+										<p:outputLabel>DEBE</p:outputLabel>
+									</div>
+									<div class="grid_16 centrar-texto">
+										<p:outputLabel>HABER</p:outputLabel>
+									</div>
+
+									<div class="clear-row"></div>
+									<!-- /Cabeceras -->
+									<!-- Fila 1 -->
+									<div class="grid_16 align-right">
+										<p:outputLabel styleClass="float-right"
+											value="#{altaApunteBean.cuentaContableBean.idCuentaContable} #{altaApunteBean.cuentaContableBean.nombreCuentaContable} "></p:outputLabel>
+									</div>
+
+									<div class="grid_16">
+										<p:outputLabel styleClass="bold float-right"
+											value="#{altaApunteBean.importe}"
+											rendered="#{'D' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</p:outputLabel>
+										<p:outputLabel styleClass="bold float-right" value="#{controller.zero}"
+											rendered="#{'H' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</p:outputLabel>
+									</div>
+									<div class="grid_16">
+										<p:outputLabel styleClass="bold float-right"
+											value="#{altaApunteBean.importe}"
+											rendered="#{'H' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</p:outputLabel>
+										<p:outputLabel styleClass="bold float-right" value="#{controller.zero}"
+											rendered="#{'D' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</p:outputLabel>
+									</div>
+									<div class="clear-row"></div>
+									<!-- /Fila 1 -->
+									<!-- Fila 2 -->
+									<div class="grid_16">
+										<p:outputLabel styleClass="float-right"
+											rendered="#{'04' eq altaApunteBean.datosContrapartida}"
+											value="CAJA MXN"></p:outputLabel>
+										<p:outputLabel styleClass="float-right"
+											rendered="#{'03' eq altaApunteBean.datosContrapartida}"
+											value="INTERVENCIÓN"></p:outputLabel>
+										<p:outputLabel styleClass="float-right"
+											rendered="#{'CT' eq altaApunteBean.datosContrapartida and 'D' eq altaApunteBean.tipoOperacion}"
+											value="ABONO CUENTA #{altaApunteBean.cuenta}"></p:outputLabel>
+										<p:outputLabel styleClass="float-right"
+											rendered="#{'CT' eq altaApunteBean.datosContrapartida and 'H' eq altaApunteBean.tipoOperacion}"
+											value="CARGO CUENTA #{altaApunteBean.cuenta}"></p:outputLabel>
+									</div>
+
+									<div class="grid_16">
+										<h:outputLabel styleClass="bold float-right"
+											value="#{altaApunteBean.importe}"
+											rendered="#{'H' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</h:outputLabel>
+										<h:outputLabel styleClass="bold float-right" value="#{controller.zero}"
+											rendered="#{'D' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</h:outputLabel>
+									</div>
+									<div class="grid_16">
+										<h:outputLabel styleClass="bold float-right"
+											value="#{altaApunteBean.importe}"
+											rendered="#{'D' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</h:outputLabel>
+										<h:outputLabel styleClass="bold float-right" value="#{controller.zero}"
+											rendered="#{'H' eq altaApunteBean.tipoOperacion}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</h:outputLabel>
+									</div>
+									<div class="clear margin-bottom-20"></div>
+									<!-- /Fila 2 -->
+									<!-- Fila 3 -->
+									<div class="grid_16">
+										<p:outputLabel styleClass="float-right" value="TOTALES"></p:outputLabel>
+									</div>
+
+									<div class="grid_16">
+										<h:outputLabel styleClass="bold float-right"
+											value="#{altaApunteBean.importe}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</h:outputLabel>
+									</div>
+									<div class="grid_16">
+										<h:outputLabel styleClass="bold float-right"
+											value="#{altaApunteBean.importe}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+										</h:outputLabel>
+									</div>
+									<div class="clear-row"></div>
+									<!-- /Fila 3 -->
+								</div>
+
+						</div>
+						<!--Botones  -->
+
+						<p:commandButton styleClass="btn_secundario margin-top-10" immediate="true"
+							value="Cancelar" action="#{controller.cancelar()}" />
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10" immediate="true"
+							value="Realizar nuevo apunte" action="#{controller.inicio()}" />
+
+					</h:form>
+				</div>
+
+				<!--
+plantilla de ventana de di�logo
+-->
+
+			
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

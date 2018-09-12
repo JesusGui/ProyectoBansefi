@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<title>Inicio de sesión</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv='cache-control' content='no-cache'/>
+	<meta http-equiv='expires' content='0'/>
+	<meta http-equiv='pragma' content='no-cache'/>
+	<h:outputScript name="js/main.js?v=#{now}" />
+	<h:outputScript name="js/menu.js?v=#{now}" />
+	<h:outputScript name="js/isotope.pkgd.min.js"/>
+	<h:outputScript name="js/administracion.js?v=#{now}" />
+	<h:outputScript name="js/altaCuenta1.js?v=#{now}" />
+	<h:outputScript name="js/altaCuenta2.js?v=#{now}" />
+	<h:outputScript name="js/altaCuenta3.js?v=#{now}" />
+	<h:outputScript name="js/altaIPF1.js?v=#{now}" />
+	<h:outputScript name="js/calculadora.js?v=#{now}" />
+	<h:outputScript name="js/custom_table.js?v=#{now}" />
+	<h:outputScript name="js/personas.js?v=#{now}" />
+	<h:outputScript name="js/storage.js?v=#{now}" />
+	<h:outputScript name="js/utilidades.js?v=#{now}" />
+	<h:outputScript name="js/primefacesLocales.js?v=#{now}"/>
+	<h:outputScript name="js/domicilios.js?v=#{now}"/>
+
+</h:head>
+
+<h:body styleClass="body-login">
+	
+	<f:facet name="last">
+		<h:outputStylesheet >
+			 @import url('../../css/base.css?v=#{now}')			
+		</h:outputStylesheet>
+	</f:facet>
+	<!-- Barra de procesando -->
+
+	<p:dialog styleClass="dialog-barra-cargando" widgetVar="statusDialog" modal="true" draggable="false"
+		showEffect="fade" hideEffect="fade"
+		closable="false" resizable="false" showHeader="false">
+		<div class="progress-container">
+			<div class="progress">
+				<div class="progress-bar">
+					<div class="progress-shadow"></div>
+				</div>
+			</div>
+		</div>
+	</p:dialog>
+	<p:dialog styleClass="dialog-barra-cargando" widgetVar="redirectDialog" id="redirectDialog" modal="true" 
+		draggable="false" showEffect="fade" hideEffect="fade" appendTo="@(body)" focus="focusOnRedirectDialog"
+		closable="false" resizable="false" showHeader="false">
+			<div class="progress-container">
+				<div class="progress">
+					<div class="progress-bar">
+						<div class="progress-shadow"></div>
+					</div>
+				</div>
+			</div>
+			<p:inputText value="" id="focusOnRedirectDialog" />
+	</p:dialog>
+	<p:ajaxStatus onstart="showAjaxDialog()"
+		oncomplete="clearTimeout(ajaxStatusTimeout);PF('statusDialog').hide()" />
+	
+	<h:form id="frmInicioSesion" styleClass="form-login animated fadeIn">
+
+		<ul id="myUL" >
+			  <li  class="logo-entidad-login" style="display:none"><a href="#" style="display:none">E166</a></li>
+			  <li class="logo-entidad2-login" style="display:none"><a href="#" style="display:none">E521</a></li>
+			  <li  class="logo-entidad-login" style="display:none"><a href="#" style="display:none">defTemp</a></li>
+		</ul>
+
+		<p:messages id="messages" closable="false" showDetail="true"
+			showSummary="true" />
+
+		<div>
+			<span class="input-group-addon"><i class="fa fa-user"></i></span>
+			<p:inputText id="txtUsuario" widgetVar="txtUsuario" label="Usuario" onkeyup="myFunction(value)"
+				styleClass="inputs-login" value="#{loginController.usuario}"
+				maxlength="8" onblur="value=value.toUpperCase()">
+				<p:focus for="txtUsuario" />
+				<p:watermark for="txtUsuario" value="Usuario" />
+
+			</p:inputText>
+		</div>
+
+		<div class="margin-top-30"></div>
+
+		<div>
+			<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+			<p:password id="txtContrasena" widgetVar="txtContrasena"
+				label="Contraseña" styleClass="inputs-login"
+				value="#{loginController.contrasena}" maxlength="9">
+				<p:watermark for="txtContrasena" value="Contraseña" />
+			</p:password>
+		</div>
+
+		<div class="margin-top-30"></div>
+
+		<p:commandButton id="btnIniciarSesion" widgetVar="btnIniciarSesion"
+			value="Iniciar Sesión" action="#{loginController.iniciarSesion('N')}"
+			update="messages, :dlgSesionAbierta, :dlgContrasenaCaducada, :dlgContrasenaProximaCaducar, :dlgUsuarioBloqueado" />
+
+		<div class="margin-top-10"></div>
+
+		<p:commandLink id="lblCambiarContrasena" value="Cambiar contraseña"
+			action="#{loginController.cambiarContrasena()}" />
+		<h:inputHidden id="width" value="#{loginController.width}" />
+		<script>
+        //<![CDATA[
+        $(function () {
+        	$("input[id$='width']").attr("value",$(window).width());
+        });
+        //]]>
+      </script>
+	</h:form>
+
+	<p:dialog id="dlgSesionAbierta" widgetVar="dlgSesionAbierta"
+		appendTo="@(body)" closable="false" draggable="false" dynamic="true"
+		showEffect="fade" hideEffect="fade"
+		header="Inicio de Sesión" modal="true" resizable="false"
+		visible="#{loginController.tipoDialogo == 1}">
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="¡Atención! Está apunto de cerrar una sesión abierta con su usuario en otro equipo." />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion"
+			value="¿Está seguro que desea continuar?" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_secundario_dialog" value="Cancelar"
+			action="#{loginController.cancelarInicioSesion()}" />
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Continuar" action="#{loginController.iniciarSesion('S')}"
+			onclick="PF('dlgSesionAbierta').hide();" />
+	</p:dialog>
+
+	<p:dialog id="dlgContrasenaCaducada" widgetVar="dlgContrasenaCaducada"
+		appendTo="@(body)" closable="false" draggable="false" dynamic="true"
+		showEffect="fade" hideEffect="fade"
+		header="Inicio de Sesión" modal="true" resizable="false"
+		visible="#{loginController.tipoDialogo == 2}">
+		<span class="ui-messages-info-icon info-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="Su contraseña ha caducado. Por favor, actualice su contraseña." />
+		<div class="clear"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" action="#{loginController.cambiarContrasena()}" />
+	</p:dialog>
+
+	<p:dialog id="dlgContrasenaProximaCaducar"
+		widgetVar="dlgContrasenaProximaCaducar" appendTo="@(body)"
+		closable="false" draggable="false" dynamic="true"
+		showEffect="fade" hideEffect="fade"
+		header="Inicio de Sesión" modal="true" resizable="false"
+		visible="#{loginController.tipoDialogo == 3}">
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="¡Atención! Su contraseña caducará en #{loginController.diasCaducarContrasena} días." />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion"
+			value="¿Desea actualizarla ahora?" />
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_secundario_dialog"
+			value="Continuar y cambiarla más tarde"
+			action="#{loginController.continuarInicioSesion()}" />
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Cambiar mi contraseña"
+			action="#{loginController.cambiarContrasena()}" />
+	</p:dialog>
+
+	<p:dialog id="dlgUsuarioBloqueado" widgetVar="dlgUsuarioBloqueado"
+		appendTo="@(body)" closable="false" draggable="false" dynamic="true"
+		showEffect="fade" hideEffect="fade"
+		header="Inicio de Sesión" modal="true" resizable="false"
+		visible="#{loginController.tipoDialogo == 4}">
+		<span class="ui-messages-error-icon error-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje"
+			value="Su usuario ha sido bloqueado. Por favor, póngase en contacto con su centro de soporte." />
+		<div class="clear"></div>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" action="#{loginController.cancelarInicioSesion()}" />
+	</p:dialog>
+	
+	<!-- Dialogo para desplegar excepciones -->
+	<p:dialog widgetVar="dlgExcepcion" id="dlgExcepcion"
+	   appendTo="@(body)" modal="true" draggable="false"
+	   showEffect="fade" hideEffect="fade"
+		closable="false" resizable="false" showHeader="false">
+	  <span class="ui-messages-info-icon info-dialog"></span>
+	  <div class="modal-mensaje">
+	  <h:outputText value="#{errorGenericoController.mensajeError}" />
+	  <h:outputText value=" #{errorGenericoController.mensajeDetalleError}" />
+	  </div>  
+	  <div class="clear"></div>
+	  <p:commandButton styleClass="btn_principal_dialog_derecha" id="okExceptionNavigate" 
+	  value="Aceptar" action="#{errorGenericoController.navegaDestino()}"
+	  rendered="#{errorGenericoController.mostrarAceptar}"/>
+	  
+	  <p:commandButton styleClass="btn_principal_dialog_derecha" id="okExceptionDontNavigate" 
+	  value="Aceptar" onclick="PF('dlgExcepcion').hide();"
+	  rendered="#{!errorGenericoController.mostrarAceptar}"/>
+	</p:dialog>
+
+<!--  codigo para filtrar el logo de la entidad -->
+
+	<script>
+        function myFunction(str ) {
+           if (str !== undefined &amp;&amp; str.length>3) {
+                var input, filter, ul, li, a, i;
+                var defaultt = 1;
+             	var strTemp = str.substring(0,4);
+                filter = strTemp.toUpperCase();
+                ul = document.getElementById("myUL");
+                li = ul.getElementsByTagName("li");
+                for (i = 0; i &lt; li.length; i++) {
+                    a = li[i].getElementsByTagName("a")[0];
+                    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                        defaultt = 0;
+                    } else {
+                        li[i].style.display = "none";
+                        if(defaultt === 1)
+						{
+                            li[2].style.display = "";
+						}
+
+                    }
+                }
+            }
+        }
+	</script>
+
+</h:body>
+
+</html>

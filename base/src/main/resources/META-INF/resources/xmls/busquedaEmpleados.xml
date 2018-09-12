@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<!-- Mapeo de clases -->
+	<mapping map-id="resultadosBusquedaEmpleadosIdEmpleado">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaempleado.ResponseBansefi.OTRCONSEMPLTRNO.TRCONSEMPLEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.busqueda.EmpleadoBusquedaBean
+		</class-b>
+		<field>
+			<a>eppedpobjtrdv.idinternoemplep</a>
+			<b>idEmpleado</b>
+		</field>
+		<field>
+			<a>peconsindvobjtrdv.idinternope</a>
+			<b>idInterna</b>
+		</field>
+		<field>
+			<a>peconsindvobjtrdv.nomb50</a>
+			<b>nombre</b>
+		</field>
+		<field>
+			<a>eppedpobjtrdv.codinternouo</a>
+			<b>codigoCentro</b>
+		</field>
+		<field>
+			<a>eppedpobjtrdv.codcargoempl</a>
+			<b>perfil</b>
+		</field>
+	</mapping>
+	
+	<!-- Mapeo de clases -->
+	<mapping map-id="resultadosBusquedaEmpleadosIdInterna">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaempleado.ResponseBansefi.OTRCONSEMPLTRNO.TRCONSEMPLEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.busqueda.EmpleadoBusquedaBean
+		</class-b>
+		<field>
+			<a>eppedpobjtrdv.idinternoemplep</a>
+			<b>idEmpleado</b>
+		</field>
+		<field>
+			<a>peconsindvobjtrdv.idinternope</a>
+			<b>idInterna</b>
+		</field>
+		<field>
+			<a>peconsindvobjtrdv.nomb50</a>
+			<b>nombre</b>
+		</field>
+		<field>
+			<a>eppedpobjtrdv.codinternouo</a>
+			<b>codigoCentro</b>
+		</field>
+		<field>
+			<a>eppedpobjtrdv.codcargoempl</a>
+			<b>perfil</b>
+		</field>
+	</mapping>
+	
+</mappings>

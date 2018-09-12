@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoConsultaCondicionRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionrango.ResponseBansefi.OTRCONSVALKARNGTRNO.TRCONSVALKARNGEVTZ
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KACOMUNV.CODECVKA</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>IDCCPS1V.IDCCPS</a>
+      <b>idCcps</b>
+    </field>
+    <field>
+      <a>KAESTRCTRNGV.RNGPREF</a>
+      <b>preferente</b>
+    </field>
+    <field>
+      <a>KAESTRCTRNGV.RNGMIN</a>
+      <b>minimo</b>
+    </field>
+    <field>
+      <a>KAESTRCTRNGV.RNGMAX</a>
+      <b>maximo</b>
+    </field>
+    <field>
+      <a>KAESTRCTRNGV.RNGINCREM</a>
+      <b>incremento</b>
+    </field>
+    <field>
+      <a>KAESTRCTRNGV.CODUM</a>
+      <b>unidades</b>
+    </field>
+  </mapping>
+  <mapping map-id="resultadoConsultaCondicionRangoPlazo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultacondicionrangoplazo.ResponseBansefi.OTRCONSVALKSRNGTRNO.TRCONSVALKSRNGEVTZ     
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCOMUNV.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KSCOMUNV.FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KSCOMUNV.CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>IDCCPS1V.IDCCPS</a>
+      <b>idCcps</b>
+    </field>
+    <field>
+      <a>KSESTRCTRNGV.RNGPREF</a>
+      <b>preferente</b>
+    </field>
+    <field>
+      <a>KSESTRCTRNGV.RNGMIN</a>
+      <b>minimo</b>
+    </field>
+    <field>
+      <a>KSESTRCTRNGV.RNGMAX</a>
+      <b>maximo</b>
+    </field>
+    <field>
+      <a>KSESTRCTRNGV.RNGINCREM</a>
+      <b>incremento</b>
+    </field>
+    <field>
+      <a>KSESTRCTRNGV.CODUM</a>
+      <b>unidades</b>
+    </field>
+  </mapping>
+  
+  <mapping map-id="resultadoConsultaRangoTarifa" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultarangotarifa.ResponseBansefi.OTRKPCNSRNGSMPTRNO.TRKPCNSRNGSMPEVTZ.KPRNGSMPLV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>RNGPREF</a>
+      <b>preferente</b>
+    </field>
+    <field>
+      <a>RNGMIN</a>
+      <b>minimo</b>
+    </field>
+    <field>
+      <a>RNGMAX</a>
+      <b>maximo</b>
+    </field>
+    <field>
+      <a>RNGINCREM</a>
+      <b>incremento</b>
+    </field>
+    <field>
+      <a>CODUM</a>
+      <b>unidades</b>
+    </field>
+  </mapping>
+</mappings>

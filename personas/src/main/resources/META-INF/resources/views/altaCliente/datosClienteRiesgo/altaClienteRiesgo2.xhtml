@@ -1,0 +1,381 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jstl/core"
+	template="../../../templates/plantilla-inicio.xhtml"> 
+
+    <ui:define name="contenido">
+    	
+    	<!-- Simplemente se pone para que cargue la libreria de primefaces EXT -->
+		<pe:blockUI widgetVar="blockUIWidget1">
+		</pe:blockUI>
+    	    
+        <h:body>
+        	
+        	<pe:importConstants className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum" var="EstadoListadosEnum" /> 
+		
+            <div class="container_48">
+                <div class="contenedor">
+                
+                    <h:form id="formClienteRiesgo2" styleClass="contenedor-form">
+                        
+                        <h:panelGroup rendered="#{!altaClienteRiesgoController.elementosVisibles}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" title="Volver atrás"
+									action="#{altaClienteRiesgoController.cancelarAltaModificacion()}">
+								</p:commandButton>
+							</div>
+							
+						</h:panelGroup>
+                         
+                        <h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente ne true and altaClienteRiesgoController.elementosVisibles}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<div>
+								<h2 class="gris-b">Alta de </h2>
+								<h2 class="azul-b">#{altaClienteRiesgoController.cliente.nombre} #{altaClienteRiesgoController.cliente.apePaterno !=null ?altaClienteRiesgoController.cliente.apePaterno:''} #{altaClienteRiesgoController.cliente.apeMaterno !=null ?altaClienteRiesgoController.cliente.apeMaterno:''} </h2>
+								<h3 class="gris-b">(#{altaClienteRiesgoController.obtenerDescripcionTpDoc()} #{altaClienteRiesgoController.cliente.numIdentificacion})</h3>
+								</div>
+							</div>	
+							
+						</h:panelGroup>				
+						
+						<h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente eq true and altaClienteRiesgoController.elementosVisibles}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<div>
+								<h2 class="gris-b">Modificación Cliente de Riesgo </h2>
+								<h2 class="azul-b">#{altaClienteRiesgoController.cliente.nombre} #{altaClienteRiesgoController.cliente.apePaterno !=null ?altaClienteRiesgoController.cliente.apePaterno:''} #{altaClienteRiesgoController.cliente.apeMaterno !=null ?altaClienteRiesgoController.cliente.apeMaterno:''} </h2>
+								<h3 class="gris-b">(#{altaClienteRiesgoController.obtenerDescripcionTpDoc()} #{altaClienteRiesgoController.cliente.numIdentificacion})</h3>
+								</div>
+							</div>
+								
+						</h:panelGroup>
+                        <h:panelGroup rendered="#{altaClienteRiesgoController.elementosVisibles}">
+	                        <!--Wizard Botones circulares superiores -->
+	                        <div class="wiz-pasos">
+								<!-- Botones persona de riesgo -->
+								<p:commandButton styleClass="inactivo" value="Datos de operación"
+									action="#{altaClienteRiesgoController.irAPaso1()}" 
+									ajax="true" update="formClienteRiesgo2">
+									<f:param name="disableValidation" value="true" />  						
+								</p:commandButton>
+								<p:commandButton styleClass="activo" value="Referencias personales"/>								
+	                        </div>
+	                    </h:panelGroup>    
+                        
+                        <!--contenedor del wizard-->
+                        <div class="wiz-contenedor">
+                        	
+                        	<div class="wiz-atras">
+		                    	<h:panelGroup rendered="#{altaClienteRiesgoController.elementosVisibles}">
+			                        <p:commandButton title="Anterior" id="anterior" icon="ui-icon-arrow-1-w" action="#{altaClienteRiesgoController.irAPaso1()}" ajax="true" update="formClienteRiesgo2">
+			                            <f:param name="disableValidation" value="true" />
+			                        </p:commandButton>
+		                		</h:panelGroup>
+		                	</div>
+                        	                            
+                            <div class="contenedor-campos">
+                            	<p:messages id="messages" closable="false" showDetail="true" rendered="#{!altaClienteRiesgoController.elementosVisibles}" />
+	                            <h:panelGroup rendered="#{altaClienteRiesgoController.elementosVisibles}">
+		                            <p:outputLabel styleClass="txt-campo-obligatorio" value="*Datos Obligatorios"/>
+									<div class="clear-row"></div>
+									<h:outputLabel styleClass="txt-campos-oblg" value="Los campos marcados en rojo son requeridos" rendered="#{facesContext.validationFailed}"/>
+									<div class="clear-row"></div>
+									
+									<p:commandButton id="anadirRelacion" icon="fa fa-plus" value="Añadir"
+											action="#{altaClienteRiesgoController.nuevaReferencia()}"
+											update="@form" immediate="true">
+											<f:param name="disableValidation" value="true" />	
+									</p:commandButton>
+									
+									<div class="clear-row"></div>
+										
+									<c:forEach var="referencia" items="#{altaClienteRiesgoController.cliente.datosRiesgo.referenciasPersonales}" varStatus="myVarStatus">
+										
+										<p:panel id="referenciaLista#{myVarStatus.index}" styleClass="#{referencia.estado.styleClass}">
+											
+											<h:panelGroup layout="block" rendered="#{referencia.estado == EstadoListadosEnum.CONSULTADO or referencia.estado == EstadoListadosEnum.ELIMINADO}">
+												
+												<p:commandButton
+													id="restauraReferenciaConsultadaEliminada#{myVarStatus.index}"
+													label="Restaurar" update="@form" immediate="true"
+													alt="Recuperar referencia"
+													actionListener="#{altaClienteRiesgoController.restauraReferencia(referencia)}"
+													styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left"
+													rendered="#{referencia.estado == EstadoListadosEnum.ELIMINADO}"
+													title="Recuperar referencia" />
+												
+												<p:commandButton id="eliminaReferenciaConsultadaEliminada#{myVarStatus.index}"
+													label="Eliminar" update="@form" immediate="true"
+													alt="Eliminar referencia"
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash"
+													actionListener="#{altaClienteRiesgoController.eliminaReferencia(referencia)}"
+													rendered="#{referencia.estado == EstadoListadosEnum.CONSULTADO}"
+													title="Eliminar referencia" />
+												
+												<p:commandButton id="editaReferenciaConsultadaEliminada#{myVarStatus.index}"
+													label="Editar" update="@form" immediate="true"
+													styleClass="btn-icono btn-panel" icon="fa fa-pencil"
+													alt="Editar referencia"
+													actionListener="#{altaClienteRiesgoController.editaReferencia(referencia)}"
+													rendered="#{referencia.estado == EstadoListadosEnum.CONSULTADO}"
+													title="Editar referencia" />
+													
+												<div class="clear-row"></div>
+													
+												<div class="grid_9">
+													<p:outputLabel for="tipoRelacionConsultada#{myVarStatus.index}" value="Tipo de relación" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="tipoRelacionConsultada#{myVarStatus.index}" 
+																	value="REFERENCIA PERSONAL" />
+												</div>
+												<div class="grid_13">
+													<p:outputLabel for="nombreReferenciaConsultadaLabel#{myVarStatus.index}" value="Nombre (s)" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="nombreReferenciaConsultadaLabel#{myVarStatus.index}"
+																	value="#{referencia.nombre}" />
+												</div>
+												<div class="grid_13">
+													<p:outputLabel for="apePatReferenciaConsultadaLabel#{myVarStatus.index}" value="Apellido Paterno" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="apePatReferenciaConsultadaLabel#{myVarStatus.index}"
+																	value="#{referencia.apellidoPaterno}" />
+												</div>
+												<div class="grid_13">
+													<p:outputLabel for="apeMatReferenciaConsultadaLabel#{myVarStatus.index}" value="Apellido Materno" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="apeMatReferenciaConsultadaLabel#{myVarStatus.index}"
+																	value="#{referencia.apellidoMaterno}" />
+												</div>
+												
+												<div class="clear-row"></div>
+												
+												<div class="grid_8">
+													<p:outputLabel for="telefonoReferenciaConsultadaLabel#{myVarStatus.index}" value="Telefono" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="telefonoReferenciaConsultadaLabel#{myVarStatus.index}"
+																	value="#{referencia.telefono}" />
+												</div>
+												
+												<div class="grid_20">
+													<p:outputLabel for="relacionReferenciaConsultadaLabel#{myVarStatus.index}" value="Relación o parentesco con el titular" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="relacionReferenciaConsultadaLabel#{myVarStatus.index}"
+																	value="#{referencia.relacionParentesco}" />
+												</div>
+												
+												<div class="grid_20">
+													<p:outputLabel for="domicilioReferenciaConsultadaLabel#{myVarStatus.index}" value="Domicilio" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="domicilioReferenciaConsultadaLabel#{myVarStatus.index}"
+																	value="#{referencia.domicilio}" />
+												</div>
+												
+												<div class="clear"></div>
+												
+											</h:panelGroup>
+											
+											<h:panelGroup rendered="#{referencia.estado == EstadoListadosEnum.MODIFICADO or referencia.estado == EstadoListadosEnum.NUEVO}">
+												
+												<p:commandButton
+													id="restauraReferenciaModificadaNueva#{myVarStatus.index}"
+													label="Restaurar" update="@form" immediate="true"
+													alt="Recuperar referencia"
+													actionListener="#{altaClienteRiesgoController.restauraReferencia(referencia)}"
+													styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left"
+													rendered="#{referencia.estado == EstadoListadosEnum.MODIFICADO}"
+													title="Recuperar referencia" />
+												
+												<p:commandButton id="eliminaReferenciaModificadaNueva#{myVarStatus.index}"
+													label="Eliminar" update="@form" immediate="true"
+													alt="Eliminar referencia"
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash"
+													actionListener="#{altaClienteRiesgoController.eliminaReferencia(referencia)}"
+													title="Eliminar referencia" />
+													
+												<div class="clear-row"></div>
+																									
+												<div class="grid_9">
+													<p:outputLabel for="tipoRelacionEditar#{myVarStatus.index}" value="Tipo de relación" />
+													<div class="clear-3"></div>
+													<p:outputLabel styleClass="label-valor texto-sininput" id="tipoRelacionEditar#{myVarStatus.index}" 
+																	value="REFERENCIA PERSONAL" />
+												</div>
+												<div class="grid_13">
+													<p:outputLabel for="nombreReferenciaEditarLabel#{myVarStatus.index}" value="Nombre (s)" />
+													<div class="clear-3"></div>
+													<p:inputMask id="nombreReferenciaEditarLabel#{myVarStatus.index}" value="#{referencia.nombre}" maxlength="30"
+														required="#{param['disableValidation']==null}" onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"/>
+														<p:ajax global="false" event="blur" process="@this" partialSubmit="true"/>
+													</p:inputMask>
+												</div>
+												<div class="grid_13">
+													<p:outputLabel for="apePatReferenciaEditarLabel#{myVarStatus.index}" value="Apellido Paterno" />
+													<div class="clear-3"></div>
+													<p:inputMask id="apePatReferenciaEditarLabel#{myVarStatus.index}" value="#{referencia.apellidoPaterno}" maxlength="30"
+														onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+														<p:ajax global="false" event="blur" process="@this" partialSubmit="true"/>
+													</p:inputMask>
+												</div>
+												<div class="grid_13">
+													<p:outputLabel for="apeMatReferenciaEditarLabel#{myVarStatus.index}" value="Apellido Materno" />
+													<div class="clear-3"></div>
+													<p:inputMask id="apeMatReferenciaEditarLabel#{myVarStatus.index}" value="#{referencia.apellidoMaterno}" maxlength="30"
+														onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+														<p:ajax global="false" event="blur" process="@this" partialSubmit="true"/>
+													</p:inputMask>
+												</div>
+												
+												<div class="clear-row"></div>
+												
+												<div class="grid_8">
+													<p:outputLabel for="telefonoReferenciaEditarLabel#{myVarStatus.index}" value="Telefono" />
+													<div class="clear-3"></div>
+													<p:inputMask id="telefonoReferenciaEditarLabel#{myVarStatus.index}" value="#{referencia.telefono}" maxlength="15"
+														onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/[\d]/" />
+														<p:ajax global="false" event="blur" process="@this" partialSubmit="true"/>
+													</p:inputMask>
+												</div>
+												
+												<div class="grid_20">
+													<p:outputLabel for="relacionReferenciaEditarLabel#{myVarStatus.index}" value="Relación o parentesco con el titular" />
+													<div class="clear-3"></div>
+													<p:inputMask id="relacionReferenciaEditarLabel#{myVarStatus.index}" value="#{referencia.relacionParentesco}"
+														maxlength="50" onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^[\da-zA-ZñÑ\- ]*$/" />
+													</p:inputMask>
+												</div>
+												
+												<div class="grid_20">
+													<p:outputLabel for="domicilioReferenciaEditarLabel#{myVarStatus.index}" value="Domicilio" />
+													<div class="clear-3"></div>
+													<p:inputMask id="domicilioReferenciaEditarLabel#{myVarStatus.index}" value="#{referencia.domicilio}"
+														maxlength="50" onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^[\da-zA-ZñÑ\- ]*$/" />
+													</p:inputMask>
+												</div>
+												
+												<div class="clear"></div>
+												
+											</h:panelGroup>
+											
+										</p:panel>
+											
+									</c:forEach>
+																				
+									
+								</h:panelGroup>
+                            </div>
+                            <h:panelGroup rendered="#{altaClienteRiesgoController.elementosVisibles}">
+	                            <div class="wiz-siguiente">
+	                                <!--aqui va el boton de "paso siguiente" del wizard-->
+	                                <p:commandButton icon="fa fa-check" id="terminar" title="Terminar" action="#{altaClienteRiesgoController.crearModificarDatosRiesgo()}" ajax="true" update="formClienteRiesgo2" />	                                
+	                            </div>
+                            </h:panelGroup>
+                        </div>
+                        
+                        <h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente ne true and altaClienteRiesgoController.elementosVisibles}">
+							<p:commandButton styleClass="btn_secundario  margin-top-10 push_1" id="cancelarA" immediate="true" value="Cancelar" onclick="PF('dlgCancelarAlta').show();"/>
+						</h:panelGroup>
+					    
+					    <h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente eq true and altaClienteRiesgoController.elementosVisibles}">
+							<p:commandButton styleClass="btn_secundario margin-top-10 push_1" id="cancelarM" immediate="true" value="Cancelar" onclick="PF('dlgCancelarModificacion').show();"/>
+						</h:panelGroup>
+						
+						<ui:include src="../../store.xhtml">
+					    	<ui:param name="storeBean" value="#{altaClienteRiesgoController}"/>
+						</ui:include>
+						
+                    </h:form>
+                </div>
+				
+				<p:dialog widgetVar="dlgAltaCorrecto" id="dlgAltaCorrecto" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="El cliente ha sido dado de alta correctamente." />
+                    <div class="clear"></div>
+                    <!--acciÃ³n a tomar por el usuario-->
+                    <p:outputLabel styleClass="modal-accion" value="Deberá adicionar los documentos necesarios." />
+                    <div class="margin-bottom-20"></div>
+                    <!--botones de la modal primarios y secundarios -->
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarFinA" value="Aceptar" 
+                    	immediate="true" action="#{altaClienteRiesgoController.irDocumentos()}" />
+                </p:dialog>
+				
+				<p:dialog widgetVar="dlgModCorrecto" id="dlgModCorrecto" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal-->
+                    <p:outputLabel styleClass="modal-mensaje" value="El cliente se modificó correctamente." />
+                    <div class="clear"></div>
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarFinM" value="Aceptar" 
+                    	immediate="true" action="#{altaClienteRiesgoController.irFichaCliente()}" />
+                </p:dialog>
+				
+                <p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta" appendTo="@(body)"
+                      header="Cancelar alta cliente de riesgo" modal="true" visible="false" closable="false"
+                      resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--                       <p:outputLabel styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar el alta de cliente de riesgo" /> -->
+<!--                       <div class="clear"></div> -->
+<!--                       <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--                       <div class="margin-bottom-20"></div> -->
+<!--                       <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarAlta').hide();" id="VolverAlta"  value="Continuar con el alta" immediate="true"/> -->
+<!--                       <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartar"  value="No guardar" action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"/> -->
+<!--                       <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardar" value="Guardar" onclick="return storeData();"/> -->
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+	             </p:dialog>
+				 
+				 <p:dialog widgetVar="dlgCancelarModificacion" id="dlgCancelarModificacion" appendTo="@(body)"
+	                      header="Cancelar modificación cliente de riesgo" modal="true" visible="false" closable="false"
+	                      resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+	                      <span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 	                      <p:outputLabel styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar la modificación de cliente de riesgo" /> -->
+<!-- 	                      <div class="clear"></div> -->
+<!-- 	                      <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 	                      <div class="margin-bottom-20"></div> -->
+<!-- 	                      <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarModificacion').hide();" id="VolverModificacion"  value="Continuar con la modificación" immediate="true"/> -->
+<!-- 	                      <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartarM"  value="No guardar" action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"/> -->
+<!-- 	                      <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardarM" value="Guardar" onclick="return storeData();"/> -->
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+	             </p:dialog>
+	             
+            </div><!--termina container 48-->
+        </h:body>
+    </ui:define>
+</ui:composition>

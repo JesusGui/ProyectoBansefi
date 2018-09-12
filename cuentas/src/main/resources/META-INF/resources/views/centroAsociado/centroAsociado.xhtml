@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+
+	<ui:define name="contenido">
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formConversioncuenta"
+						styleClass="contenedor-form col-70">
+						<!--título de la ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" action="#{centroAsociadoController.regresarFichaCuenta()}"></p:commandButton>
+							<div>
+							<h2 class="gris-b">
+								Modificar centro de 
+								
+								<h:outputFormat styleClass="rojo-b"
+									value="#{centroAsociadoController.cuentaBean.tipoCuenta} " />
+									
+								<h:outputFormat styleClass="sub-h"
+									value="(#{centroAsociadoController.getNumeroCuenta()})" />
+							</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<!--<p:outputLabel styleClass="txt-campos-oblg" -->
+							<!--value="*Campos Obligatorios"></p:outputLabel> -->
+							
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+							<p:outputLabel styleClass="txt-campo-obligatorio" value="*Datos obligatorios"/>
+
+								<div class="clear-row"></div>
+								<p:outputLabel>Introduzca la Oficina Administrativa a la que desea
+										cambiar la cuenta.</p:outputLabel>
+
+								<div class="clear-row"></div>
+								<p:outputLabel>
+										El cambio será efectivo el día :
+										</p:outputLabel>
+								<h:outputText styleClass="resumen-detalle bold font-size-15"
+									value="#{centroAsociadoController.getCambioEfectivo()}" />
+
+								<div class="clear-row"></div>
+								<div class="grid_24 alpha">
+									<p:message id="messages" display="icon" for="centroAgregado"  />
+									<p:outputLabel for="centroAgregado" value="Centro" />
+									<div class="clear-3"></div>
+									<b:autoComplete id="centroAgregado"
+										value="#{centroAsociadoController.centroSelected}"
+										disabled="#{not centroAsociadoController.isCuentaActiva()}"
+										maxlength="4" catalogSource="catalogoCentrosLoaderTask"
+										var="item" itemLabel="#{item.descripcionL}"
+										itemValue="#{item}" converter="catalogoConverter"
+										forceSelection="true"
+										required="#{param['disableValidation']==null}">
+										<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" preventPaste="false" />
+									</b:autoComplete>
+
+								</div>
+
+								<div class="clear-row"></div>
+									<h3 class="azul-b">Centro asociado actual </h3>
+								<div class="clear clear-3"></div>
+								<h:panelGroup layout="block"
+									styleClass="sinresultados sin-margen"
+									rendered="#{centroAsociadoController.centroAsociado.isEmpty()}">
+									<div>
+										<p:outputLabel value="No existe información que mostrar." />
+									</div>
+								</h:panelGroup>
+								<p:dataTable id="tableCenter" var="centro" rendered="#{not centroAsociadoController.centroAsociado.isEmpty()}"
+									value="#{centroAsociadoController.centroAsociado}">
+									<p:column headerText="  Tipo Relación  ">
+										<h:outputText
+											value="#{centroAsociadoController.getCentroAsociadoTipoRelacion(centro.centro)}"
+											style=" width : 264px;" />
+									</p:column>
+									<p:column headerText="  Centro  ">
+										<h:outputText value="#{centro.centro}" style=" width : 264px;" />
+									</p:column>
+									<p:column headerText="Fecha inicio">
+										<h:outputText value="#{centro.fechainicioString}"
+											style=" width : 269px;" />
+									</p:column>
+<!-- 									<p:column headerText="Fecha Fin"> -->
+<!-- 										<h:outputText value="#{centro.fechaFin}" -->
+<!-- 											style=" width : 264px;" /> -->
+<!-- 									</p:column> -->
+								</p:dataTable>
+
+							<div class="clear"></div>
+						</div>
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value=" Guardar "
+							actionListener="#{centroAsociadoController.enviaCentro()}"
+							disabled="#{not centroAsociadoController.isCuentaActiva()}"
+							process="centroAgregado" update="tableCenter" ajax="false" />
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" immediate="true"
+							action="#{centroAsociadoController.regresarFichaCuenta()}" 
+							/>
+					</h:form>
+
+					<p:dialog appendTo="@(body)" widgetVar="dlgConfirmacion" closable="false" draggable="false" visible="false"
+						showEffect="fade" hideEffect="fade"
+						dynamic="true" modal="true" resizable="false">
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Los cambios se guardaron correctamente." />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"							
+							widgetVar="btnAceptar" onclick="PF('btnAceptar').disable()"
+							oncomplete="PF('dlgConfirmacion').hide();"
+							update=":formConversioncuenta" />
+					</p:dialog>
+
+
+				</div>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

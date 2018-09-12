@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="altaDatosProfesionales" wildcard="false" map-null="false"
+		trim-strings="true" map-empty-string="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.ActividadProfesionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.altadatosprofesionales.Ejecutar.ITRPEALTACOMPLPROFTR.TRPEALTACOMPLPROFEVT
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+			<a>codActividadProf</a>
+			<b>codcnoindv</b>
+		</field>
+		<field>
+			<a>nivelSalarial</a>
+			<b>codnivingrindv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaAntPuesto</a>
+			<b>fecantactproin</b>
+		</field>
+		<field>
+			<a>dedicacion</a>
+			<b>inddedicactprof</b>
+		</field>
+		<field>
+			<a>duracion</a>
+			<b>indduractprof</b>
+		</field>
+		<field>
+			<a>continuidad</a>
+			<b>indctdadactprof</b>
+		</field>
+		<field>
+			<a>jornada</a>
+			<b>indtmpoactprof</b>
+		</field>
+		<field>
+			<a>cargo</a>
+			<b>cargocuacprofin</b>
+		</field>
+		<field>
+			<a>codTipoContrato</a>
+			<b>codcntrtoindv</b>
+		</field>
+		<field>
+			<a>idEmpresa</a>
+			<b>cifemprin</b>
+		</field>
+		<field>
+			<a>nombreEmpresa</a>
+			<b>nombemprin</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="bajaDatosProfesionales" wildcard="false" map-null="false" map-empty-string="true"
+		trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.ActividadProfesionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.bajadatoprofesional.Ejecutar.ITRPEBAJACOMPLPROFTR.TRPEBAJACOMPLPROFEVT.PEACTPROFINDVP
+		</class-b>
+		<field>
+			<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+			<a>numActProfIn</a>
+			<b>numactprofin</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="modificacionDatosProfesionales" wildcard="false" map-null="false"
+		trim-strings="true" map-empty-string="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.ActividadProfesionalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.modificaciondatoprofesional.Ejecutar.ITRPEMODIFCOMPLPROFT.TRPEMODIFCOMPLPROFEV
+		</class-b>
+		
+		<field>
+			<a>codActividadProf</a>
+			<b>codcnoindv</b>
+		</field>
+		<field>
+			<a>nivelSalarial</a>
+			<b>codnivingrindv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaAntPuesto</a>
+			<b>fecantactproin</b>
+		</field>
+		<field>
+			<a>dedicacion</a>
+			<b>inddedicactprof</b>
+		</field>
+		<field>
+			<a>duracion</a>
+			<b>indduractprof</b>
+		</field>
+		<field>
+			<a>continuidad</a>
+			<b>indctdadactprof</b>
+		</field>
+		<field>
+			<a>jornada</a>
+			<b>indtmpoactprof</b>
+		</field>
+		<field>
+			<a>cargo</a>
+			<b>cargocuacprofin</b>
+		</field>
+		<field>
+			<a>codTipoContrato</a>
+			<b>codcntrtoindv</b>
+		</field>
+		<field>
+			<a>idEmpresa</a>
+			<b>cifemprin</b>
+		</field>
+		<field>
+			<a>nombreEmpresa</a>
+			<b>nombemprin</b>
+		</field>
+		<field>
+			<a>entidad</a>
+			<b>peactprofindvp.codnrbeen</b>
+		</field>
+		<field>
+			<a>idInterno</a>
+			<b>peactprofindvp.idinternope</b>
+		</field>
+		<field>
+			<a>numActProfIn</a>
+			<b>peactprofindvp.numactprofin</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaAntLaboral</a>
+			<b>stdfecantglaboralv.stdfecha</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaDetalleDatosProfesionales" wildcard="false" map-null="false"
+		trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultadetalledatoprofesional.ResponseBansefi.OTRPECONSCOMPLPROFTR.TRPECONSCOMPLPROFEVT
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.ActividadProfesionalBean
+		</class-b>
+		<field>
+			<a>codcnoindv</a>
+			<b>codActividadProf</b>
+		</field>
+		<field>
+			<a>codnivingrindv</a>
+			<b>nivelSalarial</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecantactproin</a>
+			<b>fechaAntPuesto</b>
+		</field>
+		<field>
+			<a>inddedicactprof</a>
+			<b>dedicacion</b>
+		</field>
+		<field>
+			<a>indduractprof</a>
+			<b>duracion</b>
+		</field>
+		<field>
+			<a>indctdadactprof</a>
+			<b>continuidad</b>
+		</field>
+		<field>
+			<a>indtmpoactprof</a>
+			<b>jornada</b>
+		</field>
+		<field>
+			<a>cargocuacprofin</a>
+			<b>cargo</b>
+		</field>
+		<field>
+			<a>codcntrtoindv</a>
+			<b>codTipoContrato</b>
+		</field>
+		<field>
+			<a>cifemprin</a>
+			<b>idEmpresa</b>
+		</field>
+		<field>
+			<a>nombemprin</a>
+			<b>nombreEmpresa</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>stdfecantglaboralv.stdfecha</a>
+			<b>fechaAntLaboral</b>
+		</field>
+	</mapping>
+	
+	
+</mappings>

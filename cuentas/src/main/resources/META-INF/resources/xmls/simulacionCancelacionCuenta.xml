@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="wrappRespuestaSimulacionCancelacionCuenta" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>mx.babel.bansefi.banksystem.cuentas.beans.SimulacionCancelacionCuentaBean</class-a>
+    <class-b>mx.babel.bansefi.banksystem.cuentas.webservices.simulacioncancelacioncuenta.ResponseBansefi.TRSIMULACTRNO.TRSIMULACEVTZ.TRSIMULCANCV</class-b>
+    <field>
+      <a>deudaImpagada</a>
+      <b>acvimpdeudaimpagv.stddec15Y2</b>
+    </field>  
+    <field>
+      <a>saldo</a>
+      <b>acvsdopdtevtov.stddec15Y2</b>
+    </field>    
+    <field>
+      <a>comisionMantenimento</a>
+      <b>acvdsglcomisionv.acvcomisionv.stddec15Y2</b>
+    </field> 
+    <field>
+      <a>ivaOperacion</a>
+      <b>acvdsglcomisionv.acvimpuestov.stddec15Y2</b>
+    </field> 
+    <field>
+      <a>importe</a>
+      <b>acvsdopdtevtov.stddec15Y2</b>
+    </field> 
+    <field>
+      <a>importeNeto</a>
+      <b>acvimptotalv.stddec15Y2</b>
+    </field>
+    <field>
+      <a>importeNetoDebeHaber</a>
+      <b>acvimptotalv.sgn</b>
+    </field>
+    <field>
+      <a>interesDeudor</a>
+      <b>acvdsglinteresv.acvinteresctv.stddec15Y2</b>
+    </field> 
+    <field>
+      <a>interesAcreedor</a>
+      <b>hlhcoliqev.hlhcoliqe.imptotalliq</b>
+    </field> 
+    <field>
+      <a>interesAcreedorDebeHaber</a>
+      <b>hlhcoliqev.hlhcoliqe.sgn</b>
+    </field> 
+</mapping>
+
+<!--   <mapping map-id="wrappConsultaSimulacionCancelacionCuenta" wildcard="false" -->
+<!--     map-null="false" map-empty-string="false" trim-strings="true"> -->
+<!--     <class-a>mx.babel.bansefi.banksystem.base.beans.domain.CuentaBean</class-a> -->
+<!--     <class-b>mx.babel.bansefi.banksystem.cuentas.webservices.simulacioncancelacioncuenta.Ejecutar.TRSIMULACTRNI.TRSIMULACEVTY</class-b> -->
+<!--     <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter"> -->
+<!--       <a>numeroCuenta</a> -->
+<!--       <b>acacp.numsecac</b> -->
+<!--     </field>     -->
+<!--   </mapping> -->
+</mappings>

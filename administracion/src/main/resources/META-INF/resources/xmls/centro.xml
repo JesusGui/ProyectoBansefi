@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="altaCentro1">
+		<class-a>mx.babel.bansefi.banksystem.administracion.beans.centro.AltaCentroBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.webservices.altacentro.Ejecutar.ITRALTACENTROTRNI.TRALTACENTROEVTY
+		</class-b>
+		<field>
+			<a>numero</a>
+			<b>codinternouo</b>
+		</field>
+		<field>
+			<a>nombre</a>
+			<b>nombcentuo</b>
+		</field>
+		<field>
+			<a>modalidad</a>
+			<b>codmdldadcent</b>
+		</field>
+		<field>
+			<a>plazaBancaria</a>
+			<b>codplzbancaria</b>
+		</field>
+		<field>
+			<a>desgCtble</a>
+			<b>coddesigctbl</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>controlador</a>
+			<b>indcentctrluo</b>
+		</field>
+		<field>
+			<a>numero</a>
+			<b>codcsbof</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="altaDomicilioCentro">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioTipoBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.webservices.altacentro.Ejecutar.ITRALTACENTROTRNI.TRALTACENTROEVTY.DRDMDPOBJTRDV
+		</class-b>
+		<field>
+			<a>tipoCalle</a>
+			<b>codvia</b>
+		</field>
+		<field>
+			<a>regimenOcupacion</a>
+			<b>codregimocup</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.codigoPostal</a>
+			<b>codpostalag</b>
+		</field>
+		<field>
+			<a>telefono</a>
+			<b>numtlfnodomic</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.nombreMunicipio</a>
+			<b>nomblocalidadag</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="01,45,alta">
+			<a>nombreCalle</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="02,4,alta">
+			<a>numeroExterior</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="10,45,alta">
+			<a>colonia</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="03,4,alta">
+			<a>interior</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="05,3,alta">
+			<a>departamento</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="09,45,alta">
+			<a>edificio</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="11,45,alta">
+			<a>unidadHabitacional</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="12,45,alta">
+			<a>manzana</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="99,100,alta">
+			<a>otrosDatos</a>
+			<b>compdomicv</b>
+		</field>
+	</mapping>
+
+
+	<mapping map-id="modificacionCentro1">
+		<class-a>mx.babel.bansefi.banksystem.administracion.beans.centro.AltaCentroBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.webservices.modificacioncentro.Ejecutar.ITRMODICENTROTRNI.TRMODICENTROEVTY
+		</class-b>
+		<field>
+			<a>nombre</a>
+			<b>nombcentuo</b>
+		</field>
+		<field>
+			<a>modalidad</a>
+			<b>codmdldadcent</b>
+		</field>
+		<field>
+			<a>plazaBancaria</a>
+			<b>codplzbancaria</b>
+		</field>
+		<field>
+			<a>desgCtble</a>
+			<b>coddesigctbl</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>controlador</a>
+			<b>indcentctrluo</b>
+		</field>
+		<field>
+			<a>numero</a>
+			<b>codcsbof</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="modificacionDomicilioCentro">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.webservices.modificacioncentro.Ejecutar.ITRMODICENTROTRNI.TRMODICENTROEVTY.DRDMDPOBJTRDV
+		</class-b>
+		<field>
+			<a>tipoCalle</a>
+			<b>codvia</b>
+		</field>
+		<field>
+			<a>regimenOcupacion</a>
+			<b>codregimocup</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.codigoPostal</a>
+			<b>codpostalag</b>
+		</field>
+		<field>
+			<a>telefono</a>
+			<b>numtlfnodomic</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.nombreMunicipio</a>
+			<b>nomblocalidadag</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="01,45,modif">
+			<a>nombreCalle</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="02,4,modif">
+			<a>numeroExterior</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="10,45,modif">
+			<a>colonia</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="03,4,modif">
+			<a>interior</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="05,3,modif">
+			<a>departamento</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="09,45,modif">
+			<a>edificio</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="11,45,modif">
+			<a>unidadHabitacional</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="12,45,modif">
+			<a>manzana</a>
+			<b>compdomicv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.administracion.utils.MantenimientoDomicilioCentroConverterUtils"
+			custom-converter-param="99,100,modif">
+			<a>otrosDatos</a>
+			<b>compdomicv</b>
+		</field>
+	</mapping>
+	
+
+	<mapping map-id="detalleCentro" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.administracion.webservices.detallecentro.ResponseBansefi.OTRCONSCENTROTRNO.TRCONSCENTROEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.beans.centro.AltaCentroBean
+		</class-b>
+		<field>
+			<a>uocentroe.codinternouo</a>
+			<b>numero</b>
+		</field>
+		<field>
+			<a>uocentroe.nombcentuo</a>
+			<b>nombre</b>
+		</field>
+		<field>
+			<a>uocentroe.coddesigctbl</a>
+			<b>desgCtble</b>
+		</field>
+		<field>
+			<a>uocentroe.codmdldadcent</a>
+			<b>modalidad</b>
+		</field>
+		<field>
+			<a>uocentroe.codplzbancaria</a>
+			<b>plazaBancaria</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>uocentroe.indcentctrluo</a>
+			<b>controlador</b>
+		</field>
+		<field>
+			<a>uocentroe.idinternope</a>
+			<b>idInterno</b>
+		</field>
+		<field>
+			<a>numdirpralv.numdirpral</a>
+			<b>codDomicilio</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaCentroContrl">
+		<class-a>mx.babel.bansefi.banksystem.administracion.webservices.consultacentroscontroladores.ResponseBansefi.OTRUOCONCENTCTRLTRN.TRUOCONCENTCTRLEVTZ.UOCENTCTRLE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.beans.centro.CentroControladorBean
+		</class-b>
+		<field>
+			<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>codinternouo</a>
+			<b>codigoCentro</b>
+		</field>
+		<field>
+			<a>codcentctrl</a>
+			<b>codigoCentroControlador</b>
+		</field>
+	</mapping>
+
+</mappings>

@@ -1,0 +1,541 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="formRecogidaEfectivo" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								onclick="PF('dlgCancelar').show();" />
+							<h1>Recogida de efectivo</h1>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<div class="grid_48 alpha">
+
+								<div class="grid_7">
+									<p:outputLabel for="fechaRecogida" value="Fecha recogida" />
+									<div class="clear-3" />
+									<p:outputLabel styleClass="label-valor texto-sininput"
+										id="fechaRecogida"
+										value="#{recogidaEfectivoController.recogidaEfectivoBean.fechaRecogida}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+								</div>
+
+								<div class="grid_5">
+									<p:outputLabel for="horaLimite" value="Hora límite" />
+									<div class="clear-3" />
+									<p:outputLabel styleClass="label-valor texto-sininput"
+										id="horaLimite"
+										value="#{recogidaEfectivoController.recogidaEfectivoBean.horaBean.horaLimiteRecogida}">
+										<f:convertDateTime pattern="HH:mm:ss"
+											timeZone="America/Mexico_City" />
+									</p:outputLabel>
+								</div>
+
+								<div class="grid_10">
+									<p:outputLabel for="tipoPeticion" value="Tipo de petición" />
+									<div class="clear" />
+									<p:selectOneRadio id="tipoPeticion"
+										disabled="#{recogidaEfectivoController.tipoPeticionDisabled}"
+										value="#{recogidaEfectivoController.recogidaEfectivoBean.tipoPeticion}">
+										<f:selectItem itemValue="1" itemLabel="Ordinaria" />
+										<f:selectItem itemValue="2" itemLabel="Urgente" />
+										<p:ajax event="change" global="false" process="@this"
+											partialSubmit="true" update="fechaRecogida @form"
+											listener="#{recogidaEfectivoController.cambiaTipoPeticion()}" />
+									</p:selectOneRadio>
+								</div>
+
+								<h:panelGroup id="pindicadorUrgente"
+									rendered="#{recogidaEfectivoController.muestraComboUrgente}">
+									<div class="grid_13">
+										<p:outputLabel for="indicadorUrgente"
+											value="Peticiones urgentes" />
+										<div class="clear-3" />
+										<p:selectOneMenu id="indicadorUrgente" 
+											value="#{recogidaEfectivoController.recogidaEfectivoBean.indicadorUrgencia}">
+											<f:selectItem itemValue="#{0}"
+												itemLabel="Nueva recogida urgente" noSelectionOption="true" />
+											<f:selectItems
+												value="#{recogidaEfectivoController.recogidaEfectivoBean.comboUrgentesBean.listaIndicadoresUrgentes}"
+												var="item" itemValue="#{item.indicadorUrgente}"
+												itemLabel="#{item.descripcionL}" />
+											<p:ajax event="change" process="indicadorUrgente"
+												global="false" update="indicadorUrgente @form"
+												listener="#{recogidaEfectivoController.consultaPeticionUrgente()}" />
+										</p:selectOneMenu>
+									</div>
+								</h:panelGroup>
+
+								<c:if test="#{recogidaEfectivoController.elementosVisibles}">
+
+									<div class="float-right">
+										<p:commandButton id="btnNuevoUrgente"
+											styleClass="btn_primario margin-top-10 margin-right-10"
+											update="@form"
+											rendered="#{recogidaEfectivoController.muestraNuevoUrgente}"
+											value="Nueva petición urgente"
+											action="#{recogidaEfectivoController.solicitaNuevaPeticionUrgente()}" />
+									</div>
+
+									<div class="clear-row" />
+
+									<div class="grid_10">
+											<h:panelGroup rendered="#{!recogidaEfectivoController.recogidaEfectivoBean.estatusL.equals('')}">
+												<p:outputLabel value="Estatus" />
+												<div class="clear-3"></div>
+												<div class="clear-3"></div>
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="azul-b"
+													value="#{recogidaEfectivoController.recogidaEfectivoBean.estatusL}" />												
+											</h:panelGroup>
+									</div>
+									
+									<div class="clear-row" />
+
+									<div class="float-right">
+										<p:commandButton id="btnSolicitar"
+											styleClass="btn_primario margin-top-10 margin-right-10"
+											update=":dlgSolicitar :dlgError1 :dlgAdvertencia"
+											disabled="#{recogidaEfectivoController.botonSolicitarDisabled}"
+											rendered="#{recogidaEfectivoController.muestraBotonSolicitar}"
+											value="Solicitar"
+											action="#{recogidaEfectivoController.validaDatosVacios('A')}" />
+									</div>
+								</c:if>
+								
+								<div class="grid_10">
+									<p:outputLabel value="Filtro" for="filtroDenominaciones"/>
+									<div class="clear-3" />
+									<h:panelGroup rendered="#{recogidaEfectivoController.filtro}">
+										<p:selectOneMenu id="filtroDenominaciones"
+											value="#{recogidaEfectivoController.parrilla.filtro}">
+											<p:ajax event="change" process="@this"
+												update="contenedorDenominaciones" />
+											<f:selectItem itemLabel="Todos" itemValue="0" />
+											<f:selectItem itemLabel="Ventanilla" itemValue="1" />
+											<f:selectItem itemLabel="Dispensador" itemValue="2" />
+											<f:selectItem itemLabel="Billetes" itemValue="3" />
+											<f:selectItem itemLabel="Monedas" itemValue="4" />
+										</p:selectOneMenu>
+									</h:panelGroup>
+								</div>
+								
+							</div>
+
+							<div class="clear-row" />
+							<div class="clear-3" />
+
+							<c:if test="#{recogidaEfectivoController.elementosVisibles}">
+								<div class="grid_48 saldo-disponible">
+
+									<div class="clear-row" />
+									<div class="grid_38" style="text-align: right;">
+										<p:outputLabel for="total" value="Total de recogida:" />
+									</div>
+									<div class="grid_10" style="text-align: right;">
+										<h:outputLabel id="total" style="text-align: right;"
+											value="#{recogidaEfectivoController.recogidaEfectivoBean.totalRecogida}">
+											<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+												currencySymbol="MXN" />
+										</h:outputLabel>
+									</div>
+									<div class="clear-row" />
+
+								</div>
+
+								<div class="clear" />
+
+								<div class="contenedor-arqueopuesto">
+									
+									<div class="ui-datatable ui-widget">
+										<div class="ui-datatable-tablewrapper">
+											<table>
+												<thead>
+													<tr class="parrillaTitle">
+														<th><h:outputLabel value="Valor facial" /></th>
+														<th><h:outputLabel value="Soporte" /></th>
+														<th><h:outputLabel value="Formato" /></th>
+														<th><h:outputLabel value="D/V" /></th>
+														<th><h:outputLabel value="Unidades" /></th>
+														<th><h:outputLabel value="Importe a enviar" /></th>
+													</tr>
+												</thead>
+											</table>
+										</div>
+									</div>
+									<h:panelGroup id="contenedorDenominaciones">
+										<ui:repeat var="denominacion"
+											value="#{recogidaEfectivoController.parrilla.listaDenominaciones}">
+											<h:panelGroup
+												rendered="#{recogidaEfectivoController.parrilla.isVisible(denominacion)}">
+												<div class="cuerpo-arqueopuesto">
+													<div>
+														<h:outputLabel styleClass="float-right"
+															value="#{denominacion.valor}">
+															<f:convertNumber pattern="#,##0.00 ¤"
+																currencySymbol="MXN" />
+														</h:outputLabel>
+													</div>
+													<div>
+														<h:outputLabel
+															value="#{denominacion.moneda? 'Moneda':'Billete'}" />
+													</div>
+													<div>
+														<h:outputLabel value="#{denominacion.formato}" />
+													</div>
+													<div>
+														<h:outputLabel
+															value="#{'V'.equals(denominacion.origen)? 'Ventanilla':'Dispensador'}" />
+													</div>
+
+													<ui:repeat var="columna"
+														value="#{recogidaEfectivoController.parrilla.columnas}">
+														<h:panelGroup rendered="#{columna.currency}">
+															<div style="text-align: right;">
+																<h:outputLabel
+																	value="#{denominacion[columna.nombreAtributo]}">
+																	<f:convertNumber pattern="#,##0.00 ¤"
+																		currencySymbol="MXN" />
+																</h:outputLabel>
+															</div>
+														</h:panelGroup>
+														<h:panelGroup rendered="#{!columna.currency}">
+															<div style="text-align: right;">
+																<h:outputLabel
+																	value="#{denominacion[columna.nombreAtributo]}">
+																	<f:convertNumber pattern="#,###" />
+																</h:outputLabel>
+															</div>
+														</h:panelGroup>
+													</ui:repeat>
+													<h:panelGroup
+														rendered="#{recogidaEfectivoController.editable}">
+														<div class="ui-inputNum">
+															<p:inputMask id="unidades"
+																value="#{denominacion.unidades}" placeholder="0"
+																maxlength="#{recogidaEfectivoController.cantidadMaxima(denominacion)}">
+																<pe:keyFilter regEx="/[0-9_]/i" />
+																<p:ajax event="change" process="unidades" global="false"
+																	listener="#{recogidaEfectivoController.actualizaImporte(denominacion)}"
+																	update="importeDenominacion mensajeImporte :formRecogidaEfectivo:total" />
+															</p:inputMask>
+														</div>
+														<div>
+															<pe:inputNumber id="importeDenominacion"
+																value="#{denominacion.importeAEnviar}" decimalPlaces="2"
+																decimalSeparator="." thousandSeparator="," symbol=" MXN"
+																symbolPosition="suffix" maxlength="12">
+																<f:attribute id="importeAttribute" name="valor"
+																	value="#{denominacion.valor}" />
+																<f:validator validatorId="importeDenominacionValidator" />
+																<p:ajax event="change" global="false" process="@this"
+																	partialSubmit="true" update="unidades :formRecogidaEfectivo:total"
+																	listener="#{recogidaEfectivoController.actualizaUnidades(denominacion)}" />
+															</pe:inputNumber>
+															<p:watermark for="importeDenominacion" value="0.00 MXN" />
+															<p:message for="importeDenominacion" id="mensajeImporte"
+																display="text" />
+														</div>
+													</h:panelGroup>
+												</div>
+											</h:panelGroup>
+										</ui:repeat>
+									</h:panelGroup>
+								</div>
+
+								<div class="clear-row" />
+								<div class="clear-3" />
+
+								<div class="grid_48">
+									<p:outputLabel value="Observaciones" />
+									<div class="clear-3" />
+									<p:inputMask id="observaciones"
+										value="#{recogidaEfectivoController.recogidaEfectivoBean.observacion}"
+										maxlength="60"
+										disabled="#{recogidaEfectivoController.observacionDisabled}"
+										onblur="value=value.trim(); value=value.toUpperCase()">
+										<pe:keyFilter regEx="/^[0-9a-zA-ZñÑáéíóíÁÉÍÓÚ ]*$/" />
+									</p:inputMask>
+								</div>
+							</c:if>
+
+							<div class="clear-row" />
+							<div class="clear-3" />
+						</div>
+						
+						<c:if test="#{recogidaEfectivoController.elementosVisibles}">
+						
+						<div class="grid_48 float-right">
+						
+							<p:commandButton id="btnSalir"
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									value="Cerrar" onclick="PF('dlgCancelar').show();" />
+
+							<div class="float-right">
+								<p:commandButton id="btnLimpiar"
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									update="@form total" value="Limpiar"
+									disabled="#{recogidaEfectivoController.botonLimpiarDisabled}"
+									action="#{recogidaEfectivoController.limpiar()}" />
+							</div>
+
+							<div class="float-right">
+								<p:commandButton id="btnConfirmar"
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									update=":dlgConfirmarRecogida :dlgError1"
+									action="#{recogidaEfectivoController.validaDatosVacios('C')}"
+									disabled="#{recogidaEfectivoController.botonConfirmarDisabled}"
+									rendered="#{recogidaEfectivoController.muestraBotonConfirmar}"
+									value="Confirmar" />
+							</div>
+
+							<div class="float-right">
+								<p:commandButton id="btnModificar"
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									update=":dlgModificar :dlgError1"
+									disabled="#{recogidaEfectivoController.botonModificarDisabled}"
+									value="Modificar"
+									action="#{recogidaEfectivoController.validaDatosVacios('U')}" />
+							</div>
+
+							<div class="float-right">
+								<p:commandButton id="btnSuprimir"
+									styleClass="btn_secundario margin-top-10 margin-right-10"
+									update=":dlgSuprimirRecogida :dlgError1"
+									action="#{recogidaEfectivoController.muestraMensajeSuprimir('S')}"
+									disabled="#{recogidaEfectivoController.botonSuprimirDisabled}"
+									rendered="#{recogidaEfectivoController.muestraBotonSuprimir}"
+									value="Suprimir" />
+							</div>
+						</div>
+						
+						</c:if>
+						
+					</h:form>
+
+				</div>
+				
+				<p:dialog id="dlgConfirmarRecogida" widgetVar="dlgConfirmarRecogida"
+					showEffect="fade" hideEffect="fade" appendTo="@(body)"
+					closable="false" dynamic="true" draggable="false" modal="true"
+					resizable="false" header="Resultado">
+					<span class="ui-messages-warn-icon warn-dialog" />
+					<div class="modal-mensaje">
+						<p:outputLabel
+							value="Está a punto de confirmar una recogida de efectivo de " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.totalRecogida}">
+							<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+								currencySymbol="MXN" />
+						</p:outputLabel>
+						<p:outputLabel value=" del centro " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.centro}" />
+						<p:outputLabel value=" No. urgente: "
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.indicadorUrgencia}"
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+					</div>
+					<div class="clear" />
+					<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Continuar" immediate="true" onclick="PF('dlgConfirmarRecogida').hide();"
+						action="#{recogidaEfectivoController.confirmarRecogida()}" />
+					<p:commandButton styleClass="btn_secundario_dialog"
+						value="Cancelar" onclick="PF('dlgConfirmarRecogida').hide();" />
+				</p:dialog>
+
+				<p:dialog id="dlgSolicitar" widgetVar="dlgSolicitar"
+					showEffect="fade" hideEffect="fade" appendTo="@(body)"
+					closable="false" dynamic="true" draggable="false" modal="true"
+					resizable="false" header="Resultado">
+					<span class="ui-messages-warn-icon warn-dialog" />
+					<div class="modal-mensaje">
+						<p:outputLabel
+							value="Está a punto de solicitar una recogida de efectivo de " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.totalRecogida}">
+							<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+								currencySymbol="MXN" />
+						</p:outputLabel>
+						<p:outputLabel value=" del centro " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.centro}" />
+						<p:outputLabel value=" No. urgente: "
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.comboUrgentesBean.listaIndicadoresUrgentes.size() + 1}"
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+					</div>
+					<div class="clear" />
+					<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Continuar" immediate="true" onclick="PF('dlgSolicitar').hide();"
+						action="#{recogidaEfectivoController.altaRecogida()}" />
+					<p:commandButton styleClass="btn_secundario_dialog"
+						value="Cancelar" onclick="PF('dlgSolicitar').hide();" />
+				</p:dialog>
+
+				<p:dialog id="dlgModificar" widgetVar="dlgModificar"
+					showEffect="fade" hideEffect="fade" appendTo="@(body)"
+					closable="false" dynamic="true" draggable="false" modal="true"
+					resizable="false" header="Resultado">
+					<span class="ui-messages-warn-icon warn-dialog" />
+					<div class="modal-mensaje">
+						<p:outputLabel
+							value="Está a punto de modificar una recogida de efectivo de " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.totalRecogida}">
+							<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+								currencySymbol="MXN" />
+						</p:outputLabel>
+						<p:outputLabel value=" del centro " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.centro}" />
+						<p:outputLabel value=" No. urgente: "
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.indicadorUrgencia}"
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+					</div>
+					<div class="clear" />
+					<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Continuar" immediate="true" onclick="PF('dlgModificar').hide();"
+						action="#{recogidaEfectivoController.modificarRecogida()}" />
+					<p:commandButton styleClass="btn_secundario_dialog"
+						value="Cancelar" onclick="PF('dlgModificar').hide();" />
+				</p:dialog>
+
+				<p:dialog id="dlgOperacionExitosa" widgetVar="dlgOperacionExitosa"
+					appendTo="@(body)" closable="false" dynamic="true"
+					draggable="false" modal="true" resizable="false" showEffect="fade"
+					hideEffect="fade" header="Resultado">
+					<span class="ui-messages-exito-icon exito-dialog" />
+					<p:outputLabel styleClass="modal-mensaje"
+						value="OPERACIÓN REALIZADA CORRECTAMENTE" />
+					<div class="clear" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar" onclick="PF('dlgOperacionExitosa').hide();" 
+						action="#{recogidaEfectivoController.irResumen()}"/>
+				</p:dialog>
+				
+				<p:dialog id="dlgError1" widgetVar="dlgError1"
+					appendTo="@(body)" closable="false" dynamic="true"
+					draggable="false" modal="true" resizable="false" showEffect="fade"
+					hideEffect="fade" header="Resultado">
+					<span class="ui-messages-error-icon error-dialog" />
+					<p:outputLabel styleClass="modal-mensaje"
+						value="#{recogidaEfectivoController.mensajeError}" />
+					<div class="clear" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar" onclick="PF('dlgError1').hide();" />
+				</p:dialog>
+				
+				<p:dialog id="dlgAdvertencia" widgetVar="dlgAdvertencia"
+					appendTo="@(body)" closable="false" dynamic="true"
+					draggable="false" modal="true" resizable="false" showEffect="fade"
+					hideEffect="fade" header="Resultado">
+					<span class="ui-messages-warn-icon warnr-dialog" />
+					<p:outputLabel styleClass="modal-mensaje"
+						value="#{recogidaEfectivoController.mensajeAdvertencia}" />
+					<div class="clear" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar" onclick="PF('dlgAdvertencia').hide();" />
+				</p:dialog>
+				
+				<p:dialog id="dlgHoraExcedida" widgetVar="dlgHoraExcedida"
+					appendTo="@(body)" closable="false" dynamic="true"
+					draggable="false" modal="true" resizable="false" showEffect="fade"
+					hideEffect="fade" header="Resultado">
+					<span class="ui-messages-info-icon info-dialog" />
+					<p:outputLabel styleClass="modal-mensaje"
+						value="Se ha excedido la hora limite." />
+					<div class="clear" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar" onclick="PF('dlgHoraExcedida').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgCancelar" id="dlgCancelar"
+					appendTo="@(body)" header="Cancelar autorización" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog" />
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! Si continua perderá todos los cambios" />
+					<div class="clear" />
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Desea continuar de todos modos?" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Continuar" immediate="true"
+						action="#{recogidaEfectivoController.irInicio()}" />
+					<p:commandButton styleClass="btn_secundario_dialog"
+						value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgSuprimirRecogida" id="dlgSuprimirRecogida"
+					appendTo="@(body)" header="Cancelar autorización" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog" />
+					<div class="modal-mensaje">
+						<p:outputLabel
+							value="Esta a punto de suprimir una recogida de efectivo por " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.totalRecogida}">
+							<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+								currencySymbol="MXN" />
+						</p:outputLabel>
+						<p:outputLabel value=" del centro " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.centro}" />
+						<p:outputLabel value=" No. urgente: "
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{recogidaEfectivoController.recogidaEfectivoBean.indicadorUrgencia}"
+							rendered="#{recogidaEfectivoController.muestraUrgentePopUp}" />
+					</div>
+					<div class="clear" />
+					<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+					<div class="margin-bottom-20" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Continuar" immediate="true" onclick="PF('dlgSuprimirRecogida').hide();"
+						action="#{recogidaEfectivoController.suprimeRecogida()}" />
+					<p:commandButton styleClass="btn_secundario_dialog"
+						value="Cancelar" onclick="PF('dlgSuprimirRecogida').hide();"/>
+				</p:dialog>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

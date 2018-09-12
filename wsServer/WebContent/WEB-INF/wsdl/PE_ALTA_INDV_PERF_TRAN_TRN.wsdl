@@ -1,0 +1,930 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://BansefiNSS/WebServicesNSS/PE_ALTA_INDV_PERF_TRAN_TRN" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://BansefiNSS/WebServicesNSS/PE_ALTA_INDV_PERF_TRAN_TRN" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+		<s:schema elementFormDefault="qualified" targetNamespace="http://BansefiNSS/WebServicesNSS/PE_ALTA_INDV_PERF_TRAN_TRN">
+			<s:element name="Ejecutar">
+				<s:complexType>
+					<s:sequence>
+						<s:element name="PE_ALTA_INDV_PERF_TRAN_TRN_I" nillable="false">
+							<s:complexType mixed="false">
+								<s:sequence>
+									<s:element name="PE_ALTA_INDV_PERF_TRAN_EVT_Y" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="PE_INDV_FUNC_PUBLC_DS" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="IND_TXT_1" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="TXT_RESPUESTA_1" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000050"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IND_TXT_2" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="TXT_RESPUESTA_2" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000050"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NOMBRE_RESPUESTA_2" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000050"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_PERS_RL_F_PUBLC_P" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_INTERNO_PE" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_PERFIL_TRANS_CL_E" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_INTERNO_PE" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_NIVEL_RSGO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000002"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_PERFIL_TRANS_CL" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000002"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_INDV_TRAN_ESTI_DS" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="NUM_DEPOSITOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_RETIROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_DEPOSITOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_RETIROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="HONORARIOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="SUELDOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="INVERSIONES" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COMISIONES" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="VENTAS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ARRENDAMIENTO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PRESTAMOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="HERENCIA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="BECA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PENSION" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PREMIOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="DONATIVOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ACT_COMERCIAL" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="REC_TERCEROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="OTROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="OTROS_ESP" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000050"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="MEN_INGRESOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_INDV_USO_CTA_DS" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="ADM_INGR_GTO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="CONC_DISP_FOND" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PAG_PROV_COMI" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PAG_SERV" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="CTA_PNTE_INVER" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PAG_CRED" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="FIDEICOMISOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="INVERSIONES" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="DEP_NOMINA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="OTROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="OTROS_ESP" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000050"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="DEPOSITOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="RETIROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COBRO_GIROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="TRANSFERENCIAS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PORC_PROPIOS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PORC_TERCEROS" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_PERS_RL_INF_FIN_T" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="COD_NRBE_EN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="ID_INTERNO_PE" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="99999999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="DESCR_PROCTO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_EMPLEADO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_SUCURSAL" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_ANUAL_FAC" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_EXPRTCN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_ACTIVO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_PASIVO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_CAPITAL" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_INF_FINAN_PZA_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="PLAZA_OPER_01" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PLAZA_OPER_02" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PLAZA_OPER_03" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PLAZA_OPER_04" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PLAZA_OPER_05" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="PLAZA_OPER_06" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_INF_FINAN_ADIC_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="DESCR_PROCTO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000060"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_EMPLEADO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NUM_SUCURSAL" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:integer">
+																		<s:maxInclusive value="9999"/>
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_ANUAL_FAC" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_EXPRTCN" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_ACTIVO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_PASIVO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="IMP_CAPITAL" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:decimal">
+																		<s:totalDigits value="0000000014"/>
+																		<s:fractionDigits value="02"/>
+																		<s:maxInclusive value="999999999999.99" />
+																		<s:minInclusive value="0"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_DATOS_EMPLEO_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="DENOM_LEGAL_OR" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000090"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NOMBRE_VIA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000045"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="VAL_DOMIC_NUMERO" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000004"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="VAL_DOMIC_PLANTA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000003"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NOMB_COLONIA" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000030"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NOMB_LOCALIDAD_AG" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000045"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NOMB_COMARCA_AG" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000035"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="NOMB_COM_AUTNMA_AG" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000025"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+															<s:element name="COD_POSTAL_AG" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000005"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+												<s:element name="PE_IND_SEG_AP_V" nillable="false">
+													<s:complexType mixed="false">
+														<s:sequence>
+															<s:element name="STD_CHAR_01" nillable="false">
+																<s:simpleType>
+																	<s:restriction base="s:string">
+																		<s:length value="0000000001"/>
+																		<s:whiteSpace value="preserve"/>
+																	</s:restriction>
+																</s:simpleType>
+															</s:element>
+														</s:sequence>
+													</s:complexType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+									<s:element name="STD_TRN_I_PARM_V" nillable="false">
+										<s:complexType mixed="false">
+											<s:sequence>
+												<s:element name="ID_INTERNO_TERM_TN" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000008"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="ID_EMPL_AUT" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000008"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="NUM_SEC" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:integer">
+															<s:maxInclusive value="9999999"/>
+															<s:minInclusive value="0"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="COD_TX" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000008"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+												<s:element name="COD_TX_DI" nillable="false">
+													<s:simpleType>
+														<s:restriction base="s:string">
+															<s:length value="0000000004"/>
+															<s:whiteSpace value="preserve"/>
+														</s:restriction>
+													</s:simpleType>
+												</s:element>
+											</s:sequence>
+										</s:complexType>
+									</s:element>
+								</s:sequence>
+							</s:complexType>
+						</s:element>
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="EjecutarResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element name="EjecutarResult" type="tns:EjecutarResult" maxOccurs="1" minOccurs="0" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:complexType name="EjecutarResult">
+				<s:sequence>
+					<s:element name="ResponseBansefi" type="tns:ArrayOfResponseBansefi" maxOccurs="1" minOccurs="0" />
+				</s:sequence>
+			</s:complexType>
+			<s:complexType name="ArrayOfResponseBansefi">
+				<s:sequence>
+					<s:element name="ResponseBansefi" type="tns:ResponseBansefi" maxOccurs="unbounded" minOccurs="0" />
+				</s:sequence>
+			</s:complexType>
+			<s:complexType name="ResponseBansefi">
+				<s:sequence>
+					<s:element name="PE_ALTA_INDV_PERF_TRAN_TRN_O" nillable="false">
+						<s:complexType mixed="false">
+							<s:sequence>
+								<s:element name="RTRN_CD" nillable="false">
+									<s:simpleType>
+										<s:restriction base="s:integer">
+											<s:maxInclusive value="9999"/>
+											<s:minInclusive value="0"/>
+										</s:restriction>
+									</s:simpleType>
+								</s:element>
+								<s:element name="STD_TRN_MSJ_PARM_V" nillable="false" maxOccurs="00010">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="TEXT_CODE" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="9999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="TEXT_ARG1" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:string">
+														<s:length value="0000000018"/>
+														<s:whiteSpace value="preserve"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+								<s:element name="STD_TRN_O_PARM_V" nillable="false">
+									<s:complexType mixed="false">
+										<s:sequence>
+											<s:element name="FECHA_OPRCN" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="99999999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+											<s:element name="HORA_OPRCN" nillable="false">
+												<s:simpleType>
+													<s:restriction base="s:integer">
+														<s:maxInclusive value="99999999"/>
+														<s:minInclusive value="0"/>
+													</s:restriction>
+												</s:simpleType>
+											</s:element>
+										</s:sequence>
+									</s:complexType>
+								</s:element>
+							</s:sequence>
+						</s:complexType>
+					</s:element>
+				</s:sequence>
+			</s:complexType>
+			<s:element name="EjecutarResult" type="tns:EjecutarResult"/>
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="EjecutarSoapIn">
+		<wsdl:part name="parameters" element="tns:Ejecutar" />
+	</wsdl:message>
+	<wsdl:message name="EjecutarSoapOut">
+		<wsdl:part name="parameters" element="tns:EjecutarResponse" />
+	</wsdl:message>
+	<wsdl:portType name="SoapPort">
+		<wsdl:operation name="Ejecutar">
+			<wsdl:input message="tns:EjecutarSoapIn" />
+			<wsdl:output message="tns:EjecutarSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SoapBinding" type="tns:SoapPort">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Ejecutar">
+			<soap:operation soapAction="http://10.200.14.110:3300/WebServicesNSS/PE_ALTA_INDV_PERF_TRAN_TRN/Ejecutar" style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PE_ALTA_INDV_PERF_TRAN_TRN">
+		<wsdl:port name="SoapPort" binding="tns:SoapBinding">
+			<soap:address location="http://10.200.14.110:3300/WebServicesNSS/PE_ALTA_INDV_PERF_TRAN_TRN"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

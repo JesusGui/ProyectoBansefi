@@ -1,0 +1,165 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="../../templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:body>
+          <f:metadata>
+            <f:viewAction action="#{bloqueoCuentaController.inicioNuevoBloqueo}" />
+          </f:metadata>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="formNuevoBloqueo" styleClass="contenedor-form">
+      
+                        <div class="titulo centrar-objeto btn-inline-set">
+                        	<!--boton atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" action="#{bloqueoCuentaController.irAConsultaBloqueos}">
+                              <f:param name="disableValidation" value="true" />
+                            </p:commandButton>
+                            <div>
+                            	<h2 class="gris-b">Bloqueo de cuenta </h2>
+                            	<h2 class="rojo-b"><h:outputText value=" #{bloqueoCuentaController.numCuenta} "></h:outputText></h2>
+                            	<h2 class="gris-b"> de </h2>
+                           		<h2 class="azul-b"><h:outputText value=" #{bloqueoCuentaController.nombreTitular}" ></h:outputText></h2>
+                            </div>
+                        </div>
+                            <div class="contenedor-campos">
+                               <p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" value="* Datos Obligatorios" />
+                               
+                               <div class="clear-row"></div>
+                               
+                               <div class="row-flex">
+
+								<div class="grid_17">
+                               		<p:outputLabel for="tpBloqueo" value="Tipo de bloqueo/protección"></p:outputLabel>
+                                    <div class="clear-3"></div>
+                               		<p:selectOneMenu id="tpBloqueo" value="#{bloqueoCuentaController.nuevoBloqueo.subTipo}"
+                                 		required="#{param['disableValidation']==null}" >
+                                 		<f:selectItems value="#{catalogoUtils.getCatalogo('TP_BLOQUEO')}" var="entry"
+                                   itemValue="#{entry.claveFila}" itemLabel="#{entry.descripcionL}" />
+                               		</p:selectOneMenu>
+                              </div>
+                              <div class="grid_8">
+                              		<p:message id="fechaAltaVal" for="fechaAlta" display="icon"></p:message>
+                               		<p:outputLabel for="fechaAlta" value="Fecha Alta"></p:outputLabel>
+                               		<div class="clear-3"></div>
+                               		<p:calendar id="fechaAlta" value="#{bloqueoCuentaController.nuevoBloqueo.fechaAlta}"
+                                    mindate="#{contextoUtils.getFechaContableActual()}" required="#{param['disableValidation']==null}"
+                                    pattern="dd/MM/yyyy" mask="true" showOn="button">
+                                  		<f:attribute name="beginDate" value="#{contextoUtils.getFechaContableActual()}"  />
+                                  		<f:validator validatorId="dateRangeValidator" />
+                                 		 <p:ajax event="change" process="fechaAlta" update="fechaAlta,fechaAltaVal,fechaVencimiento" partialSubmit="true"/>
+                                  		<p:ajax event="dateSelect" process="fechaAlta" update="fechaAlta,fechaAltaVal,fechaVencimiento" partialSubmit="true"/>
+                               		</p:calendar>
+                               		
+                               </div>
+                               
+                               <div class="grid_8">
+                               		<p:outputLabel for="fechaVencimiento" value="Fecha de Vencimiento"></p:outputLabel>
+                               		<div class="clear-3"></div>
+                               		<p:calendar id="fechaVencimiento" 
+                                		 value="#{bloqueoCuentaController.nuevoBloqueo.fechaVencimiento}" pattern="dd/MM/yyyy"
+                                		 mindate="#{bloqueoCuentaController.nuevoBloqueo.fechaAlta}" mask="true" showOn="button" >
+                                 		 <f:attribute name="beginDate" value="#{bloqueoCuentaController.nuevoBloqueo.fechaAlta}" />
+                                 		 <f:validator validatorId="dateRangeValidator" />                                 		 
+                                     <p:ajax event="change" process="fechaVencimiento" update="fechaVencimiento,fechaVencimientoVal" partialSubmit="true"/>
+                                 		 <p:ajax event="dateSelect" process="fechaVencimiento" 
+                                  		 update="fechaVencimiento,fechaVencimientoVal" partialSubmit="true"/>
+                              		 </p:calendar>
+                              		 <p:message id="fechaVencimientoVal" for="fechaVencimiento" display="text"></p:message>
+                               </div>
+                               
+                               <div class="grid_15">
+                               		<p:outputLabel for="motivoBloqueo" value="Motivo de bloqueo / protección"></p:outputLabel>
+                              		 <div class="clear-3"></div>
+                               		<p:inputText id="motivoBloqueo" value="#{bloqueoCuentaController.nuevoBloqueo.concepto}" 
+                               		 maxlength="30" onblur="value=value.toUpperCase().trim()">
+                                		  <pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/" />
+                               		</p:inputText>
+                               </div>
+                               </div> 
+                            </div>
+                        <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" value="Cancelar" 
+                          action="#{bloqueoCuentaController.irAConsultaBloqueos}">
+                            <f:param name="disableValidation" value="true" />
+                        </p:commandButton>
+                        <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Bloquear"
+                          actionListener="#{bloqueoCuentaController.ejecutarBloqueo}" update=":formDlgSuccess"
+                          oncomplete="if (args &amp;&amp; !args.validationFailed; bloqueoCuentaController.msgBloqueoManual != '12' ) PF('dlgSuccess').show();" />
+                    </h:form>
+                </div>
+                
+<!--
+plantilla de ventana de dialogo
+-->
+                
+                <p:dialog widgetVar="dlgSuccess" id="dlgSuccess" appendTo="@(body)" header="Bloqueo realizado"
+                  modal="true" visible="false" closable="false" resizable="false" draggable="false"
+                  showEffect="fade" hideEffect="fade">
+                  <h:form id="formDlgSuccess">
+                    <!--icono de la modal -->
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <!--mensaje de la modal styleClass="modal-mensaje" -->                    
+                    <p:outputLabel styleClass="modal-mensaje" value="#{bloqueoCuentaController.msgBloqueoManual}" 
+                      rendered="#{not empty bloqueoCuentaController.msgBloqueoManual}"/>
+                    <div class="modal-mensaje">
+                    <p:outputLabel value="El bloqueo tipo " />
+                    <p:outputLabel styleClass="modal-mensaje-detalle" value="#{bloqueoCuentaController.nuevoBloqueo.subTipoDescription} " />
+                    <p:outputLabel value="de la cuenta " />
+                    <p:outputLabel styleClass="modal-mensaje-detalle" value="#{bloqueoCuentaController.numCuenta} " />
+                    <p:outputLabel value="se realizó correctamente." />
+                    </div>
+                    <div class="clear"></div>
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" 
+                    action="#{bloqueoCuentaController.irAConsultaBloqueos}" />
+                  </h:form>
+                </p:dialog>
+                
+                <!--MENSAJE DE ERROR  -->
+                <p:dialog widgetVar="dlgErrorBloqueo" id="dlgErrorBloqueo" header="Error en bloqueo" 
+                		modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true"
+                		showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-error-icon error-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value=" Error al intentar realizar el bloqueo." />
+	            <div class="clear"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgErrorBloqueo').hide();" />            
+	        </p:dialog>
+	        
+	        	<!--MENSAJE DE CRÉDITO Y PLAZO  -->
+                <p:dialog widgetVar="dlgErrorCredito" id="dlgErrorCredito" header="Error en bloqueo"
+                		modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true"
+                		showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-error-icon error-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value=" La cuenta no se puede bloquear porque no es de tipo Vista." />
+	            <div class="clear"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgErrorCredito').hide();" />            
+	        </p:dialog>
+	        
+	        	<!--MENSAJE DE CRÉDITO   -->
+                <p:dialog widgetVar="dlgErrorCreditoPlazo" id="dlgErrorCreditoPlazo" header="Error en bloqueo"
+                		modal="true" resizable="false" closable="false" appendTo="@(body)" dynamic="true"
+                		showEffect="fade" hideEffect="fade">
+	            <span class="ui-messages-error-icon error-dialog"></span>
+	            <p:outputLabel styleClass="modal-mensaje" 
+	            	value=" La cuenta no se puede bloquear ya que es de crédito o plazo ." />
+	            <div class="clear"></div>
+	            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgErrorCreditoPlazo').hide();" />            
+	        </p:dialog>
+            </div>
+            <!--termina container 24-->
+        </h:body>
+    </ui:define>
+</ui:composition>

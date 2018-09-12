@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+   <!-- Mapeo de clases -->
+	<mapping map-id="altaDomicilioPersona" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioTipoBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.altadomicilio.Ejecutar.ITRPEALTADOMICTRNI.TRPEALTADOMICEVTY
+		</class-b>
+		<field>
+			<a>telefono</a>
+			<b>numtlfnodomic</b>
+		</field>
+		<field>
+			<a>codigoRegimenOcupacion</a>
+			<b>codregimocup</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.codigoPostal</a>
+			<b>codpostalag</b>
+		</field>
+		<field>
+			<a>tipoCalle</a>
+			<b>codvia</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.codigoEntidadColectiva</a>
+			<b>codargeodomiciliov.codargeo</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.numAgLocine</a>
+			<b>numargeodomiciliov.numargeo</b>
+		</field>
+		<field>
+			<a>idInternoPersona</a>
+			<b>idinternope</b>
+		</field>	
+		<field>
+			<a>datosFinalesCatGeo.nombreLocalidad</a>
+			<b>nomblocalidadag</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.nombreProvincia</a>
+			<b>nombprovinciaag</b>
+		</field>
+		<field>
+			<a>datosFinalesCatGeo.codigoProvincia</a>
+			<b>codprovinciaag</b>
+		</field>		
+		<field custom-converter-id="altaTipoDomicilioConverter">
+			<a>grouping</a>
+			<b>codpersrldirv</b>
+		</field>	
+	</mapping>
+	<mapping map-id="respuestaAltaDomicilio" wildcard="true" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.altadomicilio.ResponseBansefi.OTRPEALTADOMICTRNO.TRPEALTADOMICEVTZ.DRDOMICP</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.AltaDomicilioRespuestaBean</class-b>
+		<field>
+			<a>numdir</a>
+			<b>numeroDireccion</b>
+		</field>
+		<field>
+			<a>codnrbeen</a>
+			<b>codigoEntidad</b>
+		</field>
+	</mapping>
+	
+</mappings>

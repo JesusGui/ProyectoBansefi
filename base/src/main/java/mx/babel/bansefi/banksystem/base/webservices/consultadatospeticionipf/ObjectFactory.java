@@ -1,0 +1,357 @@
+
+package mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
+import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
+
+
+/**
+ * This object contains factory methods for each
+ * Java content interface and Java element interface
+ * generated in the mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf package.
+ * <p>An ObjectFactory allows you to programatically
+ * construct new instances of the Java representation
+ * for XML content. The Java representation of XML
+ * content can consist of schema derived interfaces
+ * and classes representing the binding of schema
+ * type definitions, element declarations and model
+ * groups.  Factory methods for each of these are
+ * provided in this class.
+ *
+ */
+@XmlRegistry
+public class ObjectFactory {
+
+    private final static QName _EjecutarResult_QNAME = new QName(mx.babel.arq.comun.constants.ServicioWebConstants.SOAP_PORT_URL_TRN + "TR_DATOS_PET_IMPSCN_PAG_TRN", "EjecutarResult");
+
+    /**
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf
+     *
+     */
+    public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar }
+     *
+     */
+    public Ejecutar createEjecutar() {
+        return new Ejecutar();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi }
+     *
+     */
+    public ResponseBansefi createResponseBansefi() {
+        return new ResponseBansefi();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG createResponseBansefiOTRDATOSPETIMPSCNPAG() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV createResponseBansefiOTRDATOSPETIMPSCNPAGSTDANAVMSJV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS createResponseBansefiOTRDATOSPETIMPSCNPAGSTDANAVMSJVSTDANAVMSJLS() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGE() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1 }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1 createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGE() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.ITRDATOSPETIMPSCNPAG }
+     *
+     */
+    public Ejecutar.ITRDATOSPETIMPSCNPAG createEjecutarITRDATOSPETIMPSCNPAG() {
+        return new Ejecutar.ITRDATOSPETIMPSCNPAG();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.ITRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE }
+     *
+     */
+    public Ejecutar.ITRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE createEjecutarITRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGE() {
+        return new Ejecutar.ITRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE();
+    }
+
+    /**
+     * Create an instance of {@link EjecutarResponse }
+     *
+     */
+    public EjecutarResponse createEjecutarResponse() {
+        return new EjecutarResponse();
+    }
+
+    /**
+     * Create an instance of {@link EjecutarResult }
+     *
+     */
+    public EjecutarResult createEjecutarResult() {
+        return new EjecutarResult();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDTRNMSJPARMV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDTRNMSJPARMV createResponseBansefiOTRDATOSPETIMPSCNPAGSTDTRNMSJPARMV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDTRNMSJPARMV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDTRNOPARMV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDTRNOPARMV createResponseBansefiOTRDATOSPETIMPSCNPAGSTDTRNOPARMV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDTRNOPARMV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.ANNUMANOTACIONESV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.ANNUMANOTACIONESV createResponseBansefiOTRDATOSPETIMPSCNPAGSTDANAVMSJVANNUMANOTACIONESV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.ANNUMANOTACIONESV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.DESCRIPANTCNV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.DESCRIPANTCNV createResponseBansefiOTRDATOSPETIMPSCNPAGSTDANAVMSJVSTDANAVMSJLSDESCRIPANTCNV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.DESCRIPANTCNV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.DESCINDPRDADV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.DESCINDPRDADV createResponseBansefiOTRDATOSPETIMPSCNPAGSTDANAVMSJVSTDANAVMSJLSDESCINDPRDADV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.DESCINDPRDADV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.STDDESCRCANTCNV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.STDDESCRCANTCNV createResponseBansefiOTRDATOSPETIMPSCNPAGSTDANAVMSJVSTDANAVMSJLSSTDDESCRCANTCNV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.STDANAVMSJV.STDANAVMSJLS.STDDESCRCANTCNV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.IPMONEDAV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.IPMONEDAV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGEIPMONEDAV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.IPMONEDAV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.IPORDENCANCV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.IPORDENCANCV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGEIPORDENCANCV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.IPORDENCANCV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.PSVCCCV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.PSVCCCV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGEPSVCCCV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.PSVCCCV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEIPDATOSCONDV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTVLISTAV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTVLISTAV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAESTRCTVLISTAV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTVLISTAV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAKARLPKDOMV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAKARLPKDOMV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAKARLPKDOMV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAKARLPKDOMV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTRNGV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTRNGV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAESTRCTRNGV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTRNGV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTVRNGV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTVRNGV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAESTRCTVRNGV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTVRNGV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTCMSN1V }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTCMSN1V createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAESTRCTCMSN1V() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTCMSN1V();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KACMSNFIJV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KACMSNFIJV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKACMSNFIJV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KACMSNFIJV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KACMSNPRCTLV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KACMSNPRCTLV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKACMSNPRCTLV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KACMSNPRCTLV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINT1V }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINT1V createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAESTRCTINT1V() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINT1V();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINTFIJV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINTFIJV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAESTRCTINTFIJV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINTFIJV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINTVARV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINTVARV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAESTRCTINTVARV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAESTRCTINTVARV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQ1V }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQ1V createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAINTFRANQ1V() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQ1V();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQFIJV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQFIJV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAINTFRANQFIJV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQFIJV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQVARV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQVARV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAINTFRANQVARV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTFRANQVARV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTRLSPV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTRLSPV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAINTRLSPV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAINTRLSPV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAMATRIZV }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAMATRIZV createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEKAMATRIZV() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.KAMATRIZV();
+    }
+
+    /**
+     * Create an instance of {@link ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IDCCPS1V }
+     *
+     */
+    public ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IDCCPS1V createResponseBansefiOTRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGETRDATOSPETIMPSCNPAGEIDCCPS1V() {
+        return new ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IDCCPS1V();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.ITRDATOSPETIMPSCNPAG.STDTRNIPARMV }
+     *
+     */
+    public Ejecutar.ITRDATOSPETIMPSCNPAG.STDTRNIPARMV createEjecutarITRDATOSPETIMPSCNPAGSTDTRNIPARMV() {
+        return new Ejecutar.ITRDATOSPETIMPSCNPAG.STDTRNIPARMV();
+    }
+
+    /**
+     * Create an instance of {@link Ejecutar.ITRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.ACACP }
+     *
+     */
+    public Ejecutar.ITRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.ACACP createEjecutarITRDATOSPETIMPSCNPAGTRDATOSPETIMPSCNPAGEACACP() {
+        return new Ejecutar.ITRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.ACACP();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EjecutarResult }{@code >}}
+     *
+     */
+    @XmlElementDecl(namespace = mx.babel.arq.comun.constants.ServicioWebConstants.SOAP_PORT_URL_TRN + "TR_DATOS_PET_IMPSCN_PAG_TRN", name = "EjecutarResult")
+    public JAXBElement<EjecutarResult> createEjecutarResult(final EjecutarResult value) {
+        return new JAXBElement<EjecutarResult>(_EjecutarResult_QNAME, EjecutarResult.class, null, value);
+    }
+
+}

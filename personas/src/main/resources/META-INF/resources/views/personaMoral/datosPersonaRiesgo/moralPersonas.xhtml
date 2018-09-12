@@ -1,0 +1,776 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+    
+        <h:body>
+        	
+        	<pe:importConstants className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum" var="EstadoListadosEnum" />
+        
+            <div class="container_48">
+                <div class="contenedor">
+                   
+                    <h:form id="formAnadirRelacion" styleClass="contenedor-form">
+                    
+                     <h:panelGroup rendered="#{!personaMoralRiesgoController.elementosVisibles}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" title="Volver atrás"
+									action="#{personaMoralRiesgoController.botonCancelar}">
+								</p:commandButton>
+							</div>
+						</h:panelGroup>
+                    
+                    <h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion ne true and personaMoralRiesgoController.elementosVisibles}">
+						<div class="titulo centrar-objeto btn-inline-set">
+                            <!--botón volver al dashboard-->
+                            <div>
+							<h2 class="gris-b">Alta de </h2>
+							<h2 class="azul-b">#{personaMoralRiesgoController.personaMoralBean.razonSocial} </h2>
+							<h3 class="gris-b">(#{personaMoralRiesgoController.obtenerDescripcionTpDoc()} #{personaMoralRiesgoController.personaMoralBean.numIdentificacion})</h3>
+							</div>
+                    	</div>
+					</h:panelGroup>				
+					
+					<h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion eq true and personaMoralRiesgoController.elementosVisibles}">
+						<div class="titulo centrar-objeto btn-inline-set">
+							<div>
+								<h2 class="gris-b">Modificación de </h2>
+								<h2 class="azul-b">#{personaMoralRiesgoController.personaMoralBean.razonSocial} </h2>
+								<h3 class="gris-b">(#{personaMoralRiesgoController.obtenerDescripcionTpDoc()} #{personaMoralRiesgoController.personaMoralBean.numIdentificacion})</h3>
+							</div>
+						</div>
+					</h:panelGroup>
+                    
+                    <h:panelGroup rendered="#{personaMoralRiesgoController.elementosVisibles}">                   
+                    	<div class="wiz-pasos">
+							<p:commandButton value="Relacionar personas" styleClass="activo"/>
+							<p:commandButton value="Grupo/ Filial" action="#{personaMoralRiesgoController.irGrupoFilialDesdePersonas()}" 
+								 update="formAnadirRelacion" styleClass="inactivo">					
+							</p:commandButton>
+							<p:commandButton value="Donativos" styleClass="inactivo" disabled="true"/>
+                       </div>
+                     </h:panelGroup> 
+                    <!--contenedor del wizard-->
+                    
+	                <div class="wiz-contenedor">
+	                <div class="contenedor-campos">
+                   		<p:messages id="messages" closable="false" showDetail="true" rendered="#{!personaMoralRiesgoController.elementosVisibles}" />
+                   		<h:panelGroup rendered="#{personaMoralRiesgoController.elementosVisibles}">
+                    		<p:outputLabel styleClass="txt-campo-obligatorio" value="*Datos Obligatorios"/>
+							<div class="margin-top-10"></div>
+							<h:outputLabel styleClass="txt-campos-oblg" value="Los campos marcados en rojo son requeridos" rendered="#{facesContext.validationFailed}"/>
+							<p:messages for="formCliente" showIcon="false" rendered="#{facesContext.validationFailed}"/>
+							<div class="margin-top-10"></div>
+							<div class="grid_15 alpha">
+
+								<p:outputLabel value="Tipo de relación:" />
+								<span class="ui-outputlabel-rfi">*</span>
+								<div class="clear-3"></div>
+
+								<p:selectOneMenu id="tipoRelacion" value="#{personaMoralRiesgoController.tipoRelacion}">										
+									<f:selectItem itemLabel="Accionista" itemValue="1" />
+									<f:selectItem itemLabel="Funcionario principal de la empresa" itemValue="2" />
+									<f:selectItem itemLabel="Referencia comercial" itemValue="3" />
+									<f:selectItem itemLabel="Referencia Bancaria" itemValue="4" />								
+								</p:selectOneMenu>
+
+							</div>
+							
+							<div class="grid_3">
+								<div class="label-vacio"></div>
+								<div class="clear-3"></div>
+
+								<p:commandButton styleClass="btn-icono btn-anadir" icon="ui-icon-circle-plus" id="anadirRelacion" 
+										action="#{personaMoralRiesgoController.adicionarRelacion()}" update="@form">
+									<f:param name="disableValidation" value="true" />  	
+								</p:commandButton>
+
+							</div>
+							
+							<div class="clear-row"></div>
+							
+							<h:panelGroup>
+								<div class="txt-relaciones-oblg sin-margen">
+									<h:outputLabel value="Deben registrarse al menos dos accionistas para una persona moral de riesgo." />
+								</div>
+							</h:panelGroup>
+							
+							<div class="clear-row"></div>	
+																								
+								<c:forEach var="accionista" items="#{personaMoralRiesgoController.personaMoralBean.relacionesClienteRiesgo.accionistas}" varStatus="iterador">
+								<p:focus context="panelAccionista#{iterador.index}" />
+								<p:panel id="panelAccionista#{iterador.index}" styleClass="#{accionista.estado.styleClass}">
+									<h:panelGroup rendered="#{accionista.estado == EstadoListadosEnum.CONSULTADO or accionista.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar accionista"
+											title="Editar accionista"
+											actionListener="#{personaMoralRiesgoController.modificarAccionista(accionista)}"
+											update=":formAnadirRelacion"
+											rendered="#{accionista.estado == EstadoListadosEnum.CONSULTADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+											icon="ui-icon-trash" alt="Eliminar accionista"
+											title="Eliminar accionista"
+											actionListener="#{personaMoralRiesgoController.eliminarAccionista(accionista)}"
+											update=":formAnadirRelacion"
+											rendered="#{accionista.estado == EstadoListadosEnum.CONSULTADO}"
+											disabled="#{personaMoralRiesgoController.personaMoralBean.relacionesClienteRiesgo.accionistas.size() lt 3}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-rotate-left" alt="Deshacer eliminar"
+											title="Deshacer eliminar"
+											actionListener="#{personaMoralRiesgoController.restaurarAccionista(accionista)}"
+											update=":formAnadirRelacion"
+											rendered="#{accionista.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="ACCIONISTA" />
+										</div>
+
+										<div class="grid_24">
+											<p:outputLabel value="Nombre:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{accionista.nombre} #{accionista.apellidoPaterno} #{accionista.apellidoMaterno}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="RFC:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{accionista.rfc}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="% Accionariado:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{accionista.porcentaje}" />
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+
+									<h:panelGroup rendered="#{accionista.estado == EstadoListadosEnum.MODIFICADO or accionista.estado ==EstadoListadosEnum.NUEVO}">
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-rotate-left" alt="Deshacer edición"
+											title="Deshacer edición"
+											actionListener="#{personaMoralRiesgoController.restaurarAccionista(accionista)}"
+											rendered="#{accionista.estado == EstadoListadosEnum.MODIFICADO}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+											icon="ui-icon-trash" alt="Eliminar accionista"
+											title="Eliminar accionista"
+											actionListener="#{personaMoralRiesgoController.eliminarAccionista(accionista)}"
+											disabled="#{personaMoralRiesgoController.personaMoralBean.relacionesClienteRiesgo.accionistas.size() lt 3}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="ACCIONISTA" />
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Nombre(s)" for="nomAccionista#{iterador.index}" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="nomAccionista#{iterador.index}"
+													value="#{accionista.nombre}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Apellido Paterno" for="aPaternoAccionista#{iterador.index}" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="aPaternoAccionista#{iterador.index}"
+													value="#{accionista.apellidoPaterno}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Apellido Materno" for="aMaternoAccionista#{iterador.index}"/>
+												<div class="clear-3"></div>
+												<p:inputMask id="aMaternoAccionista#{iterador.index}" 
+													value="#{accionista.apellidoMaterno}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:message for="rfcAccionista#{iterador.index}"
+													display="icon" />
+												<p:outputLabel value="RFC" />
+												<div class="clear-3"></div>
+												<p:inputMask id="rfcAccionista#{iterador.index}"
+													value="#{accionista.rfc}" maxlength="13"
+													onblur="value=value.toUpperCase()" mask="aaaa999999?***"
+													requiredMessage="">
+													<f:param name="disableValidation" value="true" />
+													<f:validator binding="#{personaFisicaRFCValidator}" />
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="% Accionariado" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<pe:inputNumber
+													id="porcentajeAccionistaModificado#{iterador.index}"
+													emptyValue="0.00" maxValue="999.99" decimalPlaces="2"
+													decimalSeparator="." thousandSeparator=","
+													value="#{accionista.porcentaje}"
+													required="#{param['disableValidation'] == null}" />
+												<pe:keyFilter regEx="/^[0-9\.]*$/" for="porcentajeAccionistaModificado#{iterador.index}" />
+											</div>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+								</c:forEach>
+														
+								<c:forEach var="funcionario" items="#{personaMoralRiesgoController.personaMoralBean.relacionesClienteRiesgo.funcionarios}" varStatus="iterador">
+								<p:panel id="panelFuncionario#{iterador.index}" styleClass="#{funcionario.estado.styleClass}">
+									<h:panelGroup
+										rendered="#{funcionario.estado == EstadoListadosEnum.CONSULTADO or funcionario.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton icon="fa fa-pencil" styleClass="btn-icono btn-panel" alt="Editar funcionario"
+											title="Editar funcionario"
+											actionListener="#{personaMoralRiesgoController.modificarFuncionario(funcionario)}"
+											update=":formAnadirRelacion"
+											rendered="#{funcionario.estado == EstadoListadosEnum.CONSULTADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton icon="ui-icon-trash" styleClass="btn-icono btn-panel btn-eliminar"
+											alt="Eliminar funcionario" title="Eliminar funcionario"
+											actionListener="#{personaMoralRiesgoController.eliminarFuncionario(funcionario)}"
+											update=":formAnadirRelacion"
+											rendered="#{funcionario.estado == EstadoListadosEnum.CONSULTADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton icon="fa fa-rotate-left" styleClass="btn-icono btn-panel"
+											alt="Deshacer eliminar" title="Deshacer eliminar"
+											actionListener="#{personaMoralRiesgoController.restaurarFuncionario(funcionario)}"
+											update=":formAnadirRelacion"
+											rendered="#{funcionario.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear"></div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="FUNCIONARIO" />
+										</div>
+
+										<div class="grid_24">
+											<p:outputLabel value="Nombre:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{funcionario.nombre} #{funcionario.apellidoPaterno} #{funcionario.apellidoMaterno}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="RFC:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{funcionario.rfc}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Puesto:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{funcionario.puesto}" />
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+									<h:panelGroup rendered="#{funcionario.estado == EstadoListadosEnum.MODIFICADO or funcionario.estado == EstadoListadosEnum.NUEVO}">
+										<p:commandButton icon="fa fa-rotate-left" styleClass="btn-icono btn-panel"
+											alt="Deshacer edición" title="Deshacer edición"
+											actionListener="#{personaMoralRiesgoController.restaurarFuncionario(funcionario)}"
+											rendered="#{funcionario.estado == EstadoListadosEnum.MODIFICADO}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+																				
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+											icon="ui-icon-trash" alt="Eliminar accionista"
+											title="Eliminar accionista"
+											actionListener="#{personaMoralRiesgoController.eliminarFuncionario(funcionario)}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										
+										
+										<div class="clear"></div>
+										
+										<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="FUNCIONARIO" />
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Nombre(s)" for="nomFuncionario#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="nomFuncionario#{iterador.index}" 
+												value="#{funcionario.nombre}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"/>
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Apellido Paterno" for="aPaternoFuncionario#{iterador.index}"/>
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="aPaternoFuncionario#{iterador.index}" 
+												value="#{funcionario.apellidoPaterno}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"/>
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Apellido Materno" for="aMaternoFuncionario#{iterador.index}" />
+											<p:inputMask id="aMaternoFuncionario#{iterador.index}" 
+												value="#{funcionario.apellidoMaterno}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"/>
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="RFC"/>
+											<p:inputMask value="#{funcionario.rfc}" maxlength="13"
+												onblur="value=value.toUpperCase()" mask="aaaa999999?***">
+												<f:attribute name="omitirValidacion" value="true" />
+												<f:validator binding="#{personaFisicaRFCValidator}" />
+												<pe:keyFilter regEx="/^[0-9a-zA-Z]*$/"  />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Puesto" for="puestoFuncionario#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="puestoFuncionario#{iterador.index}" 
+												value="#{funcionario.puesto}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+								</c:forEach>
+							
+								<c:forEach var="refBancaria" items="#{personaMoralRiesgoController.personaMoralBean.relacionesClienteRiesgo.referenciasBancarias}" varStatus="iterador">
+								<p:panel id="panelRefBancaria#{iterador.index}" styleClass="#{refBancaria.estado.styleClass}">
+									<h:panelGroup rendered="#{refBancaria.estado == EstadoListadosEnum.CONSULTADO or refBancaria.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton icon="fa fa-pencil" styleClass="btn-icono btn-panel"
+											alt="Editar referencia bancaria"
+											title="Editar referencia bancaria"
+											actionListener="#{personaMoralRiesgoController.modificarReferenciaBancaria(refBancaria)}"
+											update=":formAnadirRelacion"
+											rendered="#{refBancaria.estado == EstadoListadosEnum.CONSULTADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton icon="ui-icon-trash" styleClass="btn-icono btn-panel btn-eliminar"
+											alt="Eliminar referencia bancaria"
+											title="Eliminar referencia bancaria"
+											actionListener="#{personaMoralRiesgoController.eliminarReferenciaBancaria(refBancaria)}"
+											update=":formAnadirRelacion"
+											rendered="#{refBancaria.estado == EstadoListadosEnum.CONSULTADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton icon="fa fa-rotate-left" styleClass="btn-icono btn-panel"
+											alt="Deshacer eliminar" title="Deshacer eliminar"
+											actionListener="#{personaMoralRiesgoController.restaurarReferenciaBancaria(refBancaria)}"
+											update=":formAnadirRelacion"
+											rendered="#{refBancaria.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear"></div>
+										
+										<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="REF. BANCARIA" />
+										</div>
+
+										<div class="grid_22">
+											<p:outputLabel value="Nombre del banco:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{refBancaria.banco}" />
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Número de cuenta:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{refBancaria.numCuenta}" />
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Tipo de cuenta:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{refBancaria.tipoCuenta}" />
+										</div>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+									<h:panelGroup rendered="#{refBancaria.estado == EstadoListadosEnum.MODIFICADO or refBancaria.estado == EstadoListadosEnum.NUEVO}">
+										<p:commandButton icon="fa fa-rotate-left" styleClass="btn-icono btn-panel"
+											alt="Deshacer edición" title="Deshacer edición"
+											actionListener="#{personaMoralRiesgoController.restaurarReferenciaBancaria(refBancaria)}"
+											rendered="#{refBancaria.estado == EstadoListadosEnum.MODIFICADO}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+																														
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+											icon="ui-icon-trash" alt="Eliminar accionista"
+											title="Eliminar accionista"
+											actionListener="#{personaMoralRiesgoController.eliminarReferenciaBancaria(refBancaria)}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										
+										<div class="clear"></div>
+										
+										<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="REF. BANCARIA" />
+										</div>
+
+										<div class="grid_22">
+											<p:outputLabel value="Nombre del banco" for="nomRefBancaria#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<p:inputMask id="nomRefBancaria#{iterador.index}" 
+												value="#{refBancaria.banco}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Número de cuenta" for="cuentaRefBancaria#{iterador.index}"/>
+											<p:inputMask id="cuentaRefBancaria#{iterador.index}" 
+												value="#{refBancaria.numCuenta}" maxlength="18">
+												<pe:keyFilter regEx="/[\d]/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Tipo de cuenta" for="tipoCuentaRefBancaria#{iterador.index}"/>
+											<p:inputMask id="tipoCuentaRefBancaria#{iterador.index}" 
+												value="#{refBancaria.tipoCuenta}" maxlength="15"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="A"/>
+											</p:inputMask>
+										</div>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+								</c:forEach>
+
+								<c:forEach var="refComercial" items="#{personaMoralRiesgoController.personaMoralBean.relacionesClienteRiesgo.referenciasComerciales}" varStatus="iterador">
+								<p:panel id="panelRefComercial#{iterador.index}" styleClass="#{refComercial.estado.styleClass}">
+									<h:panelGroup rendered="#{refComercial.estado == EstadoListadosEnum.CONSULTADO or refComercial.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton icon="fa fa-pencil" styleClass="btn-icono btn-panel"
+											alt="Editar referencia comercial"
+											title="Editar referencia comercial"
+											actionListener="#{personaMoralRiesgoController.modificarReferenciaComercial(refComercial)}"
+											update=":formAnadirRelacion"
+											rendered="#{refComercial.estado == EstadoListadosEnum.CONSULTADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton icon="ui-icon-trash" styleClass="btn-icono btn-panel btn-eliminar"
+											alt="Eliminar referencia comercial"
+											title="Eliminar referencia comercial"
+											actionListener="#{personaMoralRiesgoController.eliminarReferenciaComercial(refComercial)}"
+											update=":formAnadirRelacion"
+											rendered="#{refComercial.estado == EstadoListadosEnum.CONSULTADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton icon="fa fa-rotate-left" styleClass="btn-icono btn-panel"
+											alt="Deshacer eliminar" title="Deshacer eliminar"
+											actionListener="#{personaMoralRiesgoController.restaurarReferenciaComercial(refComercial)}"
+											update=":formAnadirRelacion"
+											rendered="#{refComercial.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear"></div>
+										
+										<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="REF. COMERCIAL" />
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel value="Nombre:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{refComercial.nombre}" />
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Giro:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{refComercial.giro}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Teléfono:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{refComercial.telefono}" />
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Relación con el cliente:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="#{refComercial.relacion}" />
+										</div>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+									<h:panelGroup rendered="#{refComercial.estado == EstadoListadosEnum.MODIFICADO or refComercial.estado == EstadoListadosEnum.NUEVO}">
+										<p:commandButton icon="fa fa-rotate-left" styleClass="btn-icono btn-panel"
+											alt="Deshacer edición" title="Deshacer edición"
+											actionListener="#{personaMoralRiesgoController.restaurarReferenciaComercial(refComercial)}"
+											rendered="#{refComercial.estado == EstadoListadosEnum.MODIFICADO}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>									
+																														
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+											icon="ui-icon-trash" alt="Eliminar accionista"
+											title="Eliminar accionista"
+											actionListener="#{personaMoralRiesgoController.eliminarReferenciaComercial(refComercial)}"
+											update=":formAnadirRelacion">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear"></div>
+										
+										<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="REF. COMERCIAL" />
+										</div>
+
+										<div class="grid_12">
+											<p:outputLabel value="Nombre" for="nomRefComercial#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<p:inputMask id="nomRefComercial#{iterador.index}" 
+												value="#{refComercial.nombre}" maxlength="50"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Giro" for="giroRefComercial#{iterador.index}" />
+											<p:inputMask id="giroRefComercial#{iterador.index}" 
+												value="#{refComercial.giro}" maxlength="20"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_12">
+											<p:outputLabel value="Domicilio" for="domicRefComercial#{iterador.index}" />
+											<p:inputMask id="domicRefComercial#{iterador.index}" 
+												value="#{refComercial.domicilio}" maxlength="50"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="A"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Teléfono" for="telRefComercial#{iterador.index}" />
+											<p:inputMask id="telRefComercial#{iterador.index}" 
+												value="#{refComercial.telefono}" maxlength="15">
+												<pe:keyFilter regEx="/[\d]/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Relación con el cliente" for="relacionRefComercial#{iterador.index}" />
+											<p:inputMask id="relacionRefComercial#{iterador.index}" 
+												value="#{refComercial.relacion}" maxlength="50"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+								</c:forEach>
+                   			</h:panelGroup>
+                    	</div>
+                    	<h:panelGroup rendered="#{personaMoralRiesgoController.elementosVisibles}">
+	                    	<div class="wiz-siguiente">
+	                            <p:commandButton icon="ui-icon-arrow-1-e" id="siguiente" ajax="true" update="@form" action="#{personaMoralRiesgoController.irGrupoFilialDesdePersonas()}"/>
+	                        </div>
+                        </h:panelGroup>                    	
+                    </div>
+                    
+                    <h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion ne true and personaMoralRiesgoController.elementosVisibles}">
+						<p:commandButton styleClass="btn_secundario  margin-top-10" id="cancelarA" immediate="true" value="Cancelar" onclick="PF('dlgCancelarAlta').show();"/>
+					</h:panelGroup>
+				    
+				    <h:panelGroup rendered="#{personaMoralRiesgoController.esModificacion eq true and personaMoralRiesgoController.elementosVisibles}">
+						<p:commandButton styleClass="btn_secundario margin-top-10" id="cancelarM" immediate="true" value="Cancelar" onclick="PF('dlgCancelarModificacion').show();"/>
+					</h:panelGroup>   
+                    
+                    <ui:include src="../../store.xhtml">
+				    	<ui:param name="storeBean" value="#{personaMoralRiesgoController}"/>
+					</ui:include>
+                                             
+                </h:form>
+                
+                <p:dialog widgetVar="dlgPorcentaje" id="dlgPorcentaje" appendTo="@(body)"
+                    header="Aviso porcentaje" modal="true" visible="false" closable="false"
+                    resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <span class="ui-messages-warn-icon warn-dialog"></span>
+                    <p:outputLabel  styleClass="modal-mensaje" value="¡Atención! La suma de los porcentajes de accionariado es mayor al 100%"/>
+                    <div class="clear"></div>
+                    <p:outputLabel styleClass="modal-accion" value="Por favor, revise los valores asignados" />
+                    <div class="margin-bottom-20"></div>
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgPorcentaje').hide();" value="Aceptar" immediate="true"/>                      
+	         	</p:dialog>
+                
+                <p:dialog widgetVar="dlgCancelarModificacion" id="dlgCancelarModificacion" appendTo="@(body)" header="Cancelar Modificación de persona moral" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--                     <p:outputLabel styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar la modfificación de persona moral" /> -->
+<!--                     <div class="clear"></div> -->
+<!--                     <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--                     <div class="margin-bottom-20"></div> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarModificacion').hide();" id="VolverM"  value="Continuar con la modificación" immediate="true"/> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartarM" value="No guardar" immediate="true" action="#{personaMoralRiesgoController.botonCancelar()}"/> -->
+<!--                     <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardarM" value="Guardar" onclick="return storeData();" /> -->
+
+					<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralRiesgoController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+                </p:dialog>
+                
+                <p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta" appendTo="@(body)" header="Cancelar Alta de persona moral" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--                     <p:outputLabel styleClass="modal-mensaje" value="¡Atencion! Está a punto de cancelar el alta de cliente" /> -->
+<!--                     <div class="clear"></div> -->
+<!--                     <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--                     <div class="margin-bottom-20"></div> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarAlta').hide();" id="Volver"  value="Continuar con al alta" immediate="true"/> -->
+<!--                     <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartar" value="No guardar" immediate="true" action="#{personaMoralRiesgoController.botonCancelar()}"/> -->
+<!--                     <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardar" value="Guardar" onclick="return storeData();" /> -->
+
+					<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{personaMoralRiesgoController.botonCancelar()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+                </p:dialog>
+                
+                </div>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

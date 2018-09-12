@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+  <head>
+	<title>Composite periodo validez</title>
+  </head>
+  <body>
+	<composite:interface>
+  	  <composite:attribute name="from"></composite:attribute>
+	  <composite:attribute name="to"></composite:attribute>
+    <composite:attribute name="editable" default="true"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+	  <div id="#{cc.clientId}" class="grid_16">
+	  	<div class="grid_24 alpha">
+	  	<p:message id="rangeToVal" for="rangeTo" display="icon" ></p:message>
+	    <p:outputLabel for="rangeTo" value="Periodo validez:"></p:outputLabel>
+	    <div class="clear-3"></div>
+      	  <p:inputText id="rangeFrom" value="#{cc.attrs.from}" disabled="true">
+            <f:convertDateTime pattern="dd/MM/yyyy" />
+          </p:inputText>
+          </div>
+          <h:panelGroup layout="block" styleClass="grid_24" rendered="#{cc.attrs.editable}">
+          	<div class="label-vacio"></div>
+				<div class="clear-3"></div>
+	          <p:calendar id="rangeTo"
+	            value="#{cc.attrs.to}" showOn="button" 
+	            pattern="dd/MM/yyyy" mask="true" locale="es" styleClass="arq-update" >
+	            <f:attribute name="beginDate"
+	              value="#{cc.attrs.from}" />
+							<f:validator validatorId="dateRangeValidator" />
+              <p:ajax event="change" process="@this" update="@this,rangeToVal" partialSubmit="true" global="false"/>
+              <p:ajax event="dateSelect" process="@this" update="@this,rangeToVal" partialSubmit="true" global="false"/>
+	      	  </p:calendar>
+      	  </h:panelGroup>
+      	  <h:panelGroup layout="block" styleClass="grid_24" rendered="#{not cc.attrs.editable}">
+              <div class="label-vacio"></div>
+        <div class="clear-3"></div>
+	          	<p:inputText id="rangeToNoEditable" value="#{cc.attrs.to}" disabled="true">
+	            <f:convertDateTime pattern="dd/MM/yyyy" />
+	          </p:inputText>
+          </h:panelGroup>
+      </div>
+	</composite:implementation>
+  </body>
+</html>

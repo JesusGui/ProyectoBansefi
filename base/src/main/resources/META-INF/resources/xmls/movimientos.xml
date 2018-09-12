@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="movimientos" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultamovimientos.ResponseBansefi
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.movimientos.MovimientoBean
+		</class-b>
+		<field>
+		 	<a>concepto</a>
+			<b>concepto</b>
+		</field>
+		<field>
+		    <a>fechaoper</a>
+		    <b>fechaOperacion</b>
+		</field>
+		<field>
+		    <a>fechavalor</a>
+		    <b>fechaValor</b>
+		</field>
+		<field>
+		    <a>ofterminal</a>
+		    <b>oficinaTerminal</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToBigDecimalConverter">
+		    <a>importe</a>
+		    <b>importe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToBigDecimalConverter">
+		    <a>saldo</a>
+		    <b>saldo</b>
+		</field>
+		<field>
+			<a>oforig</a>
+			<b>originador</b>
+		</field>
+		<field>
+			<a>codoper</a>
+			<b>codigoOperacion</b>
+		</field>
+		<field>
+			<a>signo</a>
+			<b>signo</b>
+		</field>
+		<field>
+			<a>indicador</a>
+			<b>indicador</b>
+		</field>
+		<field>
+			<a>moneda</a>
+			<b>moneda</b>
+		</field>		
+		<field>
+			<a>numsec</a>
+			<b>numSec</b>
+		</field>
+	</mapping>
+	<mapping map-id="bloqueos" wildcard="false" map-null="false" trim-strings="true" map-empty-string="false" >
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultabloqueos.ResponseBansefi.OTRPETICIONCONSULTABP.TRPETICIONCONSULTABPE.BPLISTABLOQUEOV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.movimientos.MovimientoBean
+		</class-b>
+		<field>
+			<a>bpbloqueoprtcne.codbloqueo</a>
+			<b>subTipo</b>
+		</field>
+		<field>
+		 	<a>bpbloqueoprtcne.motivoblqprtcn</a>
+			<b>concepto</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		    <a>fechainicecv</a>
+		    <b>fechaAlta</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		    <a>fechaplanif</a>
+		    <b>fechaVencimiento</b>
+		</field>
+		<field>
+		    <a>idinternoemplep</a>
+		    <b>empleado</b>
+		</field>
+		<field>
+		    <a>codinternouo</a>
+		    <b>centro</b>
+		</field>
+    <field>
+        <a>bpbloqueoprtcne.numblqprtcn</a>
+        <b>numeroBloqueo</b>
+    </field>
+    <field>
+        <a>bpbloqueoprtcne.motivocancantic</a>
+        <b>motivoCancelacion</b>
+    </field>
+    <field>
+        <a>codecvblqprtcn</a>
+        <b>estado</b>
+    </field>
+	</mapping>
+	<mapping map-id="retenciones" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaretenciones.ResponseBansefi.OTRCONSULTAGLOBALRTTR.TRCONSULTAGLOBALRTEVT.TRAFCONSEVTV.AFAPNTEE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.movimientos.MovimientoBean
+		</class-b>
+		<field>
+			<a>codorigen</a>
+			<b>subTipo</b>
+		</field>
+		<field>
+			<a>ind1</a>
+			<b>estado</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechavalor</a>
+			<b>fechaAlta</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechactble</a>
+			<b>fechaVencimiento</b>
+		</field>
+		<field>
+			<a>concptapnte</a>
+			<b>concepto</b>
+		</field>
+		<field>
+			<a>NUMSECAC</a>
+			<b>empleado</b>
+		</field>	
+		<field>
+			<a>idorgnapnte</a>
+			<b>originador</b>
+		</field>	
+		<field>
+			<a>IMPAPNTE</a>
+			<b>importe</b>
+		</field>	
+	</mapping>
+	<mapping map-id="autorizaciones" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaautorizaciones.ResponseBansefi.OTRCONSULTAGLOBALATTR.TRCONSULTAGLOBALATEVT.TRAFCONSEVTV.AFAPNTEE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.movimientos.MovimientoBean
+		</class-b>
+		<field>
+			<a>FECHAVALOR</a>
+			<b>fechaAlta</b>
+		</field>
+		<field>
+			<a>FECHACTBLE</a>
+			<b>fechaVencimiento</b>
+		</field>
+		<field>
+			<a>CONCPTAPNTE</a>
+			<b>concepto</b>
+		</field>	
+		<field>
+			<a>IDORGNAPNTE</a>
+			<b>empleado</b>
+		</field>	
+		<field>
+			<a>CODORGNAPNTE</a>
+			<b>originador</b>
+		</field>	
+		<field>
+			<a>IMPAPNTE</a>
+			<b>importe</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="auditoria" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaretenciones.ResponseBansefi.OTRCONSULTAGLOBALRTTR.TRCONSULTAGLOBALRTEVT.TRAFCONSEVTV.AFAUDITE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.movimientos.MovimientoBean
+		</class-b>
+		<field>
+			<a>idinternoemplep</a>
+			<b>empleado</b>
+		</field>
+	</mapping>
+	
+</mappings>

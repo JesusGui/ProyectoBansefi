@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:cc="http://java.sun.com/jsf/composite/composites">
+  <head>
+    <title>Composite valor lista</title>
+  </head>
+  <body>
+    <composite:interface>
+      <composite:attribute name="id"></composite:attribute>
+	  <composite:attribute name="validezFrom" required="true" ></composite:attribute>
+	  <composite:attribute name="validezTo"></composite:attribute>
+	  <composite:attribute name="value" required="true" ></composite:attribute>
+	  <composite:attribute name="items" required="true"></composite:attribute>
+    <composite:attribute name="editable" default="true"></composite:attribute>
+    </composite:interface>
+    <composite:implementation>
+      <div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" >
+        
+          <cc:periodoValidez from="#{cc.attrs.validezFrom}" to="#{cc.attrs.validezTo}"
+             editable="#{cc.attrs.editable}"></cc:periodoValidez>
+          <h:panelGroup layout="block" styleClass="grid_18">
+	          <p:outputLabel for="itemList" value="Valor:"></p:outputLabel>
+	          <div class="clear-3"></div>
+	          <ui:fragment rendered="#{(empty cc.attrs.items) or (cc.attrs.items.size() != 2)}" >	          
+		      	  <p:selectOneMenu id="itemList" value="#{cc.attrs.value}" styleClass="arq-update">
+		            <f:selectItems itemDisabled="#{not cc.attrs.editable}" value="#{cc.attrs.items}" var="entry"
+                itemValue="#{entry.id}" itemLabel="#{entry.desc}#{entry.preferente?' (Preferente)':''}" />
+		       	  </p:selectOneMenu>
+	       	  </ui:fragment>
+	       	  <ui:fragment rendered="#{(not empty cc.attrs.items) and (cc.attrs.items.size() == 2)}" >	          
+		      	  <p:selectOneRadio id="itemRadio" value="#{cc.attrs.value}" styleClass="arq-update">
+		            <f:selectItems itemDisabled="#{not cc.attrs.editable}" value="#{cc.attrs.items}" var="entry"
+                itemValue="#{entry.id}" itemLabel="#{entry.desc}#{entry.preferente?' (Preferente)':''}" />
+		          </p:selectOneRadio>
+	       	  </ui:fragment>
+       	  </h:panelGroup>
+     	
+      </div>
+    </composite:implementation>
+  </body>
+</html>

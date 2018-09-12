@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  xmlns:cc="http://java.sun.com/jsf/composite/composites">
+  <head>
+    <title>Composite Lista</title>
+  </head>
+  <body>
+    <composite:interface>
+      <composite:attribute name="id"></composite:attribute>
+	  <composite:attribute name="validezFrom" required="true" ></composite:attribute>
+	  <composite:attribute name="validezTo"></composite:attribute>
+	  <composite:attribute name="condicionLista" required="true"></composite:attribute>
+    <composite:attribute name="editable" default="true"></composite:attribute>
+    </composite:interface>
+    <composite:implementation>
+      <div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" >
+          <cc:periodoValidez from="#{cc.attrs.validezFrom}" to="#{cc.attrs.validezTo}"
+             editable="#{cc.attrs.editable}"></cc:periodoValidez>
+            
+      	   		<div class="grid_32">
+			      	 <p:pickList value="#{cc.attrs.condicionLista.dualList}" addLabel="Agregar" addAllLabel="Agregar todo" removeLabel="Quitar" removeAllLabel="Quitar todo" var="entity" itemValue="#{entity}" widgetVar="pl#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}"
+			      	   itemLabel="#{entity.desc}" itemDisabled="#{not cc.attrs.editable}">
+							<f:facet name="sourceCaption">Valor</f:facet>
+						    <f:facet name="targetCaption">Recuperar</f:facet>
+							<o:converter converterId="omnifaces.ListConverter" list="#{cc.attrs.condicionLista.dualList.source}" />
+							<p:column styleClass="column">
+								<p:outputLabel styleClass="#{entity.preferente?'indicacion-preferente':'indicacion-nopreferente'}" value="#{entity.desc}"></p:outputLabel>
+								<p:outputLabel value="#{entity.id}" style="display: none;" />
+               </p:column>
+                   			
+					</p:pickList>
+					<div class="float-left indicacion-preferente">
+					<i class="ui-icon-star goldenrod"></i><p:outputLabel value="Valor preferente"></p:outputLabel>
+					</div>
+					<div class="indicacion-recuperar">
+                   	<p:outputLabel value="Arrastre o use las flechas para eliminar o recuperar valores"></p:outputLabel>
+                   	</div>
+				 
+	        	<h:inputHidden id="source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" value="#{cc.attrs.condicionLista.sourceList}" />
+            <h:inputHidden id="target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" value="#{cc.attrs.condicionLista.targetList}" />
+            <h:inputHidden id="hidden#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" value="#{cc.attrs.condicionLista.preferente}" />
+	        	
+	        	</div>
+	        	<div class="clear-row"></div>
+      </div>
+      <script>
+        //<![CDATA[
+        PrimeFaces.widget.PickList.prototype.add = function() {
+				    var _self = this;
+
+				    this.sourceList.children('li.ui-picklist-item.ui-state-highlight')
+				    .removeClass('ui-state-highlight').each(function(){
+					    	if(!$(this).find("label").hasClass('indicacion-preferente')){
+						    	//el key del objeto que se mueve
+	                var mapKey = $(this).find("label:hidden").text();
+	                //elimina de source
+	                var sourceData = $("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+	                sourceData = sourceData.replace(mapKey+';','');
+	                $("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',sourceData);
+	                //add a target
+	                var targetData = $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+	                targetData = targetData + mapKey+';';
+	                $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',targetData);
+	                //La magia de PF
+						      $(this).hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+		                _self.transfer($(this), _self.sourceList, _self.targetList, 'command');
+		              });
+					    	}
+					    });
+				}
+				
+				PrimeFaces.widget.PickList.prototype.addAll = function() {
+				    var _self = this;
+				
+				    this.sourceList.children('li.ui-picklist-item:not(.ui-state-disabled)').removeClass('ui-state-highlight').each(function(){
+              if(!$(this).find("label").hasClass('indicacion-preferente')){
+                //el key del objeto que se mueve
+                var mapKey = $(this).find("label:hidden").text();
+                //elimina de source
+              	var sourceData = $("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+              	sourceData = sourceData.replace(mapKey+';','');
+              	$("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',sourceData);
+              	//add a target
+                var targetData = $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+                targetData = targetData + mapKey+';';
+                $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',targetData);
+                //La magia de PF
+              	$(this).hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+						        _self.transfer($(this), _self.sourceList, _self.targetList, 'command');
+						    });
+              }
+				    });
+				}
+				PrimeFaces.widget.PickList.prototype.remove = function() {
+			    var _self = this;
+			    this.targetList.children('li.ui-picklist-item.ui-state-highlight')
+          .removeClass('ui-state-highlight').each(function(){              
+                //el key del objeto que se mueve
+                var mapKey = $(this).find("label:hidden").text();
+                //elimina de target
+                var targetData = $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+                targetData = targetData.replace(mapKey+';','');
+                $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',targetData);
+                //add a source
+                var sourceData = $("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+                sourceData = sourceData + mapKey+';';
+                $("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',sourceData);
+                //La magia de PF
+                $(this).hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                	_self.transfer($(this), _self.targetList, _self.sourceList, 'command');
+                });
+            });
+				}
+	
+				PrimeFaces.widget.PickList.prototype.removeAll = function() {
+				    var _self = this;
+				    this.targetList.children('li.ui-picklist-item:not(.ui-state-disabled)').removeClass('ui-state-highlight').each(function(){
+                //el key del objeto que se mueve
+                var mapKey = $(this).find("label:hidden").text();
+                //elimina de target
+                var targetData = $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+                targetData = targetData.replace(mapKey+';','');
+                $("input:hidden[id$='target#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',targetData);
+                //add a source
+                var sourceData = $("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value');
+                sourceData = sourceData + mapKey+';';
+                $("input:hidden[id$='source#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']").attr('value',sourceData);
+                //La magia de PF
+                $(this).hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+                   _self.transfer($(this), _self.targetList, _self.sourceList, 'command');
+                });
+            });
+				    this.targetList.children('li.ui-picklist-item:not(.ui-state-disabled)').removeClass('ui-state-highlight').hide(_self.cfg.effect, {}, _self.cfg.effectSpeed, function() {
+				        _self.transfer($(this), _self.targetList, _self.sourceList, 'command');
+				    });
+				}
+				
+        $(function () {
+        	 $(PF("pl#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}").jqId+" ul").sortable('disable');
+        	 PF("pl#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}").items.unbind('dblclick');
+           PF("pl#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}").items.bind('dblclick',function(e) {
+            
+             var item = $(this);
+             if(item.parent().hasClass('ui-picklist-source')){
+            	 if(!item.find("label").hasClass('indicacion-preferente')){
+            		 item.parent().find(".indicacion-preferente").removeClass('indicacion-preferente').addClass('indicacion-nopreferente');
+                 item.find("label").addClass('indicacion-preferente').removeClass('indicacion-nopreferente');
+                  $("input:hidden[id$='hidden#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}']")
+                     .attr('value', item.find("label:hidden").text());
+              }
+             }
+           });
+        });
+        //]]>
+      </script>
+    </composite:implementation>
+  </body>
+</html>

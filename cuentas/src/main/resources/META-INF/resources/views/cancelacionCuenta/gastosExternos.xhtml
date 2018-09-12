@@ -1,0 +1,440 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+	
+	<ui:define name="contenido">
+	
+	<h:body>
+	<div class="container_48">
+	  
+	  <div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formGastosExternos" styleClass="contenedor-form">
+					
+					<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{gastosExternosController.volver()}" immediate="true"></p:commandButton>
+							<div>
+								<h2 class="gris-b">Gastos externos </h2>
+								<h2 class="rojo-b">#{gastosExternosController.cuentaBean.tipoCuenta}</h2>
+								<h3 class="gris-b">(#{gastosExternosController.cuentaBean.numeroCuenta})</h3>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+						<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Campos Obligatorios" />
+
+							<div class="margin-top-10"></div>
+
+							<h:outputText styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							<div class="margin-top-10"></div>
+							
+							<div class="grid_8">
+								<p:outputLabel for="tipo" value="Tipo de gasto"></p:outputLabel>
+								<div class="clear-3"></div>
+								<h:panelGroup display="block" 
+								rendered="#{gastosExternosController.muetraBotonRegistrar }">
+								<p:selectOneMenu panelStyleClass="combo-estandar" id="tipo" value="#{gastosExternosController.idTipoGasto}"
+									required="#{param['disableValidationCabecera']==null}">
+									<f:selectItems
+																value="#{gastosExternosController.gastosExternosBean.lTipoGasto}"
+																var="item" itemValue="#{item.codigoGasto}"
+																itemLabel="#{item.descripcion}" />
+								<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="tipo"
+														></p:ajax>								
+								</p:selectOneMenu>
+								</h:panelGroup>
+								<h:panelGroup display="block" 
+								rendered="#{!gastosExternosController.muetraBotonRegistrar }">
+								<p:outputLabel  value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.descripcionGasto}"></p:outputLabel>
+								</h:panelGroup>
+								
+							</div>
+							<h:panelGroup display="block" 
+								rendered="#{gastosExternosController.muestraMensajeTipo  }">
+								<div class="grid_8">
+								 <h:outputText styleClass="txt-campos-oblg"
+								value="No existen gastos registrados para el tipo de cuenta"
+								 />
+								</div>
+								</h:panelGroup>
+							
+							<h:panelGroup display="block" 
+								rendered="#{gastosExternosController.gastosExternosBean.lTipoGasto.size()>0  }">
+								
+							
+							<div class="grid_8">
+							<p:outputLabel for="tipo" value="Importe"></p:outputLabel>
+								<div class="clear-3"></div>
+								<h:panelGroup display="block" 
+								rendered="#{gastosExternosController.muetraBotonRegistrar }">
+								<pe:inputNumber id="importeDenominacion" class="importeDenominacion"
+													value="#{gastosExternosController.gastosExternosBean.importe}" decimalPlaces="2"
+													decimalSeparator="." thousandSeparator="," symbol=" MXN"
+													symbolPosition="suffix" maxlength="12" required="true">
+													<f:attribute id="importeAttribute" name="valor"
+														value="#{gastosExternosController.gastosExternosBean.importe}" />
+													<f:validator validatorId="importeValidator" />
+													<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="importeDenominacion"
+														></p:ajax>	
+													</pe:inputNumber>
+												<p:watermark for="importeDenominacion" value="0.00 MXN" />
+									</h:panelGroup>	
+									<h:panelGroup display="block" 
+								rendered="#{!gastosExternosController.muetraBotonRegistrar }">
+								<pe:inputNumber id="importeDenominacion2" class="importeDenominacion"
+													value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.importe}" decimalPlaces="2"
+													decimalSeparator="." thousandSeparator="," symbol=" MXN"
+													symbolPosition="suffix" maxlength="12" readonly="true">
+													
+													</pe:inputNumber>
+												
+									</h:panelGroup>			
+							</div>
+							<div class="grid_8">
+							<p:commandButton id="btnguardar"
+							styleClass="btn_primario"
+							value="Registrar gasto"  update="@form :dialogRegistrar" 
+							action="#{gastosExternosController.muestraRegistrar}" 
+							rendered="#{gastosExternosController.muetraBotonRegistrar}" />
+							</div>
+							<div class="clear-3"></div>
+							<div class="clear-row"></div>
+							<h:panelGroup display="block" id="panelImputar"
+								rendered="#{gastosExternosController.muestraControlesImputar }">
+							
+							<div class="contenedor-fijo-formulario">
+									<p:message id="msgDestino" for="destino" display="icon" />
+									<p:outputLabel for="destino" value="Datos para la imputación"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:selectOneRadio id="destino"
+										value="#{gastosExternosController.gastosExternosBean.destinoImputacion}"
+										required="true">
+										<f:selectItem
+											itemDisabled="#{!gastosExternosController.permiteCuentaAsociada()}"
+											itemLabel="Cuenta Asociada" itemValue="CT" />
+										<f:selectItem itemLabel="Otra cuenta" itemValue="null"
+											itemDisabled="#{gastosExternosController.permiteCuentaAsociada()}" />
+										<f:selectItem itemLabel="Intervención" itemValue="IV"
+											itemDisabled="#{gastosExternosController.permiteCuentaAsociada() }" />
+										<p:ajax global="" partialSubmit="true" update="@form"
+											process="@this"></p:ajax>
+									</p:selectOneRadio>
+								</div>
+								<h:panelGroup
+									rendered="#{'CT' eq gastosExternosController.gastosExternosBean.destinoImputacion}">
+									<div class="grid_20 alpha">
+										<p:outputLabel for="cuenta" id="cuentaOperativa"
+											value="N° de cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="cuenta"
+											value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.cuentaAsociada}" readonly="true">
+										</p:inputText>
+									</div>
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{'null' eq gastosExternosController.gastosExternosBean.destinoImputacion}">
+									<!-- Cuenta -->
+									<div class="grid_8">
+										<p:message id="msgOtraCuenta" for="otraCuenta" display="icon" />
+										<p:outputLabel for="otraCuenta" id="cuentaLabel"
+											value="N° de cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="otraCuenta"
+											value="#{gastosExternosController.gastosExternosBean.otraCuenta}"
+											maxlength="10" required="true">
+											<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="false" />
+										</p:inputText>
+									</div>
+
+									<!-- boton de busqueda de cuentas -->
+									<div class="grid_3">
+										<!-- boton de busqueda de cuentas -->
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton styleClass="btn-icono-conbackground"
+											id="busquedaPersona" immediate="true"
+											action="#{gastosExternosController.buscarPersona()}" icon="ui-icon-search"
+											ajax="true" update="@form"></p:commandButton>
+									</div>
+								</h:panelGroup>
+							<div class="clear-row"></div>
+							<div class="grid_8">
+							<p:commandButton id="btnguardarImp"
+							styleClass="btn_primario"
+							value="Guardar"  update="@form :dialogRegistrarImputar" 
+							action="#{gastosExternosController.muestraRegistrarImputar}" 
+							 />
+							</div>
+							<div class="grid_8">
+							<p:commandButton id="btnCancelarImp"
+							styleClass="btn_primario"
+							value="Cancelar"  update="@form" 
+							action="#{gastosExternosController.muestraImputar(false)}" 
+							immediate="true" />
+							</div>
+							</h:panelGroup>
+							<div class="clear-3"></div>
+							<h:panelGroup 
+								display="block" id="panelResultadosGastos"
+								rendered="#{gastosExternosController.gastosExternosBean.parrillaGastos.size() >  0 }">
+								
+								<div class="grid_8">
+								<p:outputLabel styleClass="ui-outputlabel ui-widget titulo-form margin-left-10" value="Gastos"
+												 />
+								</div>
+								<div class="clear-row"></div>
+								
+								<p:dataTable id="tblGastos" widgetVar="tblGastos" var="gastos"
+								value="#{gastosExternosController.gastosExternosBean.parrillaGastos}" rowKey="#{gastos.numSecuencia}"
+								 selectionMode="single"
+								
+								paginator="false"
+								rendered="#{gastosExternosController.gastosExternosBean.parrillaGastos.size() > 0}">
+								<!-- 
+								<p:ajax event="rowSelect"
+									listener="#{gastosExternosController.onRowSelect}" /> -->
+								<p:column headerText="Descripción del gasto" 
+									>
+									<h:outputText value="#{gastos.descripcionGasto}" />
+								</p:column>
+								<p:column headerText="Importe">
+									<h:outputText styleClass="float-right"
+										value="#{gastos.importe}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Estado">
+									<h:outputText value="#{gastos.estatusGastos}">
+										
+									</h:outputText>
+								</p:column>
+								
+								<p:column headerText="Imputar">
+								<p:commandButton icon="fa fa-money"
+								action="#{gastosExternosController.muestraImputar(true)}" immediate="true" 
+								update=":formGastosExternos @(.importeDenominacion)" rendered="#{gastos.imputar}">
+								<f:setPropertyActionListener target="#{gastosExternosController.gastosExternosBean.gastoSeleccionado}"
+                                 value="#{gastos}" />
+								</p:commandButton>
+								</p:column>
+								
+								<p:column headerText="Eliminar">
+								<p:commandButton icon="ui-icon-trash"
+								action="#{gastosExternosController.setMuestraDialogoSuprimir(true)}" immediate="true" 
+								update=":dialogSuprimirCampos" rendered="#{gastos.eliminar}">
+								<f:setPropertyActionListener target="#{gastosExternosController.gastosExternosBean.gastoSeleccionado}"
+                                 value="#{gastos}" />
+								</p:commandButton>
+								</p:column>
+								
+								
+							</p:dataTable>
+								
+								</h:panelGroup>
+											                <div class="clear-row"></div>
+						
+								
+								<div class="contenedor-totales">
+									<div class="grid_48 saldo-disponible" id="idTotalImputar" >
+										<div class="grid_20">
+											<p:outputLabel value="Importe pendiente imputar:"></p:outputLabel>
+										</div>
+										<div class="grid_28">
+											<p:outputLabel class="prueba" id="labelTotalImputar"  
+												value="#{gastosExternosController.gastosExternosBean.importePendiente}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												
+											</p:outputLabel>
+										</div>
+									</div>
+									<div class="clear-row"></div>
+									<div class="grid_48 saldo-disponible" id="idImporteTotal" >
+										<div class="grid_20">
+											<p:outputLabel value="Importe total:"></p:outputLabel>
+										</div>
+										<div class="grid_28">
+											<p:outputLabel class="prueba" id="labelImporteTotal"  
+												value="#{gastosExternosController.gastosExternosBean.importeTotal}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												
+											</p:outputLabel>
+										</div>
+									</div>
+								</div>
+								
+								
+								</h:panelGroup>
+								
+								<div class="clear-3"></div>
+						</div>
+							
+					</h:form>
+					<p:dialog widgetVar="dialogRegistrar" id="dialogRegistrar" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="false"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<div class="modal-mensaje">
+						<p:outputLabel 
+							value="Está a punto de registrar un gasto por :" />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{gastosExternosController.gastosExternosBean.importe}">
+							<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+								currencySymbol="MXN" />
+						</p:outputLabel>	
+							
+							
+						</div>
+						
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" immediate="true"
+							oncomplete="PF('dialogRegistrar').hide();"
+							action="#{gastosExternosController.setMuestraDialogoRegistrar(false)}" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true" 
+							oncomplete="PF('dialogRegistrar').hide();"
+							update="dialogRegistrarExitoso"
+							action="#{gastosExternosController.registrarGasto()}" />
+					</p:dialog>
+					<p:dialog widgetVar="dialogRegistrarExitoso" id="dialogRegistrarExitoso"
+					appendTo="@(body)" modal="true" dynamic="true" showEffect="fade" hideEffect="fade"
+					visible="#{gastosExternosController.muestraRegistrarExitoso}" closable="false"
+					resizable="false">
+					<span class="ui-messages-exito-icon exito-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡El registro de gasto se ha ejecutado exitosamente!" />
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar"
+						update=":formGastosExternos dialogRegistrarExitoso"
+						action="#{gastosExternosController.setMuestraRegistrarExitoso(false)}" />
+				</p:dialog>
+				<p:dialog widgetVar="dialogSuprimirCampos" id="dialogSuprimirCampos" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="#{gastosExternosController.muestraDialogoSuprimir}"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+							
+							<div class="modal-mensaje">
+						<p:outputLabel 
+							value="Va a eliminar el gasto con las siguientes caracteristicas: " />
+						<p:outputLabel 
+							value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.descripcionGasto}" />	
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.importe}">
+							<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+								currencySymbol="MXN" />
+						</p:outputLabel>	
+							
+							
+						</div>
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" immediate="true"
+							oncomplete="PF('dialogSuprimirCampos').hide();"
+							action="#{gastosExternosController.setMuestraDialogoSuprimir(false)}" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true" 
+							oncomplete="PF('dialogSuprimirCampos').hide();"
+							update=":dialogSuprimirExitoso"
+							action="#{gastosExternosController.eliminarGasto}" />
+					</p:dialog>
+	            <p:dialog widgetVar="dialogSuprimirExitoso" id="dialogSuprimirExitoso"
+					appendTo="@(body)" modal="true" dynamic="true" showEffect="fade" hideEffect="fade"
+					visible="#{gastosExternosController.muestraSuprimirExitoso}" closable="false"
+					resizable="false">
+					<span class="ui-messages-exito-icon exito-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡La eliminación del gasto se ha ejecutado exitosamente!" />
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar"
+						update=":formGastosExternos dialogSuprimirExitoso"
+						action="#{gastosExternosController.setMuestraSuprimirExitoso(false)}" />
+				</p:dialog>
+	            <p:dialog widgetVar="dialogRegistrarImputar" id="dialogRegistrarImputar" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="false"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<div class="modal-mensaje">
+						<p:outputLabel 
+							value="Está a punto de realizar una imputación de un gasto por: " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.importe}">
+							<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+								currencySymbol="MXN" />
+						</p:outputLabel>	
+							
+							
+						</div>
+						
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" immediate="true"
+							oncomplete="PF('dialogRegistrarImputar').hide();"
+							action="#{gastosExternosController.setMuestraDialogoRegistrarImputar(false)}" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true" 
+							oncomplete="PF('dialogRegistrarImputar').hide();"
+							update="dialogRegistrarImputarExitoso"
+							action="#{gastosExternosController.registroImputar()}" />
+					</p:dialog>
+					<p:dialog widgetVar="dialogRegistrarImputarExitoso" id="dialogRegistrarImputarExitoso"
+					appendTo="@(body)" modal="true" dynamic="true" showEffect="fade" hideEffect="fade"
+					visible="#{gastosExternosController.muestraRegistrarImputarExitoso}" closable="false"
+					resizable="false">
+					<span class="ui-messages-exito-icon exito-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡La operació se  ha ejecutado exitosamente!" />
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar"
+						update=":formGastosExternos dialogRegistrarImputarExitoso"
+						action="#{gastosExternosController.irImpresion}" />
+				</p:dialog>
+	  
+	  </div>
+	</div>
+	</h:body>
+	</ui:define>
+	</ui:composition>

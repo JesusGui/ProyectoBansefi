@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="documentoPersonaDetalle" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultadetalledocumento.ResponseBansefi.OTRCONSDOCUMENTOTRNO.TRCONSDOCUMENTOEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.DocumentoPersonaBean
+		</class-b>
+		<field>
+			<a>coddoc</a>
+			<b>tipo</b>
+		</field>
+		<field>
+			<a>txtdc</a>
+			<b>descripcion</b>
+		</field>
+		<field>
+			<a>txtub</a>
+			<b>observaciones</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaentdc</a>
+			<b>fechaEntrega</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecharevdc</a>
+			<b>fechaProxima</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaexpdc</a>
+			<b>fecha</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>indfmtnostddc</a>
+			<b>noEstandar</b>
+		</field>
+		<field>
+			<a>codsoptedc</a>
+			<b>soporte</b>
+		</field>
+		<field>
+			<a>rznrevdc</a>
+			<b>motivo</b>
+		</field>
+		<field>
+			<a>emsrdc</a>
+			<b>emisor</b>
+		</field>
+		<field>
+			<a>prdorevdc</a>
+			<b>frecuencia</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>indcopiadc</a>
+			<b>copia</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>indorigsdc</a>
+			<b>original</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>indduplicdc</a>
+			<b>duplicado</b>
+		</field>
+		<field>
+			<a>codpaisag</a>
+			<b>pais</b>
+		</field>
+		<field>
+			<a>codumprdorevdc</a>
+			<b>frecuenciaUnidad</b>
+		</field>
+		<field custom-converter-id="stringToCentroConverter" custom-converter-param="0166">
+			<a>codinternouo</a>
+			<b>oficina</b>
+		</field>
+		<field>
+			<a>numargeo</a>
+			<b>municipioCatGeo.numArGeo</b>
+		</field>
+		<field>
+			<a>codargeo</a>
+			<b>municipioCatGeo.codArGeo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechacdcdaddc</a>
+			<b>fechaCaducidad</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="documentoPersonaAlta" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.DocumentoPersonaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.altadocumentospersona.Ejecutar.ITRPEALTADCTRNI.TRPEALTADCEVTY
+		</class-b>
+		<field>
+			<a>tipo</a>
+			<b>coddoc</b>
+		</field>
+		<field>
+			<a>descripcion</a>
+			<b>txtdc</b>
+		</field>
+		<field>
+			<a>frecuencia</a>
+			<b>prdorevdc</b>
+		</field>
+		<field>
+			<a>observaciones</a>
+			<b>txtub</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaProxima</a>
+			<b>fecharevdc</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecha</a>
+			<b>fechaexpdc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>noEstandar</a>
+			<b>indfmtnostddc</b>
+		</field>
+		<field>
+			<a>soporte</a>
+			<b>codsoptedc</b>
+		</field>
+		<field>
+			<a>motivo</a>
+			<b>rznrevdc</b>
+		</field>
+		<field>
+			<a>emisor</a>
+			<b>emsrdc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>copia</a>
+			<b>indcopiadc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>original</a>
+			<b>indorigsdc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>duplicado</a>
+			<b>indduplicdc</b>
+		</field>
+		<field>
+			<a>pais</a>
+			<b>codpaisag</b>
+		</field>
+		<field>
+			<a>frecuenciaUnidad</a>
+			<b>codumprdorevdc</b>
+		</field>
+		<field custom-converter-id="stringToCentroConverter" custom-converter-param="0166">
+			<a>oficina</a>
+			<b>codinternouo</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.numArGeo</a>
+			<b>numargeo</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codArGeo</a>
+			<b>codargeo</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.nombreLocalidad</a>
+			<b>nomblocalidadag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.nombreProvincia</a>
+			<b>nombprovinciaag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.nombrePais</a>
+			<b>nombpaisag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codigoPostal</a>
+			<b>codpostalag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codigoProvincia</a>
+			<b>codprovinciaag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codigoPais</a>
+			<b>codpaisag</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaCaducidad</a>
+			<b>fechacdcdaddc</b>
+		</field>
+		
+	</mapping>
+
+	<mapping map-id="documentoPersonaAltaDatosDevueltos" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.altadocumentospersona.ResponseBansefi.OTRPEALTADCTRNO.TRPEALTADCEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.DocumentoPersonaBean
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecharevdc</a>
+			<b>fechaProxima</b>
+		</field>
+		<field>
+			<a>dcdocp.idinternodc</a>
+			<b>id</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>pepersrldocp.fechainicrl</a>
+			<b>fechaEntrega</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="documentoPersonaModificacion" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.DocumentoPersonaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.modificadocumentopersona.Ejecutar.ITRMODIFDOCUMENTOTRNI.TRMODIFDOCUMENTOEVTY
+		</class-b>
+		<field>
+			<a>descripcion</a>
+			<b>txtdc</b>
+		</field>
+		<field>
+			<a>observaciones</a>
+			<b>txtub</b>
+		</field>
+		<field>
+			<a>frecuencia</a>
+			<b>prdorevdc</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaProxima</a>
+			<b>fecharevdc</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecha</a>
+			<b>fechaexpdc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>noEstandar</a>
+			<b>indfmtnostddc</b>
+		</field>
+		<field>
+			<a>soporte</a>
+			<b>codsoptedc</b>
+		</field>
+		<field>
+			<a>motivo</a>
+			<b>rznrevdc</b>
+		</field>
+		<field>
+			<a>emisor</a>
+			<b>emsrdc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>copia</a>
+			<b>indcopiadc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>original</a>
+			<b>indorigsdc</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>duplicado</a>
+			<b>indduplicdc</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.numArGeo</a>
+			<b>numargeo</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codArGeo</a>
+			<b>codargeo</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.nombreLocalidad</a>
+			<b>nomblocalidadag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.nombreProvincia</a>
+			<b>nombprovinciaag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.nombrePais</a>
+			<b>nombpaisag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codigoPostal</a>
+			<b>codpostalag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codigoProvincia</a>
+			<b>codprovinciaag</b>
+		</field>
+		<field>
+			<a>municipioCatGeo.codigoPais</a>
+			<b>codpaisag</b>
+		</field>
+		<field>
+			<a>frecuenciaUnidad</a>
+			<b>codumprdorevdc</b>
+		</field>
+		<field custom-converter-id="stringToCentroConverter" custom-converter-param="0166">
+			<a>oficina</a>
+			<b>codinternouo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechaCaducidad</a>
+			<b>fechacdcdaddc</b>
+		</field>
+	</mapping>
+
+	<mapping map-id="documentoPersonaModificacionDatosDevueltos" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.modificadocumentopersona.ResponseBansefi.OTRMODIFDOCUMENTOTRNO.TRMODIFDOCUMENTOEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.DocumentoPersonaBean
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fecharevdc</a>
+			<b>fechaProxima</b>
+		</field>
+	</mapping>
+
+</mappings>
+		
+		
+		

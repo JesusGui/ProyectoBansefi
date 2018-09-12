@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<h:body>
+	<div id="content">
+	<h:form id="errorForm">
+		<p:outputPanel deferred="false">
+        	<h3>Ha ocurrido un error inesperado en el sistema.</h3>
+        	<p>Póngase en contacto con el área de soporte:<br/>
+        	10-800-123456<br/><br/>
+        	<h:outputText value="Descripción: #{pfExceptionHandler==null?'Se ha producido un error no recuperable en la aplicación.':pfExceptionHandler.message}" />
+        	<br/>
+        	<h:outputText value="Fecha: #{pfExceptionHandler==null?errorGenericoController.formattedFechaError:pfExceptionHandler.formattedTimestamp}" /></p>
+    	</p:outputPanel>
+	
+		
+		<p:fieldset legend="Detalle técnico" toggleable="true" toggleSpeed="500" collapsed="true" rendered="#{pfExceptionHandler!=null}">
+            <h:panelGrid columns="1" cellpadding="10">
+            	<p:scrollPanel mode="native" >
+                	<h:outputText value="#{pfExceptionHandler.formattedStackTrace}" escape="false" />
+                </p:scrollPanel>
+            </h:panelGrid>
+		</p:fieldset>
+		<br/>
+		
+		<p:commandLink id="ligaAInicio" action="#{errorGenericoController.navegaInicio}" rendered="#{errorGenericoController.mostrarInicio == true}">
+			<h:outputText value="Volver al inicio." />
+		</p:commandLink>
+		
+		<p:commandLink id="ligaAHome" action="#{errorGenericoController.navegaInicio}" rendered="#{errorGenericoController.mostrarInicio == false}">
+			<h:outputText value="Volver a login." />
+		</p:commandLink>
+	</h:form>
+	</div>
+</h:body>
+</html>

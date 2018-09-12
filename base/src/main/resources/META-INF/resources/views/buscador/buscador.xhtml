@@ -1,0 +1,357 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<div class="container_48">
+			<div class="contenedor">
+				<div class="contenedor-form">
+
+					<!--título de la ventana-->
+					<div class="titulo centrar-objeto btn-inline-set">
+						<!--botón atras-->
+						<p:commandButton id="lnkVolver"
+							action="#{busquedaController.redirigirAInicio()}"
+							icon="ui-icon-arrow-1-w" />
+						<h1>Buscador</h1>
+					</div>
+
+					<div class="contenedor-campos">
+						<f:event
+							listener="#{busquedaController.actualizaVistaPreRender()}"
+							type="preRenderView" />
+						<p:outputLabel styleClass="margin-left-10"
+							value="Introduzca el término que desea buscar y el sistema le sugerirá coincidencias. Por ejemplo: Persona." />
+						<div class="margin-top-10"></div>
+						<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+							value="*Campos Obligatorios" />
+						<div class="margin-top-30"></div>
+
+						<div class="grid_12">
+							<h:form id="formularioTipo">
+								<h:outputLabel id="failedMessage"
+									value="Faltan valores requeridos"
+									rendered="#{facesContext.validationFailed}" />
+								<p:outputLabel value="¿Qué desea encontrar?" for="txt_tipo" />
+								<div class="clear-3"></div>
+								<p:autoComplete styleClass="autocomplete-buscador" id="txt_tipo"
+									widgetVar="txt_tipo"
+									value="#{busquedaController.seleccionTipo}"
+									disabled="#{busquedaController.confirmaSeleccion}"
+									completeMethod="#{busquedaController.autocompletarTipo}">
+									<p:ajax event="itemSelect"
+										listener="#{busquedaController.seleccionarTipo}"
+										update=":formularioBuscador:dynaFormGroupCampos,
+			                                    :formularioBuscador:dynaFormRadio,
+			                                    :formularioBuscador:dynaFormGroupTabla"></p:ajax>
+
+								</p:autoComplete>
+								<p:focus for="txt_tipo"/>
+							</h:form>
+						</div>
+
+
+						<h:form id="formularioBuscador">
+							<h:panelGroup layout="block"
+								styleClass="#{busquedaController.listaRadio.size() le '3' ? 'grid_16 slider-chico':'grid_26 slider-grande'}"
+								style="display:#{busquedaController.listaRadio.size()&gt;0 and busquedaController.listaRadio.size() != 1 ? 'block':'none'}"
+								id="dynaFormRadio">
+								<h:panelGroup layout="block" styleClass="label-vacio">
+									<div class="clear-3"></div>
+									<h:inputHidden id="txRadio"
+										value="#{busquedaController.opcion}"
+										rendered="#{busquedaController.listaRadio.size()>0}" />
+								</h:panelGroup>
+
+								<div class="fondo-slider">
+									<b:selectOneRadioSlider step="1" id="sliderOpcionesBusqueda"
+										rendered="#{busquedaController.listaRadio.size()>0}"
+										for="txRadio"
+										styleClass="estiloSlider-#{busquedaController.listaRadio.size()}">
+										<f:selectItems value="#{busquedaController.listaRadio}" />
+										<p:ajax event="slideEnd"
+											listener="#{busquedaController.actualizarCampos}"
+											update=":formularioBuscador:dynaFormGroupCampos">
+										</p:ajax>
+									</b:selectOneRadioSlider>
+								</div>
+							</h:panelGroup>
+
+							<div class="clear"></div>
+
+							<h:panelGroup layout="block" styleClass="form-buscador"
+								id="dynaFormGroupCampos">
+								<pe:dynaForm id="dynaFormCampos"
+									value="#{busquedaController.modelo}" var="data"
+									rendered="#{busquedaController.listaRadio.size() > 0}">
+
+									<pe:dynaFormControl type="filtroBusqueda" />
+									<pe:dynaFormControl styleClass="buscador-nombre" type="string"
+										for="txt">
+										<span class="ui-outputlabel-rfi">* </span>
+										<h:outputLabel value="#{data.tituloCampo}" for="txt" />
+										<span> :</span>
+										<h:panelGroup rendered="#{data.requerido}">
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<p:inputText id="txt" value="#{data.valor}"
+											required="#{data.requerido}" requiredMessage=""
+											maxlength="#{data.longitud}">
+											<pe:keyFilter regEx="#{data.validador}" preventPaste="false" />
+										</p:inputText>
+										<p:message for="txt" display="icon" />
+									</pe:dynaFormControl>
+
+									<pe:dynaFormControl type="list" for="sel"
+										styleClass="buscador-select">
+										<span class="ui-outputlabel-rfi">* </span>
+										<h:outputLabel value="#{data.tituloCampo}" for="sel" />
+										<h:panelGroup rendered="#{data.requerido}">
+											<span> :</span>
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="sel" value="#{data.valor}"
+											required="#{data.requerido}">
+											<f:selectItems value="#{data.selectItems}" var="entry"
+												itemValue="#{entry.tipo}" itemLabel="#{entry.descripcion}" />
+										</p:selectOneMenu>
+									</pe:dynaFormControl>
+
+									<pe:dynaFormControl styleClass="buscador-idinterna" type="int"
+										for="txtInt">
+										<p:message for="txtInt" display="icon" />
+										<span class="ui-outputlabel-rfi"> *</span>
+										<h:outputLabel value="#{data.tituloCampo}" for="txtInt" />
+										<h:panelGroup rendered="#{data.requerido}">
+											<span> :</span>
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<p:inputText id="txtInt" value="#{data.valor}"
+											required="#{data.requerido}" requiredMessage=""
+											maxlength="#{data.longitud}">
+											<pe:keyFilter regEx="#{data.validador}" preventPaste="false" />
+										</p:inputText>
+									</pe:dynaFormControl>
+
+									<pe:dynaFormControl styleClass="buscador-idinterna" type="long"
+										for="txtLong">
+										<p:message for="txtLong" display="icon" />
+										<span class="ui-outputlabel-rfi"> *</span>
+										<h:outputLabel value="#{data.tituloCampo}" for="txtLong" />
+										<h:panelGroup rendered="#{data.requerido}">
+											<span> :</span>
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<p:inputText id="txtLong" value="#{data.valor}"
+											required="#{data.requerido}" requiredMessage=""
+											maxlength="#{data.longitud}">
+											<pe:keyFilter regEx="#{data.validador}" preventPaste="false" />
+										</p:inputText>
+									</pe:dynaFormControl>
+
+									<pe:dynaFormControl styleClass="buscador-periodo-centro"
+										type="date" for="calDate">
+										<p:message for="calDate" display="icon"  />
+										<h:outputLabel
+											styleClass="#{data.tituloCampo == '.' ? 'label-transparente':''}"
+											value="#{data.tituloCampo}" for="calDate" />
+										<h:panelGroup
+											rendered="#{data.requerido and (data.tituloCampo != null and data.tituloCampo != '.')}">
+											<span class="ui-outputlabel-rfi"> *</span>
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<p:calendar id="calDate" locale="es" mask="true"
+											pattern="dd/MM/yyyy" placeholder="#{data.placeHolder}"
+											required="#{data.requerido}" requiredMessage=""
+											value="#{data.valor}" showOn="button" validatorMessage="error validador" label="#{data.tituloCampo}" />
+									</pe:dynaFormControl>
+
+									<pe:dynaFormControl styleClass="buscador-switch-centro"
+										type="boolean" for="booleanSwitcher">
+										<h:outputLabel for="booleanSwitcher"
+											value="#{data.tituloCampo}" />
+										<h:panelGroup rendered="#{data.requerido}">
+											<span class="ui-outputlabel-rfi"> *</span>
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<div class="label-switch">
+											<p:inputSwitch id="booleanSwitcher" onLabel="Sí"
+												offLabel="No" value="#{data.valor}">
+												<p:ajax event="change" />
+											</p:inputSwitch>
+										</div>
+									</pe:dynaFormControl>
+
+									<pe:dynaFormControl styleClass="buscador-centro"
+										type="autocompletarcentros" for="acCentro">
+										<h:outputLabel for="acCentro" value="#{data.tituloCampo}" />
+										<h:panelGroup rendered="#{data.requerido}">
+											<span class="ui-outputlabel-rfi"> *</span>
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<b:autoComplete id="acCentro" value="#{data.valor}"
+											maxlength="45" catalogSource="catalogoCentrosLoaderTask"
+											var="item" itemLabel="#{item.descripcionL}"
+											itemValue="#{item}" converter="catalogoConverter"
+											forceSelection="true" required="#{data.requerido}" />
+									</pe:dynaFormControl>
+
+									<pe:dynaFormControl styleClass="buscador-centro"
+										type="autocompletarcuentascontables" for="acCuentasOperativas">
+										<h:outputLabel for="acCentro" value="#{data.tituloCampo}" />
+										<h:panelGroup rendered="#{data.requerido}">
+											<span class="ui-outputlabel-rfi"> *</span>
+										</h:panelGroup>
+										<div class="clear-3"></div>
+										<p:autoComplete id="acCuentasOperativas"
+											required="#{data.requerido}" value="#{data.valor}"
+											maxResults="5" minQueryLength="0" forceSelection="true"
+											completeMethod="#{busquedaController.getCuentasContables}"
+											var="cuenta"
+											itemLabel="#{cuenta.idCuentaContable} #{cuenta.nombreCuentaContable}"
+											itemValue="#{cuenta}"
+											converter="#{cuentaContableBeanConverter}"
+											widgetVar="cuentasContables">
+											<p:ajax event="query" process="@this" partialSubmit="true" />
+										</p:autoComplete>
+									</pe:dynaFormControl>
+
+
+								</pe:dynaForm>
+								<div class="posicion-absoluta-btn-buscador">
+									<p:commandButton id="btnBuscar" widgetVar="btnBuscar"
+										value="Buscar" styleClass="btn-consultar" icon="fa fa-search"
+										update=":formularioBuscador:dynaFormGroupTabla,:formularioBuscador:dynaFormGroupCampos,formularioBuscador:dynaFormRadio"
+										action="#{busquedaController.buscar}" validateClient="true"
+										process=":formularioBuscador:dynaFormGroupTabla,:formularioBuscador:dynaFormGroupCampos"
+										disabled="#{busquedaController.seleccionTipo.equals('') or busquedaController.listaRadio.size() eq 0}"
+										oncomplete="ocultarColumnasBusqueda()" />
+								</div>
+							</h:panelGroup>
+
+
+
+							<h:panelGroup id="dynaFormGroupTabla" layout="block">
+								<pe:dynaForm styleClass="tabla-resultados margin-top-20"
+									id="dynaFormTabla" value="#{busquedaController.tabla}"
+									var="dato" widgetVar="dynaFormWidget">
+									<pe:dynaFormControl type="tablaPagina">
+										<p:outputLabel styleClass="titulo-form margin-left-10"
+											value="Resultados de búsqueda" />
+										<div class="clear-row"></div>
+										<h:panelGroup layout="block" styleClass="sinresultados"
+											rendered="#{busquedaController.datos.size() == 0 or busquedaController.datos == null}">
+											<div>
+												<p:outputLabel
+													value="No se han encontrado resultados con los siguientes filtros " />
+												<c:forEach var="filtro"
+													items="#{busquedaController.filtros}">
+													<h:panelGroup rendered="#{!filtro[0].equals('.')}">
+														<br />
+													</h:panelGroup>
+													<p:outputLabel
+														value="#{filtro[0].equals('.') ? '' : filtro[0]} 
+														#{!filtro[0].equals('.') ? ': ' : ' - '} " />
+													<p:outputLabel value="#{filtro[1]}" />
+												</c:forEach>
+											</div>
+										</h:panelGroup>
+										<p:dataTable
+											styleClass="#{busquedaController.tablaNotificaciones?'tabla-resultados-notificaciones':'tabla-buscador'}"
+											id="tabResultados" var="resultados"
+											value="#{busquedaController.datos}" paginator="false"
+											selectionMode="single" selection="#{filaSeleccionada}"
+											rowKey="#{busquedaController.obtenerKey(resultados)}"
+											rows="#{busquedaController.pagina * 10}"
+											rendered="#{busquedaController.datos.size() != null and busquedaController.datos.size() != 0}">
+											<p:ajax event="rowSelect"
+												listener="#{busquedaController.mostrarDetalle}"
+												process=":formularioBuscador:dynaFormGroupTabla,:formularioBuscador:dynaFormGroupCampos" />
+											<p:columns value="#{busquedaController.columnas}"
+												var="columna" columnIndexVar="colIndex">
+												<f:facet name="header">
+													<h:outputText value="#{columna.header}" />
+												</f:facet>
+												<h:outputText value="#{resultados[columna.propiedad]}" />
+											</p:columns>
+											<c:if test="#{busquedaController.tablaApuntesManuales}">
+												<f:facet name="header">
+													<p:commandButton id="toggler" type="button"
+														value="Columnas" icon="fa fa-table"
+														styleClass="float-right btn-sin-fondo" />
+													<p:columnToggler datasource="tabResultados"
+														trigger="toggler" />
+												</f:facet>
+											</c:if>
+										</p:dataTable>
+										<div class="centrar-objeto">
+											<p:commandButton value="Ver mas datos"
+												styleClass="btn-mostrar margin-top-10" icon="fa fa-refresh"
+												iconPos="right"
+												update=":formularioBuscador:dynaFormGroupTabla"
+												action="#{busquedaController.verMas()}"
+												validateClient="true"
+												rendered="#{((busquedaController.pagina * 10) lt busquedaController.datos.size()) ? true : busquedaController.masDatos}">
+											</p:commandButton>
+											<p:commandButton value="Aceptar" styleClass="margin-top-10"
+												action="#{busquedaController.irADestino(filaSeleccionada)}"
+												rendered="#{busquedaController.confirmaSeleccion and busquedaController.datos.size() != null and busquedaController.datos.size() != 0}" />
+										</div>
+									</pe:dynaFormControl>
+									<pe:dynaFormControl type="tablaIntermediaPagina">
+										<p:outputLabel styleClass="titulo-form margin-left-10"
+											value="Resultados de búsqueda" />
+										<div class="clear-row"></div>
+										<p:dataTable styleClass="tabla-buscador" id="tablaintermedia"
+											var="results" value="#{busquedaController.datos}"
+											rendered="#{busquedaController.pintarTablaResultadosIntermedios}"
+											selectionMode="single" selection="#{results}"
+											rowKey="#{busquedaController.obtenerKey(results)}"
+											rows="#{busquedaController.pagina * 10}">
+											<p:ajax event="rowSelect"
+												listener="#{busquedaController.buscarPasoDosIntermedio}"
+												process=":formularioBuscador:dynaFormGroupTabla,:formularioBuscador:dynaFormGroupCampos"
+												update=":formularioBuscador:dynaFormGroupTabla" />
+											<p:columns value="#{busquedaController.columnas}" var="col"
+												columnIndexVar="colIndexVar">
+												<f:facet name="header">
+													<h:outputText value="#{col.header}" />
+												</f:facet>
+												<h:outputText value="#{results[col.propiedad]}" />
+											</p:columns>
+										</p:dataTable>
+										<div class="centrar-objeto">
+											<p:commandButton value="Ver mas datos"
+												styleClass="btn-mostrar margin-top-10" icon="fa fa-refresh"
+												iconPos="right"
+												update=":formularioBuscador:dynaFormGroupTabla"
+												action="#{busquedaController.verMas()}"
+												validateClient="true"
+												rendered="#{((busquedaController.pagina * 10) lt busquedaController.datos.size()) ? true : busquedaController.masDatos}">
+											</p:commandButton>
+										</div>
+									</pe:dynaFormControl>
+								</pe:dynaForm>
+							</h:panelGroup>
+
+						</h:form>
+
+						<div class="clear margin-top-10"></div>
+
+					</div>
+					<!--termina contenedor-campos-->
+				</div>
+				<!--termina contenedor-form-->
+			</div>
+			<!--termina contenedor-->
+		</div>
+		<!--termina container 48-->
+	</ui:define>
+
+</ui:composition>

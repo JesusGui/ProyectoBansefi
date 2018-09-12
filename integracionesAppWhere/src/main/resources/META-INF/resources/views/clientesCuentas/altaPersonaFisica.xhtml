@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="../../templates/plantilla-inicio.xhtml">
+
+    <ui:define name="contenido">
+
+        <h:body>
+
+            <div class="container_48">
+
+                <div class="embed-responsive-my-16by9">
+
+                    <ui:include src="../composites/defaultIframe.xhtml" />
+                    <div hidden="hidden">
+                        <h:form id="formFichaCliente">
+                            <p:inputText id="idInterno" value="#{clientesCuentasController.idInterno}"/>
+                            <p:inputText id="tipoCliente" value="#{clientesCuentasController.tipoCliente}"/>
+                            <p:commandButton icon="ui-icon-arrow-1-w" id="irFichaButton" rendered="#{true}"
+                                             action="#{clientesCuentasController.irFichaCliente()}">
+                            </p:commandButton>
+                        </h:form>
+                    </div>
+                    <form id="formRenderFuncionalidad"
+                          action="#{clientesCuentasController.urlAltaPersonaFisica()}"
+                          class="hidden"
+                          method="post"
+                          target="framePrincipal">
+
+                        <input name="BSFOPERADOR"
+                               id="BSFOPERADOR"
+                               hidden=""
+                               value="#{commonController.generarBsfOperadorComun()}"/>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <script>
+                function irFichaCliente(idInterno) {
+                    $("#formFichaCliente\\:idInterno").val(idInterno);
+                    $("#formFichaCliente\\:tipoCliente").val('F');
+                    $("#formFichaCliente\\:irFichaButton").click();
+                }
+            </script>
+        </h:body>
+
+    </ui:define>
+
+</ui:composition>

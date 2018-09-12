@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="clientePersonaFisica" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.ClientePersonaFisicaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.consultapersonafisica.ResponseBansefi.OTRPECONSINDVTRNO.TRPECONSINDVEVTZ.PECONSINDVOBJTRDV
+		</class-b>
+		<field>
+		    <a>idInterna</a>
+		    <b>IDINTERNOPE</b>
+		</field>
+		<field>
+		    <a>direccionPrincipal</a>
+		    <b>NUMDIRPRAL</b>
+		</field>
+		<field>
+		 	<a>tratamiento</a>
+			<b>codtratmtopers</b>
+		</field>
+		<field>
+		    <a>nombre</a>
+		    <b>nombinnombpila</b>
+		</field>
+		<field>
+		    <a>apePaterno</a>
+		    <b>nombinape1IN</b>
+		</field>
+		<field>
+		    <a>apeMaterno</a>
+		    <b>nombinape2IN</b>
+		</field>
+		<field>
+		    <a>sexo</a>
+		    <b>sexoin</b>
+		</field>
+		<field>
+		    <a>tipoIdentificacion</a>
+		    <b>codidextpers</b>
+		</field>
+		<field>
+		    <a>numIdentificacion</a>
+		    <b>idextpe</b>
+		</field>
+		<field>
+		    <a>rfc</a>
+		    <b>idrfc</b>
+		</field>
+		<field>
+		    <a>curp</a>
+		    <b>idcurp</b>
+		</field>
+		<field>
+		    <a>estadoCivil</a>
+		    <b>codestcivilindv</b>
+		</field>
+		<field>
+		    <a>regimenEconomico</a>
+		    <b>codrgmnmatrimin</b>
+		</field>
+		<field>
+		    <a>paisNacionalidad</a>
+		    <b>codpaisnal</b>
+		</field>
+		<field>
+		    <a>paisResidencia</a>
+		    <b>codpaisres</b>
+		</field>
+		<field>
+		    <a>razonAlta</a>
+		    <b>codrznaltapers</b>
+		</field>
+		<!-- TODO: Todo lo relativo al domicilio (Segundo Tab)-->
+		<field>
+		    <a>idioma</a>
+		    <b>codidiompers</b>
+		</field>
+		<field>
+		    <a>numHijos</a>
+		    <b>numhijosin</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		    <a>fechaFallecimiento</a>
+		    <b>fechafallcrrepe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		    <a>relacionConsejero</a>
+		    <b>indconsjin</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		    <a>relacionAltaCargo</a>
+		    <b>indaltocargoin</b>
+		</field>
+		<field>
+		    <a>situacionEconomica</a>
+		    <b>codsiteconpers</b>
+		</field>
+		<field>
+		    <a>solvenciaMoral</a>
+		    <b>codcpcdadlglin</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		    <a>solvenciaMoralDesde</a>
+		    <b>fechainiccrt</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		    <a>solvenciaMoralHasta</a>
+		    <b>fechafincrt</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		    <a>correspondenciaOficina</a>
+		    <b>indcorreoofcna</b>
+		</field>		
+		<field>
+		    <a>numOficina</a>
+		    <b>codofcnacorr</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		    <a>noPublicidad</a>
+		    <b>indpublcdpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		    <a>noRetencion</a>
+		    <b>indnodocum</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		    <a>fechaNacimiento</a>
+		    <b>fecnctoconstpe</b>
+		</field>
+		<field>
+		    <a>estadoLaboral</a>
+		    <b>codestlabindv</b>
+		</field>
+		<field>
+		    <a>cno</a>
+		    <b>codcnoindv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+		    <a>autonomo</a>
+		    <b>indautnmoin</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		    <a>fechaAltaAutonomo</a>
+		    <b>fechaautnmoin</b>
+		</field>
+		<field>
+		    <a>cnae</a>
+		    <b>codcnaepers</b>
+		</field>
+		<field>
+			<a>oficinaalta</a>
+		 	<b>codofcnaalta</b>			
+		</field>		
+	</mapping>
+	<mapping map-id="clientePersonaMoral" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultapersonamoral.ResponseBansefi.OTRPECONSORGTRNO.TRPECONSORGEVTZ.PECONSORGOBJTRDV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.ClientePersonaMoralBean
+		</class-b>
+		<field>
+		 	<a>DENOMLEGALOR</a>
+			<b>nombre</b>
+		</field>
+		<field>
+		    <a>CODIDEXTPERS</a>
+		    <b>tipoIdentificacion</b>
+		</field>
+		<field>
+		    <a>IDEXTPE</a>
+		    <b>numIdentificacion</b>
+		</field>
+		<field>
+		    <a>IDRFC</a>
+		    <b>rfc</b>
+		</field>
+		<field>
+		    <a>IDINTERNOPE</a>
+		    <b>idInterna</b>
+		</field>
+		<field>
+		    <a>NUMDIRPRAL</a>
+		    <b>direccionPrincipal</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>FECNCTOCONSTPE</a>
+			<b>fechaNacimiento</b>
+		</field>
+	</mapping>	
+	<mapping map-id="clienteGrupo" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultagrupo.ResponseBansefi.OTRGRCONSTRNO.TRGRCONSEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.ClienteGrupoBean
+		</class-b>
+		<field>
+		 	<a>NOMBGR</a>
+			<b>nombre</b>
+		</field>
+		<field>
+		    <a>IDEXTGR</a>
+		    <b>numIdentificacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>FECHAALTAGR</a>
+			<b>fechaNacimiento</b>
+		</field>
+		<field>
+			<a>codgrp</a>
+			<b>tipoGrupo</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="documento" wildcard="false" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultadocumentos.ResponseBansefi.OTRDCLSCNSTRNO.TRDCLSCNSEVTZ.TRDCLSCNSEVTV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.DocumentoBean
+		</class-b>
+		<field>
+			<a>CODDOC</a>
+			<b>tipoDocumento</b>
+		</field>
+		<field>
+			<a>txtdc</a>
+			<b>descripcion</b>
+		</field>
+	</mapping>	
+	
+	<mapping map-id="anotacionPersonaFisica" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultapersonafisica.ResponseBansefi.OTRPECONSINDVTRNO.STDANAVMSJV.STDANAVMSJLS</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.AnotacionBean</class-b>
+		<field>
+			<a>numeroantcn</a>
+			<b>numero</b>
+		</field>
+		<field>
+			<a>codantcn</a>
+			<b>tipo</b>
+		</field>
+		<field>
+			<a>indprdad</a>
+			<b>prioridad</b>
+		</field>
+		<field>
+			<a>subcdantcn</a>
+			<b>subcodigo</b>
+		</field>
+	</mapping>
+</mappings>

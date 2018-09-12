@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:form id="frmCambioContrasena2" styleClass="form-cambio">
+
+			<p:messages id="messages" closable="false" showDetail="true"
+				showSummary="true"
+				rendered="#{loginController.vistaMostrar != null}" />
+
+			<div>
+				<span class="input-group-addon"><i class="fa fa-user"></i></span>
+				<p:inputText id="txtUsuario" widgetVar="txtUsuario" label="Usuario"
+					disabled="true" value="#{contextoUtils.getId()}" />
+			</div>
+
+			<div class="margin-top-20"></div>
+
+			<div>
+				<span class="input-group-addon" id=""><i class="fa fa-lock"></i></span>
+				<p:password id="txtContrasenaAnterior"
+					widgetVar="txtContrasenaAnterior" styleClass="inputs-login"
+					label="Contraseña Anterior"
+					value="#{loginController.contrasenaAnterior}" maxlength="8">
+					<p:watermark for="txtContrasenaAnterior"
+						value="Contraseña Anterior" />
+				</p:password>
+			</div>
+
+			<div class="margin-top-20"></div>
+
+			<div>
+				<span class="input-group-addon" id=""><i class="fa fa-lock"></i></span>
+				<p:password id="txtNuevaContrasena" widgetVar="txtNuevaContrasena"
+					styleClass="inputs-login" label="Nueva Contraseña"
+					value="#{loginController.nuevaContrasena}" maxlength="8">
+					<p:watermark for="txtNuevaContrasena" value="Nueva Contraseña" />
+				</p:password>
+			</div>
+
+			<div class="margin-top-20"></div>
+
+			<div>
+				<span class="input-group-addon" id=""><i class="fa fa-lock"></i></span>
+				<p:password id="txtConfirmarContrasena"
+					widgetVar="txtConfirmarContrasena" styleClass="inputs-login"
+					label="Confirmar Contraseña"
+					value="#{loginController.confirmarContrasena}" maxlength="8">
+					<p:watermark for="txtConfirmarContrasena"
+						value="Confirmar Contraseña" />
+				</p:password>
+			</div>
+
+			<div class="margin-top-30"></div>
+
+			<div class="btn-set">
+				<p:commandButton id="btnCancelar" widgetVar="btnCancelar"
+					styleClass="btn_secundario" value="Cancelar"
+					action="#{menuController.redirigirAInicio()}" />
+
+				<p:commandButton id="btnAceptar" widgetVar="btnAceptar"
+					styleClass="btn_principal_derecha float-right" value="Aceptar"
+					actionListener="#{loginController.guardarNuevaContrasenaInterna()}"
+					update="messages, :dlgNotificacion" />
+			</div>
+
+		</h:form>
+
+		<p:dialog id="dlgNotificacion" widgetVar="dlgNotificacion"
+			appendTo="@(body)" closable="false" dynamic="true" draggable="false"
+			modal="true" resizable="false" header="Contraseña Modificada"
+			visible="#{loginController.actualizoContrasena}">
+			<span class="ui-messages-exito-icon exito-dialog"></span>
+			<p:outputLabel styleClass="modal-mensaje"
+				value="Su contrasena ha sido actualizada correctamente." />
+			<div class="margin-bottom-20"></div>
+			<p:commandButton value="Aceptar"
+				styleClass="btn_principal_dialog_derecha"
+				onclick="PF('dlgNotificacion').hide();"
+				action="#{menuController.redirigirAInicio()}" />
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

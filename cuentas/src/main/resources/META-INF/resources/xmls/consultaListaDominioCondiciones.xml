@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoConsultaListaDominioCondiciones" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultalistadominiocondiciones.ResponseBansefi.OTRLISTADOMPKTRNO.TRLISTADOMPKEVTZ.PKDOMINIOV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.cuentas.beans.DominioCondicionBean
+    </class-b>
+    <field>
+      <a>CODDOMPARMCD</a>
+      <b>codDomParmCd</b>
+    </field>
+    <field>
+      <a>TXTDOMPARMCD</a>
+      <b>descDomParmCd</b>
+    </field>
+  </mapping>
+</mappings>

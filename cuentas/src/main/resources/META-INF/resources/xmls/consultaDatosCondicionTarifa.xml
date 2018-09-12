@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoDatosCondicionTarifa" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultadatoscondiciontarifa.ResponseBansefi.OTRKPCONSCONDICIONTRN.TRKPCONSCONDICIONEVT.KPCDPDE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.cuentas.beans.DatosCondicionTarifaBean
+    </class-b>
+    <field>
+      <a>IDPDS</a>
+      <b>idProductoSimple</b>
+    </field>
+    <field>
+      <a>IDPARMCD</a>
+      <b>idParmCd</b>
+    </field>
+    <field>
+      <a>IDCCPS</a>
+      <b>idCcps</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>CODESTRCTPARMCD</a>
+      <b>codEstrctCd</b>
+    </field>
+  </mapping>
+</mappings>

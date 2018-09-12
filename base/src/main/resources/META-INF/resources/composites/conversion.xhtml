@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui">
+	
+<div class="container_48">
+<div class="contenedor">
+		<p:dialog id="ConversionCuentaPopUp" header="Conversión de Cuenta"
+		widgetVar="dlg1" modal="false" styleClass="conversion-cuenta"
+		closable="true" showEffect="fade" hideEffect="fade" closeOnEscape="true" resizable="false">
+		<h:form id="formConversion">
+
+			<h:panelGroup layout="block" id="uno">
+					<p:messages id="messages" styleClass="msg-conversion"/>
+				<div class="clear"></div>
+
+					<div class="grid_13">
+						<p:outputLabel for="rbtCuentaActual"
+							value=" Tipo de cuenta inicial "></p:outputLabel>
+						<p:selectOneRadio id="rbtCuentaActual" required="true"
+							value="#{conversionCuentaController.conversionCuentaBean.seleccion}">
+							<f:selectItem itemLabel="Antigua" itemValue="antiguaRB" />
+							<f:selectItem itemLabel="Nueva" itemValue="nuebaRB" />
+						</p:selectOneRadio>
+					</div>
+					<div class="grid_12">
+						<p:outputLabel for="cuenta" value="Cuenta" />
+						<p:inputText id="cuenta" 
+							value="#{conversionCuentaController.conversionCuentaBean.cuenta}"
+							required="true" maxlength="20">
+							<div class="clear-3"></div>
+							<pe:keyFilter regEx="/^[a-zA-Z0-9]*$/" preventPaste="false"/>
+						</p:inputText>
+					</div>
+					<div class="grid_20">
+						<p:outputLabel for="centro" value="Centro" />
+						<div class="clear-3"></div>
+						<b:autoComplete id="centro"
+							value="#{conversionCuentaController.centroSelected}"
+							maxlength="4" catalogSource="catalogoCentrosLoaderTask"
+							var="item" itemLabel="#{item.descripcionL}" itemValue="#{item}"
+							converter="catalogoConverter" forceSelection="true"
+							required="#{param['disableValidation']==null}">
+							<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" preventPaste="false" />
+						</b:autoComplete>
+					</div>
+					<div class="grid_3">
+					<div class="label-vacio"></div>
+					<div class="clear-3"></div>
+						<p:commandButton 
+							id="btnConvertirCuenta"
+							value=""
+							icon="fa fa-retweet"
+							styleClass="btn-icono-conbackground btn-conversion"
+							actionListener="#{conversionCuentaController.Entro()}"
+							process="@this,rbtCuentaActual, cuenta, centro"
+							update="formConversion" ajax="true" />
+							<p:tooltip id="toolTipConvertir" for="btnConvertirCuenta" value="Convertir Cuenta" />
+					</div>
+					<div class="clear"></div>
+
+			</h:panelGroup>
+			<h:panelGroup layout="block" id="dos">
+					<div class="clear-3 margin-top-10"></div>
+				<div class="grid_27">
+					<p:outputLabel id="mensajeCuenta" value="#{conversionCuentaController.conversionCuentaBean.mensajeSalidaCentro}"/>
+					<div class="clear-3"></div>
+					<p:outputLabel id="rCuenta" styleClass="bold" value="#{conversionCuentaController.conversionCuentaBean.cuentaResult}" />
+				</div>
+				<div class="grid_21">
+					<p:outputLabel id="mensajeCentro" value="#{conversionCuentaController.conversionCuentaBean.mensajeSalidaCuenta}"/>
+					<div class="clear-3"></div>
+					<p:outputLabel id="rCentro" styleClass="bold" value="#{conversionCuentaController.conversionCuentaBean.centroResult}" />
+				</div>
+				<div class="clear"></div>
+		</h:panelGroup>
+
+		</h:form>
+		<p:ajax event="close"
+			listener="#{conversionCuentaController.inicializa}" global="false"
+			update="ConversionCuentaPopUp" />
+	</p:dialog>
+	</div>
+</div>
+	
+</ui:composition>

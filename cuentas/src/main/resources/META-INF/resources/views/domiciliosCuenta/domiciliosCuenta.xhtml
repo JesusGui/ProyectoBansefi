@@ -1,0 +1,549 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:outputScript name="/js/domicilios.js" />
+		<o:importConstants
+			type="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum" />
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formDomiciliosCuenta" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{domiciliosCuentaController.volverFicha()}"></p:commandButton>
+							
+							<div>
+								<h2> 
+									<h:outputFormat styleClass="gris-b" value="Gestionar domicilios de " />
+									<h:outputFormat styleClass="rojo-b" value="#{domiciliosCuentaController.cuentaBean.tipoCuenta} " />
+									<h:outputFormat styleClass="gris-b sub-h" value=" (#{domiciliosCuentaController.cuentaBean.numeroCuenta})" />							
+								</h2>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+
+							<p:commandButton
+								icon="#{domiciliosCuentaController.mostrarPanelAnadir? 'fa fa-angle-up':'fa fa-plus'}"
+								value="#{domiciliosCuentaController.mostrarPanelAnadir? 'Ocultar':'Añadir'}"
+								disabled="#{not domiciliosCuentaController.isCuentaActiva()}"
+								update="@form"
+								action="#{domiciliosCuentaController.visibilidadRelacionados()}"></p:commandButton>
+
+							<div class="clear-row margin-top-10"></div>
+
+							<h:panelGroup
+								rendered="#{domiciliosCuentaController.mostrarPanelAnadir}">
+								<h:panelGroup
+									rendered="#{domiciliosCuentaController.mostrarRelacionadosDomicilios}">
+									<div class="animated fadeIn">
+										<h3 class="azul-b">Personas asociadas a la cuenta</h3>
+										<div class="margin-top-10"></div>
+										<h:outputLabel>Seleccione la persona cuyo domicilio desea añadir a la
+										cuenta</h:outputLabel>
+									</div>
+									<div class="margin-top-10"></div>
+									<p:dataTable var="relacionado" styleClass="animated flipInX"
+										value="#{domiciliosCuentaController.cuentaBean.personasRelacionadas}"
+										selectionMode="single" selection="#{relacionado}"
+										rowKey="#{relacionado}">
+										<p:ajax event="rowSelect"
+											listener="#{domiciliosCuentaController.buscaDomicilios}"
+											update="@form" />
+										<p:column headerText="Tipo de relación:">
+											<h:outputText value="#{relacionado.tipo.nombre}" />
+										</p:column>
+										<p:column headerText="No.">
+											<h:outputText value="#{relacionado.numero}" />
+										</p:column>
+										<p:column headerText="Estado">
+											<h:outputText
+												value="#{(EstadoListadosEnum.CONSULTADO == relacionado.estadoListado)? 'Activo':'Desactivo'}" />
+										</p:column>
+										<p:column headerText="Nombre">
+											<h:outputText value="#{relacionado.persona.nombreCompleto}" />
+										</p:column>
+										<p:column headerText="Identificación">
+											<h:outputText
+												value="#{relacionado.persona.numIdentificacion}" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{!domiciliosCuentaController.mostrarRelacionadosDomicilios}">
+									<div class="animated fadeIn">
+										<h3 class="azul-b">Lista de domicilios</h3>
+										<div class="margin-top-10"></div>
+										<h:outputLabel>Seleccione la opción que desea añadir</h:outputLabel>
+									</div>
+									<div class="margin-top-10"></div>
+									<div class="centrar-objeto btn-inline-set animated flipInX">
+										<div class="grid_2">
+											<p:commandButton icon="fa fa-arrow-left" update="@form"
+												styleClass="btn-icono-conbackground" id="BtnAtras"
+												action="#{domiciliosCuentaController.setMostrarRelacionadosDomicilios(true)}"></p:commandButton>
+											<p:tooltip for="BtnAtras" value="Atrás" />
+										</div>
+										<div class="grid_44">
+											<p:dataTable var="domicilio"
+												value="#{domiciliosCuentaController.domiciliosRelacionado}"
+												selectionMode="single" selection="#{domicilio}"
+												rowKey="#{domicilio}">
+												<p:ajax event="rowSelect"
+													listener="#{domiciliosCuentaController.seleccionaDomicilio}" />
+												<p:column headerText="Tipo">
+													<h:outputText
+														value="#{domiciliosCuentaController.getTipo(domicilio.grouping)}" />
+												</p:column>
+												<p:column headerText="Nombre de la calle">
+													<h:outputText value="#{domicilio.nombreCalle}" />
+												</p:column>
+												<p:column headerText="Localidad">
+													<h:outputText
+														value="#{domicilio.codigoPostalCatGeo.nombreLocalidad}" />
+												</p:column>
+											</p:dataTable>
+										</div>
+										<div class="grid_2">
+											<p:commandButton
+												styleClass="btn-icono btn-anadir float-right"
+												icon="ui-icon-circle-plus" id="btnAnadir"
+												rendered="#{domiciliosCuentaController.mostrarPanelAnadir and !domiciliosCuentaController.mostrarRelacionadosDomicilios}"
+												action="#{domiciliosCuentaController.anadir()}"
+												update="@form" />
+											<p:tooltip for="btnAnadir" value="Añadir" />
+										</div>
+									</div>
+									<div class="clear-row"></div>
+								</h:panelGroup>
+							</h:panelGroup>
+
+							<c:forEach var="domicilio"
+								items="#{domiciliosCuentaController.domiciliosCuenta}"
+								varStatus="myVarIndex">
+								<p:focus context="panelDomicilio#{myVarIndex.index}" />
+								<p:panel id="panelDomicilio#{myVarIndex.index}"
+									styleClass="#{domicilio.estadoLista.styleClass}">
+									<h:panelGroup
+										rendered="#{domicilio.estadoLista == EstadoListadosEnum.CONSULTADO or domicilio.estadoLista == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton styleClass="btn-icono btn-panel margin-left-10"
+											icon="fa fa-rotate-left" alt="Deshacer" title="Deshacer"
+											actionListener="#{domiciliosCuentaController.accionRestaurar(domicilio)}"
+											rendered="#{domicilio.estadoLista == EstadoListadosEnum.ELIMINADO}"
+											update="formDomiciliosCuenta">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar margin-left-10"
+											icon="ui-icon-trash" alt="Eliminar domicilio"
+											title="Eliminar domicilio"
+											actionListener="#{domiciliosCuentaController.accionEliminar(domicilio)}"
+											rendered="#{domicilio.estadoLista == EstadoListadosEnum.CONSULTADO and !domicilio.inicial}"
+											update="formDomiciliosCuenta">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar domicilio"
+											title="Editar domicilio" rendered="#{!domicilio.inicial}">
+											<p:ajax event="click"
+												listener="#{domiciliosCuentaController.editarDomicilio(domicilio)}"
+												update="formDomiciliosCuenta"></p:ajax>
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+
+										<p:commandButton styleClass="btn-icono btn-panel margin-left-10"
+											icon="fa fa-eye" alt="Ver detalle" title="Ver detalle"
+											actionListener="#{domiciliosCuentaController.masDatos(domicilio)}"
+											rendered="#{domicilio.inicial}" update="formDomiciliosCuenta">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+
+										<div class="clear margin-top-5"></div>
+										<div class="grid_12">
+											<p:outputLabel value="Nombre Persona:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.nombreCliente}"></p:outputLabel>
+										</div>
+										<div class="grid_14">
+											<p:outputLabel value="Nombre de vía:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.domicilio}"></p:outputLabel>
+										</div>
+										<div class="grid_8">
+											<p:outputLabel value="Localidad:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.nombreLocalidad}"></p:outputLabel>
+										</div>
+										<div class="grid_6">
+											<p:outputLabel value="Fecha inicio:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.fechaInicio}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+										</div>
+										<div class="clear"></div>
+										<h:panelGroup rendered="#{domicilio.masDatos}" layout="block"
+											styleClass="marco-datospersonales orden-2-columnas grid_48">
+											<p:outputLabel value="Tipo de domicilio: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domiciliosCuentaController.getTipo(domicilio.tipoDomicilio)}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Régimen de ocupación: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.regimenOcupacion}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Código Postal: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.codigoPostal}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Localidad: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.nombreLocalidad}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Municipio o delegación: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.datosFinalesCatGeo.nombreProvincia}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Ciudad: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.datosFinalesCatGeo.nombreProvincia}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Ent. Federativa: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.estado}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="País: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.pais}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Teléfono: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.telefono}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Tipo de calle: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.tipoCalle}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Calle: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.nombreCalle}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Num exterior: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.numeroExterior}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Depto: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.departamento}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Casa: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.casa}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Colonia: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.colonia}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Num. Interior: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.interior}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Bloque: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.bloque}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Unidad Habitacional: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.unidadHabitacional}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Entrada: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.entrada}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Fase: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.fase}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Edificio: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.edificio}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Lote: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.lote}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Manzana: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.manzana}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Otros datos: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.otrosDatos}"></p:outputLabel>
+										</h:panelGroup>
+										<div class="clear"></div>
+									</h:panelGroup>
+
+									<h:panelGroup
+										rendered="#{domicilio.estadoLista == EstadoListadosEnum.MODIFICADO or domicilio.estadoLista == EstadoListadosEnum.NUEVO}">
+										<p:commandButton styleClass="btn-icono btn-panel margin-left-20"
+											icon="fa fa-rotate-left" alt="Deshacer edición"
+											title="Deshacer edición"
+											actionListener="#{domiciliosCuentaController.restaurarModificado(domicilio)}"
+											update="formDomiciliosCuenta"
+											rendered="#{domicilio.estadoLista == EstadoListadosEnum.MODIFICADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar margin-left-20"
+											icon="ui-icon-trash" alt="Eliminar domicilio"
+											title="Eliminar domicilio"
+											actionListener="#{domiciliosCuentaController.accionEliminar(domicilio)}"
+											update="formDomiciliosCuenta"
+											rendered="#{domicilio.estadoLista == EstadoListadosEnum.NUEVO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar domicilio"
+											title="Editar domicilio"
+											rendered="#{domicilio.estadoLista == EstadoListadosEnum.NUEVO}">
+											<p:ajax event="click"
+												listener="#{domiciliosCuentaController.editarDomicilioNuevo(domicilio)}"
+												update="formDomiciliosCuenta"></p:ajax>
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+
+										<div class="clear margin-top-5"></div>
+										
+										
+										<div class="grid_48">
+										<div class="grid_12">
+											<p:outputLabel value="Nombre Persona:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.nombreCliente}"></p:outputLabel>
+										</div>
+										<div class="grid_14">
+											<p:outputLabel value="Nombre de vía:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.domicilio}"></p:outputLabel>
+										</div>
+										<div class="grid_8">
+											<p:outputLabel value="Localidad:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.nombreLocalidad}"></p:outputLabel>
+										</div>
+										<div class="grid_6">
+											<p:outputLabel value="Fecha inicio:"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{domicilio.fechaInicio}">
+												<f:convertDateTime pattern="dd/MM/yyyy" />
+											</p:outputLabel>
+										</div>
+										<h:panelGroup rendered="#{domicilio.estadoLista == EstadoListadosEnum.MODIFICADO or domicilio.modificarCentro}">
+											<div class="grid_16">
+												<p:outputLabel value="No. de Centro:"></p:outputLabel>
+												<div class="clear-3"></div>
+												<b:autoComplete value="#{domicilio.catalogoCentro}"
+													maxlength="40" catalogSource="catalogoCentrosLoaderTask"
+													var="item" itemLabel="#{item.descripcionL}"
+													itemValue="#{item}" converter="catalogoConverter"
+													forceSelection="true">
+												</b:autoComplete>
+												<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/"
+													preventPaste="false" />
+											</div>
+										</h:panelGroup>
+										</div>
+										<div class="clear"></div>
+										<h:panelGroup rendered="#{domicilio.masDatos}" layout="block"
+											styleClass="marco-datospersonales orden-2-columnas grid_48 col-96 push_1 alpha">
+											<p:outputLabel value="Tipo de domicilio: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domiciliosCuentaController.getTipo(domicilio.tipoDomicilio)}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Régimen de ocupación: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.regimenOcupacion}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Código Postal: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.codigoPostal}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Localidad: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.nombreLocalidad}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Municipio o delegación: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.datosFinalesCatGeo.nombreProvincia}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Ciudad: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.datosFinalesCatGeo.nombreProvincia}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Ent. Federativa: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.estado}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="País: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.pais}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Teléfono: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.telefono}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Tipo de calle: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.tipoCalle}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Calle: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.nombreCalle}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Num exterior: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.numeroExterior}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Depto: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.departamento}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Casa: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.casa}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Colonia: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.colonia}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Num. Interior: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.interior}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Bloque: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.bloque}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Unidad Habitacional: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.unidadHabitacional}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Entrada: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.entrada}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Fase: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.fase}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Edificio: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.edificio}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Lote: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.lote}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Manzana: "></p:outputLabel>
+											<p:outputLabel styleClass="bold" value="#{domicilio.manzana}"></p:outputLabel>
+											<div class="clear"></div>
+											<p:outputLabel value="Otros datos: "></p:outputLabel>
+											<p:outputLabel styleClass="bold"
+												value="#{domicilio.otrosDatos}"></p:outputLabel>
+										</h:panelGroup>
+										<div class="clear"></div>
+									</h:panelGroup>
+
+								</p:panel>
+
+							</c:forEach>
+
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" onclick="PF('dlgCancelar').show();" />
+
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar"
+							rendered="#{!domiciliosCuentaController.mostrarPanelAnadir}"
+							action="#{domiciliosCuentaController.guardar()}"
+							disabled="#{not domiciliosCuentaController.isCuentaActiva()}"
+							update=":dialogSinDomicilios :dialogMuchosDomicilios :dlgGuardado :dlgEliminados" />
+					</h:form>
+				</div>
+
+				<!--plantilla de ventana de diálogo-->
+				<ui:include src="../../composites/listadosDialogo.xhtml">
+					<ui:param name="dialogoGuardado"
+						value="#{domiciliosCuentaController.dialogoGuardado}" />
+				</ui:include>
+
+				<ui:include src="../../composites/listadosDialogoEliminar.xhtml">
+					<ui:param name="managedBean" value="#{domiciliosCuentaController}" />
+					<ui:param name="aceptar" value="confirmaGuardado" />
+					<ui:param name="form" value="formDomiciliosCuenta" />
+					<ui:param name="mensajeEliminados"
+						value="#{domiciliosCuentaController.mensajeEliminados}" />
+				</ui:include>
+
+				<p:dialog widgetVar="dlgCancelar" id="dlgCancelar"
+					appendTo="@(body)" header="Cancelar Domicilios" modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="false" closable="false" resizable="false" dynamic="true">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! Si continua perderá todos los cambios" />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Desea continuar de todos modos?" />
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="VolverAlta"
+						action="#{domiciliosCuentaController.volverFicha()}"
+						value="Continuar" immediate="true" />
+					<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+						value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dialogSinDomicilios" id="dialogSinDomicilios"
+					appendTo="@(body)" dynamic="true" modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="#{domiciliosCuentaController.muestraDialogoSinDomicilios}"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje" value="¡Atención! Debe activar al menos un domicilio para una cuenta." />
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar" oncomplete="PF('dialogSinDomicilios').hide();" />
+				</p:dialog>
+				<p:dialog widgetVar="dialogMuchosDomicilios"
+					id="dialogMuchosDomicilios" appendTo="@(body)" dynamic="true"
+					modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="#{domiciliosCuentaController.muestraDialogoMuchosDomicilios}"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje" value="¡Atención! No puede activar más de dos domicilios en una cuenta." />
+					<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar" oncomplete="PF('dialogMuchosDomicilios').hide();" />
+				</p:dialog>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

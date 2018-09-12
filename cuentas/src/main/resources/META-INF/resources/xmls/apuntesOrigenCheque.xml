@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaApuntePorCheque" wildcard="false" 
+	  map-null="false" trim-strings="true" map-empty-string="false" >
+		<class-a>
+			mx.babel.bansefi.banksystem.cuentas.webservices.consultaapunteporcheque.ResponseBansefi.OTRCPCONSULTADETALLET.TRCPCONSULTADETALLEEV
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.base.beans.ApunteChequeBean
+		</class-b>
+		<field>
+			<a>nomb50</a>
+			<b>titular</b>
+		</field>
+		<field>
+			<a>acacp.numsecac</a>
+			<b>numeroCuenta</b>
+		</field>
+		<field>
+			<a>indchqpagconf</a>
+			<b>conformado</b>
+		</field>
+		<field>
+			<a>numchqpag</a>
+			<b>talonario</b>
+		</field>
+		<field>
+			<a>inddispos</a>
+			<b>disposicion</b>
+		</field>
+		<field>
+			<a>impchqpag</a>
+			<b>importeCheque</b>
+		</field>
+		<field>
+			<a>imppdtecp</a>
+			<b>importePendiente</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>tlcaducidadv.stdfecha</a>
+			<b>fechaCaducidad</b>
+		</field>
+		<field>
+			<a>cpacuerdocargov.numsecac</a>
+			<b>numeroCuentaCargo</b>
+		</field>
+		<field>
+			<a>psvcccv.codinternouo</a>
+			<b>centro</b>
+		</field>
+		<field>
+			<a>ecvactual</a>
+			<b>estado</b>
+		</field>
+		<field>
+			<a>indpagoparcial</a>
+			<b>situacionPago</b>
+		</field>
+		<field>
+			<a>codidcheq</a>
+			<b>codidcheq</b>
+		</field>
+		<field>
+			<a>codcjchqpg</a>
+			<b>codcjchqpg</b>
+		</field>
+	</mapping>
+</mappings>

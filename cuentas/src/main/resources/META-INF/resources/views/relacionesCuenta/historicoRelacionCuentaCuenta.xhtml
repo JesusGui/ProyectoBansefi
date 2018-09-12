@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="../../templates/plantilla-inicio.xhtml">
+<!--
+plantilla de wizard
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="relacionCuentaCuenta" styleClass="contenedor-form">
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+                            	action="#{historicoCuentaController.irAHome()}"></p:commandButton>
+                            <div>
+	                            <h2 class="gris-b">Histórico de relación </h2>
+	                            <h2 class="rojo-b">#{historicoCuentaController.getTipoRelacion()}</h2>
+	                            <h2 class="gris-b">(#{historicoCuentaController.relacionada.cuenta.numeroCuenta})</h2>
+                            </div>
+                        </div>
+                        <!--contenedor del wizard-->
+                        <div class="wiz-contenedor">
+                            <div class="contenedor-campos">
+                                <!--aqui se introducen todos los campos-->
+                               <p:outputLabel styleClass="#{historicoCuentaController.clienteBean.claseTipoPersona()}"
+									value="#{historicoCuentaController.clienteBean.nombreCompleto}" />
+									
+								<div class="margin-top-20"></div>
+								
+				            	<h:panelGroup rendered="#{historicoCuentaController.getTipoVista() == 2}">
+					            	<div class="grid_6 alpha"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Importe:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" 
+												value="#{historicoCuentaController.relacionada.garantia} MXN" />
+									</div>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{historicoCuentaController.getTipoVista() == 1}">
+					            	<div class="grid_6 alpha"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Porcentaje:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" 
+												value="#{historicoCuentaController.relacionada.abono != null ? 
+													historicoCuentaController.relacionada.abono : 
+													historicoCuentaController.relacionada.cargo} %" />
+									</div>
+								</h:panelGroup>
+								<div class="grid_8 alpha"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Número:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" 
+												value="#{historicoCuentaController.relacionada.numero}" />
+								</div>
+				            	<div class="grid_8"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Razón del cambio:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" 
+												value="#{historicoCuentaController.getRazonCambio()}" />
+								</div>
+								
+								<div class="clear-row"></div>
+								
+								<h3 class="azul-b">Histórico de estados</h3>
+											
+								<div class="clear-row"></div>
+								
+										<p:dataTable var="estado" value="#{historicoCuentaController.historicoRelacion}">
+											<p:column headerText="Estado">
+												<p:outputLabel value="#{historicoCuentaController.getEstado(estado)}"></p:outputLabel>
+										    </p:column>
+										    <p:column headerText="Fecha de inicio">
+										    	<p:outputLabel value="#{estado.fechaInicio}">
+										    		<f:convertDateTime pattern="dd/MM/yyyy" />
+										    	</p:outputLabel>
+										    </p:column>
+										    <p:column headerText="Fecha contable">
+										        <h:outputText value="#{estado.fechaContable}">
+										        	<f:convertDateTime pattern="dd/MM/yyyy" />
+										        </h:outputText>
+										    </p:column>
+										    <p:column headerText="Empleado">
+										    	<h:outputText value="#{estado.empleado}" />	
+										    </p:column>
+										    <p:column headerText="Autorizador">
+										    	<h:outputText value="#{estado.autorizador}" />	
+										    </p:column>
+										    <p:column headerText="Centro Op.">
+										    	<h:outputText value="#{estado.centro}" />	
+										    </p:column>
+										    <p:column headerText="Terminal">
+										    	<h:outputText value="#{estado.terminal}" />	
+										    </p:column>
+										    <p:column headerText="Fecha trans.">
+										    	<h:outputText value="#{estado.fechaTrasn}">
+										    		<f:convertDateTime pattern="dd/MM/yyyy" />
+										    	</h:outputText>	
+										    </p:column>
+										    <p:column headerText="Hora trans.">
+										    	<h:outputText value="#{estado.getHoraFormateada()}" />	
+										    </p:column>
+										    <p:column headerText="Cod. Trans.">
+										    	<h:outputText value="#{estado.codTrans}" />	
+										    </p:column>
+										    <p:column headerText="Centro Ac.">
+										    	<h:outputText value="#{estado.centroAc}" />	
+										    </p:column>
+										</p:dataTable>
+                   		</div>
+                      </div>
+                    </h:form>
+                </div>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<p:dialog widgetVar="dlgCancelarListado" id="dlgCancelarListado" appendTo="@(body)" dynamic="true" modal="true" showEffect="fade" hideEffect="fade"
+		visible="#{mostrarCancelar}" closable="false" resizable="false" draggable="false">
+		<!--icono de la modal -->
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<!--mensaje de la modal styleClass="modal-mensaje" -->
+		<p:outputLabel styleClass="modal-mensaje"
+			value="¡Atención! Si continua perderá todos los cambios." />
+		<!--mensaje de la modal styleClass="modal-mensaje" -->
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion" 
+			value="¿Desea continuar de todos modos?" />
+        <div class="margin-bottom-20"></div>
+		<!--botones de la modal primarios y secundarios -->
+		<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+			value="Cancelar" immediate="true"
+			oncomplete="PF('dlgCancelarListado').hide();">
+			<f:setPropertyActionListener target="#{mostrarCancelar}" value="false"/>	
+		</p:commandButton>
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			action="#{managedBean[aceptar]}"
+			value="Aceptar" oncomplete="PF('dlgCancelarListado').hide();"/>
+	</p:dialog>
+</ui:composition>

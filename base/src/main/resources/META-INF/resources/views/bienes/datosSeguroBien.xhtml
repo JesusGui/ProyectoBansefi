@@ -1,0 +1,145 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<p:fieldset legend="Datos seguro">
+	
+		<div class="margin-top-10"></div>
+	
+		<div class="grid_12">
+			<p:outputLabel value="Tipo seguro" />
+			<div class="clear-3"></div>
+			<p:inputText value="#{bien.datosSeguro.tipoSeguro}" maxlength="20"
+				onblur="this.value=this.value.toUpperCase()">
+				<pe:keyFilter preventPaste="true" />
+			</p:inputText>
+		</div>
+		<div class="grid_5">
+			<p:outputLabel value="Nº seguro" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.datosSeguro.numeroSeguro}" maxlength="2">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_9">
+			<p:outputLabel value="CIF" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.datosSeguro.cif}" maxlength="20"
+				onblur="value=value.toUpperCase()">
+				<pe:keyFilter regEx="/^[a-zA-ZñÑ0-9\- ]*$/" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_12">
+			<p:outputLabel value="Cía. aseguradora" />
+			<div class="clear-3"></div>
+			<p:inputMask value="#{bien.datosSeguro.ciaAseguradora}"
+				maxlength="20" onblur="value=value.toUpperCase()">
+				<pe:keyFilter regEx="/^[a-zA-ZñÑ0-9\- ]*$/" preventPaste="true"/>
+			</p:inputMask>
+		</div>
+		<div class="grid_10">
+			<p:outputLabel value="Nº póliza" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.datosSeguro.numeroPoliza}" maxlength="17"
+				onblur="value=value.toUpperCase()">
+				<pe:keyFilter regEx="/^[a-zA-ZñÑ0-9\- ]*$/" preventPaste="true"/>
+			</p:inputMask>
+		</div>
+
+		<div class="clear-row"></div>
+
+		<div class="grid_12">
+			<p:outputLabel value="Beneficiario" />
+			<div class="clear-3"></div>
+			<p:inputMask value="#{bien.datosSeguro.beneficiario}" maxlength="20"
+				onblur="value=value.toUpperCase()">
+				<pe:keyFilter regEx="/^[a-zA-ZñÑ0-9\- ]*$/" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_12">
+			<p:outputLabel value="Contingencia" />
+			<div class="clear-3"></div>
+			<p:inputMask value="#{bien.datosSeguro.contingencia}" maxlength="20"
+				onblur="value=value.toUpperCase()">
+				<pe:keyFilter regEx="/^[a-zA-ZñÑ0-9\- ]*$/" preventPaste="true"/>
+			</p:inputMask>
+		</div>
+		<div class="grid_10">
+			<p:outputLabel value="Prima anual" />
+			<div class="clear-3"></div>
+			<pe:inputNumber styleClass="pe-inputNumber" emptyValue="0" maxlength="16"
+				 decimalPlaces="2" decimalSeparator="." thousandSeparator="," maxValue="9999999999999.99"
+				minValue="0" value="#{bien.datosSeguro.primaAnual}" placeholder="Importe">
+			</pe:inputNumber>
+			<span class="pe-inputNumber-suffix">MXN</span>
+		</div>
+		<div class="grid_6">
+			<p:outputLabel value="% Cobertura" />
+			<div class="clear-3"></div>
+			<pe:inputNumber styleClass="text-align-right-input" emptyValue="0"
+				decimalPlaces="3" decimalSeparator="." thousandSeparator="," maxValue="100.000"
+				value="#{bien.datosSeguro.cobertura}">
+			</pe:inputNumber>
+		</div>
+		<div class="grid_8">
+			<p:message id="fechaValInicioCobertura#{myVarStatus.index}"
+				for="fechaInicioCobertura#{myVarStatus.index}" display="icon"></p:message>
+			<p:outputLabel id="fechaInicioCoberturaLabel#{myVarStatus.index}"
+				for="fechaInicioCobertura#{myVarStatus.index}" value="F. Ini. Cober." />
+			<div class="clear-3"></div>
+			<p:calendar id="fechaInicioCobertura#{myVarStatus.index}"
+				requiredMessage="" pattern="dd/MM/yyyy" showOn="button"
+				value="#{bien.datosSeguro.fechaInicioCobertura}" mask="true"
+				locale="es" maxdate="#{bienesController.currentDate}">
+				<f:attribute name="endDate"
+					value="#{bienesController.currentDate}" />
+				<f:validator validatorId="dateRangeValidator" />
+				<p:ajax event="change" process="fechaInicioCobertura#{myVarStatus.index}"
+					update="fechaInicioCobertura#{myVarStatus.index},fechaValInicioCobertura#{myVarStatus.index},fechaInicioCoberturaLabel#{myVarStatus.index}"
+					partialSubmit="true" />
+				<p:ajax event="dateSelect"
+					process="fechaInicioCobertura#{myVarStatus.index}"
+					update="fechaInicioCobertura#{myVarStatus.index},fechaValInicioCobertura#{myVarStatus.index},fechaInicioCoberturaLabel#{myVarStatus.index}"
+					partialSubmit="true" />
+			</p:calendar>
+		</div>
+		<div class="clear-row"></div>
+		<div class="grid_8">
+			<p:message id="fechaValFinCobertura#{myVarStatus.index}"
+				for="fechaFinCobertura#{myVarStatus.index}" display="icon"></p:message>
+			<p:outputLabel id="fechaFinCoberturaLabel#{myVarStatus.index}"
+				for="fechaFinCobertura#{myVarStatus.index}" value="F. Fin Cober." />
+			<div class="clear-3"></div>
+			<p:calendar id="fechaFinCobertura#{myVarStatus.index}"
+				requiredMessage="" pattern="dd/MM/yyyy" showOn="button"
+				value="#{bien.datosSeguro.fechaFinCobertura}" mask="true"
+				locale="es" mindate="#{contextoUtils.getFechaContableActual()}">
+				<f:attribute name="beginDate"
+					value="#{contextoUtils.getFechaContableActual()}" />
+				<f:validator validatorId="dateRangeValidator" />
+				<p:ajax event="change" process="fechaFinCobertura#{myVarStatus.index}"
+					update="fechaFinCobertura#{myVarStatus.index},fechaValFinCobertura#{myVarStatus.index},fechaFinCoberturaLabel#{myVarStatus.index}"
+					partialSubmit="true" />
+				<p:ajax event="dateSelect"
+					process="fechaFinCobertura#{myVarStatus.index}"
+					update="fechaFinCobertura#{myVarStatus.index},fechaValFinCobertura#{myVarStatus.index},fechaFinCoberturaLabel#{myVarStatus.index}"
+					partialSubmit="true" />
+			</p:calendar>
+		</div>
+		
+		<div class="grid_8">
+			<p:outputLabel value="F. antigüedad" />
+			<div class="clear-3"></div>
+			<p:calendar value="#{bien.datosSeguro.fechaAntiguedad}" showOn="button" 
+				pattern="dd/MM/yyyy" mask="true" locale="es">
+			</p:calendar>
+		</div>
+
+
+	</p:fieldset>
+
+
+</ui:composition>

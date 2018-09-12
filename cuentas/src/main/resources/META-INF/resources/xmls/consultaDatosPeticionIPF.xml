@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoDatosPeticionIpfTarifa" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.beans.DepositoIPFBean
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE
+    </class-b>
+    <field>
+      <a>nombre</a>
+      <b>NOMB50</b>
+    </field>
+    <field>
+      <a>descripcion</a>
+      <b>DESCRPDV</b>
+    </field>
+    <field>
+      <a>linea</a>
+      <b>CODLINEA</b>
+    </field>
+    <field>
+      <a>grupo</a>
+      <b>IDGRPPD</b>
+    </field>
+    <field>
+      <a>importe</a>
+      <b>IMPAPNTE</b>
+    </field>
+    <field>
+      <a>moneda</a>
+      <b>IPMONEDAV.CODNUMRCOMONEDA</b>
+    </field>
+    <field>
+      <a>numAcuerdo</a>
+      <b>PSVCCCV.NUMSECAC</b>
+    </field>
+  </mapping>
+  <mapping map-id="resultadoDatosIpfTarifa" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.beans.DepositoIPFBean
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE
+    </class-b>
+    <field>
+      <a>nombre</a>
+      <b>NOMB50</b>
+    </field>
+    <field>
+      <a>descripcion</a>
+      <b>DESCRPDV</b>
+    </field>
+    <field>
+      <a>linea</a>
+      <b>CODLINEA</b>
+    </field>
+    <field>
+      <a>grupo</a>
+      <b>IDGRPPD</b>
+    </field>
+    <field>
+      <a>importe</a>
+      <b>IMPAPNTE</b>
+    </field>
+    <field>
+      <a>moneda</a>
+      <b>IPMONEDAV.CODNUMRCOMONEDA</b>
+    </field>
+    <field>
+      <a>numAcuerdo</a>
+      <b>PSVCCCV.NUMSECAC</b>
+    </field>
+    <field>
+      <a>estado</a>
+      <b>CODECVIMPSCN</b>
+    </field>
+  </mapping>
+</mappings>

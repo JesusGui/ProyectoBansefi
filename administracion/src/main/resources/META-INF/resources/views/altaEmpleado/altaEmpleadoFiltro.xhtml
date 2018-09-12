@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		
+		<pe:tooltip global="true" position="left center" targetPosition="right center" />
+		
+		<h:body>
+		<div class="container_48">
+		<!-- Se agregó div contenedores -->
+		    <div class="contenedor">
+		    
+				<h:form id="formAltaEmpleadoFiltro" styleClass="contenedor-form">
+					<div class="titulo centrar-objeto btn-inline-set">
+						<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" action="#{altaEmpleadoController.cancelarAltaModificacion()}"></p:commandButton>
+						<h1>Alta de empleado</h1>
+					</div>
+					<div class="contenedor-campos">
+						<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" value="*Campos Obligatorios"></p:outputLabel>
+						
+						<div class="clear-row"></div>
+						
+						<h:outputText styleClass="txt-campos-oblg margin-bottom-10" value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+		
+						<h:inputHidden id="opAltaEmpleadoRadio" value="#{altaEmpleadoController.opcionAltaEmpleado}" />
+							
+						<div class="fondo-slider filtro-empleado margin-top-25 margin-left-10 grid_16">
+							<b:selectOneRadioSlider value="#{altaEmpleadoController.opcionAltaEmpleado}"
+								required="#{param['disableValidation']==null}" step="1" for="opAltaEmpleadoRadio">
+								<f:selectItem itemValue="0" itemLabel="A partir de un cliente" />
+								<f:selectItem itemValue="1" itemLabel="Persona Nueva" />
+								<p:ajax global="false" event="slideEnd" update="empleadoCliente :formAltaEmpleadoFiltro:empleadoCliente"
+									listener="#{altaEmpleadoController.actualizarOpcion}">
+								</p:ajax>
+							</b:selectOneRadioSlider>
+                        </div>
+						    
+						
+						<div class="clear-row"></div>
+						
+						<h:panelGroup styleClass="margin-left-10" id="empleadoCliente">
+						
+							<p:outputLabel styleClass="txt-instruccion" rendered="#{altaEmpleadoController.opcionAltaEmpleado == 0}" value="Si el empleado ya es cliente de la entidad introduzca la Id. Interna para localizarle."/>
+							
+                            <div class="clear-row"></div>
+                            	
+                            
+                            <div class="grid_8">
+                            
+							<p:outputLabel rendered="#{altaEmpleadoController.opcionAltaEmpleado == 0}" for="idinterna" value="Id. Interna"></p:outputLabel>	
+                            </div>
+                            
+                            <div class="clear-3"></div>
+                            
+                            <div class="grid_6">
+												
+								<p:inputMask id="idinterna" rendered="#{altaEmpleadoController.opcionAltaEmpleado == 0}"
+									value="#{altaEmpleadoController.idInternaBusqueda}" maxlength="8"
+									onblur="value=value.toUpperCase()">
+									<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="false"/>
+									<p:ajax global="false" event="blur" listener="#{altaEmpleadoController.buscarPorIdInterna()}" update="clienteBuscado"></p:ajax>
+								</p:inputMask>
+								
+                            </div>
+                            
+								<!--  Este boton es la lupa de busqueda enlazada a clientes -->
+				            <div class="grid_3">
+				            
+								<p:commandButton styleClass="btn-icono-conbackground" title="Buscar" icon="fa fa-search" rendered="#{altaEmpleadoController.opcionAltaEmpleado == 0}"
+									action="#{altaEmpleadoController.buscarClientes()}"
+									ajax="true" update="formAltaEmpleadoFiltro">
+									<f:param name="disableValidation" value="true" />
+								</p:commandButton>
+								
+				            </div>
+				            
+				            <div class="grid_24">
+				                
+								<h:outputLabel styleClass="label-valor input-label-valor" id="clienteBuscado" value="#{altaEmpleadoController.nombreClienteEncontrado}" rendered="#{altaEmpleadoController.opcionAltaEmpleado == 0}"
+									style="display:#{(altaEmpleadoController.mostrarCliente) ? 'flex' : 'none' }"/>
+                               
+                            </div>
+							
+                               		 				 
+						</h:panelGroup>
+						
+						<div class="clear-row"></div>
+						
+						
+						<div class="grid_6">
+							<p:message id="numEmpleadoVal" for="numEmpleado" display="icon"></p:message>
+							<p:outputLabel for="numEmpleado" value="Nº Empleado"/>
+							<div class="clear-3"></div>							
+							<p:autoComplete id="numEmpleado" value="#{altaEmpleadoController.empleado.numEmpleado}"
+								maxlength="8" completeMethod="#{catalogoListaEmpleadosLoaderTask.getEmpleados}"
+								itemLabel="#{item}" itemValue="#{item}"	onblur="value=value.toUpperCase()" 							
+								required="#{param['disableValidation']==null}">	
+								<f:validateLength minimum="8" maximum="8" />
+								<p:ajax event="query" global="false"></p:ajax>					       	
+							</p:autoComplete>
+							<pe:keyFilter regEx="/^[a-zA-Z0-9]*$/" preventPaste="false"/>
+						</div>
+						<div class="grid_16">	
+							<p:outputLabel for="centroPertenencia" value="Centro de pertenencia"/>
+							<div class="clear-3"></div>
+							<b:autoComplete id="centroPertenencia"
+								value="#{altaEmpleadoController.centroSelected}" 
+								maxlength="40" catalogSource="catalogoCentrosLoaderTask" var="item"
+								itemLabel="#{item.descripcionL}" itemValue="#{item}"
+								converter="catalogoConverter" forceSelection="true"
+								required="#{param['disableValidation']==null}">
+								<p:ajax event="query" global="false"></p:ajax>								
+							</b:autoComplete>
+							<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" preventPaste="false"/>
+						</div>
+						<div class="grid_13">	
+							<p:outputLabel for="cargo" value="Cargo"/>
+							<div class="clear-3"></div>
+							<p:selectOneMenu id="cargo"
+								value="#{altaEmpleadoController.empleado.cargo}"
+								required="#{param['disableValidation']==null}">
+								<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+								<f:selectItems value="#{catalogoUtils.getCatalogo('TP_CARGO_EMPL')}" var="item"
+		        							itemValue="#{item.claveFila}" itemLabel="#{item.descripcionL}" />
+							</p:selectOneMenu>
+						</div>	
+						<div class="grid_13">
+							<p:outputLabel for="perfil" value="Perfil"></p:outputLabel>
+							<div class="clear-3"></div>
+							<p:selectOneMenu id="perfil"
+								value="#{altaEmpleadoController.empleado.perfil}"
+								required="#{param['disableValidation']==null}">
+								<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+								<f:selectItems value="#{catalogoUtils.getCatalogo('PERFILES_NSS')}" var="item"
+		        							itemValue="#{item.claveFila}" itemLabel="#{item.descripcionL}" />		
+							</p:selectOneMenu>
+						</div>
+						
+						<div class="clear-row"></div>
+						
+						<div class="grid_13">
+							<p:outputLabel for="perfilTCB" value="Perfil TCB"></p:outputLabel>
+							<div class="clear-3"></div>
+							<p:autoComplete id="perfilTCB" value="#{altaEmpleadoController.empleado.perfilTCB}" 
+								completeMethod="#{catalogoPerfilesTCBLoaderTask.getPerfiles}"
+								itemLabel="#{item}" itemValue="#{item}"	onblur="value=value.toUpperCase()"							
+								required="#{param['disableValidation']==null}" forceSelection="true">
+								<p:ajax event="query" global="false"></p:ajax>							       	
+							</p:autoComplete>
+							<pe:keyFilter regEx="/^[a-zA-Z0-9]*$/" preventPaste="false"/>
+						</div>
+						
+						<div class="clear"></div>
+						
+					</div>
+					
+					<div class="margin-top-10"></div>	
+					<!--  Botones de siguiente y Cancelar -->
+					<p:commandButton styleClass="btn_secundario margin-right-10" id="Cancelar" immediate="true" value="Cancelar"
+					                 action="#{altaEmpleadoController.cancelarAltaModificacion()}" />
+										
+					<p:commandButton value="Siguiente"
+						styleClass="btn_principal_dialog_derecha"
+						action="#{altaEmpleadoController.irAPaso1DesdeFiltro()}"
+						ajax="true" update="formAltaEmpleadoFiltro" />
+					
+				</h:form>
+				
+				<p:dialog widgetVar="dlgEmpleadoExistente" id="dlgEmpleadoExistente" 
+					showEffect="fade" hideEffect="fade" header="Alta empleado" modal="true" appendTo="@(body)"
+					closable="false" resizable="false" dynamic="true">
+					<span class="ui-messages-info-icon info-dialog"></span>
+					<p:outputLabel value="Debe seleccionar un Nº Empleado que no exista en su entidad." 
+						styleClass="modal-mensaje"/>
+					<div class="clear"/>
+					<p:commandButton value="Aceptar" onclick="PF('dlgEmpleadoExistente').hide();" immediate="true"
+						styleClass="btn_principal_dialog_derecha"/>
+					
+				</p:dialog>
+				
+			</div>
+		</div>			
+	</h:body>
+	</ui:define>
+
+</ui:composition>

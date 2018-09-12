@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaCuentaInstrumental">
+		<class-a>mx.babel.bansefi.banksystem.administracion.webservices.consultaacuerdosinst.ResponseBansefi.OTRCONSACINSTOFICTRN.TRCONSACINSTOFICEVT.UOACINSTLAV.UOACINSTLGV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.beans.centro.AcuerdoInstrumentalBean
+		</class-b>
+		<field>
+			<a>codlinea</a>
+			<b>linea</b>
+		</field>
+		<field>
+			<a>idgrppd</a>
+			<b>grupo</b>
+		</field>
+		<field>
+			<a>numsecac</a>
+			<b>cuenta</b>
+		</field>
+	</mapping>
+	<mapping map-id="altaCuentaInstrumental">
+		<class-a>mx.babel.bansefi.banksystem.administracion.beans.centro.AcuerdoInstrumentalBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.webservices.altaacuerdosinst.Ejecutar.ITRALTAACINSTOFICTRN.TRALTAACINSTOFICEVTY.UOACINSTALTAV
+		</class-b>
+		<field>
+			<a>linea</a>
+			<b>codlinea</b>
+		</field>
+		<field>
+			<a>grupo</a>
+			<b>idgrppd</b>
+		</field>
+		<field>
+			<a>codigoCentro</a>
+			<b>codinternouo</b>
+		</field>
+		<field>
+			<a>idApoderado</a>
+			<b>idinternope1</b>
+		</field>
+		<field>
+			<a>idInternoCentro</a>
+			<b>idinternope2</b>
+		</field>
+	</mapping>
+</mappings>

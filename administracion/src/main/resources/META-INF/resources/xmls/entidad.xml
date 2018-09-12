@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+       <mapping map-id="entidad" wildcard="false" map-null="false" trim-strings="true">  
+       	<class-a>mx.babel.bansefi.banksystem.administracion.webservices.detalleentidad.ResponseBansefi.OTRCONENTIDADTRNO.TRCONENTIDADEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.beans.EntidadBean
+		</class-b>
+       	<field>
+		 	<a>idinternope</a>
+			<b>id</b>
+		</field>
+		<field>
+		 	<a>codnrbeen</a>
+			<b>codigo</b>
+		</field>
+		<field>
+		 	<a>stdnrbeen.nombenten</a>
+			<b>nombre</b>
+		</field>
+		<field>
+		 	<a>nombcortoen</a>
+			<b>nombreCorto</b>
+		</field>
+		<field>
+		 	<a>idoficialen</a>
+			<b>idOficial</b>
+		</field>
+		<field>
+		 	<a>nombrespnsblen</a>
+			<b>responsable</b>
+		</field>
+		<field>
+		 	<a>nombcoordrsien</a>
+			<b>coordinador</b>
+		</field>
+		<field>
+		 	<a>codambtoorg</a>
+			<b>ambito</b>
+		</field>
+		<field>
+		 	<a>codnrbeenpres</a>
+			<b>representado</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fechaaltasisten</a>
+			<b>fechaAlta</b>
+		</field>
+		<field>
+		 	<a>numdirpralv.numdirpral</a>
+			<b>codDomicilio</b>
+		</field>
+	</mapping>
+	
+	 <mapping map-id="modificaEntidad" wildcard="false" map-null="false" trim-strings="true">  
+	 	<class-a>mx.babel.bansefi.banksystem.administracion.beans.EntidadBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.administracion.webservices.modificacionentidad.Ejecutar.ITRMODIENTIDADTRNI.TRMODIENTIDADEVTY
+		</class-b>
+		<field>
+			<a>id</a>
+			<b>pepersp.idinternope</b>
+		</field>
+		<field>
+		 	<a>codigo</a>
+			<b>pepersp.codnrbeen</b>
+		</field>
+	</mapping>
+	
+</mappings>

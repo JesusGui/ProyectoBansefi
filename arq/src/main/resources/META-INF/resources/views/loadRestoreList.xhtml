@@ -1,0 +1,42 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+	<div id="storage" style="display: none;">
+	  	<h:outputScript name="js/storage.js"/>
+	  	<h:outputScript name="js/jquery-ui.min.js"/>
+		<!-- Logica para restaurar la sesion -->
+	    <!-- Para la recuperacion del contexto invocar funcion restoreData-->     	
+	      <p:commandButton id="loadRestoreListHidden" value="Datos de Nacimiento y Ocupación"
+			ajax="true"
+			update="#{idToRestore}"
+			process="plainListHidden"/>
+	      <h:inputHidden value="#{tareaController.tareas}" id="plainListHidden" />
+	      <script>
+	        //<![CDATA[
+	        $(function () {					
+				var formId = $("#storage").closest("form").attr("id");
+				var listado = storage.listSavedData();	
+				document.getElementById(formId+":plainListHidden").value = listado;
+			    document.getElementById(formId+":loadRestoreListHidden").click();
+				document.getElementById(formId+":plainListHidden").value = "";				
+			});
+			
+	    	function loadDataToRestore(key) {
+				var formId = $("#storage").closest("form").attr("id");
+				var dataToRestore = storage.recoverData(key);
+				document.getElementById(formId+":hiddenData").value = dataToRestore;
+			    document.getElementById(formId+":executeTransitionHidden").click();
+				return false;
+	    	};
+		    //]]>
+		  </script>
+		  <h:inputHidden value="#{tareaController.dataToRestore}" id="hiddenData" />
+		  <h:commandButton id="executeTransitionHidden" value="execute submit" 
+		       action="#{tareaController.restoreExecutingFlow}"></h:commandButton>
+      
+		<!-- Fin de logica para restaurar la sesion -->
+	</div>
+</ui:composition>

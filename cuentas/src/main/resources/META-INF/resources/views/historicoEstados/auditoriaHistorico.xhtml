@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+	<ui:debug hotkey="x"/>
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form styleClass="contenedor-form">
+						<!--título d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--botón atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" action="#{auditoriaHistoricoController.regresar}"></p:commandButton>
+							<div>
+							<h2>
+								<h:outputFormat styleClass="gris-b" value="Auditoría de " />
+								<h:outputFormat styleClass ="rojo-b" value="#{auditoriaHistoricoController.cuentaBean.tipoCuenta} " />
+								<h:outputFormat styleClass="gris-b sub-h" value=" (#{auditoriaHistoricoController.cuentaBean.numeroCuenta})"></h:outputFormat>
+							</h2>
+	                        </div>
+						</div>
+						<div class="contenedor-campos">
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+						    	<p:commandButton id="btnImprimir" styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" value="Imprimir" onclick="printContenedorCamposId('printArea');" />
+						
+						<div class="margin-top-30"></div>    	
+							
+						<div id="printArea">
+							<div class="impresion historico">
+								<h3 class="mostrar-en-impresion">
+		                        <h:outputFormat styleClass="rojo-b" value="#{auditoriaHistoricoController.cuentaBean.tipoCuenta} "></h:outputFormat>
+		                        <h:outputFormat styleClass="gris-b" value="(#{auditoriaHistoricoController.cuentaBean.numeroCuenta})"></h:outputFormat>
+	                        </h3>
+								<div class="margin-top-10"></div>
+								<p:outputLabel styleClass="azul-b"
+									value="A continuación se muestran los estados por los que ha pasado la cuenta."
+									rendered="#{not empty auditoriaHistoricoController.lstHistorico}"></p:outputLabel>
+								<div class="margin-top-10"></div>
+								<p:outputLabel styleClass="sinresultados sin-margen"
+									value="Aún no hay registros históricos para auditoría."
+									rendered="#{empty auditoriaHistoricoController.lstHistorico}"></p:outputLabel>
+								<div class="margin-top-10"></div>
+								<p:accordionPanel value="#{auditoriaHistoricoController.lstHistorico}" activeIndex="0" var="histBean" styleClass="accordion-imprimir-panel"
+												rendered="#{not empty auditoriaHistoricoController.lstHistorico}">
+									<p:tab title=" ">
+										<f:facet name="title">
+											#{histBean.fechaOperacionStr} - 
+											#{histBean.horaOperacion}hrs
+									        <div class="codigo-estado codigo-estado-#{histBean.codigoEstadoAcuerdoStr} sub-h">#{histBean.codigoEstadoAcuerdoStr}</div>
+									    </f:facet>
+										<div class="grid_27">
+											<h:outputLabel value="Transacción: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput"
+											value="#{histBean.transaccion} - #{histBean.transaccionDesc}" />
+										</div>
+										<div class="grid_5">
+											<h:outputLabel value="Terminal: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{histBean.terminal}" />
+										</div>
+										<div class="grid_16">
+											<h:outputLabel value="Entidad: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput"
+											value="#{histBean.entidad} - #{histBean.entidadDesc}" />
+										</div>
+										
+										<div class="clear-row"></div>
+										
+										<div class="grid_16">
+											<h:outputLabel value="Empl. Org.: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput"
+											value="#{histBean.empleadoOrigen} - #{histBean.empleadoOrigenDesc}" />
+										</div>
+										
+										
+										<div class="grid_16">
+											<h:outputLabel value="Centro op.: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{histBean.centroOperativoDesc}" />
+										</div>
+										<div class="grid_16">
+											<h:outputLabel value="Empl. Aut.: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput"
+											value="#{histBean.empleadoAutorizado} - #{histBean.empleadoAutorizadoDesc}" />
+										</div>
+										
+										<div class="clear-row"></div>
+										
+										<div class="grid_16">
+											<h:outputLabel value="Centro ac.: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{histBean.centroAcDesc}" />
+										</div>
+										<div class="grid_8">
+											<h:outputLabel value="F. Contable: " />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{histBean.fechaContableStr}" />
+										</div>
+										<div class="clear"></div>
+									</p:tab>
+								</p:accordionPanel>	
+							</div>
+						</div><!-- termina print area -->
+							 
+						</div>
+						<!--Botones  -->
+					</h:form>
+				</div>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

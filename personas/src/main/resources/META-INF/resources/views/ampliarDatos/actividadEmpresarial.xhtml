@@ -1,0 +1,848 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--plantilla de ventana tipo-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<o:importConstants
+			type="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum" />
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="datosGenerales" styleClass="contenedor-form">
+						<!--Título de la ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--botón atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" title="Regresar"
+								action="#{actividadEmpresarialController.validarAccionCancelar()}">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+							<div>
+								<h2>
+									<h:outputFormat styleClass="gris-b"
+										value="Datos de Actividad Empresarial de "></h:outputFormat>
+									<h:outputFormat styleClass="azul-b"
+										value="#{actividadEmpresarialController.nombre}"></h:outputFormat>
+								</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="*Datos Obligatorios"></p:outputLabel>
+
+							<div class="margin-top-10"></div>
+							<h3 class="azul-b">Datos generales</h3>
+							<!-- Eliminar -->
+							<!-- Fin Eliminar -->
+							<div class="margin-top-10"></div>
+							<div class="marco-componente">
+								<div class="row-flex">
+									<div class="grid_8">
+										<p:outputLabel for="tipoEmpresa" value="Tipo de Empresa" />
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="tipoEmpresa"
+											value="#{actividadEmpresarialController.actividadEmpresarial.tipoEmpresa}">
+											<f:selectItem itemLabel="Selecciona una opción" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItem itemLabel="PEQUEÑA" itemValue="P" />
+											<f:selectItem itemLabel="MEDIANA" itemValue="M" />
+											<f:selectItem itemLabel="GRANDE" itemValue="G" />
+										</p:selectOneMenu>
+									</div>
+									<div class="grid_20">
+										<p:outputLabel for="sectorEconomico" value="Sector económico" />
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="sectorEconomico"
+											value="#{actividadEmpresarialController.actividadEmpresarial.sectorEconomico}">
+											<f:selectItem itemLabel="Selecciona una opción" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItems
+												value="#{catalogoUtils.getCatalogo('TP_SEC_CNAE_PERS')}"
+												var="item" itemValue="#{item.claveFila}"
+												itemLabel="#{item.descripcionL}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="grid_5">
+										<p:outputLabel value="N° de Empleados" for="numEmpleados"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="numEmpleados"
+											value="#{actividadEmpresarialController.actividadEmpresarial.numEmpleados}"
+											maxlength="6">
+											<pe:keyFilter regEx="/[\d]/" />
+										</p:inputMask>
+									</div>
+									<div class="grid_5">
+										<p:outputLabel value="N° de Sucursales" for="numSucursales"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="numSucursales"
+											value="#{actividadEmpresarialController.actividadEmpresarial.numSucursales}"
+											maxlength="5">
+											<pe:keyFilter regEx="/[\d]/" />
+										</p:inputMask>
+									</div>
+									<div class="grid_5">
+										<p:outputLabel value="N° de Socios" for="numSocios"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="numSocios"
+											value="#{actividadEmpresarialController.actividadEmpresarial.numSocios}"
+											maxlength="5">
+											<pe:keyFilter regEx="/[\d]/" />
+										</p:inputMask>
+									</div>
+									<div class="grid_5">
+										<p:outputLabel value="Cuota de Mercado" for="cuotaMercado"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber id="cuotaMercado" maxlength="7"
+											styleClass="pe-inputNumber" decimalPlaces="3"
+											decimalSeparator="." thousandSeparator="," maxValue="100.00"
+											value="#{actividadEmpresarialController.actividadEmpresarial.cuotaMercado}" />
+										<span class="pe-inputNumber-suffix">%</span>
+									</div>
+								</div>
+
+								<div class="row-flex">
+									<div class="grid_14 row-flex">
+										<div class="grid_24">
+											<p:message id="fechaInicioVacacionalVal"
+												for="fechaInicioVacacional" display="icon"></p:message>
+											<p:outputLabel for="fechaInicioVacacional"
+												value="Periodo vacacional" />
+											<div class="clear-3"></div>
+											<p:calendar id="fechaInicioVacacional"
+												value="#{actividadEmpresarialController.actividadEmpresarial.inicioVacacional}"
+												pattern="dd/MM/yyyy" mask="true" showOn="button"
+												requiredMessage="" placeholder="DESDE" locale="es">
+												<f:param name="disableValidation" value="true" />
+												<f:attribute name="endDate"
+													value="#{actividadEmpresarialController.actividadEmpresarial.finVacacional}" />
+												<f:attribute name="tag" value="fechaInicioVacacional" />
+												<f:validator validatorId="dateRangeValidator" />
+												<p:ajax event="change" process="fechaInicioVacacional"
+													update="fechaInicioVacacional,fechaInicioVacacionalVal"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" process="fechaInicioVacacional"
+													update="fechaInicioVacacional,fechaInicioVacacionalVal"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+										<div class="grid_24">
+											<p:message id="fechaFinVacacionalVal"
+												for="fechaFinVacacional" display="icon"></p:message>
+											<p:outputLabel styleClass="label-transparente"
+												for="fechaFinVacacional" value="." />
+											<div class="clear-3"></div>
+											<p:calendar id="fechaFinVacacional"
+												value="#{actividadEmpresarialController.actividadEmpresarial.finVacacional}"
+												pattern="dd/MM/yyyy" mask="true" showOn="button"
+												requiredMessage="" placeholder="HASTA" locale="es">
+												<f:param name="disableValidation" value="true" />
+												<p:ajax event="change" process="fechaFinVacacional"
+													update="fechaFinVacacional,fechaFinVacacionalVal"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" process="fechaFinVacacional"
+													update="fechaFinVacacional,fechaFinVacacionalVal"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+									</div>
+									<div class="grid_14 row-flex">
+										<div class="grid_24">
+											<p:message id="fechaInicioSociedadVal"
+												for="fechaInicioSociedad" display="icon"></p:message>
+											<p:outputLabel for="fechaInicioSociedad"
+												value="Plazo vida sociedad" />
+											<div class="clear-3"></div>
+											<p:calendar id="fechaInicioSociedad"
+												value="#{actividadEmpresarialController.actividadEmpresarial.inicioSociedad}"
+												pattern="dd/MM/yyyy" mask="true" showOn="button"
+												requiredMessage="" placeholder="DESDE" locale="es">
+												<f:param name="disableValidation" value="true" />
+												<f:attribute name="endDate"
+													value="#{actividadEmpresarialController.actividadEmpresarial.finSociedad}" />
+												<f:attribute name="tag" value="fechaInicioSociedad" />
+												<f:validator validatorId="dateRangeValidator" />
+												<p:ajax event="change" process="fechaInicioSociedad"
+													update="fechaInicioSociedad,fechaInicioSociedadVal"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" process="fechaInicioSociedad"
+													update="fechaInicioSociedad,fechaInicioSociedadVal"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+										<div class="grid_24">
+											<p:message id="fechaFinSociedadVal" for="fechaFinSociedad"
+												display="icon"></p:message>
+											<p:outputLabel styleClass="label-transparente"
+												for="fechaFinSociedad" value="." />
+											<div class="clear-3"></div>
+											<p:calendar id="fechaFinSociedad"
+												value="#{actividadEmpresarialController.actividadEmpresarial.finSociedad}"
+												pattern="dd/MM/yyyy" mask="true" showOn="button"
+												requiredMessage="" placeholder="HASTA" locale="es">
+												<f:param name="disableValidation" value="true" />
+												<p:ajax event="change" process="fechaFinSociedad"
+													update="fechaFinSociedad,fechaFinSociedadVal"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" process="fechaFinSociedad"
+													update="fechaFinSociedad,fechaFinSociedadVal"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+									</div>
+									<div class="grid_6 row-flex">
+										<div class="grid_48">
+											<p:outputLabel value="Cierre de ejercicio" />
+											<div class="clear-3"></div>
+											<div class="grid_24">
+												<p:inputMask id="diaCierreEjercicio"
+													value="#{actividadEmpresarialController.actividadEmpresarial.diaCierreEjercicio}"
+													maxlength="2" placeholder="DIA">
+													<pe:keyFilter regEx="/[\d]/" />
+												</p:inputMask>
+
+											</div>
+											<div class="grid_24">
+												<p:inputMask id="mesCierreEjercicio"
+													value="#{actividadEmpresarialController.actividadEmpresarial.mesCierreEjercicio}"
+													maxlength="2" placeholder="MES">
+													<pe:keyFilter regEx="/[\d]/" />
+												</p:inputMask>
+											</div>
+
+										</div>
+									</div>
+									<div class="grid_14 row-flex">
+										<div class="grid_24">
+											<p:message id="fechaTransformacionVal"
+												for="fechaTransformacion" display="icon"></p:message>
+											<p:outputLabel for="fechaTransformacion"
+												value="Fecha de transformación" />
+											<div class="clear-3"></div>
+											<p:calendar id="fechaTransformacion"
+												value="#{actividadEmpresarialController.actividadEmpresarial.fechaTransformacion}"
+												pattern="dd/MM/yyyy" mask="true" showOn="button"
+												requiredMessage="" locale="es">
+												<f:param name="disableValidation" value="true" />
+												<p:ajax event="change" process="fechaTransformacion"
+													update="fechaTransformacion,fechaTransformacionVal"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" process="fechaTransformacion"
+													update="fechaTransformacion,fechaTransformacionVal"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+										<div class="grid_24">
+											<p:message id="fechaPresentacionVal" for="fechaPresentacion"
+												display="icon"></p:message>
+											<p:outputLabel for="fechaPresentacion"
+												value="Fecha última presentación estados" />
+											<div class="clear-3"></div>
+											<p:calendar id="fechaPresentacion"
+												value="#{actividadEmpresarialController.actividadEmpresarial.fechaPresentacion}"
+												pattern="dd/MM/yyyy" mask="true" showOn="button"
+												requiredMessage="" locale="es">
+												<f:param name="disableValidation" value="true" />
+												<p:ajax event="change" process="fechaPresentacion"
+													update="fechaPresentacion,fechaPresentacionVal"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" process="fechaPresentacion"
+													update="fechaPresentacion,fechaPresentacionVal"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+									</div>
+								</div>
+
+								<div class="grid_24">
+									<p:outputLabel value="Jornada laboral" for="jornada"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:inputMask id="jornada"
+										value="#{actividadEmpresarialController.actividadEmpresarial.jornadaLaboral}"
+										maxlength="60">
+										<pe:keyFilter regEx="/^[0-9a-zA-ZáéíóúÁÉÍÓÚ\- ]*$/" />
+									</p:inputMask>
+								</div>
+								<div class="grid_24">
+									<p:outputLabel value="Presentado por" for="txtPresentado"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:inputMask id="txtPresentado"
+										value="#{actividadEmpresarialController.actividadEmpresarial.presentado}"
+										maxlength="60">
+										<pe:keyFilter regEx="/^[0-9a-zA-ZáéíóúÁÉÍÓÚÑñ\- ]*$/" />
+									</p:inputMask>
+								</div>
+								<div class="clear-row"></div>
+
+								<div class="row-flex">
+									<div class="grid_5">
+										<p:outputLabel for="comboCalificacion"
+											value="Calificación de insolvencia" />
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="comboCalificacion"
+											value="#{actividadEmpresarialController.actividadEmpresarial.calificacion}">
+											<f:selectItem itemLabel="Selecciona una opción" itemValue=""
+												noSelectionOption="true" />
+											<f:selectItem itemLabel="AA" itemValue="AA" />
+											<f:selectItem itemLabel="AA+" itemValue="AA+" />
+											<f:selectItem itemLabel="AA-" itemValue="AA-" />
+											<f:selectItem itemLabel="AA2" itemValue="AA2" />
+											<f:selectItem itemLabel="A+" itemValue="A+" />
+											<f:selectItem itemLabel="B-" itemValue="B-" />
+										</p:selectOneMenu>
+									</div>
+									<div class="grid_8">
+										<p:message id="fechaCalificacionVal" for="fechaCalificacion"
+											display="icon"></p:message>
+										<p:outputLabel for="fechaCalificacion"
+											value="Fecha de calificación" />
+										<div class="clear-3"></div>
+										<p:calendar id="fechaCalificacion"
+											value="#{actividadEmpresarialController.actividadEmpresarial.fechaCalificacion}"
+											pattern="dd/MM/yyyy" mask="true" showOn="button"
+											requiredMessage="" locale="es"
+											maxdate="#{actividadEmpresarialController.currentDate}">
+											<f:param name="disableValidation" value="true" />
+											<f:attribute name="endDate"
+												value="#{actividadEmpresarialController.currentDate}" />
+											<p:ajax event="change" process="fechaCalificacion"
+												update="fechaCalificacion,fechaCalificacionVal"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect" process="fechaCalificacion"
+												update="fechaCalificacion,fechaCalificacionVal"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+									<div class="grid_13">
+										<p:outputLabel value="Sociedad calificadora"
+											for="sociedadCalif"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="sociedadCalif"
+											value="#{actividadEmpresarialController.actividadEmpresarial.sociedadCalif}"
+											maxlength="30" onblur="value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZáéíóúÁÉÍÓÚÑñ\- ]*$/" />
+										</p:inputMask>
+									</div>
+									<div class="grid_22">
+										<p:outputLabel value="Objeto social" for="objetoSocial"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="objetoSocial"
+											value="#{actividadEmpresarialController.objetoSocial}"
+											maxlength="50" onblur="value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZáéíóúÁÉÍÓÚÑñ\- ]*$/" />
+										</p:inputMask>
+									</div>
+								</div>
+								<p:fieldset styleClass="grid_48" legend="Mercados organizados"
+									toggleable="false" collapsed="false">
+									<div class="margin-top-10"></div>
+									<div class="grid_16">
+										<p:selectCheckboxMenu id="mercadosOrg"
+											value="#{actividadEmpresarialController.mercadosSeleccionados}"
+											label="Seleccione una o varias opciones" filter="true"
+											filterMatchMode="contains">
+											<f:selectItems
+												value="#{catalogoUtils.getCatalogo('TP_MERCADOS_ORG')}"
+												var="item" itemValue="#{item.claveFila}"
+												itemLabel="#{item.descripcionL}" />
+											<p:ajax event="change"
+												update="datosGenerales:displayMercadosSelected"
+												listener="#{actividadEmpresarialController.obtenerMercadosSeleccionados()}"
+												global="false"></p:ajax>
+											<p:ajax event="toggleSelect" process="@this"
+												update="datosGenerales:displayMercadosSelected"
+												oncomplete="obtenerMercados()" global="false"></p:ajax>
+										</p:selectCheckboxMenu>
+										<p:remoteCommand name="obtenerMercados"
+											actionListener="#{actividadEmpresarialController.obtenerMercadosSeleccionados}"
+											update="datosGenerales:displayMercadosSelected"></p:remoteCommand>
+									</div>
+									<div class="clear-row"></div>
+
+									<div class="grid_48">
+										<p:outputLabel styleClass="azul-b"
+											value="Elementos seleccionados" />
+										<div class="clear-row"></div>
+										<p:outputPanel id="displayMercadosSelected">
+											<c:forEach var="mercado"
+												items="#{actividadEmpresarialController.listaMercadosSeleccionado}"
+												varStatus="myVarIndex">
+												<p:outputLabel
+													styleClass="bold font-size-12 elementos-anotaciones margin-bottom-5"
+													value="#{mercado}" />
+											</c:forEach>
+										</p:outputPanel>
+									</div>
+								</p:fieldset>
+
+								<div class="clear-row"></div>
+
+								<div class="float-left margin-right-10">
+									<p:outputLabel styleClass="centrado-vertical sin-margen"
+										value="CNAE"></p:outputLabel>
+								</div>
+								<div class="float-left">
+									<p:commandButton id="insertarCNAE" title="Añadir CNAE"
+										styleClass="btn-icono btn-anadir" icon="ui-icon-circle-plus"
+										actionListener="#{actividadEmpresarialController.insertarCnae(1)}"
+										process="datosGenerales:panelCNAE,@this"
+										update="datosGenerales:panelCNAE">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+								</div>
+								<h:panelGroup layout="block" styleClass="grid_48" id="panelCNAE">
+									<div class="clear"></div>
+									<c:forEach var="cnae" id="repeatCNAE"
+										items="#{actividadEmpresarialController.datosSeleccionados}"
+										varStatus="myVarStatus">
+										<p:panel styleClass="panel-dinamico consultado">
+											<div class="grid_32">
+												<b:autoComplete value="#{cnae}" maxlength="60"
+													id="datoCNAE#{myVarStatus.index}" catalog="TP_CNAE_PERS"
+													var="item" itemLabel="#{item.descripcionL}"
+													itemValue="#{item}" converter="catalogoConverter"
+													disabled="true">
+												</b:autoComplete>
+											</div>
+											<div class="grid_8">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-rotate-left" alt="Deshacer" title="Deshacer"
+													actionListener="#{actividadEmpresarialController.accionRestaurar(cnae, component.parent.clientId)}"
+													rendered="#{actividadEmpresarialController.cnaeExisteEnActividadesEliminadas(cnae) == true}"
+													update=":datosGenerales:panelCNAE">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar CNAE"
+													title="Eliminar CNAE"
+													actionListener="#{actividadEmpresarialController.eliminarCnae(cnae, component.parent.clientId)}"
+													rendered="#{actividadEmpresarialController.cnaeExisteEnActividadesEliminadas(cnae) == false and actividadEmpresarialController.cnaePrincipal(cnae)}"
+													update=":datosGenerales:panelCNAE">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+											</div>
+											<div class="clear"></div>
+										</p:panel>
+									</c:forEach>
+
+									<c:forEach var="cnaeAg" id="repeatCNAEAg"
+										items="#{actividadEmpresarialController.cnaesAgregados}"
+										varStatus="myVarStatusAg">
+										<p:panel styleClass="panel-dinamico nuevo">
+											<div class="grid_32">
+												<b:autoComplete value="#{cnaeAg}" maxlength="60"
+													id="datoCNAEAg#{myVarStatusAg.index}"
+													catalog="TP_CNAE_PERS" var="item"
+													itemLabel="#{item.descripcionL}" itemValue="#{item}"
+													converter="catalogoConverter" forceSelection="true"
+													filterResults="actividadEmpresarialController.cnaesEnVista"
+													required="#{param['disableValidation']==null}">
+													<p:ajax event="itemSelect" 
+														process="@this" update="@this"></p:ajax>
+												</b:autoComplete>
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/"
+													for="datoCNAEAg#{myVarStatusAg.index}" />
+											</div>
+											<div class="grid_8">
+												<p:commandButton
+													styleClass="btn-icono btn-panel btn-eliminar"
+													icon="ui-icon-trash" alt="Eliminar CNAE"
+													title="Eliminar CNAE"
+													actionListener="#{actividadEmpresarialController.eliminarCnaeNoGuardado(cnaeAg)}"
+													update=":datosGenerales:panelCNAE">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+											</div>
+											<div class="clear"></div>
+										</p:panel>
+									</c:forEach>
+								</h:panelGroup>
+								<div class="clear"></div>
+							</div>
+
+							<div class="margin-top-10"></div>
+							<h3 class="azul-b">Direcciones Registrales</h3>
+							<div class="margin-top-10"></div>
+
+							<h:panelGroup id="panelDirecciones">
+								<div class="marco-componente">
+									<div class="grid_20">
+										<p:outputLabel value="Tipo de registro" for="tipoRegistro"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="tipoRegistro"
+											panelStyleClass="combo-estandar"
+											value="#{actividadEmpresarialController.tipoRegistro}">
+											<f:selectItems
+												value="#{catalogoUtils.getCatalogo('TP_RGSTRO')}" var="item"
+												itemValue="#{item.claveFila}"
+												itemLabel="#{item.descripcionL}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="grid_3">
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton id="insertarRegistro" title="Añadir registro"
+											styleClass="btn-icono btn-anadir" icon="ui-icon-circle-plus"
+											action="#{actividadEmpresarialController.insertarDireccionRegistral()}"
+											update="datosGenerales:panelDirecciones :dlgGuardado">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+									</div>
+									<div class="clear"></div>
+								</div>
+
+								<c:forEach var="registro"
+									items="#{actividadEmpresarialController.listaDirecciones}"
+									varStatus="myVarStatus">
+
+									<p:focus context="panelDireccionGuardada#{myVarStatus.index}" />
+									<p:panel id="panelDireccionGuardada#{myVarStatus.index}"
+										styleClass="#{registro.estado.styleClass}">
+										<h:panelGroup
+											rendered="#{registro.estado == EstadoListadosEnum.CONSULTADO or registro.estado == EstadoListadosEnum.ELIMINADO}">
+											<p:commandButton styleClass="btn-icono btn-panel"
+												icon="fa fa-rotate-left" alt="Deshacer" title="Deshacer"
+												actionListener="#{actividadEmpresarialController.accionRestaurar(registro)}"
+												rendered="#{actividadEmpresarialController.datoExisteEnActividadesEliminadas(registro) == true}"
+												update="datosGenerales:panelDirecciones">
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+											<p:commandButton
+												styleClass="btn-icono btn-panel btn-eliminar"
+												icon="ui-icon-trash" alt="Eliminar dirección"
+												title="Eliminar dirección"
+												actionListener="#{actividadEmpresarialController.eliminarDireccionRegistral(registro)}"
+												rendered="#{actividadEmpresarialController.datoExisteEnActividadesEliminadas(registro) == false}"
+												update="datosGenerales:panelDirecciones">
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+
+											<p:commandButton id="desplegarBtnAg#{myVarStatus.index}"
+												styleClass="btn-icono btn-panel" icon="fa fa-pencil"
+												alt="Editar dirección" title="Editar dirección"
+												widgetVar="desplegarBtnAg#{myVarStatus.index}">
+												<p:ajax event="click"
+													listener="#{actividadEmpresarialController.consultaDetalleDireccion(registro, myVarStatus.index)}"
+													update="datosGenerales:panelDirecciones" process="datosGenerales:panelDirecciones"></p:ajax>
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+											<div class="clear-row"></div>
+
+											<div class="grid_18">
+												<h:outputLabel value="Tipo de Registro"></h:outputLabel>
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor texto-sininput"
+													value="#{registro.descripcionDato}"></h:outputLabel>
+											</div>
+											<div class="grid_15">
+												<h:outputLabel value="Localidad"></h:outputLabel>
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor texto-sininput"
+													value="#{registro.nombreLocalidad}"></h:outputLabel>
+											</div>
+											<div class="grid_7">
+												<h:outputLabel value="Número de registro"></h:outputLabel>
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor texto-sininput"
+													value="#{registro.numRegistro}"></h:outputLabel>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{registro.estado == EstadoListadosEnum.MODIFICADO}">
+											<p:commandButton styleClass="btn-icono btn-panel"
+												icon="fa fa-rotate-left" alt="Deshacer edición"
+												title="Deshacer edición"
+												actionListener="#{actividadEmpresarialController.restaurarModificado(registro)}"
+												update="datosGenerales:panelDirecciones">
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+											<div class="clear-row"></div>
+
+											<div class="grid_18">
+												<h:outputLabel value="Tipo de registro"></h:outputLabel>
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor texto-sininput"
+													value="#{registro.descripcionDato}"></h:outputLabel>
+											</div>
+											<div class="grid_24">
+												<p:outputLabel value="Municipio/Localidad/Delegación" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:autoComplete id="municipioGu#{myVarStatus.index}"
+													value="#{registro.localidad}" maxResults="5"
+													completeMethod="#{domicilioUtils.getMunicipios}" var="mun"
+													itemLabel="#{mun.municipioLocalidad}" itemValue="#{mun}"
+													converter="#{catalogoBeanConverter}"
+													onkeyup="value=value.toUpperCase()" forceSelection="true"
+													required="#{param['disableValidation']==null}">
+													<f:attribute name="filter" value="MUNICIPIOS" />
+												</p:autoComplete>
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\-/() ]*$/"
+													for="municipioGu#{myVarStatus.index}" />
+											</div>
+											<div class="grid_5">
+												<p:outputLabel value="No. Registro"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask value="#{registro.numRegistro}" maxlength="4">
+													<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+												</p:inputMask>
+											</div>
+											<div class="clear-row"></div>
+
+											<div class="grid_5">
+												<p:outputLabel value="No. Registral"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask value="#{registro.numRegistral}" maxlength="45">
+													<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+												</p:inputMask>
+											</div>
+											<div class="grid_5">
+												<p:outputLabel value="Tomo"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask value="#{registro.tomo}" maxlength="45">
+													<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+												</p:inputMask>
+											</div>
+											<div class="grid_5">
+												<p:outputLabel value="Libro"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask value="#{registro.libro}" maxlength="45">
+													<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+												</p:inputMask>
+											</div>
+											<div class="grid_8">
+												<p:outputLabel value="Folio"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask value="#{registro.folio}" maxlength="45">
+													<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+												</p:inputMask>
+											</div>
+											<div class="grid_8">
+												<p:outputLabel value="No. De Inscripción"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask value="#{registro.numInscripcion}"
+													maxlength="45">
+													<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+												</p:inputMask>
+											</div>
+											<div class="grid_8">
+												<p:outputLabel value="Finca"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask value="#{registro.finca}" maxlength="45">
+													<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+												</p:inputMask>
+											</div>
+											<div class="grid_8">
+												<p:message id="fechaExpedicionVal#{myVarStatus.index}"
+													for="fechaExpedicion#{myVarStatus.index}" display="icon"></p:message>
+												<p:outputLabel value="F. De Expedición"
+													for="fechaExpedicion#{myVarStatus.index}"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:calendar id="fechaExpedicion#{myVarStatus.index}"
+													value="#{registro.fExpedicion}" pattern="dd/MM/yyyy"
+													mask="true" showOn="button" requiredMessage="" locale="es">
+													<f:param name="disableValidation" value="true" />
+													<f:attribute name="endDate"
+														value="#{actividadEmpresarialController.currentDate}" />
+													<f:validator validatorId="dateRangeValidator" />
+													<p:ajax event="change"
+														process="fechaExpedicion#{myVarStatus.index}"
+														update="fechaExpedicion#{myVarStatus.index},fechaExpedicionVal#{myVarStatus.index}"
+														partialSubmit="true" />
+													<p:ajax event="dateSelect"
+														process="fechaExpedicion#{myVarStatus.index}"
+														update="fechaExpedicion#{myVarStatus.index},fechaExpedicionVal#{myVarStatus.index}"
+														partialSubmit="true" />
+												</p:calendar>
+											</div>
+										</h:panelGroup>
+										<div class="clear"></div>
+									</p:panel>
+								</c:forEach>
+
+								<div class="clear-row"></div>
+								<c:forEach var="registro"
+									items="#{actividadEmpresarialController.listaDireccionesAgregadas}"
+									varStatus="myVarStatus">
+									<p:focus context="panelDireccionAgregada#{myVarStatus.index}" />
+									<p:panel id="panelDireccionAgregada#{myVarStatus.index}"
+										styleClass="panel-dinamico nuevo">
+
+										<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+											icon="ui-icon-trash" alt="Eliminar actividad"
+											title="Eliminar actividad"
+											actionListener="#{actividadEmpresarialController.accionEliminarNoGuardado(registro)}"
+											update="datosGenerales:panelDirecciones">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_18">
+											<h:outputLabel value="Tipo de registro"></h:outputLabel>
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput"
+												value="#{registro.descripcionDato}"></h:outputLabel>
+										</div>
+										<div class="grid_24">
+											<p:outputLabel value="Municipio/Localidad/Delegación" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:autoComplete id="municipio#{myVarStatus.index}"
+												value="#{registro.localidad}" maxResults="5"
+												completeMethod="#{domicilioUtils.getMunicipios}" var="mun"
+												itemLabel="#{mun.municipioLocalidad}" itemValue="#{mun}"
+												converter="#{catalogoBeanConverter}"
+												onkeyup="value=value.toUpperCase()" forceSelection="true"
+												required="#{param['disableValidation']==null}">
+												<f:attribute name="filter" value="MUNICIPIOS" />
+											</p:autoComplete>
+											<pe:keyFilter regEx="/^[a-zA-ZñÑ\-/() ]*$/"
+												for="municipio#{myVarStatus.index}" />
+										</div>
+										<div class="grid_5">
+											<p:outputLabel value="No. Registro"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask value="#{registro.numRegistro}" maxlength="4">
+												<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+											</p:inputMask>
+										</div>
+										<div class="clear-row"></div>
+
+										<div class="grid_5">
+											<p:outputLabel value="No. Registral"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask value="#{registro.numRegistral}" maxlength="45">
+												<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+											</p:inputMask>
+										</div>
+										<div class="grid_5">
+											<p:outputLabel value="Tomo"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask value="#{registro.tomo}" maxlength="45">
+												<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+											</p:inputMask>
+										</div>
+										<div class="grid_5">
+											<p:outputLabel value="Libro"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask value="#{registro.libro}" maxlength="45">
+												<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+											</p:inputMask>
+										</div>
+										<div class="grid_8">
+											<p:outputLabel value="Folio"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask value="#{registro.folio}" maxlength="45">
+												<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+											</p:inputMask>
+										</div>
+										<div class="grid_8">
+											<p:outputLabel value="No. De Inscripción"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask value="#{registro.numInscripcion}" maxlength="45">
+												<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+											</p:inputMask>
+										</div>
+										<div class="grid_8">
+											<p:outputLabel value="Finca"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask value="#{registro.finca}" maxlength="45">
+												<pe:keyFilter regEx="/[\d]/"></pe:keyFilter>
+											</p:inputMask>
+										</div>
+										<div class="grid_8">
+											<p:message id="fechaExpedicionAgVal#{myVarStatus.index}"
+												for="fechaExpedicionAg#{myVarStatus.index}" display="icon"></p:message>
+											<p:outputLabel value="F. De Expedición"
+												for="fechaExpedicionAg#{myVarStatus.index}"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:calendar id="fechaExpedicionAg#{myVarStatus.index}"
+												value="#{registro.fExpedicion}" pattern="dd/MM/yyyy"
+												mask="true" showOn="button" requiredMessage="" locale="es"
+												maxdate="#{actividadEmpresarialController.currentDate}">
+												<f:param name="disableValidation" value="true" />
+												<f:attribute name="endDate"
+													value="#{actividadEmpresarialController.currentDate}" />
+												<f:validator validatorId="dateRangeValidator" />
+												<p:ajax event="change"
+													process="fechaExpedicionAg#{myVarStatus.index}"
+													update="fechaExpedicionAg#{myVarStatus.index},fechaExpedicionAgVal#{myVarStatus.index}"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect"
+													process="fechaExpedicionAg#{myVarStatus.index}"
+													update="fechaExpedicionAg#{myVarStatus.index},fechaExpedicionAgVal#{myVarStatus.index}"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+										<div class="clear"></div>
+									</p:panel>
+								</c:forEach>
+							</h:panelGroup>
+
+							<div class="clear"></div>
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar"
+							action="#{actividadEmpresarialController.validarAccionCancelar()}">
+							<f:param name="disableValidation" value="true" />
+						</p:commandButton>
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar"
+							action="#{actividadEmpresarialController.validarAccionGuardar()}"
+							update="datosGenerales, :dlgGuardado :dlgEliminados" />
+					</h:form>
+				</div>
+
+				<!--plantilla de ventana de diálogo-->
+				<ui:include src="../../composites/listadosDialogo.xhtml">
+					<ui:param name="dialogoGuardado"
+						value="#{actividadEmpresarialController.dialogoGuardado}" />
+				</ui:include>
+
+				<ui:include src="../../composites/listadosDialogoEliminar.xhtml">
+					<ui:param name="managedBean"
+						value="#{actividadEmpresarialController}" />
+					<ui:param name="aceptar" value="guardar" />
+					<ui:param name="form" value="datosGenerales" />
+					<ui:param name="mensajeEliminados"
+						value="#{actividadEmpresarialController.mensajeEliminados}" />
+				</ui:include>
+
+				<p:dialog widgetVar="dlgCancelar" id="dlgCancelar" showEffect="fade"
+					hideEffect="fade" appendTo="@(body)"
+					header="Cancelar Alta de Centro" modal="true" visible="false"
+					closable="false" resizable="false" dynamic="true">
+					<span class="ui-messages-info-icon info-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! Si continua perderá todos los cambios" />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Desea continuar de todos modos?" />
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="VolverAlta"
+						action="#{actividadEmpresarialController.redirigirInicio()}"
+						value="Continuar" immediate="true" />
+					<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+						value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+
+				</p:dialog>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

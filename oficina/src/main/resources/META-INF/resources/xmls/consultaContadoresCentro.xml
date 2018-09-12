@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaContadoresCentro" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.beans.ContadoresCentroBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.webservices.contadorescentro.Ejecutar.ITROBTECONTTRNI.TRCONSUOTNCONTEVTY</class-b>
+		<field>
+			<a>codigoEntidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+			<a>codigoCentro</a>
+			<b>codinternouo</b>
+		</field>
+		<field>
+			<a>fechaContable</a>
+			<b>fechactble</b>
+		</field>
+		<field>
+			<a>codigoMoneda</a>
+			<b>codnumrcomoneda</b>
+		</field>		
+	</mapping>
+	
+	<mapping map-id="respuestaContadoresCentro" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.webservices.contadorescentro.ResponseBansefi.OTROBTECONTTRNO.TRCONSUOTNCONTEVTZ</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.beans.ContadoresCentroBean</class-b>
+		<field>
+			<a>exexistmonedae.cajacobroson</a>
+			<b>cobrosOnCaja</b>
+		</field>
+		<field>
+			<a>exexistmonedae.cajapagoson</a>
+			<b>pagosOnCaja</b>
+		</field>
+		<field>
+			<a>exexistmonedae.cajacobrosoff</a>
+			<b>cobrosOffCaja</b>
+		</field>
+		<field>
+			<a>exexistmonedae.cajapagosoff</a>
+			<b>pagosOffCaja</b>
+		</field>
+		<field>
+			<a>exexistmonedae.intehaberon</a>
+			<b>haberOnIntervencion</b>
+		</field>
+		<field>
+			<a>exexistmonedae.intedebeon</a>
+			<b>deberOnIntervencion</b>
+		</field>
+		<field>
+			<a>exexistmonedae.intehaberoff</a>
+			<b>haberOffIntervencion</b>
+		</field>
+		<field>
+			<a>exexistmonedae.intedebeoff</a>
+			<b>deberOffIntervencion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.oficina.utils.ContadoresCentroConverter">
+			<a>uocontterminalesv.tnconthostv</a>
+			<b>contadoresCentroRegistrosOn.lista</b>
+		</field>		
+	</mapping>	
+</mappings>

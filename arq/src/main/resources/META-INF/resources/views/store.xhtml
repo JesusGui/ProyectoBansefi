@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+  xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:panelGroup layout="block">
+
+		<div id="storage" style="display: none;">
+
+			<h:outputScript name="js/storage.js" />
+			<h:outputScript name="js/jquery-ui.min.js" />
+
+			<script>
+            //<![CDATA[
+			function storeData() {
+			  	var formId = $("#storage").closest("form").attr("id");
+			  	document.getElementById(formId+":btnDisableValidators").click();
+				document.getElementById(formId+":btnStorage").click();
+				return false;
+			}
+
+			function cleanErrorFields(){
+	        	if ($(".ui-state-error").length > 0 ) {
+	        		// Establece a null todos los inputs con clase ui-state-error.
+	        		$("input.ui-state-error").val("");
+	        		// Establece a null todos los select con clase ui-state-error.
+	        		$("input").closest(".ui-state-error").find("option[selected*='selected']").attr("selected",false)
+        		}
+        	}
+            //]]>
+		  	</script>
+
+			<p:commandButton id="btnDisableValidators" value="Disable validators"
+				process="@form" oncomplete="cleanErrorFields();" update="@form">
+				<f:param name="disableValidation" value="true" />
+				<c:if test="#{(not empty ignoreValidationFailed) and ignoreValidationFailed}">
+				  <o:ignoreValidationFailed></o:ignoreValidationFailed>
+				</c:if>
+			</p:commandButton>
+
+			<p:commandButton id="btnStorage" value="Task storage"
+				action="#{storeBean.generateContext}" update="saveScript"
+				process="@form">
+				<f:param name="disableValidation" value="true" />
+				<c:if test="#{(not empty ignoreValidationFailed) and ignoreValidationFailed}">
+				  <o:ignoreValidationFailed></o:ignoreValidationFailed>
+				</c:if>
+			</p:commandButton>
+
+			<h:panelGroup class="saveScript" layout="block" id="saveScript">
+				<script>
+				//<![CDATA[
+				$(function () {
+					var contextData = "#{storeBean.context}";					
+					if( contextData !== null && contextData !== "" ){
+						storage.saveData("#{storeBean.flowId}", contextData);
+					}
+				});
+				//]]>
+				</script>
+			</h:panelGroup>
+
+			<p:commandButton id="goHome"
+				action="#{storeBean.cancelarProceso()}" immediate="true" />
+      <p:outputLabel id="storeFlowLabel" value="#{storeBean.getClass().getSimpleName()}"></p:outputLabel>
+		</div>
+    <p:dialog widgetVar="dlgCancelarProceso" id="dlgCancelarProceso" appendTo="@(body)"
+             header="Cancelar alta cliente" modal="true" visible="false" closable="false"
+             resizable="false"  draggable="false">
+            <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--              <p:outputLabel  styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar el proceso" /> -->
+<!--              <div class="clear"></div> -->
+<!--              <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--              <div class="margin-bottom-20"></div> -->
+<!--              <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarProceso').hide();" id="VolverAlta" value="Continuar" immediate="true"/> -->
+<!--              <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartar" value="No guardar"  -->
+<!--               onclick="document.getElementById($('#storage').closest('form').attr('id')+':goHome').click();" /> -->
+<!--              <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardar" value="Guardar" onclick="return storeData();"/> -->
+
+				<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							onclick="document.getElementById($('#storage').closest('form').attr('id')+':goHome').click();"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarProceso').hide();" />
+    </p:dialog>
+	</h:panelGroup>
+
+</ui:composition>

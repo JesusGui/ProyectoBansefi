@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+template="../../templates/plantilla-inicio.xhtml">
+
+<!--
+plantilla de ventana tipo
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="formConsultaTraspasos" styleClass="contenedor-form col-70">
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+                            	action="#{traspasosController.regresar()}"></p:commandButton>
+                            <h1>Consultar traspasos</h1>
+                        </div>
+                            <div class="contenedor-campos">
+                            <p:commandButton styleClass="btn_secundario btn-icono-texto float-right" value="Imprimir" icon="ui-icon-print" onclick="printContenedorCamposId('printArea1');">
+                            </p:commandButton>
+                            <div class="clear margin-bottom-5"></div>
+                            <p:outputLabel styleClass="txt-campo-obligatorio"
+									value="*Datos Obligatorios" />
+                            <div class="margin-top-10"></div>
+                            <p:outputLabel value="Introduzca el número de puesto y rango de fechas para consultar los traspasos"></p:outputLabel>
+                            <div class="margin-top-20"></div>
+                            
+                         <div id="printArea1" >
+                         
+                         	<div class="impresion consulta-traspasos">
+                         	   
+                         	<h2 class="mostrar-en-impresion">Consultar traspasos</h2>   
+                         	   
+                            <div class="contenedor-espacioobjetos">
+                            <div class="grid_6 alpha">
+	                            <p:outputLabel value="Puesto" for="puestoConsulta"/>
+	                            <div class="clear-3"></div>
+		                        <p:inputMask id="puestoConsulta" value="#{traspasosController.consultaTraspasoBean.puesto}" 
+		                          	maxlength="2" required="true">
+		            				<pe:keyFilter regEx="/[0-9_]/i" />
+		            				<p:ajax event="blur" process="puestoConsulta" partialSubmit="true"></p:ajax>
+						        </p:inputMask>
+					        </div>
+					        <div class="grid_20">
+					        	<div class="grid_24">
+							        <p:outputLabel value="Rango de fechas" for="calendarTest_Start"/>
+							        <div class="clear-3"></div>
+							        <b:calendarMonthRange locale="es" id="calendarTest_Start" showOn="button" required="true"
+							        		maxdate="#{traspasosController.contextoUtils.getFechaContableActual()}" placeholder="Desde"
+							        	 value="#{traspasosController.consultaTraspasoBean.desde}" requiredMessage="" showButtonPanel="true" 
+							        	 pattern="dd/MM/yyyy" mask="true" restrictMaxDate="true">
+							        	 <p:ajax event="dateSelect" process="calendarTest_Start" partialSubmit="true"></p:ajax>
+		                            	<f:attribute id="calendarAttribute" name="endDate" value="#{traspasosController.consultaTraspasoBean.hasta}" />
+		                                <f:validator validatorId="dateRangeValidator" />
+		                            </b:calendarMonthRange>
+		                            <p:message for="calendarTest_Start" display="text"></p:message>
+	                            </div>
+	                            <div class="grid_24">
+	                            	<p:message for="calendarTest_End" display="icon"></p:message>
+							        <p:outputLabel styleClass="label-transparente" for="calendarTest_End"/>
+							        <div class="clear-3"></div>
+							        <b:calendarMonthRange locale="es" id="calendarTest_End" showOn="button" required="true" 
+							        	maxdate="#{traspasosController.contextoUtils.getFechaContableActual()}" placeholder="Hasta"
+							        	value="#{traspasosController.consultaTraspasoBean.hasta}" pattern="dd/MM/yyyy" mask="true" restrictMaxDate="true">
+		                                 <p:ajax event="dateSelect" process="calendarTest_End" partialSubmit="true"></p:ajax>
+		                                 <p:ajax event="change" process="calendarTest_End" partialSubmit="true"></p:ajax>
+		                            </b:calendarMonthRange>
+								</div>	    
+							</div>
+					        
+					        <div>
+					        <p:commandButton styleClass="btn-icono-texto margin-top-5 ocultar-en-impresion"
+											icon="fa fa-search" value="Buscar"
+					        	action="#{traspasosController.buscarTraspasos()}" update="@form"/>
+					        </div>
+					        
+					        </div>
+					        
+					        <div class="clear-row"></div>
+					        
+					        <h3 class="azul-b ocultar-en-impresion">Resultados de búsqueda</h3>
+					        	<div class="margin-bottom-5"></div>
+					        	
+					        <h:panelGroup layout="block" styleClass="sinresultados ocultar-en-impresion" rendered="#{traspasosController.consultaTraspasoBean.traspasos.isEmpty()}">
+					        	<div>
+					        	<h:outputLabel value="No se han encontrado resultados con los siguientes filtros:"/><br />
+					        	<h:outputLabel value="Puesto: #{traspasosController.consultaTraspasoBean.puesto}"/><br />
+					        	<h:outputLabel value="Fecha desde:"/>
+					        	<h:outputLabel value="#{traspasosController.consultaTraspasoBean.desde}" >
+					        		<f:convertDateTime pattern="dd/MM/yyyy" />
+					        	</h:outputLabel>
+					        	<br />
+					        	<h:outputLabel value="Fecha hasta:"/>
+					        	<h:outputLabel value="#{traspasosController.consultaTraspasoBean.hasta}" >
+					        		<f:convertDateTime pattern="dd/MM/yyyy" />
+					        	</h:outputLabel>
+					        	</div>
+					        </h:panelGroup>
+					        
+					        <h:panelGroup rendered="#{!traspasosController.consultaTraspasoBean.traspasos.isEmpty()}">
+					        	<div class="contenedor-totales">
+								    <div class="clear-row"></div>
+								    
+								   		<div class="grid_20">
+								            <p:outputLabel value="Saldo inicial:"></p:outputLabel>
+								        </div>
+								        <div class="grid_28">
+								            <p:outputLabel value="#{traspasosController.consultaTraspasoBean.saldoInicial}">
+								        		<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+								        	</p:outputLabel>
+								      	</div>
+								      	<div class="clear-row"></div>
+								     	<div class="grid_20">
+								            <p:outputLabel value="Total enviado:"></p:outputLabel>
+								        </div>
+								        <div class="grid_28">
+								            <p:outputLabel value="#{traspasosController.consultaTraspasoBean.totalEnviado}">
+								        		<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+								        	</p:outputLabel>
+								      	</div>
+								      	<div class="clear-row"></div>
+								      	<div class="grid_20">
+								            <p:outputLabel value="Total recibido:"></p:outputLabel>
+								        </div>
+								        <div class="grid_28">
+								            <p:outputLabel value="#{traspasosController.consultaTraspasoBean.totalRecibido}">
+								        		<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+								        	</p:outputLabel>
+								      	</div>
+								      	<div class="clear-row"></div>
+								      	<div class="grid_48 saldo-disponible">
+								      	<div class="grid_20">
+								            <p:outputLabel value="Neto traspasos:"></p:outputLabel>
+								        </div>
+								        <div class="grid_28">
+								            <p:outputLabel value="#{traspasosController.consultaTraspasoBean.netoTraspaso}">
+								        		<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+								        	</p:outputLabel>
+								      	</div>
+								      	</div>
+								      	
+								</div>
+								
+								
+								<div class="clear-row"></div>							
+					        	
+					        	<p:dataTable id="traspasosTable" rows="#{traspasosController.resultados}" 
+					        		value="#{traspasosController.consultaTraspasoBean.traspasos}" var="traspaso">
+					        		<p:column headerText="Fecha">
+										<h:outputText value="#{traspaso.fecha}">
+										  	<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Hora">
+									   	<h:outputText value="#{traspaso.horaFormateada}">
+										</h:outputText>
+									</p:column>
+								    <p:column headerText="Puesto Origen">
+								        <h:outputText value="#{traspaso.origen}" />
+								    </p:column>
+								    <p:column headerText="Puesto Destino">
+								        <h:outputText value="#{traspaso.destino}" />
+								    </p:column>
+								    <p:column headerText="Usuario Origen">
+								        <h:outputText value="#{traspaso.usuarioOrigen}" />
+								    </p:column>
+								    <p:column headerText="Usuario Destino">
+								        <h:outputText value="#{traspaso.usuarioDestino}" />
+								    </p:column>
+								    <p:column headerText="Importe">
+								        <h:outputText styleClass="float-right" value="#{traspaso.importe}">
+								        	<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+								        </h:outputText>
+								    </p:column>
+					        	</p:dataTable>
+					        		
+					        	<div class="margin-top-10"></div>
+					        	<h:panelGroup styleClass="ocultar-en-impresion" id="masResultadosPanel" rendered="#{not(not(traspasosController.consultaTraspasoBean.masDatos) and 
+                                    	(traspasosController.consultaTraspasoBean.traspasos.size() lt traspasosController.resultados))}">
+						        	<div class="centrar-objeto">
+						        	<!--<p:commandButton styleClass="btn-mostrar hidden" icon="ui-icon-refresh" iconPos="right" value="Ver mas resultados" id="masResultados" update="traspasosTable masResultadosPanel" actionListener="#{traspasosController.masResultados()}" >-->
+									<!--</p:commandButton>-->
+									</div>
+								</h:panelGroup>
+					        </h:panelGroup>
+					        </div>
+					      </div>
+                        </div>
+                        <!--Botones  -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10 margin-right-10" value="Cancelar" immediate="true"
+                        	action="#{traspasosController.regresar()}" />
+						<p:commandButton styleClass="btn_primario float-right margin-top-10" value="Realizar otra consulta"
+										 actionListener="#{traspasosController.nuevaConsulta()}" immediate="true" ajax="false">
+							<p:resetInput target="formConsultaTraspasos" />
+						</p:commandButton>
+						<p:commandButton styleClass="btn_secundario margin-top-10 margin-right-10"
+                        	rendered="#{traspasosController.destino != null}"
+                        	action="#{traspasosController.regresar()}" value="Volver" immediate="true"/>
+                        <p:commandButton styleClass="btn_secundario margin-top-10" value="Ver Saldos"
+                        	action="#{traspasosController.rutaSaldos()}" immediate="true"/>
+                        
+                    </h:form>
+                </div>
+            </div>
+            <!--termina container 24-->
+        </h:body>
+    </ui:define>
+</ui:composition>

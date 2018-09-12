@@ -1,0 +1,232 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								onclick="PF('dlgCancelarAjuste').show();"></p:commandButton>
+							<h1>Ajuste existencias</h1>
+						</div>
+
+						<h:form id="formAjusteExistencias">
+
+							<div class="contenedor-campos">
+
+								<div class="grid_48 alpha">
+
+									<div class="grid_10">
+										<p:outputLabel value="Fecha de cierre: "></p:outputLabel>
+										<h:outputLabel styleClass="bold" id="fechaCierre"
+											value="#{ajusteExistenciasController.ajusteExistenciasActualesBean.fechaCierre}">
+											<f:convertDateTime pattern="dd/MM/yyyy" for="fechaCierre"
+												timeZone="MX" dateStyle="short" />
+										</h:outputLabel>
+									</div>
+
+									<div class="clear-row"></div>
+									<div class="clear-3"></div>
+
+									<div class="grid_10">
+										<p:outputLabel value="Moneda: "></p:outputLabel>
+										<h:outputLabel styleClass="bold"
+											value="#{ajusteExistenciasController.ajusteExistenciasActualesBean.codigoMoneda}" />
+									</div>
+
+									<div class="clear-row"></div>
+									<div class="clear-3"></div>
+
+									<div class="grid_48 saldo-disponible">
+
+										<div class="clear-row"></div>
+										<div class="grid_38" style="text-align: right;">
+											<p:outputLabel for="totalExistencias"
+												value="Total existencias:" />
+										</div>
+										<div class="grid_10" style="text-align: right;">
+											<h:outputLabel id="totalExistencias"
+												style="text-align: right;"
+												value="#{ajusteExistenciasController.ajusteExistenciasActualesBean.totalExistencias}">
+												<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+													currencySymbol="MXN" />
+											</h:outputLabel>
+										</div>
+										<div class="clear-row"></div>
+										<div class="grid_38" style="text-align: right;">
+											<h:outputLabel for="totalNuevo" value="Total nuevo:" />
+										</div>
+										<div class="grid_10" style="text-align: right;">
+											<h:outputLabel id="totalNuevo" style="text-align: right"
+												value="#{ajusteExistenciasController.ajusteExistenciasActualesBean.totalEfectivo}">
+												<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+													currencySymbol="MXN" />
+											</h:outputLabel>
+										</div>
+										<div class="clear-row"></div>
+										<div class="grid_38" style="text-align: right;">
+											<p:outputLabel for="diferencia" value="Diferencia:" />
+										</div>
+										<div class="grid_10" style="text-align: right;">
+											<h:outputLabel id="diferencia" style="text-align: right"
+												value="#{ajusteExistenciasController.ajusteExistenciasActualesBean.diferencia}">
+												<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+													currencySymbol="MXN" />
+											</h:outputLabel>
+										</div>
+
+										<div class="clear-row"></div>
+
+									</div>
+
+									<div>
+										<b:parrillaAjustes
+											parrillaBean="#{ajusteExistenciasController.parrilla}"
+											filtro="#{ajusteExistenciasController.filtro}"
+											editable="#{ajusteExistenciasController.editable}"
+											precinto="#{ajusteExistenciasController.precinto}">
+										</b:parrillaAjustes>
+									</div>									
+
+								</div>
+								
+								<div class="clear-row"></div>
+								<div class="clear-3"></div>
+
+							</div>
+
+							<div class="grid_48 float-right">
+
+								<div class="float-right">
+									<p:commandButton id="btnAjustar"
+										disabled="#{ajusteExistenciasController.botonesBloqueados}"
+										styleClass="btn_primario margin-top-10 margin-right-10"
+										update="@form :dlgErrorAjuste" value="Ajustar"
+										onclick="PF('dlgConfirmarAjustes').show();" />
+								</div>
+
+								<div class="float-right">
+									<p:commandButton id="btnInicializar"
+										disabled="#{ajusteExistenciasController.botonesBloqueados}"
+										styleClass="btn_secundario margin-top-10 margin-right-10"
+										update="@form" value="Inicializar"
+										action="#{ajusteExistenciasController.inicializaValores()}" />
+								</div>
+
+								<div class="float-right">
+									<p:commandButton id="btnLimpiar"
+										disabled="#{ajusteExistenciasController.botonesBloqueados}"
+										styleClass="btn_secundario margin-top-10 margin-right-10"
+										update="@form" value="Limpiar"
+										action="#{ajusteExistenciasController.limpiar()}" />
+								</div>
+
+							</div>
+
+						</h:form>
+
+						<p:dialog id="dlgConfirmarAjustes" widgetVar="dlgConfirmarAjustes"
+							showEffect="fade" hideEffect="fade" appendTo="@(body)"
+							closable="false" dynamic="true" draggable="false" modal="true"
+							resizable="false" header="Resultado">
+							<span class="ui-messages-info-icon info-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="Se ajustarán las existencias conforme a la tabla" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true" id="btnAceptar"
+								action="#{ajusteExistenciasController.ajustaExistencias()}"
+								update=":formAjusteExistencias"
+								oncomplete="PF('dlgConfirmarAjustes').hide();" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgConfirmarAjustes').hide();"
+								oncomplete="resizeParrillaColumns()" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgOperacionExitosa" id="dlgOperacionExitosa"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-exito-icon exito-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="OPERACIÓN REALIZADA CORRECTAMENTE" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" immediate="true"
+								onclick="PF('dlgOperacionExitosa').hide();" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgErrorAjuste" id="dlgErrorAjuste"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-error-icon error-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{ajusteExistenciasController.mensajeError}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" onclick="PF('dlgErrorAjuste').hide();" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgAdvertencia" id="dlgAdvertencia"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{ajusteExistenciasController.mensajeAdvertencia}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" onclick="PF('dlgAdvertencia').hide();" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgCancelarAjuste" id="dlgCancelarAjuste"
+							appendTo="@(body)" header="Cancelar autorización" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="¡Atención! Si continua perderá todos los cambios" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true" id="btnCancelar"
+								action="#{ajusteExistenciasController.irInicio()}"
+								oncomplete="PF('dlgCancelarAjuste').hide();" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgCancelarAjuste').hide();" />
+						</p:dialog>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

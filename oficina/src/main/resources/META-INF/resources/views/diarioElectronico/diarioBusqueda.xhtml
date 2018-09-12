@@ -1,0 +1,310 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formDiario" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{diarioElectronicoController.cancelar()}"></p:commandButton>
+							<h1>Diario electrónico</h1>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel id="alerta"
+								styleClass="margin-left-10 txt-campo-obligatorio"
+								value="Debe especificar al menos un filtro"
+								rendered="#{diarioElectronicoController.errorFiltros}" />
+							<p:accordionPanel widgetVar="accordionMoral1" multiple="true"
+								dynamic="true" id="datosGenerales" activeIndex="0,1,2,3">
+								<!-- Tab de Fechas del diario -->
+								<p:tab title="Fechas del diario">
+
+									<!-- Fecha Contable -->
+									<div class="row-flex">
+										<div class="grid_16 row-flex">
+
+											<div class="grid_24">
+												<p:message for="contableDesde" display="icon" id="contableDesdeVal"
+													styleClass="contableDesde"></p:message>
+												<p:outputLabel id="contableLabel" for="contableDesde"
+													value="Rango de fecha contable" styleClass="contableDesde"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:calendar id="contableDesde" locale="es"
+													styleClass="contableDesde"
+													value="#{diarioElectronicoController.diarioBusquedaBean.contableDesde}"
+													pattern="dd/MM/yyyy" mask="true" showOn="button"
+													maxdate="#{diarioElectronicoController.contextoUtils.fechaContableActual}"
+													style="float:left;" placeholder="DESDE">
+													<f:attribute name="endDate"
+														value="#{diarioElectronicoController.diarioBusquedaBean.contableHasta}" />
+													<f:validator validatorId="dateRangeValidator" />
+													<p:ajax global="false" event="change"
+															process="contableDesde, contableHasta"
+															update="contableDesde, contableHasta, contableDesdeVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="contableDesde, contableHasta"
+															update="contableDesde, contableHasta, contableDesdeVal"
+															partialSubmit="true" /> 
+												</p:calendar>
+											</div>
+											<div class="grid_24">
+												<p:message for="contableHasta" display="icon" id="contableHastaVal"
+													styleClass="contableHasta"></p:message>
+												<p:outputLabel value="."
+													styleClass="label-transparente contableHasta"
+													for="contableHasta" />
+												<div class="clear-3"></div>
+												<p:calendar id="contableHasta" locale="es"
+													styleClass="contableHasta"
+													value="#{diarioElectronicoController.diarioBusquedaBean.contableHasta}"
+													pattern="dd/MM/yyyy" mask="true" showOn="button"
+													style="float:left;" placeholder="HASTA"
+													maxdate="#{diarioElectronicoController.contextoUtils.fechaContableActual}">
+													<f:attribute name="beginDate"
+														value="#{diarioElectronicoController.diarioBusquedaBean.contableDesde}" />
+
+													<f:validator validatorId="dateRangeValidator" />
+													<p:ajax global="false" event="change"
+															process="contableDesde, contableHasta"
+															update="contableDesde, contableHasta, contableDesdeVal, contableHastaVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="contableDesde, contableHasta"
+															update="contableDesde, contableHasta, contableDesdeVal, contableHastaVal"
+															partialSubmit="true" />
+												</p:calendar>
+											</div>
+
+										</div>
+
+
+										<!-- Hora tecleo -->
+										<div class="grid_16 row-flex">
+											<div class="grid_24">
+												<p:message for="tecleoDesde" display="icon"
+													styleClass="tecleoDesde"></p:message>
+												<p:outputLabel id="horaTecleoLabel"
+													value="Rango de hora tecleo" for="tecleoDesde"
+													styleClass="tecleoDesde"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:calendar id="tecleoDesde" locale="es"
+													styleClass="calendar-hora tecleoDesde" icon="fa fa-clock-o"
+													value="#{diarioElectronicoController.diarioBusquedaBean.tecleoDesde}"
+													pattern="HH:mm:ss" timeOnly="true" showOn="button"
+													style="float:left;" placeholder="DESDE" maxlength="8">
+													<f:attribute name="endDate"
+														value="#{diarioElectronicoController.diarioBusquedaBean.tecleoHasta}" />
+													<f:validator validatorId="dateRangeValidator" />
+												</p:calendar>
+											</div>
+											<div class="grid_24">
+												<p:message for="tecleoHasta" display="icon"
+													styleClass="tecleoHasta"></p:message>
+												<p:outputLabel value="."
+													styleClass="label-transparente tecleoHasta"
+													for="tecleoHasta" />
+												<div class="clear-3"></div>
+												<p:calendar id="tecleoHasta" locale="es"
+													styleClass="calendar-hora tecleoHasta" icon="fa fa-clock-o"
+													value="#{diarioElectronicoController.diarioBusquedaBean.tecleoHasta}"
+													pattern="HH:mm:ss" timeOnly="true" showOn="button"
+													style="float:left;" placeholder="HASTA" maxlength="8">
+													<f:attribute name="beginDate"
+														value="#{diarioElectronicoController.diarioBusquedaBean.tecleoDesde}" />
+													<f:validator validatorId="dateRangeValidator" />
+												</p:calendar>
+											</div>
+
+										</div>
+									</div>
+
+
+								</p:tab>
+
+								<!--Tab de Importe de la operación -->
+								<p:tab title="Importe de la operación">
+
+									<!-- Importe -->
+									<div class="grid_24">
+										<div class="grid_24">
+											<p:message for="importeDesde" display="icon"></p:message>
+											<p:outputLabel value="Importe" for="importeDesde"></p:outputLabel>
+											<div class="clear-3"></div>
+											<pe:inputNumber id="importeDesde" styleClass="pe-inputNumber"
+												decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+												maxValue="999999999999.99"
+												value="#{diarioElectronicoController.diarioBusquedaBean.importeDesde}"
+												placeholder="Importe desde">
+												<f:attribute name="maxRange"
+													value="#{diarioElectronicoController.diarioBusquedaBean.importeHasta}" />
+												<p:ajax process="@this" partialSubmit="true" />
+												<f:validator validatorId="bigDecimalRangeValidator" />
+											</pe:inputNumber>
+											<span class="pe-inputNumber-suffix">MXN</span>
+										</div>
+										<div class="grid_24">
+											<p:message for="importeHasta" display="icon"></p:message>
+											<p:outputLabel value="." styleClass="label-transparente"
+												for="importeHasta" />
+											<div class="clear-3"></div>
+											<pe:inputNumber id="importeHasta" styleClass="pe-inputNumber"
+												decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+												maxValue="999999999999.99"
+												value="#{diarioElectronicoController.diarioBusquedaBean.importeHasta}"
+												placeholder="Importe hasta">
+												<f:attribute name="minRange"
+													value="#{diarioElectronicoController.diarioBusquedaBean.importeDesde}" />
+												<p:ajax process="@this" partialSubmit="true" />
+												<f:validator validatorId="bigDecimalRangeValidator" />
+											</pe:inputNumber>
+											<span class="pe-inputNumber-suffix">MXN</span>
+										</div>
+									</div>
+
+									<!-- Signo Contable -->
+									<div class="grid_8">
+										<p:outputLabel for="signoContable" id="signoContableLabel"
+											value="Signo Contable"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="signoContable"
+											value="#{diarioElectronicoController.diarioBusquedaBean.signoContable}">
+											<f:selectItem itemLabel="Seleccione" />
+											<f:selectItem itemLabel="Debe" itemValue="D" />
+											<f:selectItem itemLabel="Haber" itemValue="H" />
+											<!-- 											<f:selectItem itemLabel="Ambos" itemValue="A" /> -->
+											<p:ajax event="change" partialSubmit="true" process="@this"></p:ajax>
+										</p:selectOneMenu>
+									</div>
+								</p:tab>
+
+								<p:tab title="Transacción">
+
+									<!-- Tipo de Operación -->
+									<div class="grid_10">
+										<p:outputLabel for="tipoOperacion" id="tipoOperacionLabel"
+											value="Tipo de operación"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="tipoOperacion"
+											value="#{diarioElectronicoController.diarioBusquedaBean.tipoOperacion}">
+
+											<f:selectItem itemLabel="Seleccione" />
+											<f:selectItem itemLabel="Caja" itemValue="C" />
+											<f:selectItem itemLabel="Intervención" itemValue="I" />
+											<f:selectItem itemLabel="Automático" itemValue="A" />
+
+											<p:ajax event="change" partialSubmit="true" process="@this"></p:ajax>
+										</p:selectOneMenu>
+									</div>
+
+
+								</p:tab>
+
+								<p:tab title="Datos de auditoría">
+
+									<!-- Cuenta -->
+									<div class="grid_8">
+										<p:outputLabel for="cuenta" id="cuentaLabel"
+											value="No. Cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="cuenta"
+											value="#{diarioElectronicoController.diarioBusquedaBean.cuenta}"
+											maxlength="10">
+											<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="false" />
+										</p:inputText>
+									</div>
+
+									<!-- boton de busqueda de cuentas -->
+									<div class="grid_3">
+										<!-- boton de busqueda de cuentas -->
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton styleClass="btn-icono-conbackground"
+											id="busquedaPersona" immediate="true" title="Buscar cuenta"
+											action="#{diarioElectronicoController.buscarPersona()}"
+											icon="ui-icon-search" ajax="true" update="@form"></p:commandButton>
+									</div>
+
+
+									<!-- Usuario -->
+									<div class="grid_10">
+										<p:outputLabel for="usuario" id="usuarioLabel" value="Usuario"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="usuario"
+											value="#{diarioElectronicoController.diarioBusquedaBean.usuario}"
+											maxlength="10">
+										</p:inputText>
+									</div>
+
+
+								</p:tab>
+							</p:accordionPanel>
+						</div>
+						<!--Botones  -->
+						<p:commandButton
+							styleClass="btn_secundario margin-top-10 margin-right-10"
+							value="Cancelar" immediate="true"
+							action="#{diarioElectronicoController.cancelar()}" />
+						<!-- <p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Limpiar" update="@form" immediate="true"
+							actionListener="#{diarioElectronicoController.limpiar()}"
+							oncomplete="$('input').val('')" /> -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Limpiar" update="@form" immediate="true"
+							actionListener="#{diarioElectronicoController.limpiar()}" />
+						<!-- <p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Buscar" update="@form" widgetVar="btnBuscar"
+							onclick="PF('btnBuscar').disable()"
+							oncomplete="PF('btnBuscar').enable();"
+							action="#{diarioElectronicoController.buscar()}" /> -->
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Buscar" update="@form" widgetVar="btnBuscar"
+							action="#{diarioElectronicoController.buscar()}" />
+					</h:form>
+				</div>
+				<!--
+					plantilla de ventana de diálogo
+					-->
+				<p:dialog widgetVar="dialogCancelar" id="dialogCancelar"
+					showEffect="fade" hideEffect="fade" appendTo="@(body)"
+					header="¡Atención!" dynamic="true" modal="true" closable="false"
+					resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atencion! Está a punto de cancelar el alta de cliente" />
+					<div class="clear"></div>
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						action="#{diarioElectronicoController.cancelar()}"
+						id="aceptarButton" value="Aceptar" immediate="true" />
+
+					<p:commandButton styleClass="btn_secundario_dialog"
+						id="cancelarButton" value="Cancelar"
+						onclick="PF('dialogCancelar').hide();" />
+				</p:dialog>
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

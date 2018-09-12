@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="altaCnaesObjSocial" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.CnaeBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.altaobjetosocialcnae.Ejecutar.ITRPEAMPLICNAEOBJSOC.TRPEAMPLICNAEOBJSOCE
+		</class-b>
+		<field>
+		 	<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+		 	<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+		 	<a>codCnae</a>
+			<b>codcnaepers</b>
+		</field>
+		<field>
+		 	<a>objSocial</a>
+			<b>objsocialpe</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="bajaCnaesObjSocial" wildcard="false"
+		map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.CnaeBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.bajaobjetosocialcnae.Ejecutar.ITRPEBAJACNAEOBJSOCT.TRPEBAJACNAEOBJSOCEV.PEOTROCNAEP
+		</class-b>
+		<field>
+		 	<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+		 	<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+		 	<a>codCnae</a>
+			<b>codcnaepers</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaCnaesObjSocial" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultaobjetosocialcnae.ResponseBansefi.OTRPECONSCNAEOBJSOCT.TRPECONSCNAEOBJSOCEV1.TRPECONSCNAEOBJSOCEV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.CnaeBean
+		</class-b>
+		<field>
+		 	<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+		 	<a>idinternope</a>
+			<b>idInterno</b>
+		</field>
+		<field>
+		 	<a>codcnaepers</a>
+			<b>codCnae</b>
+		</field>
+	</mapping>
+</mappings>

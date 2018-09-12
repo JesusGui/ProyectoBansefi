@@ -1,0 +1,348 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								onclick="PF('dlgCancelar').show();"></p:commandButton>
+							<h1>Diferencias</h1>
+						</div>
+						
+						<h:form id="formEnvioEntreOficinas">
+
+							<div class="contenedor-campos">
+
+								<div class="grid_48 alpha">
+								
+									<div class="grid_9">
+										<p:outputLabel value="Rango de fechas" />	
+									</div>
+									
+									<div class="clear-3"></div>
+									<div class="clear-row" />
+								
+									<div class="grid_9">
+										<p:message id="msgFechaDesde" for="fechaDesde" display="icon"></p:message>	
+										<p:outputLabel value="Desde" for="fechaDesde" id="lblDesde"/>
+										<div class="clear-3"></div>
+										<p:calendar id="fechaDesde" tabindex="1"
+											disabled="#{diferenciasController.fechasDisabled}"
+											value="#{diferenciasController.diferenciaBean.fechaDesde}" pattern="dd/MM/yyyy"
+											mask="true" showOn="button" requiredMessage="" locale="es"
+											mindate="#{diferenciasController.fechaMinima}"
+											maxdate="#{diferenciasController.fechaMaxima}">
+											<f:attribute name="endDate"
+												value="#{diferenciasController.diferenciaBean.fechaHasta}" />
+											<f:validator validatorId="dateRangeValidator" />
+											<p:ajax event="change"
+												process="fechaDesde"
+												update="fechaDesde msgFechaDesde lblDesde"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect"
+												process="fechaDesde"
+												update="fechaDesde msgFechaDesde lblDesde"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+									
+									<div class="grid_9">
+										<p:message id="msgFechaHasta" for="fechaHasta" display="icon" />
+										<p:outputLabel value="Hasta" for="fechaHasta" id="lblHasta" />
+										<p:calendar id="fechaHasta" tabindex="2"
+											disabled="#{diferenciasController.fechasDisabled}"
+											value="#{diferenciasController.diferenciaBean.fechaHasta}" pattern="dd/MM/yyyy"
+											mask="true" showOn="button" requiredMessage="" locale="es"
+											mindate="#{diferenciasController.fechaMinima}"
+											maxdate="#{diferenciasController.fechaMaxima}">
+											<p:ajax event="change"
+												process="fechaHasta"
+												update="fechaHasta msgFechaHasta lblHasta"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect"
+												process="fechaHasta"
+												update="fechaHasta msgFechaHasta lblHasta"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+									
+									<div class="float-right">
+										<p:commandButton id="btnBuscar" tabindex="3" icon="fa fa-search"
+											rendered="#{diferenciasController.listaDiferencias.size() eq 0}"
+											styleClass="btn_primario margin-top-10" value="Buscar"
+											action="#{diferenciasController.consultarDiferencias()}"
+											update="@form">
+										</p:commandButton>
+										
+										<p:commandButton id="btnLimpiar" value="Limpiar"
+											rendered="#{diferenciasController.listaDiferencias.size() > 0}"
+											styleClass="btn_secundario margin-top-10"
+											action="#{diferenciasController.limpiar()}"
+											update="@form" immediate="true">
+										</p:commandButton>
+									</div>
+
+								</div>
+								
+								<div class="clear-row" />
+								<div class="clear-3" />
+								
+								<h:panelGroup rendered="#{diferenciasController.listaDiferencias.size() > 0}">
+								
+									<p:outputLabel styleClass="titulo-form margin-left-10"
+										value="Registros con diferencias" />
+										
+									<div class="clear-row" />
+									<div class="clear-3" />
+									
+									<p:dataTable id="tblDiferencias" value="#{diferenciasController.listaDiferencias}"
+										var="diferencia" widgetVar="tblDiferencias">
+										
+										<p:column headerText="Fecha de solicitud">
+											<div class="centrar-objeto">
+												<p:outputLabel value="#{diferenciasController.formateoFecha(diferencia.fechaPeticion)}">
+													<f:convertDateTime pattern="dd/MM/yyyy"/>
+												</p:outputLabel>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Centro destino">
+											<div class="centrar-objeto">
+												<p:outputLabel value="#{diferencia.centroDesino}"/>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Tipo">
+											<div class="centrar-objeto">
+												<p:outputLabel value="#{diferencia.codigoDistribucion.descripcionL}"/>
+											</div>
+										</p:column>
+										
+										<p:column headerText="No. Urgente">
+											<div class="centrar-objeto">
+												<p:outputLabel value="#{diferencia.numeroUrgente}"/>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Estatus">
+											<div class="centrar-objeto">
+												<p:outputLabel value="#{diferencia.estatus.descripcionL}"/>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Importe autorizado">
+											<div class="float-right">
+												<p:outputLabel value="#{diferencia.totalAutorizado}">
+													<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+														currencySymbol="MXN" />
+												</p:outputLabel>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Importe recibido">
+											<div class="float-right">
+												<p:outputLabel value="#{diferencia.totalRecibido}">
+													<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+														currencySymbol="MXN" />
+												</p:outputLabel>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Diferencia">
+											<div class="float-right">
+												<p:outputLabel value="#{diferenciasController.calculcaDiferencia(diferencia.totalAutorizado, diferencia.totalRecibido)}">
+													<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+														currencySymbol="MXN" />
+												</p:outputLabel>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Desglose">
+											<div class="centrar-objeto">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-eye" alt="Ver desglose" title="Ver desglose"
+													actionListener="#{diferenciasController.verDetalleDiferencia(diferencia)}"
+													update="@form">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+											</div>
+										</p:column>
+										
+										<p:column headerText="Corregir">
+											<div class="centrar-objeto">
+												<p:commandButton styleClass="btn-icono btn-panel"
+													icon="fa fa-check-circle"
+													actionListener="#{diferenciasController.cargarCorreccionDiferencia(diferencia)}"
+													update="@form">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+											</div>
+										</p:column>
+										
+									</p:dataTable>
+								</h:panelGroup>
+								
+								<div class="clear-row" />
+
+							</div>
+						
+						</h:form>
+
+						<p:dialog widgetVar="dlgOperacionExitosa" id="dlgOperacionExitosa"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-exito-icon exito-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="OPERACIÓN REALIZADA CORRECTAMENTE" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" immediate="true" update=":formEnvioEntreOficinas"
+								action="#{diferenciasController.consultarDiferencias()}"
+								onclick="PF('dlgOperacionExitosa').hide();" />
+						</p:dialog>
+
+						<p:dialog widgetVar="dlgCancelar" id="dlgCancelar"
+							appendTo="@(body)" header="Cancelar autorización" modal="true"
+							visible="false" closable="false" resizable="false"
+							draggable="false" showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="¡Atención! Si continua perderá todos los cambios" />
+							<div class="clear"></div>
+							<p:outputLabel styleClass="modal-accion"
+								value="¿Desea continuar de todos modos?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true"
+								action="#{diferenciasController.irInicio()}" />
+							<p:commandButton styleClass="btn_secundario_dialog"
+								value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgMensajeError" id="dlgMensajeError"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-error-icon error-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{diferenciasController.mensajeError}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgMensajeAdvertencia" id="dlgMensajeAdvertencia"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{diferenciasController.mensajeAdvertencia}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" onclick="PF('dlgMensajeAdvertencia').hide();" />
+						</p:dialog>
+						
+						<p:dialog widgetVar="dlgMensajeInfo" id="dlgMensajeInfo"
+							appendTo="@(body)" modal="true" visible="false" closable="false"
+							resizable="false" draggable="false" showEffect="fade"
+							hideEffect="fade">
+							<span class="ui-messages-info-icon info-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="#{diferenciasController.mensajeInfo}" />
+							<div class="clear"></div>
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Aceptar" onclick="PF('dlgMensajeInfo').hide();" />
+						</p:dialog>
+						
+						<p:dialog id="dlgConfirmarCorreccion"
+							widgetVar="dlgConfirmarCorreccion" showEffect="fade"
+							hideEffect="fade" appendTo="@(body)" closable="false" dynamic="true"
+							draggable="false" modal="true" resizable="false" header="Resultado">
+							<!-- <span class="ui-messages-warn-icon warn-dialog" /> -->
+							<div class="modal-mensaje">
+								<p:outputLabel
+									value="Va a corregir la diferencia de la petición de efectivo solicitada el " />
+								<p:outputLabel styleClass="modal-mensaje-detalle" value="#{diferenciasController.formateoFechaString(diferenciasController.diferenciaCorregir.fechaPeticion)}"/>
+									
+								<div class="margin-bottom-20"></div>
+								<p:outputLabel
+									rendered="#{diferenciasController.diferenciaCorregir.numeroUrgente gt 0}" value="Urgente: " />
+								<p:outputLabel styleClass="modal-mensaje-detalle" rendered="#{diferenciasController.diferenciaCorregir.numeroUrgente gt 0}"
+									value="#{diferenciasController.diferenciaCorregir.numeroUrgente}" />
+								
+								<div class="clear-3"></div>	
+								<p:outputLabel value="Centro destino: " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{diferenciasController.obtenerDescripcionCentro(diferenciasController.diferenciaCorregir.centroDesino).descripcionL}" />
+								
+								<div class="clear-3"></div>	
+								<p:outputLabel value="Estatus: " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{diferenciasController.diferenciaCorregir.estatus.descripcionL}" />
+								
+								<div class="clear-3"></div>	
+								<p:outputLabel value="Importe autorizado: " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{diferenciasController.diferenciaCorregir.totalAutorizado}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								
+								<div class="clear-3"></div>
+								<p:outputLabel value="Importe recibido: " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{diferenciasController.diferenciaCorregir.totalRecibido}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								
+								<div class="clear-3"></div>
+								<p:outputLabel value="Diferencia: " />
+								<p:outputLabel styleClass="modal-mensaje-detalle"
+									value="#{diferenciasController.calculcaDiferencia(diferenciasController.diferenciaCorregir.totalAutorizado, diferenciasController.diferenciaCorregir.totalRecibido)}">
+									<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+																
+							</div>
+							<div class="margin-bottom-20"></div>
+							<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Continuar" immediate="true" action="#{diferenciasController.corregirDiferencias()}"
+								oncomplete="PF('dlgConfirmarCorreccion').hide();"/>
+							<p:commandButton styleClass="btn_secundario_dialog" value="Cancelar"
+								onclick="PF('dlgConfirmarCorreccion').hide();" />
+						</p:dialog>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="consultaOtrosNombresPersona" wildcard="false"
+		map-null="false" map-empty-string="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.OtroValorBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.consultaotrosnombrespersona.ResponseBansefi.OTRPECONSPEOTRONOMB.TRPECONSPEOTRONOMBE1.TRPECONSPEOTRONOMBE
+		</class-b>
+		<field>
+		 	<a>clave</a>
+			<b>CODNOMBPERS</b>
+		</field>
+		<field>
+		 	<a>valor</a>
+			<b>VALOTRSNOMBPE</b>
+		</field>
+	</mapping>
+</mappings>

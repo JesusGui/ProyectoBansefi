@@ -1,0 +1,313 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/plantilla-inicio.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmDetalleApunte" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{apunteController.volverAFlujoOrigen()}" />
+							<div>
+								<h:panelGroup id="encabezadoPredeterminado" layout="block"
+									rendered="#{apunteController.parametrosBean.apunteSeleccionado.apunteLiquidacion != 1}">
+									<h2 class="gris-b">
+										Detalle de apunte: <span class="rojo-b">#{apunteController.parametrosBean.cuentaBean.tipoCuenta}</span>
+									</h2>
+									<h3 class="gris-b">(#{apunteController.parametrosBean.cuentaBean.numeroCuenta}),</h3>
+									<h2 class="gris-b">#{apunteController.obtenerDescTipoCuenta()},</h2>
+									<h2 class="gris-b">NÚM.
+										#{apunteController.parametrosBean.apunteSeleccionado.numSec}</h2>
+								</h:panelGroup>
+								<h:panelGroup id="encabezadoConsultaLiquidacion" layout="block"
+									rendered="#{apunteController.parametrosBean.apunteSeleccionado.apunteLiquidacion == 1}">
+									<h2 class="gris-b">
+										Detalle de apunte: <span class="rojo-b">#{apunteController.apunteSeleccionado.productoVendible}</span>
+									</h2>
+									<h3 class="gris-b">(#{apunteController.apunteSeleccionado.numCuenta}),</h3>
+									<h2 class="gris-b">#{apunteController.obtenerDescTipoCuenta()},</h2>
+									<h2 class="gris-b">NÚM.
+										#{apunteController.apunteSeleccionado.numSec}</h2>
+								</h:panelGroup>
+							</div>
+						</div>
+
+						<div class="contenedor-campos margin-top-20">
+
+							<div class="grid_24 marco-datospersonales">
+								<p:outputLabel value="Titular: " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.cuentaBean.nombreTitular}, " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.obtenerDescTipoId()} " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.cuentaBean.numIdentificacionTitular}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Tipo de operación: " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.apunteSeleccionado.codigoOperacion} "
+									rendered="#{apunteController.parametrosBean.apunteSeleccionado.apunteLiquidacion != 1}" />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.apunteSeleccionado.codigoOperacion} "
+									rendered="#{apunteController.parametrosBean.apunteSeleccionado.apunteLiquidacion == 1}" />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.obtenerDescTipoOperacion()}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Concepto: " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.apunteSeleccionado.conceptoDetalle.toUpperCase()}"
+									rendered="#{apunteController.parametrosBean.apunteSeleccionado.apunteLiquidacion != 1}" />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.apunteSeleccionado.conceptoDetalle.toUpperCase()}"
+									rendered="#{apunteController.parametrosBean.apunteSeleccionado.apunteLiquidacion == 1}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Fecha contable: " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.apunteSeleccionado.fechaContable}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="Fecha valor: " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.apunteSeleccionado.fechaValor}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="Importe: " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.apunteSeleccionado.importe}">
+									<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="Signo: " />
+								<p:outputLabel styleClass="bold"
+									value="#{apunteController.parametrosBean.apunteSeleccionado.signo}" />
+							</div>
+
+							<div class="grid_24 margin-top-10">
+								<p:dataTable id="tblDetalleApunte" widgetVar="tblDetalleApunte"
+									var="indicador" rowIndexVar="iterador"
+									value="#{apunteController.parametrosBean.apunteSeleccionado.indicadores}"
+									rendered="#{apunteController.parametrosBean.apunteSeleccionado.indicadores.size() > 0}">
+									<p:column headerText="Indicador">
+										<p:outputLabel
+											value="#{apunteController.obtenerColumnaTabla(iterador, 1)}" />
+									</p:column>
+									<p:column headerText="Situación apunte">
+										<p:outputLabel
+											value="#{apunteController.obtenerColumnaTabla(iterador, 2)}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+
+							<div class="grid_48">
+
+								<p:accordionPanel id="acordionConsultas"
+									widgetVar="acordionConsultas" activeIndex="-1" dynamic="true"
+									multiple="true">
+									<p:ajax event="tabChange"
+										listener="#{apunteController.onTabChange}"
+										update="acordionConsultas" />
+									<p:tab id="tabConsultaAuditoria" title="Auditoría">
+										<h:panelGroup layout="block"
+											styleClass="sinresultados sin-margen"
+											rendered="#{apunteController.returnCodAuditoria == 7}">
+											<div>
+												<p:outputLabel value="No existe información que mostrar." />
+											</div>
+										</h:panelGroup>
+										<p:panel id="panelConsultaAuditoria"
+											rendered="#{apunteController.returnCodAuditoria != 7}"
+											styleClass="marco-datospersonales sin-margen">
+											<div class="grid_24">
+												<p:outputLabel value="Centro de operación: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.obtenerDescCentro(apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.centroOperativo)}" />
+												<div class="clear"></div>
+												<p:outputLabel value="Centro de acuerdo: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.obtenerDescCentro(apunteController.parametrosBean.cuentaBean.centro)}" />
+												<div class="clear"></div>
+												<p:outputLabel value="Empleado origen: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.empleadoOrigen} " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.empleadoOrigenDesc}" />
+												<div class="clear"></div>
+												<p:outputLabel value="Empleado autorizador: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.empleadoAutorizado} " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.empleadoAutorizadoDesc}" />
+												<div class="clear"></div>
+												<p:outputLabel value="Situación: "
+													rendered="#{apunteController.apunteSeleccionado.auditoriaBean.idSituacion != null}" />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.obtenerDescCatalogoSituacionAudit(apunteController.apunteSeleccionado.auditoriaBean.idSituacion)}"
+													rendered="#{apunteController.apunteSeleccionado.auditoriaBean.idSituacion != null}" />
+											</div>
+											<div class="grid_24">
+												<p:outputLabel value="Código de transacción: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.transaccion} " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.obtenerDescCodTransaccion()}" />
+												<div class="clear"></div>
+												<p:outputLabel value="Fecha contable: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.fechaContable}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</p:outputLabel>
+												<div class="clear"></div>
+												<p:outputLabel value="Terminal: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.terminal}" />
+												<div class="clear"></div>
+												<p:outputLabel value="Fecha operación: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.fechaOperacion}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</p:outputLabel>
+												<div class="clear"></div>
+												<p:outputLabel value="Hora operación: " />
+												<p:outputLabel styleClass="bold"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.auditoriaBean.horaOperacion}" />
+											</div>
+											<div class="clear"></div>
+										</p:panel>
+									</p:tab>
+
+									<p:tab id="tabConsultaAmpliada"
+										title="Consulta ampliada de apunte">
+										<h:panelGroup id="panelConsultaAmpliada">
+											<h:panelGroup rendered="#{not empty apunteController.parametrosBean.apunteSeleccionado.codigoOrigenApunte.trim()}">
+											<div class="grid_48">
+												<p:outputLabel value="Originado por: " />
+												<p:outputLabel
+													value="#{apunteController.obtenerInfoTranTipoPlanif(apunteController.parametrosBean.apunteSeleccionado.codigoOrigenApunte)}"
+													styleClass="bold" />
+												<p:outputLabel 
+													value=" (#{apunteController.parametrosBean.apunteSeleccionado.idOrigenApunte})"
+													styleClass="bold" />
+											</div>
+											</h:panelGroup>
+											<div class="clear-row"></div>
+											<div class="grid_24">
+												<p:dataTable id="tblConsultaAmpliada1"
+													widgetVar="tblConsultaAmpliada1"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.detalleTipoTranPlanifApunte}"
+													var="infoTipoTranPlanif"
+													rendered="#{apunteController.parametrosBean.apunteSeleccionado.detalleTipoTranPlanifApunte.size() > 0}">
+													<p:column headerText="Tipo transacción planificada">
+														<p:outputLabel
+															value="#{apunteController.obtenerDescCodTransaccion(infoTipoTranPlanif.codInf)}" />
+													</p:column>
+													<p:column headerText="Fecha">
+														<p:outputLabel value="#{infoTipoTranPlanif.valorInf}" />
+													</p:column>
+												</p:dataTable>
+												<h:panelGroup layout="block"
+													styleClass="sinresultados sin-margen"
+													rendered="#{apunteController.parametrosBean.apunteSeleccionado.detalleTipoTranPlanifApunte.size() == 0}">
+													<div>
+														<p:outputLabel value="No existe información que mostrar"/><br/>
+														<p:outputLabel value="para 'Tipo transacción planificada'." styleClass="label-inferior"/>
+													</div>
+												</h:panelGroup>
+											</div>
+
+											<div class="grid_24">
+												<div class="clear"></div>
+												<p:dataTable id="tblConsultaAmpliada2"
+													widgetVar="tblConsultaAmpliada2"
+													value="#{apunteController.parametrosBean.apunteSeleccionado.detalleInfoAdicionalApunte}"
+													var="infoAdic"
+													rendered="#{apunteController.parametrosBean.apunteSeleccionado.detalleInfoAdicionalApunte.size() > 0}">
+													<p:column headerText="Información adicional apunte">
+														<p:outputLabel
+															value="#{apunteController.obtenerDescInfoAdic(infoAdic.codInf)}" />
+													</p:column>
+													<p:column headerText="Valor información adicional apunte">
+														<p:outputLabel value="#{infoAdic.valorInf}" />
+													</p:column>
+												</p:dataTable>
+												<h:panelGroup layout="block"
+													styleClass="sinresultados sin-margen"
+													rendered="#{apunteController.parametrosBean.apunteSeleccionado.detalleInfoAdicionalApunte.size() == 0}">
+													<div>	
+														<p:outputLabel value="No existe información que mostrar"/><br/>
+														<p:outputLabel value="para 'Información adicional apunte'." styleClass="label-inferior"/>
+													</div>
+												</h:panelGroup>
+											</div>
+											<div class="clear"></div>
+										</h:panelGroup>
+									</p:tab>
+
+									<p:tab id="tabConsultaOrigen" title="Origen">
+										<p:panel layout="block" styleClass="sinresultados sin-margen"
+											rendered="#{apunteController.returnCodOrigen == 7}">
+											<div>
+												<p:outputLabel value="No existe información que mostrar." />
+											</div>
+										</p:panel>
+
+										<h:panelGroup id="panelConsultaOrigen" layout="block"
+											rendered="#{apunteController.returnCodOrigen != 7}">
+											<h:panelGroup id="panelOrigenLiquidacion" layout="block" styleClass=""
+												rendered="#{apunteController.parametrosBean.apunteSeleccionado.codigoOrigenApunte == 'HL'}">
+												<ui:include src="../../composites/origenLiquidacion.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup id="panelOrigenChequeBancario" layout="block" styleClass="marco-datospersonales sin-margen"
+												rendered="#{apunteController.parametrosBean.apunteSeleccionado.codigoOrigenApunte == 'CJ'}">
+												<ui:include
+													src="../../composites/origenChequeBancario.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup id="panelOrigenTraspaso" layout="block"
+												rendered="#{apunteController.parametrosBean.apunteSeleccionado.codigoOrigenApunte == 'TF'}">
+												<ui:include
+													src="../../composites/origenTraspasoTF.xhtml" />
+											</h:panelGroup>
+											<h:panelGroup id="panelOrigenCheque" layout="block" styleClass="marco-datospersonales sin-margen"
+												rendered="#{apunteController.parametrosBean.apunteSeleccionado.codigoOrigenApunte == 'CP'}">
+												<ui:include	src="../../composites/origenCheque.xhtml">
+													<ui:param name="origen" value="#{apunteController.apunteChequeBean}" />
+												</ui:include>
+											</h:panelGroup>
+										</h:panelGroup>
+
+										<div class="clear"></div>
+										
+									</p:tab>
+
+								</p:accordionPanel>
+
+							</div>
+
+							<div class="clear"></div>
+						</div>
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

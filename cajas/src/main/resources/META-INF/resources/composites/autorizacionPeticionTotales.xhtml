@@ -1,0 +1,172 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<div class="grid_48 alpha">
+
+		<div class="grid_9">
+			<p:outputLabel for="fechaAbastecimiento"
+				value="Fecha de abastecimiento" id="lblFechaAbast" />
+			<div class="clear-3"></div>
+			<p:calendar id="fechaAbastecimiento" locale="es" mask="true" tabindex="1"
+				required="true" pattern="dd/MM/yyyy" placeholder=""
+				requiredMessage="" showOn="button"
+				value="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.fechaAbastecimiento}"
+				maxdate="#{currentDate.toString('dd/MM/yyyy')}">
+				<p:ajax event="change" process="@this"
+					update="@this fechaAbast lblFechaAbast" partialSubmit="false"
+					global="false" />
+				<p:ajax event="dateSelect" process="fechaAbastecimiento"
+					update="fechaAbastecimiento" partialSubmit="false" />
+				<p:message id="fechaAbast" for="fechaAbastecimiento" display="icon"></p:message>
+			</p:calendar>
+		</div>
+
+		<div class="grid_5">
+			<p:commandButton id="btnBusquedaTotales" tabindex="2"
+				styleClass="btn_primario margin-top-10" value="Buscar"
+				icon="fa fa-search" validateClient="true"
+				action="#{autorizacionPeticionTotalesController.buscarPeticiones()}"
+				update="@form fechaAbast">
+				<p:ajax event="click" process="@this" global="true"
+					update="@form fechaAbast" />
+			</p:commandButton>
+		</div>
+
+	</div>
+
+	<div class="clear-row"></div>
+	<h:panelGroup rendered="#{autorizacionPeticionTotalesController.mostrarTabla}">
+
+		<div class="grid_48 saldo-disponible">
+
+			<div class="clear-row"></div>
+			<div class="grid_37" style="text-align: right;">
+				<h:outputLabel value="Saldo anterior: "></h:outputLabel>
+			</div>
+			<div class="grid_11" style="text-align: right;">
+				<h:outputLabel id="saldoAnterior"
+					value="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.saldoAnterior}">
+					<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+						currencySymbol="MXN" />
+				</h:outputLabel>
+			</div>
+			<div class="clear-row"></div>
+			<div class="grid_37" style="text-align: right;">
+				<h:outputLabel value="Saldo actual: "></h:outputLabel>
+			</div>
+			<div class="grid_11" style="text-align: right;">
+				<h:outputLabel id="saldoActual"
+					value="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.saldoActual}">
+					<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+						currencySymbol="MXN" />
+					<p:ajax event="blur"
+						listener="#{autorizacionPeticionTotalesController.calculaSaldoActual()}"
+						update="saldoActual " global="false"></p:ajax>
+				</h:outputLabel>
+			</div>
+			<div class="clear-row"></div>
+			<div class="grid_37" style="text-align: right;">
+				<h:outputLabel value="Total pedido: "></h:outputLabel>
+			</div>
+			<div class="grid_11" style="text-align: right;">
+				<h:outputLabel id="totalPedido"
+					value="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.totalPedido}">
+					<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+						currencySymbol="MXN" />
+				</h:outputLabel>
+			</div>
+			<div class="clear-row"></div>
+			<div class="grid_37" style="text-align: right;">
+				<h:outputLabel value="Total autorizado: "></h:outputLabel>
+			</div>
+			<div class="grid_11" style="text-align: right;">
+				<h:outputLabel id="totalAutorizado"
+					value="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.totalAutorizado}">
+					<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+						currencySymbol="MXN" />
+					<p:ajax event="blur"
+						listener="#{autorizacionPeticionTotalesController.calculaTotalAutorizado()}"
+						update="totalAutorizado" global="false"></p:ajax>
+				</h:outputLabel>
+			</div>
+			<div class="clear-row"></div>
+		</div>
+
+		<p:dataTable
+			value="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.listaPeticiones}"
+			var="peticion" id="tablaDatos2" emptyMessage="SIN DATOS A MOSTRAR" style="text-align: center;">
+			
+			<p:column headerText=" " 
+				rendered="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.listaPeticiones.size() eq 0}">
+			</p:column>
+
+			<p:column headerText="Centro" style="text-align: center;" 
+				rendered="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.listaPeticiones.size() gt 0}">
+				<h:outputLabel value="#{peticion.centro}" id="centro" />
+			</p:column>
+
+			<p:column headerText="Importe pedido" 
+				rendered="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.listaPeticiones.size() gt 0}">
+				<div class="float-right">
+					<h:outputLabel value="#{peticion.importePedido}" id="importePedido">
+						<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+							currencySymbol="MXN" />
+					</h:outputLabel>
+				</div>
+			</p:column>
+
+			<p:column headerText="Importe autorizado" 
+				rendered="#{autorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.listaPeticiones.size() gt 0}">
+				<pe:inputNumber id="importeAutorizado"
+					value="#{peticion.importeAutorizado}" decimalPlaces="2"
+					decimalSeparator="." thousandSeparator="," symbol=" MXN"
+					symbolPosition="suffix" maxlength="12">
+					<p:ajax event="change" global="false" update="@form"
+						listener="#{autorizacionPeticionTotalesController.modificarImporteAutorizado(peticion)}" />
+				</pe:inputNumber>
+			</p:column>
+
+		</p:dataTable>
+
+		<div class="clear-row"></div>
+		<div class="clear-3"></div>
+
+		<div class="grid_48">
+
+			<p:commandButton id="btnAutorizar"
+				styleClass="btn_primario margin-top-10 margin-right-10 float-right"
+				value="Autorizar"
+				onclick="PF('dlgConfirmarAutorizacionTotales').show()">
+			</p:commandButton>
+
+			<p:commandButton id="btnLimpiar"
+				styleClass="btn_secundario margin-top-10 margin-right-10 float-right"
+				value="Limpiar" update="@this @form"
+				action="#{autorizacionPeticionTotalesController.limpiarTabla()}">
+			</p:commandButton>
+
+			<p:commandButton id="btnCerrar"
+				styleClass="btn_secundario margin-top-10 margin-right-10 float-right"
+				value="Cerrar" onclick="PF('dlgSalir').show();" immediate="true">
+			</p:commandButton>
+
+		</div>
+
+	</h:panelGroup>
+
+	<div class="clear-row"></div>
+	<div class="clear-3"></div>
+
+	<p:remoteCommand
+		action="#{autorizacionPeticionTotalesController.autorizarPeticion()}"
+		name="autorizarPeticionTotales" immediate="true" />
+	
+	<p:remoteCommand action="#{autorizacionPeticionTotalesController.irResumen()}"
+		name="irResumenTotales" immediate="true"/>
+
+</ui:composition>

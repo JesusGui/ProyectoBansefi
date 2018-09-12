@@ -1,0 +1,274 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<p:panel header="" id="documentoNuevo#{myVarStatus.index}"
+		styleClass="panel-dinamico nuevo" widgetVar="documentoNuevo#{myVarStatus.index}">
+		<f:facet name="actions">
+			<p:commandButton id="eliminaDocumentoNuevo#{myVarStatus.index}"
+				label="Eliminar" update="@form" process="@form" 
+				alt="Eliminar documento"
+				styleClass="btn-icono btn-panel btn-eliminar" icon="ui-icon-trash"
+				actionListener="#{documentosPersonasController.eliminaNuevoDocumento(documento)}"
+				title="Eliminar documento">
+					<f:param name="disableValidationCabecera" value="true" />
+					<f:param name="disableValidation" value="true" />
+				</p:commandButton>
+		</f:facet>
+		<p:focus context="documentoNuevo#{myVarStatus.index}" />
+		<div class="grid_48">
+		<div class="grid_18">
+			<p:outputLabel for="tipoDocumentoNuevoLabel#{myVarStatus.index}"
+				value="Tipo de documento:" />
+			<div class="clear-3"></div>
+			<p:outputLabel styleClass="label-valor texto-sininput"
+				id="tipoDocumentoNuevoLabel#{myVarStatus.index}"
+				value="#{documento.tipoDesc}" />
+		</div>
+
+		<div class="grid_30">
+			<p:outputLabel value="Descripción" />
+			<span class="ui-outputlabel-rfi">*</span>
+			<div class="clear-3"></div>
+			<div class="grid_44 alpha">
+				<p:inputText id="descripcionDocumentoNuevo#{myVarStatus.index}"
+					required="#{param['disableValidation']==null}"
+					value="#{documento.descripcion}" label="Descripcion" maxlength="60"
+					onblur="this.value=this.value.toUpperCase()">
+					<pe:keyFilter regEx="/^[0-9a-zA-Z\-\.\ñ\Ñ ]*$/"
+						preventPaste="false" />
+				</p:inputText>
+			</div>
+			<div class="grid_4">
+				<p:commandButton id="emitirDocumentoNuevo#{myVarStatus.index}"
+					immediate="true" alt="Emitir documento" label="Emitir"
+					styleClass="btn-icono-conbackground" icon="ui-icon-check"
+					rendered="#{documentosPersonasController.emitirDocumento(documento)}"
+					action="#{documentosPersonasController.emitirDocumento()}"
+					title="Emitir documento" />
+			</div>
+
+		</div>
+		
+		</div>
+
+		<!-- Desplegable para mas datos -->
+
+		<p:panel styleClass="panel-desplegable"
+			id="masDatosDocumentoNuevo#{myVarStatus.index}" collapsed="true"
+			toggleable="true" header="" toggleSpeed="500"
+			widgetVar="panelNuevo#{myVarStatus.index}">
+			
+			<div class="clear-row"></div>
+			
+			<p:fieldset styleClass="grid_20 alpha" legend="Presentación">
+
+				<div class="grid_16">
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.original}" />
+
+					<p:outputLabel styleClass="centrado-vertical" value="Original" />
+
+				</div>
+
+
+				<div class="grid_16">
+
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.copia}" />
+
+					<p:outputLabel styleClass="centrado-vertical" value="Copia" />
+
+				</div>
+
+				<div class="grid_16">
+
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.duplicado}" />
+
+					<p:outputLabel styleClass="centrado-vertical" value="Duplicado" />
+
+				</div>
+
+			</p:fieldset>
+			<p:fieldset styleClass="grid_15" legend="Formato de documento">
+
+				<div class="grid_48">
+
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.noEstandar}" />
+
+					<p:outputLabel styleClass="centrado-vertical" value="No estándar" />
+				</div>
+
+			</p:fieldset>
+
+			<div class="grid_13">
+				<div class="margin-top-15"></div>
+				<p:outputLabel value="Soporte" />
+				<div class="clear-3"></div>
+				<p:selectOneMenu value="#{documento.soporte}">
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor"
+						noSelectionOption="true" />
+					<f:selectItems value="#{catalogoUtils.getCatalogo('TP_SOPTE_DC')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+				</p:selectOneMenu>
+			</div>
+
+			<div class="clear-row"></div>
+
+			<p:fieldset legend="Datos de expedición">
+				<div class="row-flex sin-padding">
+					<div class="grid_8">
+						<p:outputLabel value="Emisor" />
+						<div class="clear-3"></div>
+						<p:inputText value="#{documento.emisor}" label="Emisor"
+							maxlength="60" onblur="this.value=this.value.toUpperCase()">
+						</p:inputText>
+					</div>
+					<div class="grid_8">
+						<p:message id="fechaValDocumentoNuevo#{myVarStatus.index}"
+							for="fechaDocumentoNuevo#{myVarStatus.index}" display="icon"></p:message>
+						<p:outputLabel value="Fecha"
+							id="fechaLabelDocumentoNuevo#{myVarStatus.index}"
+							for="fechaDocumentoNuevo#{myVarStatus.index}" />
+						<div class="clear-3"></div>
+						<p:calendar id="fechaDocumentoNuevo#{myVarStatus.index}"
+							value="#{documento.fecha}" pattern="dd/MM/yyyy" mask="true"
+							maxdate="#{contextoUtils.getFechaContableActual()}" locale="es" showOn="button">
+							<f:attribute name="endDate"
+								value="#{contextoUtils.getFechaContableActual()}" />
+							<f:validator validatorId="dateRangeValidator" />
+							<p:ajax event="change"
+								process="fechaDocumentoNuevo#{myVarStatus.index}"
+								update="fechaDocumentoNuevo#{myVarStatus.index},fechaValDocumentoNuevo#{myVarStatus.index}"/>
+							<p:ajax event="dateSelect"
+								process="fechaDocumentoNuevo#{myVarStatus.index}"
+								update="fechaDocumentoNuevo#{myVarStatus.index},fechaValDocumentoNuevo#{myVarStatus.index}"/>
+						</p:calendar>
+					</div>
+					<div class="grid_24">
+						<p:outputLabel value="Municipio/localidad/Delegación" />
+						<div class="clear-3"></div>
+						<p:autoComplete id="municipio#{myVarStatus.index}"
+							widgetVar="municipioWidget#{myVarStatus.index}"
+							value="#{documento.municipioCatGeo}"
+							maxResults="5" maxlength="45" onblur="value=value.toUpperCase()"
+							completeMethod="#{domicilioUtils.getMunicipios}" var="mun"
+							itemLabel="#{mun.municipioLocalidad}"
+							itemValue="#{mun}" converter="#{catalogoBeanConverter}">
+							<f:attribute name="filter" value="MUNICIPIOS" />
+							<p:ajax event="change" update="paisDocumentoNuevo#{myVarStatus.index}"/>						
+							<p:ajax event="itemSelect" update="paisDocumentoNuevo#{myVarStatus.index}"/>
+							<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+						</p:autoComplete>
+					</div>
+					<div class="grid_8">
+						<p:outputLabel value="País" />
+						<div class="clear-3"></div>
+						<b:autoComplete disabled="true" id="paisDocumentoNuevo#{myVarStatus.index}"
+							catalog="PAISES" value="#{documento.municipioCatGeo.nombrePais}"
+							itemLabel="#{cat.descripcion}" itemValue="#{cat.tipo}"
+							maxlength="5" />
+					</div>
+				</div>
+
+			</p:fieldset>
+
+			<div class="clear-row"></div>
+
+			<p:fieldset legend="Ubicación">
+
+				<div class="grid_10">
+					<p:outputLabel value="Oficina" />
+					<div class="clear-3"></div>
+					<b:autoComplete value="#{documento.oficina}" maxlength="4"
+						catalogSource="catalogoCentrosLoaderTask" var="centro"
+						itemLabel="#{centro.descripcionL}" itemValue="#{centro}"
+						converter="catalogoConverter" forceSelection="true">
+						<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" preventPaste="false" />
+					</b:autoComplete>
+				</div>
+
+				<div class="grid_26">
+					<p:outputLabel value="Observaciones" />
+					<div class="clear-3"></div>
+					<p:inputText value="#{documento.observaciones}"
+						label="Observaciones" maxlength="50"
+						onblur="this.value=this.value.toUpperCase()">
+					</p:inputText>
+				</div>
+				<div class="grid_8">
+					<p:outputLabel value="Fecha Caducidad"/>
+					<div class="clear-3"></div>
+					<p:calendar id="fechaCaducidadDocumentoNuevo#{myVarStatus.index}"
+						value="#{documento.fechaCaducidad}" 
+						pattern="dd/MM/yyyy" mask="true" locale="es" showOn="button"/>
+				</div>
+
+			</p:fieldset>
+
+			<div class="clear-row"></div>
+
+			<p:fieldset legend="Revisión/Confirmación">
+				<div class="grid_16">
+					<p:outputLabel value="Motivo" />
+					<div class="clear-3"></div>
+					<p:inputText value="#{documento.motivo}" label="Emisor"
+						maxlength="30" onblur="this.value=this.value.toUpperCase()">
+					</p:inputText>
+				</div>
+				<div class="grid_4">
+					<p:outputLabel value="Frecuencia" />
+					<div class="clear-3"></div>
+					<p:inputMask mask="?9999" value="#{documento.frecuencia}"
+						label="Frecuencia" maxlength="4">
+
+					</p:inputMask>
+				</div>
+				<div class="grid_12">
+					<div class="label-vacio"></div>
+					<div class="clear-3"></div>
+					<p:selectOneMenu value="#{documento.frecuenciaUnidad}">
+						<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{catalogoUtils.getCatalogo('FREC_REV_DOCUM')}" var="item"
+							itemValue="#{item.claveFila}" itemLabel="#{item.descripcionL}" />
+
+					</p:selectOneMenu>
+				</div>
+
+				<div class="grid_8">
+					<p:outputLabel value="Fecha Entrega"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" />
+					<div class="clear-3"></div>
+					<p:calendar id="fechaEntregaDocumentoNuevo#{myVarStatus.index}"
+						value="#{documento.fechaEntrega}" disabled="true"
+						pattern="dd/MM/yyyy" mask="true" locale="es" showOn="button"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" />
+				</div>
+				<div class="grid_8">
+					<p:outputLabel value="Fecha Próxima"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" />
+					<div class="clear-3"></div>
+					<p:calendar id="fechaProximaDocumentoNuevo#{myVarStatus.index}"
+						value="#{documento.fechaProxima}" disabled="true"
+						pattern="dd/MM/yyyy" mask="true" locale="es"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" showOn="button" />
+				</div>
+
+			</p:fieldset>
+		</p:panel>
+
+	</p:panel>
+
+
+
+</ui:composition>

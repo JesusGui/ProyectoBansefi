@@ -1,0 +1,322 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formApuntes" styleClass="contenedor-form">
+						<!--título d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton immediate="true"
+								action="#{altaApunteController.cancelar()}"
+								icon="ui-icon-arrow-1-w"></p:commandButton>
+							<h1>Apuntes a cuenta mutua/ajena</h1>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Datos Obligatorios"></p:outputLabel>
+
+							<div class="margin-top-10"></div>
+
+							<h:outputLabel styleClass="txt-campos-oblg grid_40"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+
+							<div class="grid_40 alpha">
+
+								<!-- Campo Número de cuenta-->
+								<div class="grid_10">
+								    <p:message id="cuentaVal" display="icon" for="numCuenta" />
+									<p:outputLabel for="numCuenta" value="Cuenta"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:inputMask id="numCuenta"
+										value="#{altaApunteController.apuntesBean.numCuenta}"
+										label="Cuenta" maxlength="10" required="true" requiredMessage=""
+										converterMessage="La cuenta no es válida, verifique">
+										<pe:keyFilter regEx="/[0-9_]/i" preventPaste="false" />
+										<p:ajax event="blur"
+											listener="#{altaApunteController.comprobarTitular()}"
+											update="titularCuenta titularCuentaNombre titularCuentaError numCuenta cuentaVal"
+											global="false"></p:ajax>
+									</p:inputMask>
+								</div>
+
+								<!-- boton de busqueda de cuentas -->
+								<div class="grid_3">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<!-- boton de busqueda de cuentas -->
+									<p:commandButton styleClass="btn-icono-conbackground"
+										id="busquedaPersona" immediate="true"
+										action="#{altaApunteController.buscarPersona()}"
+										icon="ui-icon-search" ajax="true" update="formApuntes"></p:commandButton>
+								</div>
+
+								<!-- Titular de la cuenta -->
+								<div class="grid_27">
+									<h:outputText styleClass="mensaje-incorrecto"
+										id="titularCuentaError"
+										value="El número de cuenta es incorrecto"
+										style="display:#{(altaApunteController.muestraTitularError) ? 'block' : 'none' }" />
+									<h:outputLabel id="titularCuenta" value="Titular:" />
+									<div class="clear-3"></div>
+									<div class="input-label-valor">
+										<h:outputLabel styleClass="label-valor"
+											id="titularCuentaNombre"
+											value="#{altaApunteController.apuntesBean.titular}"
+											style="display:#{(altaApunteController.muestraTitular) ? 'flex' : 'none' }" />
+									</div>
+								</div>
+
+								<!-- Fecha de la operación -->
+									<div class="grid_8">
+										<p:message for="fechaValor" id="fechaValorMsg" display="icon"></p:message>
+										<p:outputLabel for="fechaValor" value="Fecha Valor" />
+										<div class="clear-3"></div>
+										<p:calendar tabindex="4" id="fechaValor"
+											value="#{altaApunteController.apuntesBean.fechaValor}"
+											showOn="button" pattern="dd/MM/yyyy" mask="true"
+											required="true" mindate="#{altaApunteController.fechaMinima}"
+											maxdate="#{altaApunteController.fechaActual}" locale="es">
+											<f:attribute name="beginDate"
+												value="#{altaApunteController.fechaMinima}" />
+											<f:attribute name="endDate"
+												value="#{altaApunteController.fechaActual}" />
+											<f:validator validatorId="fechaValorValidator" />
+											<p:ajax event="change" process="fechaValor"
+												update="fechaValor fechaValorMsg" partialSubmit="true"
+												global="false" />
+											<p:ajax event="dateSelect" process="fechaValor"
+												update="fechaValor fechaValorMsg" partialSubmit="true"
+												global="false" />
+										</p:calendar>
+
+									</div>
+								
+								<div class="clear-row"></div>
+
+								<div class="row-flex">
+									<!-- Importe -->
+									<div class="grid_10">
+										<p:message id="importeVal" display="icon" for="importe" />
+										<p:outputLabel for="importe" value="Importe" />
+										<div class="clear-3"></div>
+										<pe:inputNumber styleClass="pe-inputNumber" id="importe"
+											label="Importe" maxlength="14" required="true"
+											decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+											placeholder="Importe"
+											value="#{altaApunteController.apuntesBean.importe}"
+											minValue="0" maxValue="999999999999.99">
+											<pe:keyFilter regEx="/[0-9.]/i" />
+											<p:ajax event="blur"
+												listener="#{altaApunteController.mostrarUnidadesMillon()}"
+												process="@this"
+												update="importe unidadesMillonLabel unidadesMillon unidadesMillonMsg importeVal
+												     @this"
+												oncomplete="$(document.getElementById('formApuntes:unidadesMillon_input')).removeClass('ui-state-error'); 
+	                                        		$(document.getElementById('formApuntes:unidadesMillonLabel')).removeClass('ui-state-error');" global="false" />
+
+											<f:validateDoubleRange minimum="1.00" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">MXN</span>
+									</div>
+
+									<!-- Unidades de millón -->
+									<div class="grid_8">
+										<div class="grid_48">
+											<p:message for="unidadesMillon" display="icon"
+												id="unidadesMillonMsg" />
+											<p:outputLabel id="unidadesMillonLabel" for="unidadesMillon"
+												value="Unidades de millón" />
+										</div>
+										<div class="clear-3"></div>
+										<div class="grid_34">
+											<pe:inputNumber emptyValue="0" id="unidadesMillon"
+												thousandSeparator="," decimalPlaces="0" decimalSeparator=""
+												value="#{altaApunteController.apuntesBean.unidadesMillon}"
+												minValue="0" maxValue="999999"
+												disabled="#{not(altaApunteController.apuntesBean.mostrarUnidadesMillon)}"
+												maxLength="6"
+												required="#{altaApunteController.apuntesBean.mostrarUnidadesMillon and param['disableValidation']==null}">
+												<f:attribute name="importe"
+													value="#{altaApunteController.apuntesBean.importe}" />
+												<f:validator
+													disabled="#{not(altaApunteController.apuntesBean.mostrarUnidadesMillon)}"
+													validatorId="unidadesMillonValidatorRetiro" />
+												<p:ajax event="blur"
+													update="unidadesMillonMsg unidadesMillon unidadesMillonLabel"
+													global="false" />
+												<f:param name="disabledValidation" value="true" />
+											</pe:inputNumber>
+										</div>
+										<div class="clear"></div>
+
+									</div>
+
+									<!-- Codigo de operación -->
+									<div class="grid_30">
+										<p:outputLabel for="codigoOperacion"
+											value="Código de operación"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="codigoOperacion"
+											value="#{altaApunteController.apuntesBean.codigoOperacion}"
+											required="true">
+											<p:ajax event="change" update="codigoOperacion,tipoApunte"
+												global="false" process="codigoOperacion"
+												listener="#{altaApunteController.cargarRadioOperacion()}" />
+											<f:selectItem itemLabel="Seleccione un valor"
+												itemDisabled="true" />
+											<f:selectItems var="codigo"
+												value="#{altaApunteController.codigosOperacion}"
+												itemLabel="#{codigo.descripcionL}"
+												itemValue="#{codigo.claveFila}" />
+										</p:selectOneMenu>
+									</div>
+								</div>
+
+								<div class="row-flex">
+
+									<!-- Tipo de operación -->
+									<div class="contenedor-fijo-formulario">
+										<p:outputLabel for="tipoApunte" value="Operación"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:selectOneRadio id="tipoApunte"
+											value="#{altaApunteController.apuntesBean.tipoApunte}"
+											required="true" disabled="#{altaApunteController.deshabilitarRadio}">
+											<f:selectItem itemValue="C" itemLabel="Cargo" />
+											<f:selectItem itemValue="A" itemLabel="Abono" />
+											<p:ajax event="change" process="tipoApunte" global="false" />
+										</p:selectOneRadio>
+									</div>
+
+									<!-- Concepto -->
+									<div class="grid_39">
+										<p:outputLabel for="concepto" value="Concepto"
+											id="conceptoLabel"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="concepto"
+											value="#{altaApunteController.apuntesBean.concepto}"
+											label="Concepto" maxlength="45" required="true">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+											<p:ajax event="change" update="concepto" global="false" />
+										</p:inputMask>
+									</div>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="clear"></div>
+							<div class="posicion-absoluta-btn">
+								<p:commandButton
+									styleClass="btn_primario float-right btn-consultar"
+									update="formApuntes :dialogApunte :dlgOperacionNoPermitida" value="Ejecutar"
+									icon="ui-icon-check"
+									actionListener="#{altaApunteController.mostrarConfirmacion()}" />
+							</div>
+							<div class="clear"></div>
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" action="#{altaApunteController.cancelar()}"
+							immediate="true" />
+						<p:commandButton
+							styleClass="btn_secundario margin-top-10 margin-left-10"
+							value="Limpiar" action="#{altaApunteController.limpiar()}"
+							resetValues="true" immediate="true" update=":formApuntes" />
+
+					</h:form>
+				</div>
+
+				<!--
+				plantilla de ventana de diálogo
+				-->
+
+				<p:dialog widgetVar="dlgOperacionNoPermitida"
+					id="dlgOperacionNoPermitida" appendTo="@(body)"
+					header="Operacion no permitida" modal="true" visible="false"
+					closable="false" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! Clave de operación no permitida para el código seleccionado" />
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgOperacionNoPermitida').hide();" id="VolverAlta1"
+						value="Aceptar" immediate="true" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dialogApunte" id="dialogApunte"
+					showEffect="fade" hideEffect="fade" header="Alta apunte"
+					modal="true" resizable="false" closable="false" appendTo="@(body)"
+					visible="#{altaApunteController.todoOk  and (not facesContext.validationFailed) and (not altaApunteController.muestraTitularError)}"
+					dynamic="true" update="dialogErrorCuenta dialogApunte">
+					<span class="ui-messages-info-icon info-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<div class="modal-mensaje sin-padding margin-top-10">
+						<p:outputLabel value="Va a realizar un " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{altaApunteController.mostrarTipo()}" />
+						<br />
+						<p:outputLabel value="a la cuenta " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{altaApunteController.apuntesBean.numCuenta}" />
+						<br />
+						<p:outputLabel value="con titular " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{altaApunteController.apuntesBean.titular}" />
+						<br />
+						<p:outputLabel value="por valor de " />
+						<p:outputLabel styleClass="modal-mensaje-detalle"
+							value="#{altaApunteController.apuntesBean.importe}">
+							<f:convertNumber minFractionDigits="2" currencySymbol=""
+								locale="es_MX" type="currency" />
+						</p:outputLabel>
+						<p:outputLabel styleClass="modal-mensaje-detalle" value=" MXN" />
+					</div>
+					<div class="margin-top-10"></div>
+					<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+					<div class="margin-top-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						action="#{altaApunteController.realizarApunte()}"
+						id="btnConfirmarApunte" value="Continuar" immediate="true"
+						update="dialogErrorCuenta dialogApunte"
+						oncomplete="PF('dialogApunte').hide();" />
+					<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+						id="btnCancelarApunte" value="Cancelar"
+						onclick="PF('dialogApunte').hide();" />
+				</p:dialog>
+
+
+				<p:dialog widgetVar="dialogErrorCuenta" id="dialogErrorCuenta"
+					showEffect="fade" hideEffect="fade" modal="true" resizable="false"
+					closable="false" appendTo="@(body)"
+					visible="#{altaApunteController.errorTipoCuenta  and (not facesContext.validationFailed)}"
+					dynamic="true">
+					<span class="ui-messages-info-icon info-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="La cuenta introducida no es una cuenta Mutua." />
+					<div class="clear"></div>
+					<!--botones de la modal primarios y secundarios -->
+
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="btnAceptarErrorCuenta" value="Aceptar"
+						onclick="PF('dialogErrorCuenta').hide();" />
+				</p:dialog>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

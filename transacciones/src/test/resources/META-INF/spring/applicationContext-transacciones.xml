@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:task="http://www.springframework.org/schema/task"
+  xmlns:cache="http://www.springframework.org/schema/cache"
+  xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+    http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+	
+  <aop:aspectj-autoproxy  proxy-target-class="true"/>
+  <context:annotation-config />
+  <context:component-scan base-package="mx.babel.arq" >
+  	<context:exclude-filter type="assignable" expression="mx.babel.arq.task.TaskManager"/>
+  </context:component-scan>
+
+	<context:component-scan base-package="mx.babel.bansefi.banksystem.*" annotation-config="true" />
+  	<bean id="propertiesLoader"
+      class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+	  <property name="locations">
+	    <list>
+	      <value>classpath*:META-INF/resources/properties/*servicios_web_es.properties</value>
+	      <value>classpath*:META-INF/resources/properties/mensaje_vista.properties</value>
+	      <value>classpath*:META-INF/resources/properties/transacciones_servicios_web_es.properties</value>
+	    </list>
+	  </property>
+	</bean>
+
+	<bean id="storageAspect"
+		class="mx.babel.arq.storage.aspect.StorageAspect" >
+	</bean>
+
+  <bean id="bsContextoService"
+		class="mx.babel.arq.sesion.contexto.services.impl.BSContextoService" />
+
+  <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="view">
+					<bean class="mx.babel.arq.comun.scopes.ViewScope" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+  <util:list id="accesoSesionList" value-type="java.lang.String">
+    <value>mx.babel.arq.sesion.contexto.listeners.SesionListener</value>
+    <value>mx.babel.arq.sesion.utils.ContextoUtils</value>
+    <value>mx.babel.bansefi.banksystem.example.managedbeans.ExampleManagedBean</value>
+    <value>mx.babel.bansefi.banksystem.base.controllers.LoginController</value>
+  </util:list>
+ 
+  <aop:config>    
+    <aop:advisor advice-ref="accesoSesionInterceptor" pointcut="execution(public * mx.babel.arq.sesion.contexto.services.IBSContextoService.*(..))" />
+  </aop:config>
+  
+  <bean id="org.dozer.Mapper" class="org.dozer.DozerBeanMapper">
+	  <property name="mappingFiles">
+	    <list>
+	      <value>META-INF/resources/xmls/consultaCuenta.xml</value>
+	      <value>META-INF/resources/xmls/condiciones.xml</value>
+	      <value>META-INF/resources/xmls/consRelCuenta.xml</value>
+	      <value>META-INF/resources/xmls/busquedaCuenta.xml</value>
+	    </list>
+	  </property>
+	</bean> 
+	
+	
+    <!-- Cache del catalogo -->
+
+    <!-- Cache del catalogo de seguridad -->
+  <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:META-INF/spring/ehcache.xml"/>
+    </bean>
+  <!--    Cache scheduled task -->
+  <task:executor id="executor" pool-size="5"/>
+  <task:scheduler id="scheduler" pool-size="5"/>
+  <task:annotation-driven scheduler="scheduler" executor="executor"/>
+  
+</beans>

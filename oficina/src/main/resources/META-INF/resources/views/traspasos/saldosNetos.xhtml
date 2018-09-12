@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body onunload="#{traspasosController.buscarSaldos()}">
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formSaldosNetos" styleClass="contenedor-form col-70">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{traspasosController.regresaTraspaso()}"></p:commandButton>
+							<h1>Saldos netos terminales</h1>
+						</div>
+						<div class="contenedor-campos">
+
+							<p:commandButton value="Imprimir"
+								styleClass="btn-icono-texto btn_secundario float-right"
+								icon="ui-icon-print"
+								onclick="printContenedorCamposId('printArea1');">
+							</p:commandButton>
+
+							<div class="clear-row"></div>
+							
+							<div id="printArea1">
+							<div class="impresion saldos-netos">
+								<p:dataTable id="saldosTable"
+									rows="#{traspasosController.resultados}"
+									value="#{traspasosController.consultaSaldosBean.saldos}"
+									var="saldo">
+									<p:column headerText="Terminal">
+										<h:outputText value="#{saldo.terminal}" />
+									</p:column>
+									<p:column headerText="Puesto">
+										<h:outputText value="#{saldo.puesto}" />
+									</p:column>
+									<p:column headerText="Saldo neto traspasos">
+										<h:outputText styleClass="float-right"
+											value="#{saldo.saldoNeto}">
+											<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+										</h:outputText>
+									</p:column>
+								</p:dataTable>
+							</div>
+								
+							</div>
+							<div class="margin-top-10"></div>
+							<h:panelGroup
+								rendered="#{!(!traspasosController.consultaSaldosBean.masDatos and 
+                                    	(traspasosController.consultaSaldosBean.saldos.size() lt traspasosController.resultados))}">
+								<div class="centrar-objeto">
+									<!--<p:commandButton styleClass="btn-mostrar hidden"-->
+										<!--icon="ui-icon-refresh" iconPos="right"-->
+										<!--value="Ver mas resultados" id="masResultados"-->
+										<!--update="formSaldosNetos"-->
+										<!--actionListener="#{traspasosController.masSaldos()}" />-->
+								</div>
+							</h:panelGroup>
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							immediate="true"
+							action="#{traspasosController.regresaTraspaso()}" value="Volver" />
+					</h:form>
+				</div>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

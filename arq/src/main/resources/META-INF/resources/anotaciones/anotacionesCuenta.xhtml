@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<composite:interface>
+		<composite:attribute name="id" required="true"/>
+		<composite:attribute name="value" required="true"/>
+		<composite:attribute name="controller" required="true" type="java.lang.Object"/>
+	</composite:interface>
+	
+	<composite:implementation>
+		<div id="#{cc.clientId}">
+				
+			<p:menuButton id="#{cc.attrs.id}" value="" rendered="#{cc.attrs.value.size() > 0 ? true : false}"
+				styleClass="margin-top-10 menu-ficha">
+	    		
+	    		<c:forEach items="#{cc.attrs.value}" var="anotacion">
+	    			<p:menuitem value="#{anotacion.descripcionCorta}" 
+	    				action="#{cc.attrs.controller.detalleAnotacion(anotacion)}" process="@this"/>
+	    		</c:forEach>
+	    		
+	    	</p:menuButton>
+		</div>
+	</composite:implementation>
+	
+</html>

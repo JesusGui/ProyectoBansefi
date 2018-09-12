@@ -1,0 +1,120 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo">
+							<h2 class="gris-b">RESUMEN DE AUTORIZACIÓN DE PETICIÓN POR TOTALES POR VALOR DE </h2>
+							<h2 class="azul-b"> #{resumenAutorizacionPeticionTotalesController.formateaNumero()}</h2>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<p:commandButton
+								styleClass="btn_secundario btn-icono-texto float-right"
+								value="Imprimir" icon="ui-icon-print"
+								action="#{resumenAutorizacionPeticionTotalesController.imprimirResumen()}"></p:commandButton>
+
+							<div class="clear-row"></div>
+							<div class="clear-3"></div>
+
+							<h:form id="formResumenAutorizacionTotales">
+								<p:dataTable
+									value="#{resumenAutorizacionPeticionTotalesController.autorizacionPeticionTotalesBean.listaPeticiones}"
+									var="peticion" id="tablaDatos2"
+									emptyMessage="SIN DATOS A MOSTRAR" style="text-align: center;">
+									
+									<p:column headerText="Centro">
+										<div class="centrar-objeto">
+											<h:outputLabel value="#{peticion.centro}" id="centro" />
+										</div>
+									</p:column>
+						
+									<p:column headerText="Importe pedido">
+										<div class="float-right">
+											<h:outputLabel value="#{peticion.importePedido}" id="importePedido">
+												<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+													currencySymbol="MXN" />
+											</h:outputLabel>
+										</div>
+									</p:column>
+						
+									<p:column headerText="Importe autorizado">
+										<div class="float-right">
+											<h:outputLabel value="#{peticion.importeAutorizado}">
+												<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+														currencySymbol="MXN" />
+											</h:outputLabel>
+										</div>
+									</p:column>
+
+									<!-- <p:column style="text-align: center; font-size: 20px;">
+										<f:facet name="header">
+											<h:outputLabel value="Centro" />
+										</f:facet>
+										<h:outputLabel value="#{peticion.centro}" id="centro" />
+									</p:column>
+
+									<p:column style="text-align: right; font-size: 14px;">
+										<f:facet name="header">
+											<h:outputLabel value="Importe pedido" />
+										</f:facet>
+										<h:outputLabel value="#{peticion.importePedido}"
+											id="importePedido">
+											<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+												currencySymbol="MXN" />
+										</h:outputLabel>
+									</p:column>
+
+									<p:column style="text-align: right; font-size: 14px;">
+										<f:facet name="header">
+											<h:outputLabel value="Importe autorizado" />
+										</f:facet>
+										<h:outputLabel value="#{peticion.importeAutorizado}"
+											id="importeAutorizado">
+											<f:convertNumber pattern="#,##0.00 ¤" locale="es_MX"
+												currencySymbol="MXN" />
+										</h:outputLabel>
+									</p:column> -->
+
+								</p:dataTable>
+
+								<p:commandButton id="btnCerrar"
+									styleClass="btn_secundario margin-top-10 margin-right-10 float-right"
+									value="Cerrar"
+									action="#{resumenAutorizacionPeticionTotalesController.irInicio()}" />
+
+								<p:commandButton id="btnOtraAutorizacion"
+									styleClass="btn_primario margin-top-10 margin-right-10 float-right"
+									value="Autorizar otra petición"
+									action="#{resumenAutorizacionPeticionTotalesController.irAutorizaciones()}" />
+
+								<div class="clear-row"></div>
+								<div class="clear-3"></div>
+
+							</h:form>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

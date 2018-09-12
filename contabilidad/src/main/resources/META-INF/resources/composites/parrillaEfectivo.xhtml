@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<head>
+<title>Composite parrilla de efectivo</title>
+</head>
+<body>
+	<composite:interface>
+		<composite:attribute name="id"></composite:attribute>
+		<composite:attribute name="operacion" required="true"></composite:attribute>
+		<composite:attribute name="parrillaEfectivo" required="true"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+		<div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}">
+
+			<div class="clear-row"></div>
+			<!-- Combobox -->
+			<p:selectOneMenu>
+				<f:selectItem itemLabel="Todos" />
+				<f:selectItem itemLabel="Ventanilla" />
+				<f:selectItem itemLabel="Dispensador" />
+				<f:selectItem itemLabel="Billetes" />
+				<f:selectItem itemLabel="Monedas" />
+			</p:selectOneMenu>
+
+			<!-- End Combobox -->
+			<div class="clear-row"></div>
+			<!-- Datatable -->
+			<p:dataTable
+				id="parrillaEfectivo#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}"
+				styleClass="tabla-tramos" var="efectivo"
+				value="#{cc.attrs.parrillaEfectivo.listadoEfectivo}">
+
+
+				<p:column headerText="Valor facial">
+					<h:outputText value="#{efectivo.valorFacial}" />
+				</p:column>
+
+				<p:column headerText="Soporte">
+					<h:outputText value="#{efectivo.soporte}" />
+				</p:column>
+
+				<p:column headerText="Formato">
+					<h:outputText value="#{efectivo.formato}" />
+				</p:column>
+
+
+				<p:column headerText="D/V">
+					<h:outputText value="#{efectivo.soportedSlashV}" />
+				</p:column>
+
+
+				<p:column headerText="Unidades">
+					<h:outputText value="#{efectivo.unidades}" />
+				</p:column>
+
+				<p:column headerText="Importe a enviar">
+					<h:outputText value="#{efectivo.importeEnviar}" />
+				</p:column>
+
+				<p:column headerText="Importe pedido">
+					<h:outputText value="#{efectivo.importepedido}" />
+				</p:column>
+
+				<p:column headerText="Importe autorizado">
+					<h:outputText value="#{efectivo.importeAutorizado}" />
+				</p:column>
+
+				<p:column headerText="Importe recibido">
+					<h:outputText value="#{efectivo.importeRecibido}" />
+				</p:column>
+
+				<p:column headerText="No. Prencinto">
+					<h:outputText value="#{efectivo.numPrecinto}" />
+				</p:column>
+
+			</p:dataTable>
+			<div class="margin-top-10"></div>
+
+		
+			<!-- End Datatable -->
+		</div>
+	</composite:implementation>
+</body>
+</html>

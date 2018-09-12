@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+template="../../templates/plantilla-inicio.xhtml">
+<!--
+plantilla de wizard
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="emitirDocumentos" styleClass="contenedor-form">
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" immediate="true" title="Volver atrás"
+                            	action="#{historicoCuentaController.irAHome()}"></p:commandButton>
+                            <div>
+	                            <h2 class="gris-b">Histórico de documento </h2>
+	                            <h2 class="rojo-b">#{historicoCuentaController.historicoDocumento.descripcion}</h2>
+                            </div>
+                        </div>
+                        <!--contenedor del wizard-->
+                        <div class="wiz-contenedor">
+                            <div class="contenedor-campos">
+                            
+                               <p:outputLabel styleClass="#{historicoCuentaController.clienteBean.claseTipoPersona()}"
+									value="#{historicoCuentaController.clienteBean.nombreCompleto}" />
+									
+				            	<div class="margin-top-20"></div>
+				            	
+				            	<div class="contenedor-historico grid_48">
+				            	<div class="grid_6 alpha margin-left-10"><!-- Estilo inline-block en duro -->
+										<h:outputLabel value="Obligatorio:" />
+										<div class="clear-3"></div>
+										<h:outputLabel styleClass="label-valor texto-sininput" value="#{historicoCuentaController.historicoDocumento.obligatorio.equals('2') ? 'NO':'SI'}" />
+								</div>
+				            	<div class="grid_8"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Número de formulario:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{historicoCuentaController.historicoDocumento.formulario}" />
+								</div>
+								<div class="clear-row"></div>
+								<!-- Lista de documentos -->
+								<ui:repeat var="documento" value="#{historicoCuentaController.historico}">
+									<!-- Contenedor de documento (Alex: Estilos de div para hacer pruebas) -->
+										<h:panelGroup layout="block" styleClass="grupo-tabla-historico" rendered="#{documento.estado.equals('')? false : true}">
+										<!-- Botón para mostrar u ocultar campos del documento (Alex: Estilo float:none para probar)-->
+										<p:commandButton styleClass="btn-icono btn-panel btn-expandible" icon="fa fa-angle-#{documento.muestraCampos? 'up':'down'}"
+											action="#{historicoCuentaController.muestraCamposDocumento(documento)}" 
+											update="@form"></p:commandButton>									
+										<!-- Div para mostrar el folio del documento -->
+										<div class="margin-top-10"></div>
+										<div class="grid_6 alpha margin-left-10"><!-- Estilo inline-block en duro -->
+										<h:outputLabel value="Documento:" />
+										<div class="clear-3"></div>
+										<h:outputLabel styleClass="label-valor texto-sininput" value="#{documento.fichero}" />
+										</div>
+										<h:panelGroup rendered="#{documento.muestraCampos}">
+											<!-- Label con el nùmero de copias -->
+											<div class="grid_7"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Número de copias:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{documento.numCopias}" />
+											</div>
+											<div class="clear-row"></div>
+											<ui:repeat var="campo" value="#{documento.campos}">
+												<!-- Contenedor de un campo (Alex: Estilos de div para visualizarlo en pruebas) -->
+												<div class="grid_24">
+													<!-- Descipción del campo -->
+													<h:outputLabel value="#{campo.descripcion}" />
+													<div class="clear-3"></div>
+													<!-- Valor del campo (Alex: Estilo en duro para pruebas)-->
+													<p:inputTextarea id="valorCampo" value="#{campo.valor}" 
+														maxlength="400" readonly="true">
+													</p:inputTextarea>
+												</div>
+											</ui:repeat>
+										</h:panelGroup>
+										<div class="clear-row"></div>
+										<!-- Tabla de movimientos a estado -->
+										<p:dataTable styleClass="grid_48" var="estado" value="#{documento.estados}">
+											<p:column headerText="Codigo">
+										        <h:outputText value="#{estado.estado}" />
+										    </p:column>
+										    <p:column headerText="Estado">
+										        <h:outputText value="#{historicoCuentaController.getEstadoDocumento(estado.estado)}" />
+										    </p:column>
+										    <p:column headerText="Fecha operación">
+										        <h:outputText value="#{estado.fechaOperacion}">
+										        	<f:convertDateTime pattern="dd/MM/yyyy" />
+										        </h:outputText>
+										    </p:column>
+										    <p:column headerText="Hora de operación">
+										    	<h:outputText value="#{estado.horaOperacion}" />	
+										    </p:column>
+										</p:dataTable>
+										<div class="clear-row"></div>
+									</h:panelGroup>
+								</ui:repeat>
+							</div>
+                   		</div>
+                      </div>
+                    </h:form>
+                </div>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

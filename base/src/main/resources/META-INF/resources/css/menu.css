@@ -1,0 +1,39 @@
+.grid {
+  border: 0px;
+}
+
+/* clear fix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ---- .element-item ---- */
+
+.element-item {
+  width: 200px;
+  margin-bottom:2px;
+  background-color: #f3f3f3 !important;
+  padding: .25em .5em .25em 1.9em;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: lighter;
+}
+
+.element-item-visible{
+	display:block;
+}
+
+.element-item-hidden{
+	display:none;
+}
+
+
+.element-item > * {
+	margin: 0;
+	padding: 0;
+}
+
+.element-title-toggle{
+	display:none;
+}

@@ -1,0 +1,213 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<div class="container_48">
+			<div class="contenedor">
+
+				<div class="contenedor-form col-60">
+
+					<div class="titulo centrar-objeto btn-inline-set">
+						<!--botón atras-->
+						<p:commandButton id="lnkVolver"
+							action="#{altaCentroController.volverPrincipal()}"
+							icon="ui-icon-arrow-1-w"></p:commandButton>
+						<h1>#{altaCentroController.modificacion ? 'Modificación' :
+							'Alta'} de centro</h1>
+					</div>
+
+					<div class="contenedor-campos">
+
+						<h:form id="formAcuerdosInstru">
+
+							<h:panelGroup rendered="#{!altaCentroController.modificacion}">
+								<div class="txt-relaciones-oblg">
+									<h:outputLabel
+										value="Recuerde que debe asociar acuerdos instrumentales. 
+										Por favor, póngase en contacto con su centro de soporte." />
+								</div>
+								<div class="clear-row"></div>
+							</h:panelGroup>
+
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Campos Obligatorios"></p:outputLabel>
+
+							<div class="clear-row"></div>
+							<p:outputLabel styleClass="titulo-form margin-left-10"
+								value="Acuerdos instrumentales"
+								rendered="#{altaCentroController.modificacion}" />
+
+							<div class="clear-row"></div>
+							<h:outputLabel styleClass="txt-instruccion margin-left-10"
+								value="Cuentas instrumentales del centro:"
+								rendered="#{altaCentroController.modificacion}" />
+
+							<h:outputLabel styleClass="txt-instruccion margin-left-10"
+								value="Se darán de alta las siguientes cuentas instrumentales:"
+								rendered="#{!altaCentroController.modificacion}" />
+							<div class="clear-row"></div>
+
+							<c:forEach var="acuerdo" items="#{altaCentroController.acuerdos}"
+								varStatus="myVarStatus">
+								<div class="grid_48 marco-componente margin-bottom-10">
+
+									<div class="grid_16">
+										<h:outputLabel value="Línea" />
+										<div class="clear-3"></div>
+										<h:outputLabel styleClass="label-valor texto-sininput"
+											value="#{acuerdo.linea}" />
+									</div>
+									<div class="grid_22">
+										<h:outputLabel value="Grupo" />
+										<div class="clear-3"></div>
+										<h:outputLabel styleClass="label-valor texto-sininput"
+											value="#{acuerdo.grupo}" />
+									</div>
+									<h:panelGroup rendered="#{!acuerdo.alta}">
+										<div class="grid_10">
+											<h:outputLabel value="Cuenta" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput"
+												value="#{acuerdo.cuenta}" />
+										</div>
+									</h:panelGroup>
+
+									<div class="clear-row"></div>
+
+									<h:panelGroup rendered="#{acuerdo.alta}">
+										<div class="row-flex">
+											<div class="grid_10">
+												<h:outputLabel value="Id interna apoderado" />
+												<span class="ui-outputlabel-rfi"> *</span>
+												<div class="clear-3"></div>
+												<p:inputText id="txtApoderado#{myVarStatus.index}"
+													value="#{acuerdo.idApoderado}"
+													required="#{param['disableValidation']==null}"
+													maxlength="8"
+													disabled="#{!altaCentroController.modificacion}">
+													<pe:keyFilter preventPaste="false" regEx="/^[0-9\-]*$/"></pe:keyFilter>
+													<p:ajax event="blur" process="@this" global="false"
+														listener="#{altaCentroController.busquedaIdEmpleadoBlur(acuerdo)}"
+														update="nombreApoderado#{myVarStatus.index} :dlgGuardado"></p:ajax>
+													<f:param name="disableValidation" value="true" />
+												</p:inputText>
+											</div>
+											<div class="grid_3">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<p:commandButton id="btnBuscarEmpleado#{myVarStatus.index}"
+													styleClass="btn-icono-conbackground" icon="fa fa-search"
+													title="Buscar empleado"
+													action="#{altaCentroController.busquedaEmpleado(acuerdo)}"
+													process="@this"
+													disabled="#{!altaCentroController.modificacion}">
+												</p:commandButton>
+												<p:tooltip id="toolTipBuscarEmpleado#{myVarStatus.index}"
+													for="btnBuscarEmpleado#{myVarStatus.index}"
+													value="Buscar empleado" />
+											</div>
+
+											<div class="grid_35">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor input-label-valor"
+													value="#{acuerdo.nombre}" id="nombreApoderado#{myVarStatus.index}" />
+											</div>
+										</div>
+									</h:panelGroup>
+									<div class="clear"></div>
+								</div>
+							</c:forEach>
+							<div class="clear"></div>
+
+						</h:form>
+					</div>
+					<p:commandButton styleClass="btn_secundario margin-top-10"
+						value="Cancelar" action="#{altaCentroController.validarCancelar()}" update="dlgCancelar"></p:commandButton>
+					<p:commandButton
+						styleClass="btn_primario float-right margin-top-10"
+						value="Guardar"
+						update=":formAcuerdosInstru :dlgGuardado :dlgFinalizacionMod"
+						action="#{altaCentroController.guardarDatos()}"></p:commandButton>
+					<!--termina contenedor-campos-->
+				</div>
+				<!--termina contenedor-form-->
+			</div>
+			<!--termina contenedor-->
+
+			<p:dialog widgetVar="dlgGuardado" id="dlgGuardado" appendTo="@(body)"
+				dynamic="true" modal="true" showEffect="fade" hideEffect="fade"
+				visible="false" closable="false" resizable="false" draggable="false">
+				<!--icono de la modal -->
+				<span
+					class="ui-messages-#{altaCentroController.dialogoGuardado.icono}-icon #{altaCentroController.dialogoGuardado.icono}-dialog"></span>
+				<!--mensaje de la modal styleClass="modal-mensaje" -->
+				<div class="modal-mensaje">
+					<p:outputLabel value="#{altaCentroController.dialogoGuardado.mensaje}" />
+					<br />
+					<h:panelGroup rendered="#{not empty altaCentroController.dialogoGuardado.detalles}">
+						<p:outputLabel styleClass="bold"
+							value="#{altaCentroController.dialogoGuardado.detalles}" escape="false" />
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+					</h:panelGroup>
+				</div>
+				<div class="clear margin-bottom-10"></div>
+				<!--botones de la modal primarios y secundarios -->
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					value="Aceptar" oncomplete="PF('dlgGuardado').hide();">
+				</p:commandButton>
+			</p:dialog>
+
+			<p:dialog widgetVar="dlgFinalizacionMod" id="dlgFinalizacionMod"
+				appendTo="@(body)" modal="true" visible="false" closable="false"
+				resizable="false" draggable="false" showEffect="fade"
+				hideEffect="fade">
+				<!--icono de la modal -->
+				<span class="ui-messages-exito-icon exito-dialog"></span>
+				<!--mensaje de la modal-->
+				<p:outputLabel styleClass="modal-mensaje"
+					value="El centro se dio de alta correctamente."
+					rendered="#{!altaCentroController.modificacion}" />
+				<p:outputLabel styleClass="modal-mensaje"
+					value="El centro se modificó correctamente."
+					rendered="#{altaCentroController.modificacion}" />
+				<div class="clear"></div>
+				<!--botones de la modal primarios y secundarios -->
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					id="aceptarFinM" value="Aceptar" immediate="true"
+					action="#{altaCentroController.menuPrincipal()}" />
+			</p:dialog>
+
+			<p:dialog widgetVar="dlgCancelar" id="dlgCancelar" appendTo="@(body)"
+				header="Cancelar #{altaCentroController.modificacion ? 'modificación' :
+								'alta'} de centro"
+				modal="true" visible="false" closable="false" resizable="false"
+				showEffect="fade" hideEffect="fade" dynamic="true">
+				<span class="ui-messages-info-icon info-dialog"></span>
+				<p:outputLabel styleClass="modal-mensaje"
+					value="¡Atención! Si continua perderá todos los cambios" />
+				<div class="clear"></div>
+				<p:outputLabel styleClass="modal-accion"
+					value="¿Desea continuar de todos modos?" />
+				<div class="margin-bottom-20"></div>
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					id="VolverAlta" action="#{altaCentroController.redirigirInicio()}"
+					value="Continuar" immediate="true" />
+				<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+					value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+
+			</p:dialog>
+
+		</div>
+		<!--termina container 48-->
+
+	</ui:define>
+
+</ui:composition>

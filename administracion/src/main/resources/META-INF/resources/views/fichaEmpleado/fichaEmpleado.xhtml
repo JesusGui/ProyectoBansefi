@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+	
+	<ui:define name="contenido">
+		<div class="container_48">
+        	<div class="contenedor">
+                <h:form id="frmFichaEmpleado" styleClass="contenedor-form">
+                	
+                	<!-- Titulo de la ventana -->
+                    <div class="titulo centrar-objeto btn-inline-set">
+                    	<!--botón atras-->
+                        <p:commandButton icon="ui-icon-arrow-1-w" action="#{fichaEmpleadoController.volver()}"></p:commandButton>
+                        <h1>Ficha de empleado</h1>
+					</div>
+				 	
+				 	<!-- Contenido de la ventana -->
+				 	<div class="contenedor-campos">
+				 		
+				 		<!-- Mostramos mensaje por pantalla en caso de no poderse recuperar el empleado -->
+				 		<p:messages id="messages" closable="false" showDetail="true" rendered="#{!fichaEmpleadoController.elementosVisibles}" />
+				 		
+				 		<!-- Pintamos los datos del empleado y los botones de acciones -->
+				 		<h:panelGroup rendered="#{fichaEmpleadoController.elementosVisibles}">
+				 		
+								<p:menuButton styleClass="btn-opciones float-right" id="mnuOpcFichaEmpleado" value="Opciones" widgetVar="mnuOpcFichaCuenta">
+									<p:menuitem value="Modificar Atribuciones" action="#{fichaEmpleadoController.modificarAtribuciones()}"></p:menuitem>
+									<p:menuitem value="Modificar Datos" action="#{fichaEmpleadoController.modificarDatos()}"></p:menuitem>									
+								</p:menuButton>
+							
+							<div class="margin-top-20"></div>
+							
+							<div class="float-left">
+								<p:outputLabel styleClass="nombre-altacuenta" value="#{fichaEmpleadoController.empleado.datos.nombre} #{fichaEmpleadoController.empleado.datos.apePaterno !=null ?fichaEmpleadoController.empleado.datos.apePaterno:''} #{fichaEmpleadoController.empleado.datos.apeMaterno !=null ?fichaEmpleadoController.empleado.datos.apeMaterno:''} "/>
+
+								<p:outputLabel value="(ID:#{fichaEmpleadoController.empleado.numEmpleado})"/>	
+
+							</div>
+							<div class="clear"></div>
+							<!-- Datos de empleado -->
+							<div class="marco-datospersonales">
+							<div class="grid_40">
+								<p:outputLabel value="Número de empleado: "/>							
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.empleado.numEmpleado}"/>							
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="Centro de pertenencia: "/>							
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.empleado.centroPertenencia} #{fichaEmpleadoController.obtenerDescCentro()}"/>							
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="Cargo: "/>							
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.obtenerDescCargo()}"/>
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="Perfil: "/>
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.obtenerDescPerfil()}"/>							
+							</div>
+							
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="Perfil TCB: "/>
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.empleado.perfilTCB}"/>						
+							</div>
+							<div class="clear-3"></div>
+							
+							<!-- Datos de empleado -->
+							<div class="grid_40">
+								<p:outputLabel value="Id. Oficial: "/>
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.obtenerDescTpDoc()} #{fichaEmpleadoController.empleado.datos.numIdentificacion}"/>							
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="RFC: "/>							
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.empleado.datos.rfc}"/>							
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="ID.INTERNA: "/>							
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.empleado.datos.idInterna}"/>							
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="DOMICILIO: "/>							
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.getDireccion()}"/>							
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="TELEFONO: "/>							
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.getTelefono()}"/>	
+							</div>
+							<div class="clear"></div>
+							
+							<div class="grid_40">
+								<p:outputLabel value="FECHA DE NACIMIENTO: "/>
+								<p:outputLabel styleClass="bold" value="#{fichaEmpleadoController.empleado.datos.fechaNacimiento}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+								</p:outputLabel>							
+							</div>
+							<div class="clear"></div>
+							</div>
+							
+						</h:panelGroup>
+						<div class="clear"></div>
+					</div>
+				</h:form>
+			</div>
+		</div>	
+	</ui:define>
+</ui:composition>

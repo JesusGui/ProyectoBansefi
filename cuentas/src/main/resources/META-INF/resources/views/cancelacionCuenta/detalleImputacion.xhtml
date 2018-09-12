@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+	
+	<ui:define name="contenido">
+	
+	<h:body>
+	<div class="container_48">
+	  
+	  <div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formGastosExternos" styleClass="contenedor-form">
+					
+					<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{gastosExternosController.volverGastos()}" immediate="true"></p:commandButton>
+							<div>
+								<h2 class="gris-b">Datos imputación gastos externos </h2>
+								
+							</div>
+						</div>
+						<div class="contenedor-campos">
+						<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" value="Imprimir"
+                            		action="#{gastosExternosController.printImputar}">
+                            	</p:commandButton>
+                            	<div class="clear margin-bottom-10"></div>
+						<div class="grid_8">
+								<p:outputLabel  value="Tipo de gasto"></p:outputLabel>
+								<div class="clear-3"></div>
+								
+								<p:outputLabel  value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.descripcionGasto}"></p:outputLabel>
+																
+							</div>
+							<div class="grid_8">
+							<p:outputLabel  value="Importe"></p:outputLabel>
+								<div class="clear-3"></div>
+							
+									<h:panelGroup display="block" >
+								<pe:inputNumber id="importeDenominacion2" class="importeDenominacion"
+													value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.importe}" decimalPlaces="2"
+													decimalSeparator="." thousandSeparator="," symbol=" MXN"
+													symbolPosition="suffix" maxlength="12" readonly="true">
+													
+													</pe:inputNumber>
+												
+									</h:panelGroup>			
+							</div>
+							<div class="clear-3"></div>
+							<div class="clear-row"></div>
+							<div class="contenedor-fijo-formulario">
+									<p:message id="msgDestino" for="destino" display="icon" />
+									<p:outputLabel for="destino" value="Datos para la imputación"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:selectOneRadio id="destino"
+										value="#{gastosExternosController.gastosExternosBean.destinoImputacion}"
+										required="true" readonly="true">
+										<f:selectItem
+											itemDisabled="#{!gastosExternosController.permiteCuentaAsociada()}"
+											itemLabel="Cuenta Asociada" itemValue="CT" />
+										<f:selectItem itemLabel="Otra cuenta" itemValue="null"
+											itemDisabled="#{gastosExternosController.permiteCuentaAsociada()}" />
+										<f:selectItem itemLabel="Intervención" itemValue="IV"
+											itemDisabled="#{gastosExternosController.permiteCuentaAsociada() }" />
+										<p:ajax global="" partialSubmit="true" update="@form"
+											process="@this"></p:ajax>
+									</p:selectOneRadio>
+								</div>
+								<h:panelGroup
+									rendered="#{'CT' eq gastosExternosController.gastosExternosBean.destinoImputacion}">
+									<div class="grid_20 alpha">
+										<p:outputLabel for="cuenta" id="cuentaOperativa"
+											value="N° de cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="cuenta"
+											value="#{gastosExternosController.gastosExternosBean.gastoSeleccionado.cuentaAsociada}" readonly="true">
+										</p:inputText>
+									</div>
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{'null' eq gastosExternosController.gastosExternosBean.destinoImputacion}">
+									<!-- Cuenta -->
+									<div class="grid_8">
+										<p:message id="msgOtraCuenta" for="otraCuenta" display="icon" />
+										<p:outputLabel for="otraCuenta" id="cuentaLabel"
+											value="N° de cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="otraCuenta"
+											value="#{gastosExternosController.gastosExternosBean.otraCuenta}"
+											maxlength="10"  readonly="true">
+											<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="false" />
+										</p:inputText>
+									</div>
+
+									
+								</h:panelGroup>
+								
+						<div class="clear-3"></div>
+						</div>
+						
+						</h:form>
+						</div>
+						</div>
+						</h:body>
+	</ui:define>
+	
+	</ui:composition>

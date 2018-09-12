@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="llamadaModificaCondicionComision" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionComisionBean
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.cuentas.webservices.modificacondicioncomision.Ejecutar.ITRMODIFICARKACMSTRN.TRMODIFICARKACMSEVTY
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>fechaFinValidez</a>
+      <b>KACDACE.FECHACRREVAL</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>fechaEstadoActual</a>
+      <b>KACDACE.FECHAINICVAL</b>
+    </field>
+    <field>
+      <a>tipo</a>
+      <b>KAESTRCTCMSN1V.CODCMSN</b>
+    </field>
+    <field>
+      <a>importeComFija</a>
+      <b>KACMSNFIJV.IMPCMSNFIJ</b>
+    </field>
+    <field>
+      <a>formaCalculoComFija</a>
+      <b>KACMSNFIJV.FORCALPERPCAL</b>
+    </field>
+    <field>
+      <a>baseCalculoComVar</a>
+      <b>KACMSNPRCTLV.CODCOMSNPRCTL</b>
+    </field>
+    <field>
+      <a>porcentajeComisionComVar</a>
+      <b>KACMSNPRCTLV.CMSNPCT</b>
+    </field>
+    <field>
+      <a>importeMinComVar</a>
+      <b>KACMSNPRCTLV.CMSNMIN</b>
+    </field>
+    <field>
+      <a>importeMaxComVar</a>
+      <b>KACMSNPRCTLV.CMSNMAX</b>
+    </field>
+    <field>
+      <a>importeFranquiciaComVar</a>
+      <b>KACMSNPRCTLV.IMPFRANQ</b>
+    </field>
+  </mapping>
+</mappings>

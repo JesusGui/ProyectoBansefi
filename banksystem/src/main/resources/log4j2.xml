@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss,SSS dd-MM-yyyy} - %X{loginId} - %c{1} - %msg%n"/>
+        </Console>
+        
+        <!--<RollingRandomAccessFile  name="RollingRandomAccessFile" fileName="${env:BANKSYSTEM_LOGS_LPARC}/banksystem.log"-->
+                 <!--filePattern="${env:BANKSYSTEM_LOGS_LPARC}/banksystem-%d{dd-MM-yyyy_HH}-%i.log">-->
+        <RollingRandomAccessFile  name="RollingRandomAccessFile" fileName="${env:BANKSYSTEM_LOGS}/banksystem.log"
+                 filePattern="${env:BANKSYSTEM_LOGS}/banksystem-%d{dd-MM-yyyy_HH}-%i.log">
+	      <PatternLayout>
+				<pattern>%d{HH:mm:ss,SSS dd-MM-yyyy} - %X{loginId} - %c{1} - %msg%n</pattern>
+	      </PatternLayout>
+	      <Policies>
+	      	<SizeBasedTriggeringPolicy size="100 MB"/>
+	      </Policies>
+	    </RollingRandomAccessFile >
+	    
+    </Appenders>
+    <Loggers>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="console"/>
+			<AppenderRef ref="RollingRandomAccessFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+			<h:form id="altaBienes">
+				<h1>ALTA DE BIEN para NOMBRE</h1>
+				<br />
+				<h:panelGrid columns="1" cellpadding="10">
+					<p:outputLabel for="tipoBien" value="Tipo de bien, ingreso o gasto" />
+					<p:selectOneMenu id="tipoBien" value="#{bienesController.bien.codigo}" required="true">
+						<f:selectItem itemLabel="CASA" itemValue="400" />
+						<f:selectItem itemLabel="FINCA" itemValue="407" />
+						<f:selectItem itemLabel="DEPARTAMENTO" itemValue="402" />
+						<f:selectItem itemLabel="COCHE" itemValue="460" />
+						<f:selectItem itemLabel="MOTO" itemValue="498" />
+						<f:selectItem itemLabel="OTROS" itemValue="499" />
+						<f:selectItem itemLabel="NOMINA" itemValue="100" />
+						<f:selectItem itemLabel="GASTOS" itemValue="300" />
+						<f:selectItem itemLabel="DEUDA HIPOTECARIA" itemValue="750" />
+						<p:ajax event="change" update="wrapperPanel"
+        					listener="#{bienesController.cambiarTipoBien()}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				
+				<h:panelGroup id="wrapperPanel">
+    				<h:panelGroup id="datosGeneralesRenderPanel" rendered="#{bienesController.muestraDatosGenerales}">
+						<ui:include src="datosGeneralesBien.xhtml"  />
+					</h:panelGroup>
+					<h:panelGroup id="datosTerrenoRenderPanel" rendered="#{bienesController.muestraDatosTerreno}">
+						<ui:include src="datosTerrenoBien.xhtml" />
+					</h:panelGroup>
+					<h:panelGroup id="direccionRegistralRenderPanel" rendered="#{bienesController.muestraDireccionRegistral}">
+						<ui:include src="direccionRegistralBien.xhtml"  />
+					</h:panelGroup>
+					<h:panelGroup id="datoValuacionRenderPanel" rendered="#{bienesController.muestraDatosValuacion}">
+						<ui:include src="datosValuacionBien.xhtml"  />
+					</h:panelGroup>
+					<h:panelGroup id="datosSeguroRenderPanel" rendered="#{bienesController.muestraDatosSeguro}">
+						<ui:include src="datosSeguroBien.xhtml"  />
+					</h:panelGroup>
+					<h:panelGroup id="datosDeudaRenderPanel" rendered="#{bienesController.muestraDatosDeuda}">
+						<ui:include src="datosDeudaBien.xhtml"  />
+					</h:panelGroup>
+				
+				</h:panelGroup>
+			</h:form>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

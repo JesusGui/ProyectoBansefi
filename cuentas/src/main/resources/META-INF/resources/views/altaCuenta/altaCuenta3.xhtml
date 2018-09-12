@@ -1,0 +1,291 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite/composites"	
+  xmlns:o="http://omnifaces.org/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+	<!--
+plantilla de wizard
+-->
+	<ui:define name="contenido">
+		<h:outputScript name="/js/altaCuenta3.js" />
+		<h:body>
+			<f:metadata>
+				<f:viewAction
+					action="#{modificacionCondicionesController.iniciaPaso3}"
+					phase="APPLY_REQUEST_VALUES" />
+			</f:metadata>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<o:form id="formAltaCuenta3" styleClass="contenedor-form">
+						<!--titulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" rendered="#{modificacionCondicionesController.origenModificacion and 
+                 not modificacionCondicionesController.modificacion}" 
+                 action="#{modificacionCondicionesController.irAHomeDirecto()}" immediate="true">
+							</p:commandButton>
+              <p:commandButton icon="ui-icon-arrow-1-w" rendered="#{modificacionCondicionesController.origenModificacion and 
+                modificacionCondicionesController.modificacion}" action="#{modificacionCondicionesController.irAHome()}">
+                  <o:ignoreValidationFailed/>
+              </p:commandButton>
+							<div>
+	            			<h2 class="gris-b">#{modificacionCondicionesController.origenModificacion?'Condiciones de ':'Alta de '}</h2>
+							<h2 class="rojo-b">#{modificacionCondicionesController.tarifaSeleccionada.nombre} #{modificacionCondicionesController.tarifaSeleccionada.descripcion} </h2>
+							<h3 class="gris-b">(#{modificacionCondicionesController.cuentaBean.numeroCuenta})</h3>
+							</div>
+			            </div>
+			            <div class="margin-top-20"></div>
+						<!--Wizard Botones circulares superiores -->
+						<div class="wiz-pasos">
+						  <h:panelGroup rendered="#{not modificacionCondicionesController.origenModificacion}">
+								<p:commandButton styleClass="activo" value="Negociar tarifa" />
+								<p:commandButton styleClass="inactivo" value="Relacionar personas"
+								 	 action="#{modificacionCondicionesController.irARelacionarPersona()}">
+								  <o:ignoreValidationFailed/>
+								</p:commandButton>
+								<p:commandButton styleClass="inactivo" value="Relacionar cuenta" 
+									disabled="#{modificacionCondicionesController.estadoAlta lt 2}"
+									action="#{modificacionCondicionesController.irARelacionarAcuerdo()}">
+	                			<o:ignoreValidationFailed/>
+	              				</p:commandButton>
+								<p:commandButton styleClass="inactivo" value="Emitir documentos" 
+									rendered="#{!modificacionCondicionesController.altaSat}"
+									disabled="#{modificacionCondicionesController.estadoAlta lt 3}"
+									action="#{modificacionCondicionesController.irAEmisionDocumentos()}">
+	                			<o:ignoreValidationFailed/>
+	                			</p:commandButton>
+             			 </h:panelGroup>
+						</div>
+						<!--contenedor del wizard-->
+						<div class="wiz-contenedor">
+							<div class="wiz-atras">
+								<!--aqui va el boton de "paso anterior" del wizard-->
+							</div>
+							<div class="contenedor-campos altaCuenta3">
+								<p:outputLabel styleClass="#{modificacionCondicionesController.cliente.claseTipoPersona()}"
+                  value="#{modificacionCondicionesController.cliente.nombreCompleto}" />
+								<div class="clear-row"></div>
+								<!--aqui se introducen todos los campos-->
+								<!--estructura de conjunto de label + input-->
+								<c:forEach var="pds"
+									items="#{modificacionCondicionesController.tarifaSeleccionada.productosSimples}">
+									<div class="margin-top-20"></div>
+									<h3 class="rojo-b">#{pds.descripcion}</h3>
+									
+									<p:accordionPanel id="idPds#{pds.id}"
+										value="#{pds.condiciones}" activeIndex="-" dynamic="true"
+										var="condition" widgetVar="idPds#{pds.id}" multiple="true">
+										<p:ajax event="tabChange"
+											onstart="return loadTab('idPds#{pds.id}');"
+											listener="#{modificacionCondicionesController.cargarCondicion}"></p:ajax>
+										<p:tab title="#{condition.descripcion}" disabled="#{empty condition.tipoCondicion}">
+											<h:panelGroup layout="block" rendered="#{condition.loaded}">
+												<ui:fragment
+													rendered="#{condition.tipoCondicion eq 'comision'}">
+													<cc:valorComision esComisionFija="#{condition.tipo eq 'F'}"
+														validezFrom="#{condition.fechaEstadoActual}"
+														validezTo="#{condition.fechaFinValidezFormateada}"
+														importeFijo="#{condition.importeComFija}"
+														calculoProducto="#{condition.formaCalculoComFija}"
+                            preferente="#{condition.impFijoPreferente}"
+                            minimo="#{condition.impFijoMin}"
+                            maximo="#{condition.impFijoMax}"
+                            multiplos="#{condition.impFijoIncremento}"
+														comision="#{condition.porcentajeComisionComVar}"
+														baseCalculo="#{condition.baseCalculoComVar}"
+                            baseCalculoDesc="#{condition.baseCalculoComVarDesc}"
+														agruClop="#{condition.agruClop}"
+														impMinimo="#{condition.importeMinComVar}"
+														impMaximo="#{condition.importeMaxComVar}"
+														franquicia="#{condition.importeFranquiciaComVar}"
+														editable="#{modificacionCondicionesController.modificacion}">
+													</cc:valorComision>
+												</ui:fragment>
+												<ui:fragment
+													rendered="#{condition.tipoCondicion eq 'interes'}">
+													<cc:valorInteres esTipoFijo="#{condition.tipo eq 'F'}"
+														validezFrom="#{condition.fechaEstadoActual}"
+														validezTo="#{condition.fechaFinValidezFormateada}"
+                            baseCalculoDesc="#{condition.baseCalculoDesc}"
+														valorFijo="#{condition.valorIntFijo}"
+                            preferenteFijo="#{condition.intFijoPreferente}"
+                            minimoFijo="#{condition.intFijoMin}"
+                            maximoFijo="#{condition.intFijoMax}"
+                            multiplosFijo="#{condition.intFijoIncremento}"
+														valorActual="#{condition.valorActualVar}"
+														referencia="#{condition.codReferenciaIntVar}"
+														criterio="#{condition.codCriterioRevIntVar}"
+														frec="#{condition.frecuenciaRevIntVar}"
+														forma="#{condition.formaRevIntVar}"
+														fechaRev="#{condition.fechaRevVar}"
+														diferencial="#{condition.diferencialIntVar}"
+														minimo="#{condition.interesMinIntVar}"
+														maximo="#{condition.interesMaxIntVar}"
+														fraccion="#{condition.fraccionRevIntVar}"
+														porcentaje="#{condition.porcentajeMinRevIntVar}"
+                            editable="#{modificacionCondicionesController.modificacion}">
+													</cc:valorInteres>
+												</ui:fragment>
+
+												<ui:fragment
+													rendered="#{condition.tipoCondicion eq 'lista'}">
+													<cc:lista validezFrom="#{condition.fechaEstadoActual}"
+														validezTo="#{condition.fechaFinValidezFormateada}"
+														condicionLista="#{condition}"
+                            editable="#{modificacionCondicionesController.modificacion}">
+													</cc:lista>
+												</ui:fragment>
+
+												<ui:fragment
+													rendered="#{condition.tipoCondicion eq 'rango'}">
+													<cc:rango validezFrom="#{condition.fechaEstadoActual}"
+														validezTo="#{condition.fechaFinValidezFormateada}"
+														preferente="#{condition.preferente}"
+														minimo="#{condition.minimo}"
+														maximo="#{condition.maximo}"
+														unidades="#{condition.unidades}"
+														incremento="#{condition.incremento}"
+                            editable="#{modificacionCondicionesController.modificacion}">
+													</cc:rango>
+												</ui:fragment>
+												<ui:fragment
+													rendered="#{condition.tipoCondicion eq 'valorLista'}">
+													<cc:valorLista validezFrom="#{condition.fechaEstadoActual}"
+														validezTo="#{condition.fechaFinValidezFormateada}"
+														value="#{condition.codDomParmcd}"
+														items="#{condition.items}"
+                            editable="#{modificacionCondicionesController.modificacion}">
+													</cc:valorLista>
+												</ui:fragment>
+												<ui:fragment
+													rendered="#{condition.tipoCondicion eq 'valorRango'}">
+													<cc:valorRango condValorRango="#{condition}"
+                            editable="#{modificacionCondicionesController.modificacion}">
+													</cc:valorRango>
+												</ui:fragment>
+												
+												<ui:fragment
+                          rendered="#{condition.tipoCondicion eq 'tramo'}">
+                          <cc:tramos condTramo="#{condition}"
+                            controller="#{modificacionCondicionesController}"
+                            idPds="#{pds.id}"
+                            editable="#{modificacionCondicionesController.modificacion}">
+                          </cc:tramos>
+                        </ui:fragment>
+											</h:panelGroup>
+										</p:tab>
+									</p:accordionPanel>
+								</c:forEach>
+							</div>
+							<div class="wiz-siguiente">
+								<!--aqui va el boton de "paso siguiente" del wizard-->
+							</div>
+						</div>
+						<!--Botones secundarios de Cancelar u otros -->
+						<p:commandButton styleClass="btn_secundario margin-top-10" value="Cancelar"
+						   onclick="PF('dlgCancelarAlta').show();" rendered="#{not modificacionCondicionesController.origenModificacion}" />
+            <p:commandButton styleClass="btn_secundario margin-top-10" immediate="true"
+              value="Cancelar" action="#{modificacionCondicionesController.irAHomeDirecto()}" 
+              rendered="#{modificacionCondicionesController.origenModificacion and 
+              not modificacionCondicionesController.modificacion}" >
+            </p:commandButton>
+            <p:commandButton styleClass="btn_secundario margin-top-10"
+              value="Cancelar" action="#{modificacionCondicionesController.irAHome()}" 
+              rendered="#{modificacionCondicionesController.origenModificacion and 
+              modificacionCondicionesController.modificacion}" >
+                  <o:ignoreValidationFailed/>
+            </p:commandButton>
+            
+						<p:commandButton styleClass="btn_primario float-right margin-top-10"
+							value="Guardar"
+							actionListener="#{modificacionCondicionesController.guardar}"
+							update="@(.arq-update) @(.ui-message)" oncomplete="focusOpenErrorTabs();"
+							  rendered="#{(not modificacionCondicionesController.origenModificacion) or 
+							  (modificacionCondicionesController.origenModificacion and modificacionCondicionesController.modificacion)}" />
+						<c:if test="#{not modificacionCondicionesController.origenModificacion}">
+							<ui:include src="../store.xhtml">
+								<ui:param name="storeBean"
+									value="#{modificacionCondicionesController}" />
+								<ui:param name="ignoreValidationFailed"
+									value="true" />
+							</ui:include>
+						</c:if>
+					</o:form>
+				</div>
+
+				<p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta"
+					appendTo="@(body)" header="Cancelar alta Cuenta" modal="true"
+					visible="false" closable="false" resizable="false"
+					showEffect="fade" hideEffect="fade"
+					draggable="false">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atencion! Está a punto de cancelar el alta de cuenta." /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en Tareas pendientes para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarAlta').hide();" id="volverAlta" -->
+<!-- 						value="Continuar con el Alta" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartar" value="No guardar" onclick="PF('dlgCancelarAlta').hide();" -->
+<!-- 						 action="#{modificacionCondicionesController.irAHomeDirecto()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardar" value="Guardar" onclick="return storeData();PF('dlgCancelarAlta').hide();" /> -->
+
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{modificacionCondicionesController.irAHomeDirecto()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgNoGuardar" id="dlgNoGuardar"
+					appendTo="@(body)" header="Negocación de tarifa" modal="true"
+					visible="false" closable="false" resizable="false"
+					showEffect="fade" hideEffect="fade"
+					draggable="false">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atencion! No ha guardado las negociaciones. Si continua perderá todos los cambios." />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Desea continuar de todos modos?" />
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_secundario_dialog"
+						id="stay1" onclick="PF('dlgNoGuardar').hide();"
+						value="Cancelar"/>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="continue1" value="Continuar"
+						action="#{modificacionCondicionesController.irAFlujo}" onclick="PF('dlgNoGuardar').hide();">
+					</p:commandButton>
+				</p:dialog>
+				
+				<p:dialog widgetVar="dlgSuccess" id="dlgSuccess" appendTo="@(body)" header="Negocación de tarifa"
+						  showEffect="fade" hideEffect="fade"
+		           		  modal="true" visible="false" closable="false" resizable="false" draggable="false">
+		             <!--icono de la modal -->
+		             <span class="ui-messages-exito-icon exito-dialog"></span>
+		             <!--mensaje de la modal styleClass="modal-mensaje" -->
+		             <p:outputLabel styleClass="modal-mensaje" value="Las negociaciones se guardaron correctamente." />
+		             <div class="clear"></div>
+		             <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" 
+		             onclick="PF('dlgSuccess').hide();" />
+		         </p:dialog>
+			</div>
+			<!--termina container 48-->
+		</h:body>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,243 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmSaldosFecha" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{saldosCuentaController.volverASaldos()}"
+								immediate="true" />
+							<div>
+								<h2 class="gris-b">
+									Consulta de saldos de <span class="rojo-b">#{saldosCuentaController.cuentaBean.tipoCuenta}</span>
+								</h2>
+								<h3 class="gris-b">(#{saldosCuentaController.cuentaBean.numeroCuenta})</h3>
+							</div>
+						</div>
+
+						<div class="contenedor-campos margin-top-10">
+
+							<h3 class="azul-b">Saldos por fecha</h3>
+							<div class="clear-row"></div>
+
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="*Campos Obligatorios" />
+
+							<div class="clear-row"></div>
+
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+
+							<div class="clear-row"></div>
+
+							<div class="contenedor-espacioobjetos">
+
+								<div class="grid_15 alpha">
+									<p:outputLabel value="Naturaleza" for="cboNaturaleza" />
+									<div class="clear-3"></div>
+									<p:selectOneMenu id="cboNaturaleza" widgetVar="cboNaturaleza"
+										value="#{saldosCuentaController.naturalezaSeleccionada}"
+										required="true">
+										<p:ajax event="change" global="false"
+											listener="#{saldosCuentaController.obtenerValoresTipoSaldo()}"
+											update="cboTipoSaldo" />
+										<f:selectItem itemValue="#{null}"
+											itemLabel="Seleccione un tipo" itemDisabled="true"
+											noSelectionOption="true" />
+										<f:selectItems var="item"
+											value="#{saldosCuentaController.naturalezas}"
+											itemValue="#{item.value}" itemLabel="#{item.description}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="grid_11">
+									<p:outputLabel value="Tipo de saldo" for="cboTipoSaldo" />
+									<div class="clear-3"></div>
+									<p:selectOneMenu id="cboTipoSaldo" widgetVar="cboTipoSaldo"
+										value="#{saldosCuentaController.tipoSaldoSeleccionado}"
+										required="true">
+										<f:selectItem itemValue="#{null}"
+											itemLabel="Seleccione un tipo" itemDisabled="true"
+											noSelectionOption="true" />
+										<f:selectItems var="item"
+											value="#{saldosCuentaController.obtenerValoresTipoSaldo()}"
+											itemValue="#{item.value}" itemLabel="#{item.description}" />
+									</p:selectOneMenu>
+								</div>
+								<div class="grid_14">
+									<div class="grid_24">
+										<p:message id="msgFiltroFechaDesde" for="calFiltroFechaDesde"
+											display="icon" />
+										<p:outputLabel id="lblRangoFechas" value="Rango de fechas"
+											for="calFiltroFechaDesde" />
+										<div class="clear-3"></div>
+										<p:calendar id="calFiltroFechaDesde"
+											widgetVar="calFiltroFechaDesde" locale="es" mask="true"
+											maxdate="#{saldosCuentaController.filtroFechaHasta}"
+											pattern="dd/MM/yyyy" placeholder="Desde" required="true"
+											requiredMessage="" showOn="button"
+											value="#{saldosCuentaController.filtroFechaDesde}">
+											<f:attribute name="endDate"
+												value="#{saldosCuentaController.filtroFechaHasta}" />
+											<f:param name="disableValidation" value="true" />
+											<f:validator validatorId="dateRangeValidator"
+												disabled="#{param['disableValidation']==true}" />
+											<p:ajax event="change" global="false"
+												process="calFiltroFechaDesde, calFiltroFechaHasta"
+												update="calFiltroFechaDesde, msgFiltroFechaDesde, calFiltroFechaHasta, msgFiltroFechaHasta"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect" global="false"
+												process="calFiltroFechaDesde, calFiltroFechaHasta"
+												update="calFiltroFechaDesde, msgFiltroFechaDesde, calFiltroFechaHasta, msgFiltroFechaHasta"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+									<div class="grid_24">
+										<p:message id="msgFiltroFechaHasta" for="calFiltroFechaHasta"
+											display="icon" />
+										<p:outputLabel value="." styleClass="label-transparente" />
+										<div class="clear-3"></div>
+										<p:calendar id="calFiltroFechaHasta"
+											widgetVar="calFiltroFechaHasta" locale="es" mask="true"
+											maxdate="#{contextoUtils.getFechaContableActual()}"
+											mindate="#{saldosCuentaController.filtroFechaDesde}"
+											pattern="dd/MM/yyyy" placeholder="Hasta" required="true"
+											requiredMessage="La fecha no puede ser vacía" showOn="button"
+											value="#{saldosCuentaController.filtroFechaHasta}">
+											<f:attribute name="endDate"
+												value="#{contextoUtils.getFechaContableActual()}" />
+											<f:param name="disableValidation" value="true" />
+											<f:validator validatorId="dateRangeValidator"
+												disabled="#{param['disableValidation']==true}" />
+											<p:ajax event="change" global="false"
+												process="calFiltroFechaDesde, calFiltroFechaHasta"
+												update="calFiltroFechaHasta, msgFiltroFechaHasta, calFiltroFechaDesde, msgFiltroFechaHasta"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect" global="false"
+												process="calFiltroFechaDesde, calFiltroFechaHasta"
+												update="calFiltroFechaHasta, msgFiltroFechaHasta, calFiltroFechaDesde, msgFiltroFechaHasta"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+								</div>
+								<div>
+									<div class="clear-3"></div>
+									<p:commandButton id="btnBuscar" widgetVar="btnBuscar"
+										icon="ui-icon-search" value="Buscar" update=":frmSaldosFecha"
+										actionListener="#{saldosCuentaController.buscar()}" />
+								</div>
+
+							</div>
+							<div class="clear-row"></div>
+							<p:outputLabel styleClass="titulo-form"
+								value="Resultados de búsqueda"
+								rendered="#{saldosCuentaController.panelResultadosDisponible}" />
+							<div class="clear margin-top-10"></div>
+							<h:panelGroup styleClass="grid_48" display="block"
+								id="panelResultadosBusqueda"
+								rendered="#{saldosCuentaController.listaSaldosFecha.size() == 0 and saldosCuentaController.panelResultadosDisponible}">
+								<div class="sinresultados">
+									<div>
+										<p:outputLabel
+											value="No se han encontrado resultados con los siguientes filtros" />
+										<div class="clear margin-top-10"></div>
+										<p:outputLabel value="Filtro Naturaleza: "
+											rendered="#{saldosCuentaController.naturalezaSeleccionada != null}" />
+										<p:outputLabel styleClass="bold"
+											value="#{saldosCuentaController.naturalezaSeleccionada} #{saldosCuentaController.obtenerDescNaturaleza(saldosCuentaController.naturalezaSeleccionada, null)}"
+											rendered="#{saldosCuentaController.naturalezaSeleccionada != null}" />
+										<div class="clear"></div>
+										<br />
+										<p:outputLabel value="Filtro Tipo Saldo: "
+											rendered="#{saldosCuentaController.tipoSaldoSeleccionado != null}" />
+										<p:outputLabel styleClass="bold"
+											value="#{saldosCuentaController.tipoSaldoSeleccionado} #{saldosCuentaController.obtenerDescTipoSaldo(saldosCuentaController.tipoSaldoSeleccionado)}"
+											rendered="#{saldosCuentaController.tipoSaldoSeleccionado != null}" />
+										<div class="clear"></div>
+										<br />
+										<p:outputLabel value="Filtro Fecha Desde: "
+											rendered="#{saldosCuentaController.filtroFechaDesde != null}" />
+										<p:outputLabel styleClass="bold"
+											value="#{saldosCuentaController.filtroFechaDesde}"
+											rendered="#{saldosCuentaController.filtroFechaDesde != null}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</p:outputLabel>
+										<div class="clear"></div>
+										<br />
+										<p:outputLabel value="Filtro Fecha Hasta: "
+											rendered="#{saldosCuentaController.filtroFechaHasta != null}" />
+										<p:outputLabel styleClass="bold"
+											value="#{saldosCuentaController.filtroFechaHasta}"
+											rendered="#{saldosCuentaController.filtroFechaHasta != null}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</p:outputLabel>
+									</div>
+								</div>
+							</h:panelGroup>
+
+							<p:dataTable id="tblSaldosFecha" var="saldo"
+								value="#{saldosCuentaController.listaSaldosFecha}"
+								paginator="false" rows="#{saldosCuentaController.pagina}"
+								rendered="#{saldosCuentaController.listaSaldosFecha.size() > 0}">
+								<p:column headerText="Fecha">
+									<p:outputLabel value="#{saldo.ultimoMovimiento}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+								</p:column>
+								<p:column headerText="Saldo">
+									<p:outputLabel value="#{saldo.saldo}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</p:outputLabel>
+								</p:column>
+								<p:column headerText="Movimientos debe">
+									<p:outputLabel value="#{saldo.debe}">
+										<f:convertNumber locale="es_MX" pattern="#,##0" />
+									</p:outputLabel>
+								</p:column>
+								<p:column headerText="Movimientos haber">
+									<p:outputLabel value="#{saldo.haber}">
+										<f:convertNumber locale="es_MX" pattern="#,##0" />
+									</p:outputLabel>
+								</p:column>
+							</p:dataTable>
+
+							<div class="clear"></div>
+
+							<div class="centrar-objeto">
+								<p:commandButton id="btnMasDatos" widgetVar="btnMasDatos"
+									styleClass="margin-top-10 btn-mostrar"
+									value="Ver más resultados" icon="ui-icon-refresh"
+									actionListener="#{saldosCuentaController.verMasDatos()}"
+									update=":frmSaldosFecha"
+									rendered="#{(saldosCuentaController.listaSaldosFecha.size() > 0) and (saldosCuentaController.pagina lt saldosCuentaController.listaSaldosFecha.size() ? true : saldosCuentaController.masDatos)}" />
+							</div>
+
+							<div class="clear"></div>
+
+						</div>
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

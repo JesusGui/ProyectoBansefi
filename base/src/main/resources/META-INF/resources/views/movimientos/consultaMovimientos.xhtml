@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+	  
+	<ui:define name="contenido">
+    <h:body>
+        <div class="container_48">
+            <!-- Se agregó div contenedores -->
+            <div class="contenedor">
+                <div class="contenedor-form">
+                
+                <pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" var="ConstantesFuncionales" />
+
+                    <div class="titulo centrar-objeto btn-inline-set">
+                        <p:commandButton icon="ui-icon-arrow-1-w" action="#{movimientosController.regresa()}"></p:commandButton>
+                        <h1>Consulta de movimientos</h1>
+                    </div>
+
+                    <div class="contenedor-campos">
+
+                        <h:form id="formMovimientos">
+                        	<pe:tooltip global="true" position="left center" targetPosition="right center" /> 
+                            <p:outputLabel styleClass="margin-left-10" value="Introduzca el número de cuenta y el cliente que desea consultar sus movimientos"></p:outputLabel>
+
+                            <div class="margin-top-10"></div>
+                            
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" value="*Campos Obligatorios"></p:outputLabel>
+                                <div class="margin-top-10"></div>
+                                
+                                <h:outputLabel styleClass="txt-campos-oblg grid_40"
+											value="Los campos marcados en rojo son requeridos"
+											rendered="#{facesContext.validationFailed}" />
+
+                            <div class="margin-top-10"></div>
+
+                            <ui:include src="../../composites/detalleCuenta.xhtml">
+                                <ui:param name="detalleCuentaUtils" value="#{movimientosController.consultaMovimientosBean.detalleCuentaUtils}" />
+                                <ui:param name="bean" value="#{movimientosController}" />
+                                <ui:param name="action" value="comprobarInterveniente" />
+                                <ui:param name="buscar" value="buscarCuentas" />
+                            </ui:include>
+
+
+                            <div class="grid_40 alpha">
+								
+								<div class="clear-row"></div>
+								
+                                <div class="grid_8">
+								<p:message for="calendarTest_Start" display="icon" id="calendarTest_StartVal"></p:message>
+                                    <p:outputLabel value="Fecha" for="calendarTest_Start" id="txt-fecha"/>
+
+                                    <div class="clear-3"></div>
+                                    <b:calendarMonthRange id="calendarTest_Start" locale="es" placeholder="Desde"  
+                                    	showOn="button" required="#{param['disableValidation']==null}" pattern="dd/MM/yyyy" mask="true" 
+                                    	maxdate="#{movimientosController.contextoUtils.getFechaContableActual()}"
+                                    	value="#{movimientosController.consultaMovimientosBean.fechaDesde}" 
+                                    	requiredMessage="" showButtonPanel="true">
+                                    	<f:attribute name="beginDate" value="#{movimientosController.fechaMinima}"/>
+                                        <f:attribute id="calendarAttribute" name="endDate" 
+                                        		value="#{movimientosController.consultaMovimientosBean.fechaHasta}" />
+                                        <f:param name="disableValidation" value="true" />
+                                        <f:validator validatorId="dateRangeValidator"  disabled="#{param['disableValidation']==true}"/>
+                                        <p:ajax event="change" process="calendarTest_Start,calendarTest_End" partialSubmit="true" ></p:ajax>
+                                        <p:ajax event="dateSelect" process="calendarTest_Start,calendarTest_End" partialSubmit="true"></p:ajax>              
+                                    </b:calendarMonthRange>
+                                </div>
+
+                                <div class="grid_8">
+                                <p:message for="calendarTest_End" display="icon" id="calendarTest_EndVal"></p:message>
+                                    <p:outputLabel value="Fecha" styleClass="label-transparente" 
+                                    	for="calendarTest_End" id="txt-fechaFin"></p:outputLabel>
+                                    <div class="clear-3"></div>
+                                    <b:calendarMonthRange id="calendarTest_End" locale="es" placeholder="Hasta"  
+                                    	showOn="button" required="#{param['disableValidation']==null}" pattern="dd/MM/yyyy" mask="true" 
+                                    	maxdate="#{movimientosController.contextoUtils.getFechaContableActual()}"
+                                    	value="#{movimientosController.consultaMovimientosBean.fechaHasta}"
+                                    	requiredMessage="">
+                                    	<f:attribute name="beginDate" value="#{movimientosController.fechaMinima}"/>
+                                    	<f:attribute name="endDate"
+												value="#{movimientosController.contextoUtils.getFechaContableActual()}" />
+										<f:param name="disableValidation" value="true" />
+										<f:validator validatorId="dateRangeValidator" disabled="#{param['disableValidation']==true}"/>
+                                        <p:ajax event="dateSelect" process="calendarTest_End" partialSubmit="true"></p:ajax>
+                                        <p:ajax event="change" process="calendarTest_End" partialSubmit="true"></p:ajax>
+                                    </b:calendarMonthRange>
+                                </div>
+
+
+                                <div class="grid_14">
+                                    <p:outputLabel for="aplicarComision" value="Aplicar comisión (si procede)" />
+									<div class="clear-3"></div>
+                                    <div class="label-switch">
+                                    <p:inputSwitch id="aplicarComision" value="#{movimientosController.consultaMovimientosBean.aplicarComision}" required="true" onLabel="Si" offLabel="No" />
+                                   </div>
+                                </div>
+
+
+                                <div class="clear"></div>
+
+                            </div>
+
+                            <div class="clear"></div>
+
+                        </h:form>
+
+                    </div>
+
+                    <ui:include src="../../composites/detalleCuentaDialog.xhtml">
+                        <ui:param name="detalleCuentaUtils" value="#{movimientosController.consultaMovimientosBean.detalleCuentaUtils}" />
+                        <ui:param name="bean" value="#{movimientosController}" />
+                        <ui:param name="action" value="continuar" />
+                        <ui:param name="title" value="Consulta movimientos" />
+                    </ui:include>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</ui:define>
+</ui:composition>

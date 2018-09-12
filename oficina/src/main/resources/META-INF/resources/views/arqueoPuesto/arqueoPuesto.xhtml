@@ -1,0 +1,208 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formArqueoPuesto" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								onclick="PF('dialogCancelar').show();"></p:commandButton>
+							<h1>Arqueo de puesto</h1>
+						</div>
+						<div class="contenedor-campos">
+
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Campos Obligatorios" />
+
+							<!--                             <p:outputLabel styleClass="margin-left-10" value="Introduzca el número de puesto del que desea realizar el arqueo"/> -->
+
+							<h:panelGroup layout="block">
+								<div class="margin-top-15"></div>
+								<p:outputLabel styleClass="margin-left-10"
+									value="Introduzca el número de unidades y/o importe correspondiente" />
+								<div class="clear-row"></div>
+								<div class="contenedor-totales">
+									<div class="grid_48 saldo-disponible">
+										<div class="grid_20">
+											<p:outputLabel value="Total arqueo de puesto:"></p:outputLabel>
+										</div>
+										<div class="grid_28">
+											<p:outputLabel
+												value="#{arqueoPuestoController.arqueoPuestoBean.totalArqueo}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+											</p:outputLabel>
+										</div>
+									</div>
+								</div>
+
+								<div class="contenedor-arqueopuesto">
+									<div class="ui-datatable ui-widget">
+										<div class="ui-datatable-tablewrapper">
+											<table>
+												<thead>
+													<tr>
+														<th><h:outputLabel value="Valor Facial"></h:outputLabel></th>
+														<th><h:outputLabel value="Soporte"></h:outputLabel></th>
+														<th><h:outputLabel value="Formato"></h:outputLabel></th>
+														<th><h:outputLabel value="D/V"></h:outputLabel></th>
+														<th><h:outputLabel value="Unidades"></h:outputLabel></th>
+														<th><h:outputLabel value="Importe"></h:outputLabel></th>
+													</tr>
+												</thead>
+											</table>
+										</div>
+									</div>
+
+
+									<ui:repeat var="denominacion"
+										value="#{arqueoPuestoController.arqueoPuestoBean.listaDenominaciones}">
+										<div class="cuerpo-arqueopuesto">
+											<div>
+												<h:outputLabel styleClass="float-right"
+													value="#{denominacion.valor}">
+													<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												</h:outputLabel>
+											</div>
+											<div>
+												<h:outputLabel
+													value="#{denominacion.moneda? 'Moneda':'Billete'}" />
+											</div>
+											<div>
+												<h:outputLabel value="#{denominacion.formato}" />
+											</div>
+											<div>
+												<h:outputLabel
+													value="#{'V'.equals(denominacion.origen)? 'Ventanilla':'Dispensador'}" />
+											</div>
+											<div class="ui-inputNum">
+												<p:inputMask value="#{denominacion.unidades}"
+													placeholder="0" maxlength="6">
+													<!--  maxlength="#{arqueoPuestoController.cantidadMaxima(denominacion)}">-->
+													<pe:keyFilter regEx="/[0-9_]/i" />
+													<p:ajax event="change" process="@this" partialSubmit="true"
+														update="@form" global="false"
+														listener="#{arqueoPuestoController.actualizaImporte(denominacion)}"></p:ajax>
+												</p:inputMask>
+											</div>
+											<div>
+												<pe:inputNumber id="importeDenominacion"
+													value="#{denominacion.importeModificable}" decimalPlaces="2"
+													decimalSeparator="." thousandSeparator="," symbol=" MXN"
+													symbolPosition="suffix" maxlength="12">
+													<f:attribute id="importeAttribute" name="valor"
+														value="#{denominacion.valor}" />
+													<f:attribute id="unidadesAttribute" name="unidad"
+														value="#{denominacion.unidades}" />
+													<f:validator validatorId="unidadesImporteValidator" />
+													<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="@form"
+														listener="#{arqueoPuestoController.actualizaUnidades(denominacion)}"></p:ajax>
+												</pe:inputNumber>
+												<p:watermark for="importeDenominacion" value="0.00 MXN" />
+												<p:message for="importeDenominacion" display="text"></p:message>
+											</div>
+										</div>
+									</ui:repeat>
+								</div>
+							</h:panelGroup>
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10 margin-right-10"
+							value="Cancelar" process="@this" partialSubmit="true"
+							onclick="PF('dialogCancelar').show();" />
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar" action="#{arqueoPuestoController.arqueaPuesto()}" />
+						<p:commandButton
+							styleClass="btn_secundario margin-top-10"
+							value="Limpiar" update=":dialogLimpiarCampos"
+							action="#{arqueoPuestoController.setMuestraDialogoLimpiar(true)}" />
+						<ui:include src="../store.xhtml">
+							<ui:param name="storeBean" value="#{arqueoPuestoController}" />
+						</ui:include>
+					</h:form>
+					<p:dialog widgetVar="dialogLimpiarCampos" id="dialogLimpiarCampos" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="#{arqueoPuestoController.muestraDialogoLimpiar}"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Está a punto de perder la información capturada" />
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que deba limpiar los campos?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" immediate="true"
+							oncomplete="PF('dialogLimpiarCampos').hide();"
+							action="#{arqueoPuestoController.setMuestraDialogoLimpiar(false)}" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Limpiar" immediate="true" update=":formArqueoPuesto"
+							oncomplete="PF('dialogLimpiarCampos').hide();"
+							action="#{arqueoPuestoController.limpiar()}" />
+					</p:dialog>
+					<p:dialog widgetVar="dialogCancelar" id="dialogCancelar" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="#{arqueoPuestoController.muestraDialogoCancelar}"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 						mensaje de la modal styleClass="modal-mensaje" -->
+<!-- 						<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 							value="Está a punto de cancelar el Arqueo de puesto." /> -->
+<!-- 						<div class="clear"></div> -->
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+<!-- 						<p:outputLabel styleClass="modal-accion" -->
+<!-- 							value="¿Desea guardar los datos en 'Tareas pendientes' para continuar más tarde?" /> -->
+<!-- 						<div class="margin-bottom-20"></div> -->
+<!-- 						botones de la modal primarios y secundarios -->
+<!-- 						<p:commandButton -->
+<!-- 							styleClass="btn_secundario_dialog margin-right-10" -->
+<!-- 							value="Continuar Arqueo" immediate="true" -->
+<!-- 							oncomplete="PF('dialogCancelar').hide();" -->
+<!-- 							action="#{arqueoPuestoController.setMuestraDialogoCancelar(false)}" /> -->
+<!-- 						<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 							value="No guardar" immediate="true" -->
+<!-- 							oncomplete="PF('dialogCancelar').hide();" -->
+<!-- 							action="#{arqueoPuestoController.rutaInicio()}" /> -->
+<!-- 						<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 							value="Guardar" immediate="true" -->
+<!-- 							oncomplete="PF('dialogCancelar').hide();" -->
+<!-- 							onclick="return storeData();" /> -->
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{arqueoPuestoController.rutaInicio()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dialogCancelar').hide();" />
+					</p:dialog>
+				</div>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

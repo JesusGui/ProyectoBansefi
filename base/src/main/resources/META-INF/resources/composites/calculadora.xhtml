@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui">
+	<p:dialog id="CalculadoraPopUp" header="Calculadora" widgetVar="dlg2" showEffect="fade" hideEffect="fade"
+		modal="false" styleClass="contenedor-calculadora" closable="true" 
+		closeOnEscape="true" resizable="false">
+		<h:form id="calcForm" styleClass="calculadora">
+			<div class="contenedor-operaciones">
+				<input name="Accumulado" class="operacion-acumulada" type="text" readonly="readonly"></input>
+				<input name="ReadOut" class="operacion-salida" type="number" step="any" readonly="readonly"></input>
+			</div>
+			<div class="contenedor-botones">
+				<input name="btnClear" type="Button" value="  C  " onclick="Clear()"></input>
+				<input name="btnClearEntry" type="Button" value=" CE " onclick="ClearEntry()"></input>
+				<input name="btnSqrt" type="Button" value=" √ " onclick="sqrt()"></input>
+				<input name="btnPercent" class="operacion" type="Button" value="  % " onclick="Percent()"></input>
+				<input name="btnSeven" type="Button" value="  7  " onclick="NumPressed(7)"></input>
+				<input name="btnEight" type="Button" value="  8  " onclick="NumPressed(8)"></input>
+				<input name="btnNine" type="Button" value="  9  " onclick="NumPressed(9)"></input>
+				<input name="btnDivide" class="operacion" type="Button" value="  &#247;  " onclick="Operation('/')"></input>
+				<input name="btnFour" type="Button" value="  4  " onclick="NumPressed(4)"></input>
+				<input name="btnFive" type="Button" value="  5  " onclick="NumPressed(5)"></input>
+				<input name="btnSix" type="Button" value="  6  " onclick="NumPressed(6)"></input>
+				<input name="btnMultiply" class="operacion" type="Button" value="  x  " onclick="Operation('*')"></input>
+				<input name="btnOne" type="Button" value="  1  " onclick="NumPressed(1)"></input>
+				<input name="btnTwo" type="Button" value="  2  " onclick="NumPressed(2)"></input>
+				<input name="btnThree" type="Button" value="  3  " onclick="NumPressed(3)"></input>
+				<input name="btnMinus" class="operacion" type="Button" value="   -  " onclick="Operation('-')"></input>
+				<input name="btnZero" type="Button" value="  0  " onclick="NumPressed(0)"></input>
+				<input name="btnDecimal" type="Button" value="   .  " onclick="Decimal()"></input>
+				<input name="btnEquals" type="Button" value="  =  " onclick="Operation('=')"></input>
+				<input name="btnPlus" class="operacion" type="Button" value="  +  " onclick="Operation('+')"></input>
+				
+			</div>
+			
+		</h:form>
+	</p:dialog>
+	<h:outputScript name="js/calculadora.js" />
+</ui:composition>

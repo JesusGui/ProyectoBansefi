@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="anulacionServicioRespuesta" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.webservices.anulacionservicioscentrales.ResponseBansefi</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.beans.AnulacionServiciosCentralesRespuestaBean</class-b>
+		<field>
+			<a>estatus</a>
+			<b>estatus</b>
+		</field>	
+		<field>
+			<a>movimiento</a>
+			<b>movimiento</b>
+		</field>
+		<field>
+			<a>acuerdo</a>
+			<b>acuerdo</b>
+		</field>
+		<field>
+			<a>montototal</a>
+			<b>montoTotal</b>
+		</field>
+		<field>
+			<a>terminal</a>
+			<b>terminal</b>
+		</field>
+		<field>
+			<a>oficina</a>
+			<b>oficina</b>
+		</field>
+		<field>
+			<a>plaza</a>
+			<b>plaza</b>
+		</field>
+		<field>
+			<a>digito</a>
+			<b>digito</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="yyyy-MM-dd">
+			<a>fechaoprcn</a>
+			<b>fechaOperacion</b>
+		</field>	
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="HH.mm.ss">
+			<a>horaoprcn</a>
+			<b>horaOperacion</b>
+		</field>	
+		<field>
+			<a>titular</a>
+			<b>titular</b>
+		</field>		
+	</mapping>
+	<mapping map-id="anularServicioCentral" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoDetalleRespuestaBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.webservices.anulacionservicioscentrales.Ejecutar</class-b>
+		<field>
+			<a>noCuenta</a>
+			<b>acuerdo</b>
+		</field>	
+		<field>
+			<a>importe</a>
+			<b>importe</b>
+		</field>
+		<field>
+			<a>movimiento</a>
+			<b>movimiento</b>
+		</field>
+		<field>
+			<a>noSecuencia</a>
+			<b>secde</b>
+		</field>
+		<field>
+			<a>idTransaccion</a>
+			<b>tarea</b>
+		</field>			
+	</mapping>
+</mappings>

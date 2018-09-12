@@ -1,0 +1,145 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<p:fieldset legend="Datos valuación">
+	
+		<div class="margin-top-10"></div>
+	
+		<div class="grid_12">
+			<p:outputLabel value="Valor declarado" />
+			<div class="clear-3"></div>
+			<pe:inputNumber emptyValue="0" maxlength="13" decimalPlaces="2"
+				decimalSeparator="." maxValue="9999999999999.99"
+				thousandSeparator="," styleClass="pe-inputNumber"
+				value="#{bien.datosValuacion.valorDeclarado}" placeholder="Importe"/>
+			<span class="pe-inputNumber-suffix">MXN</span>
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="F. declaración" />
+			<div class="clear-3"></div>
+			<p:calendar pattern="dd/MM/yyyy" mask="true" locale="es"
+				showOn="button" value="#{bien.datosValuacion.fechaDeclaracion}" />
+		</div>
+		<div class="grid_12">
+			<p:outputLabel value="Valor valuado" />
+			<div class="clear-3"></div>
+			<pe:inputNumber emptyValue="0" maxlength="13" decimalPlaces="2"
+				decimalSeparator="." maxValue="9999999999999.99"
+				thousandSeparator="," styleClass="pe-inputNumber"
+				value="#{bien.datosValuacion.valorValuado}" placeholder="Importe"/>
+			<span class="pe-inputNumber-suffix">MXN</span>
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="F. valuacion" />
+			<div class="clear-3"></div>
+			<p:calendar pattern="dd/MM/yyyy" mask="true" locale="es"
+				showOn="button" value="#{bien.datosValuacion.fechaValuacion}" />
+		</div>
+		<div class="grid_8">
+			<p:outputLabel value="F. expiración" />
+			<div class="clear-3"></div>
+			<p:calendar pattern="dd/MM/yyyy" mask="true" locale="es"
+				showOn="button" value="#{bien.datosValuacion.fechaExpiracion}" />
+		</div>
+
+		<div class="clear-row"></div>
+
+		<div class="grid_38">
+			<p:outputLabel value="Entidad valuadora" />
+			<div class="clear-3"></div>
+			<p:inputText value="#{bien.datosValuacion.entidadValuadora}"
+				maxlength="14" onblur="this.value=this.value.toUpperCase()">
+				<pe:keyFilter preventPaste="true" />
+			</p:inputText>
+		</div>
+		
+		<div class="grid_10">
+			<p:outputLabel value="Uso del bien" />
+			<div class="clear-3"></div>
+			<p:selectOneMenu value="#{bien.datosValuacion.usoBien}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+				<f:selectItems value="#{catalogoUtils.getCatalogo('USO_BIEN')}"
+					var="item" itemValue="#{item.claveFila}"
+					itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+		</div>
+		
+		<div class="clear-row"></div>
+		
+		<div class="row-flex">
+		
+		<div class="grid_9">
+			<p:outputLabel value="Origen adquisión" />
+			<div class="clear-3"></div>
+			<p:selectOneMenu value="#{bien.datosValuacion.origenAdquisicion}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+				<f:selectItems value="#{catalogoUtils.getCatalogo('ORIGEN_ADQ')}"
+					var="item" itemValue="#{item.claveFila}"
+					itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+		</div>
+		
+		<div class="grid_8">
+			<p:outputLabel value="F. adquisición" />
+			<div class="clear-3"></div>
+			<p:calendar value="#{bien.datosValuacion.fechaAdquisicion}"
+				showOn="button"  pattern="dd/MM/yyyy" mask="true" locale="es" />
+		</div>
+
+		<div class="grid_6">
+			<p:outputLabel value="Cantidad" />
+			<div class="clear-3"></div>
+			<p:inputMask styleClass="text-align-right-input" value="#{bien.datosValuacion.cantidad}" maxlength="5">
+				<pe:keyFilter regEx="/[0-9_]/i" preventPaste="true" />
+			</p:inputMask>
+		</div>
+		<div class="grid_12">
+			<p:outputLabel value="Valor" />
+			<div class="clear-3"></div>
+			<pe:inputNumber emptyValue="0" maxlength="13" decimalPlaces="2"
+				decimalSeparator="." maxValue="9999999999999.99"
+				thousandSeparator="," styleClass="pe-inputNumber"
+				value="#{bien.datosValuacion.valor}" placeholder="Importe"/>
+			<span class="pe-inputNumber-suffix">MXN</span>
+		</div>
+		<div class="grid_9">
+			<p:outputLabel value="Clase" />
+			<div class="clear-3"></div>
+			<p:inputText value="#{bien.datosValuacion.clase}" maxlength="20"
+				onblur="this.value=this.value.toUpperCase()">
+				<pe:keyFilter preventPaste="true" />
+			</p:inputText>
+		</div>
+		<div class="grid_4">
+			<p:outputLabel value="% Domic." />
+			<div class="clear-3"></div>
+			<pe:inputNumber emptyValue="0" decimalPlaces="3" maxValue="100"
+				decimalSeparator="." thousandSeparator=","
+				value="#{bien.datosValuacion.domiciliacion}" />
+		</div>
+		
+		</div>
+		
+		<div class="grid_14">
+			<p:outputLabel value="Razón alta" />
+			<div class="clear-3"></div>
+			<p:selectOneMenu value="#{bien.datosValuacion.razonAlta}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+				<f:selectItems
+					value="#{catalogoUtils.getCatalogo('TP_RZN_ALTA_BIEN')}"
+					var="item" itemValue="#{item.claveFila}"
+					itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+		</div>
+		
+		<div class="clear"></div>
+
+	</p:fieldset>
+
+</ui:composition>
+

@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<p:fieldset legend="Datos terreno">
+	
+		<div class="margin-top-10"></div>
+	
+		<div class="grid_12">
+			<p:outputLabel value="Sup. construida" />
+			<div class="clear-3"></div>
+			<div class="grid_30">
+			<pe:inputNumber 
+				label="SuperficieConstruida" maxlength="14"
+				minValue="0" maxValue="99999.99"  decimalPlaces="2" decimalSeparator="."
+				thousandSeparator=","
+				value="#{bien.datosTerreno.superficieConstruida}" />
+			</div>
+			<div class="grid_18">	
+			<p:selectOneMenu 
+				value="#{bien.datosTerreno.superficieConstruidaUnidad}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+				<f:selectItems value="#{catalogoUtils.getCatalogo('UDAD_SUP')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+			</div>
+		</div>
+		
+		<div class="grid_12">
+			<p:outputLabel value="Sup. terreno" />
+			<div class="clear-3"></div>
+			<div class="grid_30">
+			<pe:inputNumber emptyValue="0" 
+				label="SuperficieTerreno" maxlength="14"
+				maxValue="99999.99" decimalPlaces="2" decimalSeparator="."
+				thousandSeparator="," value="#{bien.datosTerreno.superficieTerreno}" />
+			</div>
+			<div class="grid_18">
+			<p:selectOneMenu 
+				value="#{bien.datosTerreno.superficieTerrenoUnidad}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+				<f:selectItems value="#{catalogoUtils.getCatalogo('UDAD_SUP')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+			</div>
+		</div>
+		
+		<div class="grid_12">
+			<p:outputLabel value="Cargas" />
+			<div class="clear-3"></div>
+			<p:selectOneMenu  value="#{bien.datosTerreno.carga}">
+				<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+				<f:selectItems value="#{catalogoUtils.getCatalogo('CARGAS')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+			</p:selectOneMenu>
+		</div>
+		
+		<div class="grid_6">
+			<div class="label-vacio"></div>
+			<div class="clear-3"></div>
+			<p:selectBooleanCheckbox styleClass="centrado-vertical" value="#{bien.datosTerreno.primeraVivienda}" />
+			<p:outputLabel styleClass="centrado-vertical" value="1ª Vivienda" />
+		</div>
+		
+		<div class="grid_6">
+			<div class="label-vacio"></div>
+			<div class="clear-3"></div>
+			<p:selectBooleanCheckbox styleClass="centrado-vertical" value="#{bien.datosTerreno.primeraHipoteca}" />
+			<p:outputLabel styleClass="centrado-vertical" value="1ª hipoteca" />
+
+		</div>
+
+		<div class="clear-row"></div>
+
+		<h:panelGroup layout="block" rendered="#{bien.tipo eq 407}">
+			<div class="grid_8">
+				<p:outputLabel value="Tipo terreno" />
+				<div class="clear-3"></div>
+				<p:inputText 
+					value="#{bien.datosTerreno.tipoTerreno}" maxlength="12"
+					onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_8">
+				<p:outputLabel value="Tipo cultivo" />
+				<div class="clear-3"></div>
+				<p:inputText 
+					value="#{bien.datosTerreno.tipoCultivo}" maxlength="12"
+					onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_10">
+				<p:outputLabel value="Partida" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosTerreno.partida}"
+					maxlength="20" onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_5">
+				<p:outputLabel value="H. regadío" />
+				<div class="clear-3"></div>
+				<pe:inputNumber
+					thousandSeparator="," decimalPlaces="2" decimalSeparator="."
+					value="#{bien.datosTerreno.horasRegadio}" minValue="0" maxValue="999.99" />
+					
+			</div>
+			<div class="grid_5">
+				<p:outputLabel value="otras" />
+				<div class="clear-3"></div>
+				<pe:inputNumber maxlength="3"
+					maxValue="999.99" decimalPlaces="2" decimalSeparator="."
+					thousandSeparator="," value="#{bien.datosTerreno.otras}" />
+			</div>
+			<div class="grid_12">
+				<p:outputLabel value="Sup. invernadero" />
+				<div class="clear-3"></div>
+				<div class="grid_30">
+				<pe:inputNumber 
+					label="SuperficieConstruida" maxlength="5" decimalPlaces="2"
+					decimalSeparator="." minValue="0" maxValue="99999.99" thousandSeparator=","
+					value="#{bien.datosTerreno.superficieInvernadero}" />
+				</div>
+				<div class="grid_18">
+				<p:selectOneMenu 
+					value="#{bien.datosTerreno.superficieInvernaderoUnidad}">
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor" noSelectionOption="true" />
+					<f:selectItems value="#{catalogoUtils.getCatalogo('UDAD_SUP')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+
+				</p:selectOneMenu>
+				</div>
+			</div>
+			
+			<div class="clear-row"></div>
+			
+			<div class="grid_20">
+				<p:outputLabel value="Nombre finca" />
+				<div class="clear-3"></div>
+				<p:inputText
+					value="#{bien.datosTerreno.nombreFinca}" maxlength="20"
+					onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+
+
+		</h:panelGroup>
+	</p:fieldset>
+
+</ui:composition>

@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmSaldosCuenta" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{saldosCuentaController.volverAFichaCuenta()}"
+								immediate="true" />
+							<div>
+								<h2 class="gris-b">
+									Consulta de saldos de <span class="rojo-b">#{saldosCuentaController.cuentaBean.tipoCuenta} </span>
+								</h2>
+								<h3 class="gris-b">(#{saldosCuentaController.cuentaBean.numeroCuenta})</h3>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+							<div class="float-right">
+								<p:commandButton id="btnVerSaldos"
+									value="Consultar saldos por fecha"
+									styleClass="btn_secundario btn-icono-texto" icon="ui-icon-view"
+									action="#{saldosCuentaController.irAConsultaSaldosPorFecha()}"
+									rendered="#{saldosCuentaController.listaSaldos.size() > 0}" />
+							</div>
+
+							<div class="float-right margin-right-10">
+								<p:commandButton id="btnVerApuntes" value="Consultar tipo cuenta"
+									styleClass="btn_secundario btn-icono-texto" icon="ui-icon-view"
+									action="#{saldosCuentaController.irBusquedaApunte1()}"
+									rendered="#{saldosCuentaController.listaSaldos.size() > 0}" />
+							</div>
+
+							<div class="clear-row"></div>
+							<h:panelGroup layout="block" styleClass="sinresultados"
+										  rendered="#{saldosCuentaController.listaSaldos.size() == 0}">
+							<div>
+							<p:outputLabel value="No existe información que mostrar."/>
+							</div>
+							</h:panelGroup>
+							<p:dataTable id="tblSaldos" widgetVar="tblSaldos" var="saldo"
+								value="#{saldosCuentaController.listaSaldos}" rowKey="#{saldo.numSec}"
+								rows="#{saldosCuentaController.pagina}" selectionMode="single"
+								selection="#{saldosCuentaController.saldoSeleccionado}"
+								paginator="false"
+								rendered="#{saldosCuentaController.listaSaldos.size() > 0}">
+								<p:ajax event="rowSelect"
+									listener="#{saldosCuentaController.onRowSelect}" />
+								<p:column headerText="Naturaleza">
+									<h:outputText
+										value="#{saldosCuentaController.obtenerDescNaturaleza(saldo.codigoCuenta, saldo.codigoSaldo)}" />
+								</p:column>
+								<p:column headerText="Saldos">
+									<h:outputText value="#{saldo.saldo}" styleClass="float-right">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Fecha último movimiento">
+									<h:outputText value="#{saldo.ultimoMovimiento}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Movimientos debe">
+									<h:outputText value="#{saldo.debe}">
+										<f:convertNumber locale="es_MX" pattern="#,##0" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Movimientos haber">
+									<h:outputText value="#{saldo.haber}">
+										<f:convertNumber locale="es_MX" pattern="#,##0" />
+									</h:outputText>
+								</p:column>
+							</p:dataTable>
+							<!-- <p:dataTable id="tblSaldos" var="saldo"
+								value="#{saldosCuentaController.listaSaldos}"
+								rendered="#{saldosCuentaController.listaSaldos.size() > 0}">
+								<p:column headerText="Naturaleza">
+									<p:outputLabel
+										value="#{saldosCuentaController.obtenerDescNaturaleza(saldo.codigoCuenta, saldo.codigoSaldo)}" />
+								</p:column>
+								<p:column headerText="Saldos">
+									<p:outputLabel value="#{saldo.saldo}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</p:outputLabel>
+								</p:column>
+								<p:column headerText="Fecha último movimiento">
+									<p:outputLabel value="#{saldo.ultimoMovimiento}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+								</p:column>
+								<p:column headerText="Movimientos debe">
+									<p:outputLabel value="#{saldo.debe}">
+										<f:convertNumber locale="es_MX" pattern="#,##0" />
+									</p:outputLabel>
+								</p:column>
+								<p:column headerText="Movimientos haber">
+									<p:outputLabel value="#{saldo.haber}">
+										<f:convertNumber locale="es_MX" pattern="#,##0" />
+									</p:outputLabel>
+								</p:column>
+							</p:dataTable> -->
+
+
+						</div>
+
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar"
+							action="#{saldosCuentaController.volverAFichaCuenta()}"
+							immediate="true" />
+
+					</h:form>
+
+				</div>
+
+
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

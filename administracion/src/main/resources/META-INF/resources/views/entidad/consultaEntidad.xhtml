@@ -1,0 +1,250 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+
+			<div class="container_48">
+				<div class="contenedor">
+					<div class="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton immediate="true"
+								action="#{entidadController.redirigirInicio()}"
+								icon="ui-icon-arrow-1-w"></p:commandButton>
+							<h1>Mantenimiento de Entidad</h1>
+						</div>
+						<h:form id="modificarEntidad">
+							<p:growl id="growl" showDetail="true" globalOnly="true" sticky="true" />
+							<div class="contenedor-campos">
+								<!--agregar-campos-->
+
+
+								<p:outputLabel styleClass="titulo-form-icono icono-entidad"
+									value="Entidad" />
+
+								<div class="clear-row"></div>
+
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios"></p:outputLabel>
+
+								<h:outputText styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+
+								<div class="margin-top-10"></div>
+
+								<p:accordionPanel dynamic="true" multiple="true">
+
+									<!--datos entidad-->
+
+									<p:tab title="Datos Entidad">
+
+										<div class="grid_8">
+											<p:outputLabel for="codigoEntidad" value="Código"></p:outputLabel>
+											<p:inputMask id="codigoEntidad"
+												readonly="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.codigo}" maxlength="4"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<f:validateLength minimum="4"
+													disabled="#{param['disableValidation']!=null}" />
+												<pe:keyFilter regEx="/[\d\-\.]/" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_20">
+											<p:outputLabel for="nombreEntidad" value="Nombre"></p:outputLabel>
+											<p:inputMask id="nombreEntidad"
+												readonly="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.nombre}" maxlength="36"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-Z\-\.\ñ\Ñ ]*$/" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel for="nombreCortoEntidad" value="Nombre Corto"></p:outputLabel>
+											<p:inputMask id="nombreCortoEntidad"
+												readonly="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.nombreCorto}"
+												maxlength="15"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-Z\-\.\ñ\Ñ ]*$/" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel for="idOficialEntidad" value="Id. Oficial"></p:outputLabel>
+											<p:inputMask id="idOficialEntidad"
+												readonly="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.idOficial}" maxlength="8"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<f:validateLength
+													disabled="#{param['disableValidation']!=null}" />
+												<pe:keyFilter regEx="/[\d\-\.]/" />
+											</p:inputMask>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_12">
+											<p:outputLabel for="representadaPor" value="Representada por"></p:outputLabel>
+											<p:selectOneMenu id="representadaPor"
+												disabled="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.representado}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_ENTIDAD_CR')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="grid_12">
+											<p:outputLabel for="ambitoEntidad" value="Ámbito"></p:outputLabel>
+											<p:selectOneMenu id="ambitoEntidad"
+												disabled="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.ambito}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_AMBTO_ORG')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+
+										<div class="grid_12">
+											<p:outputLabel for="responsableEntidad" value="Responsable"></p:outputLabel>
+											<p:inputMask id="responsableEntidad"
+												readonly="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.responsable}"
+												maxlength="30"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-Z\-\.\ñ\Ñ ]*$/" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_12">
+											<p:outputLabel for="coordinadorEntidad"
+												value="Coordinador TCB"></p:outputLabel>
+											<p:inputMask id="coordinadorEntidad"
+												readonly="#{entidadController.datosGeneralesReadOnly}"
+												value="#{entidadController.entidad.coordinador}"
+												maxlength="30"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-Z\-\.\ñ\Ñ ]*$/" />
+											</p:inputMask>
+										</div>
+
+										<div class="clear-row"></div>
+
+									</p:tab>
+
+									<!--Domicilio-->
+
+									<p:tab title="Domicilio">
+
+										<div class="row-flex">
+
+											<div class="grid_10">
+												<p:outputLabel for="regimenOcupacion"
+													value="Régimen de Ocupación"></p:outputLabel>
+												<p:selectOneMenu id="regimenOcupacion"
+													value="#{entidadController.entidad.domicilio.regimenOcupacion}"
+													required="#{param['disableValidation']==null}"
+													disabled="#{entidadController.datosDireccionReadOnly}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_OCUPACION_VIV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel for="telefono" value="Teléfono"></p:outputLabel>
+												<p:inputMask id="telefono"
+													value="#{entidadController.entidad.domicilio.telefono}"
+													maxlength="12"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()"
+													readonly="#{entidadController.datosDireccionReadOnly}">
+													<pe:keyFilter regEx="/[\d\-\.]/" />
+												</p:inputMask>
+											</div>
+										</div>
+										<componente:domicilio codigoPostalRequerido="true"
+											municipioRequerido="true" estadoRequerido="true"
+											paisRequerido="true" tipoCalleRequerido="true"
+											calleRequerido="true" numExtRequerido="true"
+											coloniaRequerido="true" controller="#{entidadController}"
+											estadoHabilitado="false" paisHabilitado="false"
+											edificioReadOnly="#{entidadController.datosDireccionReadOnly}"
+											codigoPostalReadOnly="#{entidadController.datosDireccionReadOnly}"
+											calleReadOnly="#{entidadController.datosDireccionReadOnly}"
+											coloniaReadOnly="#{entidadController.datosDireccionReadOnly}"
+											departamentoReadOnly="#{entidadController.datosDireccionReadOnly}"
+											interiorReadOnly="#{entidadController.datosDireccionReadOnly}"
+											manzanaReadOnly="#{entidadController.datosDireccionReadOnly}"
+											municipioReadOnly="#{entidadController.datosDireccionReadOnly}"
+											numExtReadOnly="#{entidadController.datosDireccionReadOnly}"
+											otrosDatosReadOnly="#{entidadController.datosDireccionReadOnly}"
+											tipoCalleReadOnly="#{entidadController.datosDireccionReadOnly}"
+											unidadHabitacionalReadOnly="#{entidadController.datosDireccionReadOnly}"
+											tipoCalleDisabled="#{entidadController.datosDireccionReadOnly}" />
+
+
+
+									</p:tab>
+
+								</p:accordionPanel>
+
+
+							</div>
+							<!--termina contenedor-campos-->
+							<div class="margin-top-10"></div>
+
+							<p:commandButton styleClass="btn_secundario" id="cancelar"
+								value="Cancelar" immediate="true"
+								action="/views/inicio/inicio?faces-redirect=true" />
+
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								id="guardar" value="Guardar"
+								action="#{entidadController.modificarEntidad()}" ajax="true"
+								update="modificarEntidad">
+							</p:commandButton>
+
+						</h:form>
+					</div>
+					<!--termina contenedor-form-->
+				</div>
+				<!--termina contenedor-->
+			</div>
+			<!--termina container-48-->
+
+
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

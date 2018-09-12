@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FicheClienteCuentas" printOrder="Horizontal" pageWidth="760" pageHeight="40" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="190" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c523e676-d6df-48f9-8ff8-6bcc9d6216c3">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="numeroCuenta" class="java.lang.String"/>
+	<field name="tipoCuenta" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="nombreTitular" class="java.lang.String"/>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="160" height="20" uuid="d96c20f6-a01d-4560-b5e6-ad9556947950"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeroCuenta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="200" height="20" uuid="4cf7f31b-bd7e-4e9f-9a80-7f562bfd116a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoCuenta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="360" y="0" width="100" height="20" uuid="bd2412d0-de64-4162-840f-f192eb0107dd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreTitular}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="460" y="0" width="100" height="20" uuid="dcfd727b-586d-475c-9a08-b0896e362652"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

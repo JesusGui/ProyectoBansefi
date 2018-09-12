@@ -1,0 +1,427 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:cc="http://java.sun.com/jsf/composite/composites"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+			<f:metadata>
+				<f:viewAction action="#{altaCuentaController.iniciaPaso1}"
+					phase="APPLY_REQUEST_VALUES" />
+			</f:metadata>
+			<div class="container_48">
+				<div class="contenedor">
+					<o:form id="formAltaCuenta1" styleClass="contenedor-form"
+						onkeypress="if (event.keyCode == 13) { return false; }">
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás"
+								action="#{altaCuentaController.irAHome}" immediate="true"></p:commandButton>
+							<div>
+								<ui:fragment
+									rendered="#{altaCuentaController.isOrigenDashBoard()}">
+									<h1>Alta de cuenta</h1>
+								</ui:fragment>
+								<ui:fragment
+									rendered="#{not altaCuentaController.isOrigenDashBoard()}">
+									<h2 class="gris-b">Alta de cuenta para </h2>
+									<h2 class="azul-b">#{altaCuentaController.cliente.nombreCompleto}</h2>
+								</ui:fragment>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:messages id="erroresMsg" showDetail="true" for="noTitular"
+								autoUpdate="false" escape="false" closable="false" />
+							<ui:fragment
+								rendered="#{altaCuentaController.isOrigenDashBoard()}">
+								<h:panelGroup display="block" styleClass="grid_8"
+									id="panelTitular">
+									<span class="ui-outputlabel-rfi">* </span>
+									<p:outputLabel value="N° Identificador:"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:inputText id="cuenta"
+										value="#{altaCuentaController.idFiltrado}" maxlength="14"
+										required="true">
+										<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/" preventPaste="false" />
+										<p:ajax event="blur"
+											onstart="ponerFalse();value=value.trim().toUpperCase()"
+											listener="#{altaCuentaController.consultaIdExterna}"
+											update="panelTitular nombreTitular irAPaso2 erroresMsg :dlgSinApoderado"
+											oncomplete="ponerTrue();" global="false" />
+									</p:inputText>
+								</h:panelGroup>
+								<div class="grid_2">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<div class="btn-buscar-persona">
+										<p:commandButton id="btnOpciones"
+											styleClass="btn-icono-conbackground" type="button"
+											icon="cbs-e006-buscar-menu" />
+										<p:menu id="buscarCliente" value="Buscar" overlay="true"
+											my="left top" at="left bottom" trigger="btnOpciones">
+											<p:menuitem value="Buscar persona física"
+												action="#{altaCuentaController.irABuscadorFisico()}">
+												<o:ignoreValidationFailed />
+											</p:menuitem>
+											<p:menuitem value="Buscar persona moral"
+												action="#{altaCuentaController.irABuscadorMoral()}">
+												<o:ignoreValidationFailed />
+											</p:menuitem>
+										</p:menu>
+									</div>
+								</div>
+								<div class="grid_38">
+									<div class="label-vacio"></div>
+									<div class="clear-3"></div>
+									<p:outputLabel id="nombreTitular"
+										styleClass=" #{(empty altaCuentaController.cliente.nombreCompleto)?'':altaCuentaController.cliente.claseTipoPersona()}"
+										value="#{altaCuentaController.cliente.nombreCompleto}"></p:outputLabel>
+								</div>
+								<div class="clear-row"></div>
+							</ui:fragment>
+
+							<label class="ui-outputlabel ui-widget txt-campo-obligatorio"
+								   style="font-size:20px; color:#007cba;">
+								Seleccione el producto/tarifa para aperturar la cuenta
+							</label>
+							<p:accordionPanel styleClass="acordeon-drop"
+								id="dynamicAccordion" dynamic="true"
+								onTabShow="#{altaCuentaController.isDragAndDropEnabled()?'initDND()':'initWithoutDND()'}"
+								style="overflow: visible;">
+								<p:tab title="Cuentas Frecuentes">
+
+									<!-- Drop -->
+									<p:fieldset styleClass="contenedor-drop" id="cuentasFrecuentes">
+
+										<p:outputPanel id="initialDropArea">
+											<h:outputLabel styleClass="instrucciones-drop"
+												rendered="#{empty altaCuentaController.tarifasFrecuentes}"
+												value="Arrastre y suelte aquí sus tarífas frecuentes. Si desea eliminar alguna, arrastre y suelte fuera de este área." />
+											<p:droppable for="initialDropArea" tolerance="touch"
+												hoverStyleClass="ui-state-highlight" scope="dropIn"
+												disabled="#{not altaCuentaController.isDragAndDropEnabled()}">
+												<p:ajax listener="#{altaCuentaController.dropInEvent}"
+													oncomplete="#{altaCuentaController.isDragAndDropEnabled()?'initDND()':'initWithoutDND()'}"
+													update=":formAltaCuenta1:dynamicAccordion:cuentasFrecuentes"
+													global="false">
+													<o:ignoreValidationFailed />
+												</p:ajax>
+											</p:droppable>
+										</p:outputPanel>
+
+										<p:dataGrid styleClass="elementos-drag" id="cuentaFrec"
+											var="cuentaFrec"
+											value="#{altaCuentaController.tarifasFrecuentes}"
+											rendered="#{not empty altaCuentaController.tarifasFrecuentes}"
+											columns="#{altaCuentaController.getColumnaSize()}">
+											<p:column resizable="false">
+												<p:panel id="dropArea" styleClass="objeto-drag">
+													<div class="grid_48">
+														<h:outputLabel styleClass="numero-cuenta"
+															value="#{cuentaFrec.linea} #{cuentaFrec.grupo} #{cuentaFrec.producto} #{cuentaFrec.id}" />
+														<div class="clear"></div>
+														<h:outputLabel styleClass="nombre-cuenta"
+															value="#{cuentaFrec.nombre} #{cuentaFrec.descripcion}" />
+													</div>
+												</p:panel>
+											</p:column>
+										</p:dataGrid>
+										<p:remoteCommand name="dropAtTheEnd"
+											actionListener="#{altaCuentaController.dropAtTheEndEvent}"
+											update=":formAltaCuenta1:dynamicAccordion:cuentasFrecuentes"
+											oncomplete="initDND()"
+											rendered="#{altaCuentaController.isDragAndDropEnabled()}">
+											<o:ignoreValidationFailed />
+										</p:remoteCommand>
+										<p:remoteCommand name="dropInOrdered"
+											actionListener="#{altaCuentaController.dropInOrderedEvent}"
+											update=":formAltaCuenta1:dynamicAccordion:cuentasFrecuentes"
+											oncomplete="initDND()"
+											rendered="#{altaCuentaController.isDragAndDropEnabled()}">
+											<o:ignoreValidationFailed />
+										</p:remoteCommand>
+										<p:remoteCommand name="dropOut"
+											actionListener="#{altaCuentaController.dropOutEvent}"
+											update=":formAltaCuenta1:dynamicAccordion:cuentasFrecuentes"
+											oncomplete="initDND()"
+											rendered="#{altaCuentaController.isDragAndDropEnabled()}">
+											<o:ignoreValidationFailed />
+										</p:remoteCommand>
+									</p:fieldset>
+									<!-- End Drop -->
+
+								</p:tab>
+							</p:accordionPanel>
+							<p:outputPanel id="deleteArea2">
+								<p:accordionPanel styleClass="acordeon-drop" activeIndex="null"
+									dynamic="true" id="todosAccordion"
+									onTabShow="#{altaCuentaController.isDragAndDropEnabled()?'initDND()':'initWithoutDND()'}">
+									<p:tab title="Todas las tarifas">
+
+
+										
+
+										<div class="grid_20 push_1">
+											<div class="filtro-cuenta">
+											<span class="icono-input-filtro"><i
+												class="fa fa-filter"></i></span>
+											<p:inputText id="inputFiltro"
+												value="#{altaCuentaController.inputFiltro}"
+												placeholder="FILTRAR TARIFAS">
+												<p:ajax event="keyup" onstart="value=value.toUpperCase()"
+													maxlength="45"
+													listener="#{altaCuentaController.filtraTarifa()}"
+													process="inputFiltro"
+													update=":formAltaCuenta1:todosAccordion:innerAccordion:vistaTarifas
+		                        :formAltaCuenta1:todosAccordion:innerAccordion:plazoTarifas
+		                        :formAltaCuenta1:todosAccordion:innerAccordion:credPrestTarifas
+                            :formAltaCuenta1:todosAccordion:innerAccordion:mediosPagoTarifas
+		                        :formAltaCuenta1:todosAccordion:innerAccordion:otrosTarifas"
+													oncomplete="#{altaCuentaController.isDragAndDropEnabled()?'initDND()':'initWithoutDND()'}"
+													global="false">
+													<o:ignoreValidationFailed />
+												</p:ajax>
+											</p:inputText>
+										</div>
+										</div>
+										<div class="clear-row"></div>
+										<p:accordionPanel styleClass="fondo-tab-drag"
+											activeIndex="null" dynamic="true" id="innerAccordion"
+											onTabShow="#{altaCuentaController.isDragAndDropEnabled()?'initDND()':'initWithoutDND()'}">
+											<p:tab title="Vista 03 11">
+												<!-- Drag Vista -->
+												<p:dataGrid styleClass="elementos-drag" id="vistaTarifas"
+													var="tarifa" value="#{altaCuentaController.vistaTarifas}"
+													columns="#{altaCuentaController.getColumnaSize()}"
+													emptyMessage="Tarifa no encontrada">
+													<p:column>
+														<p:panel id="pnlVistaTarifas" styleClass="objeto-drag">
+															<div class="grid_48">
+																<h:outputLabel styleClass="numero-cuenta"
+																	value="#{tarifa.linea} #{tarifa.grupo} #{tarifa.producto} #{tarifa.id}" />
+																<div class="clear"></div>
+																<h:outputLabel styleClass="nombre-cuenta"
+																	value="#{tarifa.nombre} #{tarifa.descripcion}" />
+															</div>
+														</p:panel>
+														<p:draggable for="pnlVistaTarifas" revert="true"
+															cursor="pointer" stack=".ui-panel" helper="clone"
+															scope="dropIn"
+															disabled="#{not altaCuentaController.isDragAndDropEnabled()}" />
+													</p:column>
+												</p:dataGrid>
+												<!-- End Drag Vista -->
+											</p:tab>
+											<p:tab title="Plazo 03 51">
+												<!-- Drag Plazo -->
+												<p:dataGrid styleClass="elementos-drag" id="plazoTarifas"
+													var="tarifa" value="#{altaCuentaController.plazoTarifas}"
+													columns="#{altaCuentaController.getColumnaSize()}"
+													emptyMessage="Tarifa no encontrada">
+													<p:column>
+														<p:panel id="pnlPlazoTarifas" styleClass="objeto-drag">
+															<div class="grid_48">
+																<h:outputLabel styleClass="numero-cuenta"
+																	value="#{tarifa.linea} #{tarifa.grupo} #{tarifa.producto} #{tarifa.id}" />
+																<div class="clear"></div>
+																<h:outputLabel styleClass="nombre-cuenta"
+																	value="#{tarifa.nombre} #{tarifa.descripcion}" />
+															</div>
+														</p:panel>
+														<p:draggable for="pnlPlazoTarifas" revert="true"
+															cursor="pointer" stack=".ui-panel" helper="clone"
+															scope="dropIn"
+															disabled="#{not altaCuentaController.isDragAndDropEnabled()}" />
+													</p:column>
+												</p:dataGrid>
+												<!-- End Drag Plazo -->
+											</p:tab>
+											<p:tab title="Crédito 01 41 y Préstamo 01 71">
+												<!-- Drag CredPrest -->
+												<p:dataGrid styleClass="elementos-drag"
+													id="credPrestTarifas" var="tarifa"
+													value="#{altaCuentaController.credPrestTarifas}"
+													columns="#{altaCuentaController.getColumnaSize()}"
+													emptyMessage="Tarifa no encontrada">
+													<p:column>
+														<p:panel id="pnlCredPrestTarifas" styleClass="objeto-drag">
+															<div class="grid_48">
+																<h:outputLabel styleClass="numero-cuenta"
+																	value="#{tarifa.linea} #{tarifa.grupo} #{tarifa.producto} #{tarifa.id}" />
+																<div class="clear"></div>
+																<h:outputLabel styleClass="nombre-cuenta"
+																	value="#{tarifa.nombre} #{tarifa.descripcion}" />
+															</div>
+														</p:panel>
+														<p:draggable for="pnlCredPrestTarifas" revert="true"
+															cursor="pointer" stack=".ui-panel" helper="clone"
+															scope="dropIn"
+															disabled="#{not altaCuentaController.isDragAndDropEnabled()}" />
+													</p:column>
+												</p:dataGrid>
+												<!-- End Drag CredPrest -->
+											</p:tab>
+											<p:tab title="Medios de pago 05 50">
+												<!-- Drag Medios de pago -->
+												<p:dataGrid styleClass="elementos-drag"
+													id="mediosPagoTarifas" var="tarifa"
+													value="#{altaCuentaController.mediosPagoTarifas}"
+													columns="#{altaCuentaController.getColumnaSize()}"
+													emptyMessage="Tarifa no encontrada">
+													<p:column>
+														<p:panel id="pnlMediosPagoTarifas"
+															styleClass="objeto-drag">
+															<div class="grid_48">
+																<h:outputLabel styleClass="numero-cuenta"
+																	value="#{tarifa.linea} #{tarifa.grupo} #{tarifa.producto} #{tarifa.id}" />
+																<div class="clear"></div>
+																<h:outputLabel styleClass="nombre-cuenta"
+																	value="#{tarifa.nombre} #{tarifa.descripcion}" />
+															</div>
+														</p:panel>
+														<p:draggable for="pnlMediosPagoTarifas" revert="true"
+															cursor="pointer" stack=".ui-panel" helper="clone"
+															scope="dropIn"
+															disabled="#{not altaCuentaController.isDragAndDropEnabled()}" />
+													</p:column>
+												</p:dataGrid>
+												<!-- End Drag Medios de pago -->
+											</p:tab>
+											<p:tab title="Otros">
+												<!-- Drag Otros -->
+												<p:dataGrid styleClass="elementos-drag" id="otrosTarifas"
+													var="tarifa" value="#{altaCuentaController.otrosTarifas}"
+													columns="#{altaCuentaController.getColumnaSize()}"
+													emptyMessage="Tarifa no encontrada">
+													<p:column>
+														<p:panel id="pnlOtrosTarifas" styleClass="objeto-drag">
+															<div class="grid_48">
+																<h:outputLabel styleClass="numero-cuenta"
+																	value="#{tarifa.linea} #{tarifa.grupo} #{tarifa.producto} #{tarifa.id}" />
+																<div class="clear"></div>
+																<h:outputLabel styleClass="nombre-cuenta"
+																	value="#{tarifa.nombre} #{tarifa.descripcion}" />
+															</div>
+														</p:panel>
+														<p:draggable for="pnlOtrosTarifas" revert="true"
+															cursor="pointer" stack=".ui-panel" helper="clone"
+															scope="dropIn"
+															disabled="#{not altaCuentaController.isDragAndDropEnabled()}" />
+													</p:column>
+												</p:dataGrid>
+												<!-- End Drag Otros -->
+											</p:tab>
+										</p:accordionPanel>
+									</p:tab>
+								</p:accordionPanel>
+							</p:outputPanel>
+							<p:remoteCommand name="clickTarifa"
+								actionListener="#{altaCuentaController.seleccionarTarifa}"
+								oncomplete="PF('dlgCancelar').show();"
+								update="panelTitular nombreTitular irAPaso2 erroresMsg dlgCancelar">
+								<o:ignoreValidationFailed />
+							</p:remoteCommand>
+							<p:commandButton id="irAPaso2"
+								action="#{altaCuentaController.irAPaso2()}"
+								onstart="return #{not empty altaCuentaController.cliente.nombreCompleto};"
+								style="display: none;"
+								update="panelTitular nombreTitular irAPaso2 erroresMsg"
+								oncomplete="focusOnError();"></p:commandButton>
+							<p:dialog widgetVar="dlgCancelar" id="dlgCancelar" showEffect="fade"
+									  hideEffect="fade" appendTo="@(body)"
+									  header="Cancelar" modal="true" visible="false"
+									  closable="false" resizable="false" dynamic="true">
+								<span class="ui-messages-warn-icon warn-dialog"></span>
+								<p:outputLabel styleClass="modal-mensaje"
+											   value="¿Desea agregar una cuenta con las siguientes condiciones?" />
+								<div class="clear"></div>
+								<p:outputLabel styleClass="modal-accion"
+											   value="Producto: #{altaCuentaController.tarifaSeleccionada.nombre}"/>
+								<div class="margin-bottom-20"></div>
+								<p:commandButton styleClass="btn_principal_dialog_derecha"
+												 id="Volver" onclick="PF('dlgCancelar').hide();$('#formAltaCuenta1\\:irAPaso2').click();"
+												 value="Continuar" immediate="true" />
+								<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+												 value="Salir" onclick="PF('dlgCancelar').hide();" />
+
+							</p:dialog>
+						</div>
+
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Salir" action="#{altaCuentaController.irAHome}"
+							immediate="true" />
+					</o:form>
+				</div>
+			</div>
+		</h:body>
+
+		<!-- Script rewrites Drop widget -->
+		<h:outputScript name="/js/altaCuenta1.js" />
+		<script>
+        //<![CDATA[
+        $(function() {
+          if(#{altaCuentaController.isDragAndDropEnabled()}){
+					  $("#formAltaCuenta1\\:dynamicAccordion").find(".ui-accordion-content").css(
+					      "overflow-y", "hidden").css("overflow-x", "hidden");
+					  initDND();
+          }else{
+          	initWithoutDND();
+          }
+				});
+        //]]>
+      </script>
+		<!-- END Script rewrites Drop widget -->
+
+		<p:dialog widgetVar="dlgBusqueda" id="dlgBusqueda" appendTo="@(body)"
+			dynamic="true" modal="true" visible="false" closable="false"
+			showEffect="fade" hideEffect="fade"
+			resizable="false" draggable="false">
+			<!--icono de la modal -->
+			<span class="ui-messages-info-icon info-dialog"></span>
+			<!--mensaje de la modal styleClass="modal-mensaje" -->
+			<p:outputLabel styleClass="modal-mensaje"
+				value="La Identificación oficial proporcionada generó varias coincidencias." />
+			<!--mensaje de la modal styleClass="modal-mensaje" -->
+			<div class="clear"></div>
+			<p:outputLabel styleClass="modal-accion"
+				value="¿Desea ir al buscador para seleccionar el cliente correcto?" />
+			<div class="margin-bottom-20"></div>
+			<!--botones de la modal primarios y secundarios -->
+			<p:commandButton styleClass="btn_secundario_dialog margin-right-10"
+				value="Cancelar" immediate="true"
+				onclick="PF('dlgBusqueda').hide();" />
+			<p:commandButton
+				styleClass="btn_principal_dialog_derecha margin-left-10"
+				action="#{altaCuentaController.irABuscadorFisico()}"
+				value="Buscar persona física" oncomplete="PF('dlgBusqueda').hide();" />
+			<p:commandButton styleClass="btn_principal_dialog_derecha"
+				action="#{altaCuentaController.irABuscadorMoral()}"
+				value="Buscar persona moral" oncomplete="PF('dlgBusqueda').hide();" />
+		</p:dialog>
+		<p:dialog widgetVar="dlgSinApoderado" id="dlgSinApoderado"
+			appendTo="@(body)" header="Aviso persona moral sin apoderado"
+			modal="true" visible="#{altaCuentaController.clienteSinApoderado}"
+			showEffect="fade" hideEffect="fade"
+			closable="false" resizable="false" draggable="false">
+			<span class="ui-messages-warn-icon warn-dialog"></span>
+			<p:outputLabel styleClass="modal-mensaje"
+				value="¡Atención! #{altaCuentaController.cliente.nombreCompleto} no posee apoderado  y no podrá constituir la cuenta." />
+			<div class="margin-bottom-20"></div>
+			<p:commandButton styleClass="btn_secundario_dialog"
+				onclick="PF('dlgSinApoderado').hide();" value="Aceptar"
+				immediate="true">
+				<f:setPropertyActionListener
+					target="#{altaCuentaController.clienteSinApoderado}" value="false" />
+			</p:commandButton>
+			<p:commandButton styleClass="btn_principal_dialog_derecha"
+				action="#{altaCuentaController.irRelacionPersonas()}"
+				value="Relacionar apoderado" immediate="true">
+			</p:commandButton>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

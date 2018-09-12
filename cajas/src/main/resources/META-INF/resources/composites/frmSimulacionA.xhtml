@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<div class="grid_5">
+		<h:outputLabel value="A" for="importeA"/>
+		<div class="clear-3"></div>
+        <p:selectOneMenu id="importeA" disabled="#{autorizacionPeticionController.elementosBloqueados}"
+       		value="#{autorizacionPeticionController.autorizacionPeticionBeanImporteA.importeA}">
+       		<f:selectItem itemValue="#{null}" 
+       			itemLabel="Seleccione un valor" noSelectionOption="true" />
+           <f:selectItems value="#{autorizacionPeticionController.obtenListaBilletes()}"
+				var="item" itemValue="#{item}" itemLabel="#{item}" />
+       </p:selectOneMenu>
+	</div>
+		
+	<div class="grid_7">
+		<h:outputLabel value="Tipo de moneda" for="importeATipoMoneda" />
+		<div class="clear-3"></div>
+		<p:selectOneMenu id="importeATipoMoneda" disabled="#{autorizacionPeticionController.elementosBloqueados}"
+			value="#{autorizacionPeticionController.autorizacionPeticionBeanImporteA.tipoMoneda}">
+			<f:selectItem itemValue="#{null}" 
+				itemLabel="Seleccione un valor" noSelectionOption="true" />
+			<f:selectItem itemValue="B" itemLabel="Billete" />
+			<f:selectItem itemValue="M" itemLabel="Moneda" />
+		</p:selectOneMenu>
+	</div>
+		
+	<div class="grid_7">
+		<h:outputLabel value="Existencia" for="importeAExistencia"/>
+		<div class="clear-3"></div>
+		<p:selectOneMenu id="importeAExistencia" disabled="#{autorizacionPeticionController.elementosBloqueados}"
+			value="#{autorizacionPeticionController.autorizacionPeticionBeanImporteA.existencia}">
+			<f:selectItem itemValue="E" itemLabel="Existencia" />
+		</p:selectOneMenu>
+	</div>
+		
+	<div class="grid_7">
+		<h:outputLabel value="D/V" for="importeAOrigen"/>
+		<div class="clear-3"></div>
+		<p:selectOneMenu id="importeAOrigen" disabled="#{autorizacionPeticionController.elementosBloqueados}"
+			value="#{autorizacionPeticionController.autorizacionPeticionBeanImporteA.origen}">
+			<f:selectItem itemValue="#{null}" 
+				itemLabel="Seleccione un valor" noSelectionOption="true" />
+			<f:selectItem itemValue="V" itemLabel="Ventanilla" />
+			<f:selectItem itemValue="D" itemLabel="Dispensador" />
+		</p:selectOneMenu>
+	</div>
+	
+</ui:composition>

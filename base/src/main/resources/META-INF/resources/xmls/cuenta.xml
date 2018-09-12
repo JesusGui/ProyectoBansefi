@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="cuentaCuentaWrapper" trim-strings="true"  wildcard="true" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.CuentaBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.CuentaBean</class-b>
+		<field-exclude>
+			<a>personasRelacionadas</a>
+			<b>personasRelacionadas</b>
+		</field-exclude>
+		<field-exclude>
+			<a>cuentasRelacionadas</a>
+			<b>cuentasRelacionadas</b>
+		</field-exclude>
+		<field-exclude>
+			<a>panesRelacionados</a>
+			<b>panesRelacionados</b>
+		</field-exclude>
+	</mapping>
+</mappings>

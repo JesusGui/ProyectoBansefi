@@ -1,0 +1,325 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<p:panel header="" id="documentoConsultado#{myVarStatus.index}"
+		styleClass="#{documento.estado.styleClass}">
+		<f:facet name="actions">
+			<p:commandButton id="eliminaDocumentoConsultado#{myVarStatus.index}"
+				label="Eliminar" update="@form" immediate="true"
+				alt="Eliminar documento"
+				styleClass="btn-icono btn-panel btn-eliminar" icon="ui-icon-trash"
+				actionListener="#{documentosPersonasController.eliminaDocumentoConsultado(documento)}"
+				rendered="#{not (documento.estado == EstadoListadosEnum.ELIMINADO)}"
+				title="Eliminar documento" />
+			<p:commandButton id="editaDocumentoConsultado#{myVarStatus.index}"
+				label="Editar" update="@form" immediate="true"
+				styleClass="btn-icono btn-panel" icon="fa fa-pencil"
+				alt="Editar documento"
+				actionListener="#{documentosPersonasController.editaDocumentoConsultado(documento)}"
+				rendered="#{documento.estado == EstadoListadosEnum.CONSULTADO}"
+				title="Editar documento" />
+			<p:commandButton id="restauraDocumentoConsultado#{myVarStatus.index}"
+				label="Restaurar" update="@form" immediate="true"
+				alt="Recuperar documento"
+				actionListener="#{documentosPersonasController.restauraDocumentoConsultado(documento)}"
+				styleClass="btn-icono btn-panel btn-eliminar"
+				icon="fa fa-rotate-left"
+				rendered="#{documento.estado == EstadoListadosEnum.ELIMINADO or documento.estado == EstadoListadosEnum.MODIFICADO}"
+				title="Recuperar" />
+		</f:facet>
+		<p:focus context="documentoConsultado#{myVarStatus.index}" />
+		<h:panelGroup layout="block" styleClass="grid_48"
+			rendered="#{documento.estado == EstadoListadosEnum.CONSULTADO or documento.estado == EstadoListadosEnum.ELIMINADO}">
+			<div class="grid_18">
+				<p:outputLabel
+					for="tipoDocumentoConsultadoLabel#{myVarStatus.index}"
+					value="Tipo de documento: " />
+				<div class="clear-3"></div>
+				<p:outputLabel styleClass="label-valor texto-sininput"
+					id="tipoDocumentoConsultadoLabel#{myVarStatus.index}"
+					value="#{documento.tipoDesc}" />
+			</div>
+			<div class="grid_30">
+				<p:outputLabel
+					for="descripcionDocumentoConsultadoLabel#{myVarStatus.index}"
+					value="Descripción:" />
+				<div class="clear-3"></div>
+				<p:outputLabel styleClass="label-valor texto-sininput"
+					id="descripcionDocumentoConsultadoLabel#{myVarStatus.index}"
+					value="#{documento.descripcion}" />
+			</div>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="grid_48"
+			rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}">
+			<div class="grid_18">
+				<p:outputLabel
+					for="tipoDocumentoConsultadoLabelEditar#{myVarStatus.index}"
+					value="Tipo de documento: " />
+				<div class="clear-3"></div>
+				<p:outputLabel styleClass="label-valor texto-sininput"
+					id="tipoDocumentoConsultadoLabelEditar#{myVarStatus.index}"
+					value="#{documento.tipoDesc}" />
+			</div>
+			<div class="grid_30">
+				<p:outputLabel
+					for="descripcionDocumentoConsultado#{myVarStatus.index}"
+					value="Descripción" />
+				<div class="clear-3"></div>
+
+				<div class="grid_44 alpha">
+
+					<p:inputText
+						id="descripcionDocumentoConsultado#{myVarStatus.index}"
+						required="#{param['documentosForm:anadirDocumento']==null}"
+						value="#{documento.descripcion}" label="Descripcion"
+						maxlength="60" onblur="this.value=this.value.toUpperCase()">
+						<p:ajax event="blur"
+							process="documentoConsultado#{myVarStatus.index}"
+							partialSubmit="true"></p:ajax>
+						<pe:keyFilter regEx="/^[0-9a-zA-Z\-\.\ñ\Ñ ]*$/"
+							preventPaste="false" />
+					</p:inputText>
+
+				</div>
+
+				<div class="grid_4">
+
+					<p:commandButton id="emitirDocumentoConsultado#{myVarStatus.index}"
+						immediate="true" alt="Emitir documento" label="Emitir"
+						styleClass="btn-icono-conbackground" icon="ui-icon-check"
+						rendered="#{documentosPersonasController.emitirDocumento(documento)}"
+						action="#{documentosPersonasController.emitirDocumento()}"
+						title="Emitir documento" />
+
+				</div>
+
+			</div>
+		</h:panelGroup>
+
+		<div class="clear"></div>
+
+		<!-- Desplegable para mas datos -->
+
+		<p:panel styleClass="panel-desplegable"
+			id="masDatosDocumentoConsultado#{myVarStatus.index}" collapsed="true"
+			toggleable="true" header="" toggleSpeed="500"
+			widgetVar="panelConsultado#{myVarStatus.index}"
+			rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}">
+
+			<p:fieldset styleClass="grid_20 alpha" legend="Presentación">
+
+				<div class="grid_16">
+
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.original}" />
+					<p:outputLabel styleClass="centrado-vertical" value="Original" />
+
+				</div>
+
+				<div class="grid_16">
+
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.copia}" />
+
+					<p:outputLabel styleClass="centrado-vertical" value="Copia" />
+
+				</div>
+
+
+				<div class="grid_16">
+
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.duplicado}" />
+
+					<p:outputLabel styleClass="centrado-vertical" value="Duplicado" />
+
+				</div>
+
+			</p:fieldset>
+
+			<p:fieldset styleClass="grid_15" legend="Formato de documento">
+
+				<div class="grid_48">
+
+					<p:selectBooleanCheckbox styleClass="centrado-vertical"
+						value="#{documento.noEstandar}" />
+
+					<p:outputLabel styleClass="centrado-vertical" value="No estándar" />
+
+				</div>
+
+			</p:fieldset>
+
+			<div class="grid_13">
+				<div class="margin-top-20"></div>
+				<p:outputLabel value="Soporte" />
+				<p:selectOneMenu value="#{documento.soporte}">
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor"
+						noSelectionOption="true" />
+					<f:selectItems value="#{catalogoUtils.getCatalogo('TP_SOPTE_DC')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+				</p:selectOneMenu>
+			</div>
+
+			<div class="clear-row"></div>
+
+			<p:fieldset legend="Datos de expedición">
+				<div class="grid_8">
+					<p:outputLabel value="Emisor" />
+					<div class="clear-3"></div>
+					<p:inputText value="#{documento.emisor}" label="Emisor"
+						maxlength="60" onblur="this.value=this.value.toUpperCase()">
+					</p:inputText>
+				</div>
+				<div class="grid_8">
+					<p:outputLabel value="Fecha"
+						id="fechaDocumentoConsultadoLabel#{myVarStatus.index}"
+						for="fechaDocumentoConsultado#{myVarStatus.index}" />
+					<div class="clear-3"></div>
+					<p:calendar id="fechaDocumentoConsultado#{myVarStatus.index}"
+						value="#{documento.fecha}" pattern="dd/MM/yyyy" mask="true" showOn="button" 
+						maxdate="#{contextoUtils.getFechaContableActual()}" locale="es">
+						<f:attribute name="endDate"
+							value="#{contextoUtils.getFechaContableActual()}" />
+						<f:validator validatorId="dateRangeValidator" />
+						<p:ajax event="change"
+							process="fechaDocumentoConsultado#{myVarStatus.index}"
+							update="fechaDocumentoConsultado#{myVarStatus.index},fechaValDocumentoConsultado#{myVarStatus.index}"
+							partialSubmit="true" />
+						<p:ajax event="dateSelect"
+							process="fechaDocumentoConsultado#{myVarStatus.index}"
+							update="fechaDocumentoConsultado#{myVarStatus.index},fechaValDocumentoConsultado#{myVarStatus.index}"
+							partialSubmit="true" />
+					</p:calendar>
+					<p:message id="fechaValDocumentoConsultado#{myVarStatus.index}"
+						for="fechaDocumentoConsultado#{myVarStatus.index}" display="icon"></p:message>
+
+				</div>
+				<div class="grid_24">
+					<p:outputLabel value="Municipio/localidad/Delegación" />
+					<div class="clear-3"></div>
+					<p:autoComplete id="municipioConsultado#{myVarStatus.index}"
+						widgetVar="municipioConsultadoWidget#{myVarStatus.index}"
+						value="#{documento.municipioCatGeo}" maxResults="5" maxlength="45"
+						onblur="value=value.toUpperCase()"
+						completeMethod="#{domicilioUtils.getMunicipios}" var="mun"
+						itemLabel="#{mun.municipioLocalidad}" itemValue="#{mun}"
+						converter="#{catalogoBeanConverter}">
+						<f:attribute name="filter" value="MUNICIPIOS" />
+						<p:ajax event="change"
+							update="paisDocumentoConsultado#{myVarStatus.index}" />
+						<p:ajax event="itemSelect"
+							update="paisDocumentoConsultado#{myVarStatus.index}" />
+						<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+					</p:autoComplete>
+				</div>
+				<div class="grid_8">
+					<p:outputLabel value="País" />
+					<div class="clear-3"></div>
+
+					<b:autoComplete disabled="true"
+						id="paisDocumentoConsultado#{myVarStatus.index}" catalog="PAISES"
+						value="#{documento.municipioCatGeo.nombrePais}"
+						itemLabel="#{cat.descripcion}" itemValue="#{cat.tipo}"
+						maxlength="5" />
+				</div>
+
+
+			</p:fieldset>
+
+			<div class="clear-row"></div>
+
+			<p:fieldset legend="Ubicación">
+
+				<div class="grid_10">
+					<p:outputLabel value="Oficina" />
+					<div class="clear-3"></div>
+					<b:autoComplete value="#{documento.oficina}" maxlength="4"
+						catalogSource="catalogoCentrosLoaderTask" var="centro"
+						itemLabel="#{centro.descripcionL}" itemValue="#{centro}"
+						converter="catalogoConverter" forceSelection="true">
+						<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/" preventPaste="false" />
+					</b:autoComplete>
+				</div>
+
+				<div class="grid_26">
+					<p:outputLabel value="Observaciones" />
+					<div class="clear-3"></div>
+					<p:inputText value="#{documento.observaciones}"
+						label="Observaciones" maxlength="50"
+						onblur="this.value=this.value.toUpperCase()">
+					</p:inputText>
+				</div>
+				<div class="grid_8">
+					<p:outputLabel value="Fecha Caducidad"/>
+					<div class="clear-3"></div>
+					<p:calendar id="fechaCaducidadDocumentoConsultado#{myVarStatus.index}"
+						value="#{documento.fechaCaducidad}" 
+						pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es"/>
+				</div>
+			</p:fieldset>
+
+			<div class="clear-row"></div>
+
+			<p:fieldset legend="Revisión/Confirmación">
+				<div class="grid_16">
+					<p:outputLabel value="Motivo" />
+					<div class="clear-3"></div>
+					<p:inputText value="#{documento.motivo}" label="Emisor"
+						maxlength="30" onblur="this.value=this.value.toUpperCase()">
+					</p:inputText>
+				</div>
+				<div class="grid_4">
+					<p:outputLabel value="Frecuencia" />
+					<div class="clear-3"></div>
+					<p:inputMask mask="?9999" value="#{documento.frecuencia}"
+						label="Frecuencia" maxlength="4">
+					</p:inputMask>
+				</div>
+				<div class="grid_12">
+					<div class="label-vacio"></div>
+					<div class="clear-3"></div>
+					<p:selectOneMenu value="#{documento.frecuenciaUnidad}">
+						<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor"
+							noSelectionOption="true" />
+						<f:selectItems
+							value="#{catalogoUtils.getCatalogo('FREC_REV_DOCUM')}" var="item"
+							itemValue="#{item.claveFila}" itemLabel="#{item.descripcionL}" />
+					</p:selectOneMenu>
+				</div>
+
+				<div class="grid_8">
+					<p:outputLabel value="Fecha Entrega"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" />
+					<div class="clear-3"></div>
+					<p:calendar
+						id="fechaEntregaDocumentoConsultado#{myVarStatus.index}"
+						value="#{documento.fechaEntrega}" disabled="true"
+						pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" />
+				</div>
+				<div class="grid_8">
+					<p:outputLabel value="Fecha Próxima"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" />
+					<div class="clear-3"></div>
+					<p:calendar id="fechaProximaConsultado#{myVarStatus.index}"
+						value="#{documento.fechaProxima}" disabled="true"
+						pattern="dd/MM/yyyy" mask="true" showOn="button" locale="es"
+						rendered="#{documento.estado == EstadoListadosEnum.MODIFICADO}" />
+				</div>
+
+			</p:fieldset>
+
+		</p:panel>
+	</p:panel>
+
+
+
+</ui:composition>

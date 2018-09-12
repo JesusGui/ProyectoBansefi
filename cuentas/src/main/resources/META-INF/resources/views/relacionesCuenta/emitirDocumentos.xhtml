@@ -1,0 +1,339 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="../../templates/plantilla-inicio.xhtml">
+<!--
+plantilla de wizard
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:body onunload="#{relacionesCuentaController.consultaDocumentosAEmitir()}">
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="emitirDocumentos" styleClass="contenedor-form">
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                             <p:commandButton icon="ui-icon-arrow-1-w" rendered="#{!relacionesCuentaController.isAlta}" title="Volver atrás"
+								action="#{relacionesCuentaController.cancelar()}" update=":dlgCancelarAlta" immediate="true"></p:commandButton>
+							<div>
+	                             <h2 class="gris-b">#{relacionesCuentaController.isAlta? 'Alta de ':'Emitir documentos de '}</h2>
+	                             <h:panelGroup rendered="#{!relacionesCuentaController.isAlta}">
+									<h2 class="rojo-b">#{relacionesCuentaController.cuentaBean.tipoCuenta} </h2>
+								 </h:panelGroup>
+								 <h:panelGroup rendered="#{relacionesCuentaController.isAlta}">
+									<h2 class="rojo-b">#{relacionesCuentaController.tarifaSeleccionada.nombre} #{relacionesCuentaController.tarifaSeleccionada.descripcion} </h2>
+								 </h:panelGroup>
+								 <h3 class="gris-b">(#{relacionesCuentaController.cuentaBean.numeroCuenta})</h3>
+							</div>
+                        </div>
+                        <!--Wizard Botones circulares superiores -->
+                         <h:panelGroup rendered="#{relacionesCuentaController.isAlta}">
+                        <div class="wiz-pasos">
+                            <p:commandButton styleClass="inactivo" value="Negociar tarifa" immediate="true"
+                            	action="#{relacionesCuentaController.irNegociarTarifa()}"/>
+                            <p:commandButton styleClass="inactivo" value="Relacionar personas" immediate="true"
+                            	action="#{relacionesCuentaController.irRelacionPersonas}"/>
+                            <p:commandButton styleClass="inactivo" value="Relacionar cuenta" immediate="true"
+                            	action="#{relacionesCuentaController.irRelacionCuentas}"/>
+                            <p:commandButton styleClass="activo" value="Emitir documentos" />
+                        </div>
+                        </h:panelGroup>
+                        <!--contenedor del wizard-->
+                        <div class="wiz-contenedor">
+                            <div class="contenedor-campos">
+                                <!--aqui se introducen todos los campos-->
+                                <!--estructura de conjunto de label + input-->
+                                    
+								<p:outputLabel styleClass="#{relacionesCuentaController.clienteBean.claseTipoPersona()}"
+									value="#{relacionesCuentaController.clienteBean.nombreCompleto}" />
+								<div class="clear-row"></div>
+								<p:outputLabel styleClass="txt-campo-obligatorio" value="*Datos obligatorios"/>
+											<div class="clear-row"></div>
+								
+								<h:panelGroup rendered="#{relacionesCuentaController.isAlta}" prependId="false">
+			                        <div class="margin-top-10"></div>
+			                        <div class="marco-info-ficha">
+			                            <div>
+			                                <span class="ui-messages-info-icon"></span>
+			                                <h:outputLabel value="La cuenta se constituirá con la fecha de hoy. ¿Desea constituirla con una fecha diferente?"/>
+			                                <div class="clear-row"></div>
+			                                
+											<div class="grid_14 input-marco-info-ficha">
+												<p:message for="fechaConstitucion" display="icon" id="fechaConstitucionValidator"></p:message>
+												<p:outputLabel value="Fecha de constitución" for="fechaConstitucion"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:calendar id="fechaConstitucion" locale="es"  
+			                                    	showOn="button" required="#{param['disableValidation']==null}" pattern="dd/MM/yyyy" mask="true" 
+			                                    	mindate="#{relacionesCuentaController.getFechaMinimaConstitucion()}"
+			                                    	maxdate="#{relacionesCuentaController.contextoUtils.getFechaContableActual()}"
+			                                    	value="#{relacionesCuentaController.cuentaBean.fechaEstado}"
+			                                    	requiredMessage="">
+			                                    	<f:attribute name="endDate"
+															value="#{relacionesCuentaController.contextoUtils.getFechaContableActual()}" />
+													<f:attribute name="beginDate"
+															value="#{relacionesCuentaController.getFechaMinimaConstitucion()}" />
+													<f:validator validatorId="dateRangeValidator"/>
+			                                        <p:ajax event="dateSelect" global="false" process="fechaConstitucion" partialSubmit="true" update="@this,fechaConstitucionValidator"></p:ajax>
+			                                        <p:ajax event="change" global="false" process="fechaConstitucion" partialSubmit="true" update="@this,fechaConstitucionValidator"></p:ajax>
+			                                    </p:calendar>
+			                            	</div>
+			                        	</div>
+			                        </div>
+			                    <div class="clear-row"></div>
+								</h:panelGroup>
+								
+								 <h:panelGroup layout="block" styleClass="sinresultados sin-margen" 
+								 	rendered="#{relacionesCuentaController.documentosAEmitir.isEmpty()}">
+						        	<div>
+						        	<h:outputLabel value="No se encontraron documentos a emitir para el acuerdo."/><br />
+						        	</div>
+						        </h:panelGroup>
+				            	
+								<!-- Lista de documentos -->
+								<ui:repeat var="documento" value="#{relacionesCuentaController.documentosAEmitir}">
+									<!-- Contenedor de documento (Alex: Estilos de div para hacer pruebas) -->
+									<p:panel id="documentoAEmitir" prependId="false" styleClass="panel-dinamico nuevo">
+										 <p:focus context="documentoAEmitir"/>
+										<!-- Nombre del documento -->
+										<div class="centrar-objeto btn-inline-set">
+										<h:outputLabel styleClass="label-subtitulo float-left margin-left-2 margin-right-10" value="#{documento.descripcion}" />
+										<p:commandButton id="generardocumento" styleClass="btn-icono-conbackground margin-left-10" icon="ui-icon-check"
+											action="#{relacionesCuentaController.generarDocumento(documento)}" title="Generar documento"
+											rendered="#{documento.estado == '' and relacionesCuentaController.existePlantilla(documento)}" update="@form"></p:commandButton>
+										</div>
+										<!-- Botón para mostrar u ocultar campos del documento (Alex: Estilo float:none para probar)-->
+										<p:commandButton rendered="#{documento.estado.equals('') ? false : true }" 
+											styleClass="btn-icono btn-panel btn-expandible" icon="fa fa-angle-#{documento.muestraCampos? 'up':'down'}"
+											action="#{relacionesCuentaController.muestraCamposDocumento(documento)}" 
+											disabled="#{documento.estado.equals('') ? true : false }" immediate="true"
+											update="@form"></p:commandButton>
+										<!-- Div para mostrar si el documento es obligatorio o no -->
+										<div class="grid_48 margin-top-10">
+										<div class="grid_6"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Obligatorio:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{documento.obligatorio.equals('2') ? 'NO':'SI'}" />
+										</div>
+										<!-- Div para mostrar el formulario asociado al documento -->
+										<div class="grid_10"><!-- Estilo inline-block en duro -->
+											<h:outputLabel value="Número de formulario:" />
+											<div class="clear-3"></div>
+											<h:outputLabel styleClass="label-valor texto-sininput" value="#{documento.formulario}" />
+										</div>
+										<!-- Div con estado del documento-->
+										<div class="grid_4"><!-- Estilo inline-block en duro -->
+											<h:panelGroup 
+												rendered="#{documento.estado.equals('') or (documento.estado.equals('E') and !relacionesCuentaController.emisionCompleta(documento))? false : true }">
+												<h:outputLabel value="Estado:" />
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor texto-sininput" value="#{relacionesCuentaController.getEstadoDocumento(documento.estado)}"/>
+											</h:panelGroup>
+										</div>
+										<!-- Div con el número de copias del documento -->
+										<div class="grid_4"><!-- Estilo inline-block en duro -->
+											<h:panelGroup 
+											 	rendered="#{documento.estado.equals('') or (documento.estado.equals('E') and !relacionesCuentaController.emisionCompleta(documento))? false : true }">
+												<h:outputLabel value="Copias:" />
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor texto-sininput" value="#{documento.numCopias}"/>
+											</h:panelGroup>
+										</div>
+										<!-- Div para mostrar la fecha de emisión del documento -->
+										<div class="grid_8"><!-- Estilo inline-block en duro -->
+											<h:panelGroup 
+												rendered="#{documento.estado.equals('') or (documento.estado.equals('E') and !relacionesCuentaController.emisionCompleta(documento))? false : true }">
+												<h:outputLabel value="Fecha de emisión:" />
+												<div class="clear-3"></div>
+												<h:outputLabel styleClass="label-valor texto-sininput" value="#{documento.fechaEmision}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputLabel>
+											</h:panelGroup>
+										</div>
+										
+										<!-- Botones de formalizar, duplicar, anular e historico (Alex: Estilos de botón para hacer pruebas) -->
+										<div class="float-left margin-right-10">
+											<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+											<p:commandButton id="formalizar" update="@form" styleClass="btn-icono-conbackground" icon="ui-icon-check"
+												action="#{relacionesCuentaController.formalizaDocumento(documento)}" title="Formalizar"
+												rendered="#{(documento.estado.equals('E') and relacionesCuentaController.emisionCompleta(documento))}"></p:commandButton>
+										</div>
+										<div class="float-left margin-right-10">
+											<div class="label-vacio"></div>
+													<div class="clear-3"></div>
+											<p:commandButton id="duplicar" update="@form" styleClass="btn-icono-conbackground" icon="ui-icon-copy"
+												action="#{relacionesCuentaController.imprimeDocumento(documento)}" title="Duplicar"
+												rendered="#{documento.estado.equals('F') ? true : false }"></p:commandButton>
+										</div>
+										<div class="float-left margin-right-10">
+											<div class="label-vacio"></div>
+													<div class="clear-3"></div>
+											<p:commandButton id="anular" update="@form" styleClass="btn-icono-conbackground" icon="ui-icon-cancel"
+												action="#{relacionesCuentaController.anulaDocumento(documento)}" title="Anular"
+												rendered="#{documento.estado.equals('F') ? true : false }"></p:commandButton>
+										</div>
+										<div class="float-left margin-right-10">
+											<div class="label-vacio"></div>
+													<div class="clear-3"></div>
+											<p:commandButton id="historico" styleClass="btn-icono-conbackground" icon="fa fa-history"
+												action="#{relacionesCuentaController.getHistorico(documento)}" title="Histórico" immediate="true"
+												rendered="#{documento.getHistorico().isEmpty() and documento.estado.equals('')? false : true }">
+											</p:commandButton>
+										</div>
+										<div class="clear"></div>
+										</div>
+										<!-- Contenedor de campos -->
+										<h:panelGroup layout="block" styleClass="grid_48" prependId="false" id="muestraCampos" rendered="#{documento.muestraCampos}">
+											<div class="clear-row"></div>
+											<ui:repeat var="campo" value="#{documento.campos}">
+												<!-- Contenedor de un campo (Alex: Estilos de div para visualizarlo en pruebas) -->
+													<div class="grid_24">
+														<!-- Descipción del campo -->
+														<p:outputLabel value="#{campo.descripcion}" for="valorCampo"/>
+														<div class="clear-3"></div>
+														<!-- Valor del campo -->
+														<p:inputTextarea id="valorCampo" value="#{campo.valor}" 
+															maxlength="400" required="#{param['disableValidation']==null and documento.estado.equals('E')}" 
+															disabled="#{not(documento.estado.equals('E'))}">
+															<p:ajax global="false" event="change" process="@this" partialSubmit="true" ></p:ajax>	
+														</p:inputTextarea>
+													</div>
+											</ui:repeat>
+											<div class="clear-row"></div>
+											<!-- botón de emisión con campo de número de copias -->
+											<h:panelGroup id="emisionDocumento">
+											<h:panelGroup rendered="#{documento.estado.equals('E')}">
+												<h:panelGroup rendered="false">
+												<div class="centrar-objeto">
+													<div class="grid_3"><!-- Estilo inline-block en duro -->
+														<p:outputLabel value="Copias" for="numCopias"/>
+														<div class="clear-3"></div>
+														<h:inputText styleClass="ui-inputfield centrar-texto sin-padding" id="numCopias" value="#{documento.numCopias}" required="#{param['disableValidation']==null}">
+															<p:ajax event="blur" global="false" process="numCopias" partialSubmit="true"></p:ajax>
+														</h:inputText>
+													</div>
+												</div>
+													
+												<div class="clear-row"></div>
+												</h:panelGroup>
+												<div class="centrar-objeto">
+													<!-- Estilo inline-block en duro -->
+														<p:commandButton value="Emitir" styleClass="btn-emitir" icon="fa fa-pencil" update="@form"
+															action="#{relacionesCuentaController.emitirDocumento(documento)}">
+													</p:commandButton>
+												</div>
+											</h:panelGroup>
+											</h:panelGroup>
+										</h:panelGroup>
+										<div class="clear"></div>
+									</p:panel>
+								</ui:repeat>
+
+                            </div>
+                        </div>
+                        <!--Botones secundarios de Cancelar u otros -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10" value="Cancelar" 
+                        	rendered="#{relacionesCuentaController.isAlta}"
+                        	onclick="PF('dlgCancelarAlta').show();" immediate="true"/>
+                        <p:commandButton styleClass="btn_secundario margin-top-10" update=":dlgCancelarAlta"
+							value="Cancelar" action="#{relacionesCuentaController.cancelar()}"
+							immediate="true" rendered="#{!relacionesCuentaController.isAlta}"/>
+                        <p:commandButton styleClass="btn_primario float-right margin-top-10" 
+                        	rendered="#{relacionesCuentaController.isAlta}"
+                        	action="#{relacionesCuentaController.constituirAcuerdo()}"
+                        	update=":dlgDatosFaltantes :dlgMsgError fechaConstitucionValidator fechaConstitucion"
+                        	value="Aprobar y Constituir" />
+                        <c:if test="#{relacionesCuentaController.isAlta}">
+	                        <ui:include src="../store.xhtml">
+								<ui:param name="storeBean"
+									value="#{relacionesCuentaController}" />
+							</ui:include>
+						</c:if>
+                    </h:form>
+                </div>
+                <p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta" appendTo="@(body)"
+					header="Cancelar alta Cuenta" modal="true" visible="false" closable="false"
+				    resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+				    <span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 				    <p:outputLabel  styleClass="modal-mensaje" value="¡Atencion! Está a punto de cancelar el alta de cuenta" /> -->
+<!-- 				    <div class="clear"></div> -->
+<!-- 				    <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en Tareas pendientes para continuar más tarde?" /> -->
+<!-- 				    <div class="margin-bottom-20"></div> -->
+<!-- 				    <p:commandButton styleClass="btn_secundario_dialog"  -->
+<!-- 				    	onclick="PF('dlgCancelarAlta').hide();"  -->
+<!-- 				   		id="volverAlta"  value="Continuar con al Alta" immediate="true"/> -->
+<!-- 				   <p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartar" value="No guardar" -->
+<!-- 						action="#{relacionesCuentaController.irAHome()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" immediate="true" -->
+<!-- 						id="guardar" value="Guardar" onclick="return storeData();" />  -->
+
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{relacionesCuentaController.irAHome()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+				</p:dialog>
+				<p:dialog widgetVar="dlgDatosFaltantes" id="dlgDatosFaltantes"
+					appendTo="@(body)" header="Faltan datos obligatorios" modal="true"
+					visible="#{relacionesCuentaController.faltantes}" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atencion! Existen relaciones obligatorias faltantes." />
+					<div class="clear"></div>
+					<p:outputLabel rendered="#{relacionesCuentaController.mensajePersonaFaltantes.length() > 0}" styleClass="modal-accion"
+						value="Personas: #{relacionesCuentaController.mensajePersonaFaltantes}"/>
+					<div class="clear"></div>
+					<p:outputLabel rendered="#{relacionesCuentaController.mensajeCuentasFaltantes.length() > 0}" styleClass="modal-accion"
+						value="Cuentas: #{relacionesCuentaController.mensajeCuentasFaltantes}"/>
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgDatosFaltantes').hide();" id="continuar"
+						value="Continuar con al Alta" immediate="true" />
+					<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+						id="finalizar" value="Finalizar"
+						action="#{relacionesCuentaController.irAHome()}" />
+				</p:dialog>
+				 <p:dialog id="dlgMsgError" widgetVar="dlgMsgError" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+		            closable="false" dynamic="true" draggable="false" modal="true"
+		            resizable="false" header="¡Atención!" visible="#{not empty relacionesCuentaController.messageError}">
+			            <span class="ui-messages-warn-icon warn-dialog"></span>
+			            <p:outputLabel styleClass="modal-mensaje"
+			              value="#{relacionesCuentaController.messageError}" />
+			            <div class="margin-bottom-20"></div>
+		            <p:commandButton styleClass="btn_principal_dialog_derecha"
+		              value="Aceptar" action="#{relacionesCuentaController.irAFichaCuenta()}">
+		             </p:commandButton>
+		          </p:dialog>
+		          
+		         <p:dialog widgetVar="dlgFinalizacionAlta" id="dlgFinalizacionAlta" appendTo="@(body)" modal="true" 
+                	visible="false" closable="false" resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                    <span class="ui-messages-exito-icon exito-dialog"></span>
+                    <p:outputLabel styleClass="modal-mensaje" value="El alta de cuenta se realizó correctamente." />
+                    <div class="clear"></div>
+                    <p:commandButton styleClass="btn_principal_dialog_derecha" id="aceptarFinA" value="Aceptar" 
+                    	immediate="true" action="#{relacionesCuentaController.irAFichaCuenta()}" />
+                </p:dialog> 
+		          
+             <ui:include src="/views/altaIPF/noSaldoIPFPopUp.xhtml" >                
+                <ui:param name="controllerActual" value="#{relacionesCuentaController}"/>
+             </ui:include>
+          </div><!--termina container 48-->
+        </h:body>
+    </ui:define>
+</ui:composition>

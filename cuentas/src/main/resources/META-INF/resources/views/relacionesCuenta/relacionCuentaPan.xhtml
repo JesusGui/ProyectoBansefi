@@ -1,0 +1,300 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:pe="http://primefaces.org/ui/extensions"
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+template="../../templates/plantilla-inicio.xhtml">
+<!--
+plantilla de wizard
+-->
+    <ui:define name="contenido">
+        <!--scripts Evitar utilizar h:head-->
+        <!--<h:outputScript name="/js/personas.js" />-->
+        <h:outputScript name="/js/relacionCuentaPan.js" />
+        <h:body onunload="#{relacionesCuentaController.consultaPanRelacionar()}">
+            <div class="container_48">
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="relacionCuentaPanForm" styleClass="contenedor-form">
+                   		<pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" 
+                   			var="ConstantesFuncionales" />
+                   		<pe:importConstants	className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+							var="EstadoListadosEnum" />
+						<pe:importConstants	className="mx.babel.bansefi.banksystem.base.enums.EstadosCuentaEnum"
+							var="EstadosCuentaEnum" />
+						<pe:importConstants className="mx.babel.bansefi.banksystem.base.beans.domain.relacioncuenta.TipoAltaEnum"
+							var="TipoAltaEnum" />
+                        <!--t�tulo d ela ventana-->
+                        <div class="titulo centrar-objeto btn-inline-set">
+                            <!--bot�n atras-->
+                            <p:commandButton icon="ui-icon-arrow-1-w" rendered="#{!relacionesCuentaController.isAlta}"
+								action="#{relacionesCuentaController.cancelar()}" update=":dlgCancelarListado" immediate="true"></p:commandButton>
+							<div>
+	                            <h2 class="gris-b">Alta de </h2>
+	                            <h:panelGroup rendered="#{!relacionesCuentaController.isAlta}">
+	                            	<h2 class="azul-b">SAT </h2>
+	                            	<h2 class="gris-b">para </h2>
+									<h2 class="rojo-b">#{relacionesCuentaController.cuentaBean.tipoCuenta} </h2>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{relacionesCuentaController.isAlta}">
+									<h2 class="rojo-b">#{relacionesCuentaController.tarifaSeleccionada.nombre} #{relacionesCuentaController.tarifaSeleccionada.descripcion} </h2>
+								</h:panelGroup>
+								<h3 class="gris-b">(#{relacionesCuentaController.cuentaBean.numeroCuenta})</h3>
+							</div>
+                        </div>
+                        <!--Wizard Botones circulares superiores -->
+                        <h:panelGroup rendered="#{relacionesCuentaController.isAlta}">
+	                        <div class="wiz-pasos">
+	                            <p:commandButton styleClass="activo" value="Alta de SAT" />
+	                        </div>
+	                        <!--contenedor del wizard-->
+                        </h:panelGroup>
+                        <div class="wiz-contenedor">
+                            <div class="contenedor-campos">
+					            	<p:outputLabel styleClass="#{relacionesCuentaController.clienteBean.claseTipoPersona()}"
+									value="#{relacionesCuentaController.clienteBean.nombreCompleto}" />
+									<div class="clear-row"></div>
+									<p:outputLabel styleClass="txt-campo-obligatorio" value="*Datos obligatorios"/>
+									<div class="clear-row"></div>
+									<h:panelGroup rendered="#{relacionesCuentaController.cuentaBean.estado.equals('4')}">
+										<h:panelGroup rendered="#{!relacionesCuentaController.isAlta}">
+										<div class="grid_15 alpha">
+											<h:outputLabel value="Tipo de alta:" />
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="tipoAlta" panelStyleClass="combo-estandar"
+												value="#{relacionesCuentaController.tipoAltaPan}">
+												<f:selectItem itemValue="#{TipoAltaEnum.NUEVA}" itemLabel="#{TipoAltaEnum.NUEVA.nombre}" />
+												<f:selectItem itemValue="#{TipoAltaEnum.RENOVACION}" itemLabel="#{TipoAltaEnum.RENOVACION.nombre}" />
+												<f:selectItem itemValue="#{TipoAltaEnum.ROBO_EXTRAVIO}" itemLabel="#{TipoAltaEnum.ROBO_EXTRAVIO.nombre}" />
+												<f:selectItem itemValue="#{TipoAltaEnum.REPOSICION}" itemLabel="#{TipoAltaEnum.REPOSICION.nombre}" />
+												<p:ajax event="change" global="false" process="tipoAlta"
+													partialSubmit="true"></p:ajax>
+											</p:selectOneMenu>
+										</div>
+										</h:panelGroup>
+										<div class="grid_3">
+							            	<div class="label-vacio"></div>
+				                           <div class="clear-3"></div>
+							                <p:commandButton id="anadirPan" styleClass="btn-icono btn-anadir" 
+							                	rendered="#{!relacionesCuentaController.isAlta}"
+							                	icon="ui-icon-circle-plus"
+							               		action="#{relacionesCuentaController.adicionarPan}"
+												update="@form" immediate="true"></p:commandButton>
+												<p:tooltip for="anadirPan" value="Añadir" />
+											<p:commandButton id="anadirPanAlta" 
+												rendered="#{relacionesCuentaController.isAlta}"
+							                	icon="fa fa-plus" value="Añadir"
+							               		action="#{relacionesCuentaController.adicionarPan}"
+												update="@form" immediate="true"></p:commandButton>
+							           	</div>
+						           	</h:panelGroup>
+						           	<div class="clear-row"></div>
+						           	<ui:repeat var="pan" value="#{relacionesCuentaController.obtenerPanesRelacionados()}">
+							           	<h:panelGroup layout="block" styleClass="marco-datospersonales grid_24" id="panConsultado" rendered="#{EstadoListadosEnum.CONSULTADO == pan.estadoListado}">
+												<p:outputLabel value="Tipo: " />
+												<p:outputLabel styleClass="bold" value="#{pan.tipoTarjeta}" />
+												<div class="clear"></div>
+												<p:outputLabel value="PAN: " />
+												<p:outputLabel styleClass="bold" value="#{pan.numeroPan}" />
+							           	</h:panelGroup>
+						           	</ui:repeat>
+						           	<div class="clear-row"></div>
+									<h:outputText styleClass="txt-campos-oblg" value="Los campos marcados en rojo son requeridos" rendered="#{facesContext.validationFailed}" />
+									<ui:repeat var="pan" value="#{relacionesCuentaController.obtenerPanesRelacionados()}">
+										<p:panel id="relacionPan" styleClass="#{pan.estadoListado.styleClass}" rendered="#{EstadoListadosEnum.NUEVO == pan.estadoListado}">
+											<div class="grid_2 alpha">
+												<p:commandButton styleClass="btn-icono btn-panel btn-eliminar" icon="ui-icon-trash" id="eliminar"
+													disabled="#{pan.titular}"
+													action="#{relacionesCuentaController.removerRelacionCuenta(pan)}"
+													rendered="#{relacionesCuentaController.cuentaBean.estado.equals('4') 
+														and not(EstadoListadosEnum.ELIMINADO == pan.estadoListado)}"
+													update="@form" immediate="true">
+													<f:param name="disableValidation" value="true" />	
+												</p:commandButton>
+												<p:tooltip for="eliminar" value="Eliminar" />
+											</div>
+											<div class="grid_2 alpha">
+												<p:commandButton styleClass="btn-icono btn-panel" icon="fa fa-undo" id="recuperar"
+													action="#{relacionesCuentaController.cancelarEliminacion(pan)}"
+													rendered="#{EstadoListadosEnum.ELIMINADO == pan.estadoListado}" 
+													update="relacionPan" immediate="true">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:tooltip for="recuperar" value="Recuperar" />
+											</div>
+											<div class="clear-row"></div>
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de alta:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{pan.tipoAlta.nombre}" />
+											</div>
+											<div class="grid_16">
+												<p:outputLabel value="Nombre" for="nombreCliente"/>
+												<div class="clear-3"></div>
+												<p:inputText styleClass="sin-input alfanumerico" id="nombreCliente"
+													value="#{pan.nombreCliente}" onblur="value=value.toUpperCase();value=value.trim()"
+													required="#{!param['disableValidation']}" maxlength="30" >
+													<p:ajax event="change" global="false" process="nombreCliente" partialSubmit="true"></p:ajax>
+												</p:inputText>
+											</div>
+											<div class="grid_9">
+											    <p:outputLabel for="bin" value="BIN"></p:outputLabel>
+											    <div class="clear"></div>
+											    <p:selectOneMenu id="bin" value="#{pan.bin}" required="#{!param['disableValidation']}">										
+													<f:selectItem itemLabel="Seleccione un valor" itemDisabled="true" />									
+													<f:selectItems value="#{relacionesCuentaController.catalogoBin}" 
+														var="catalogo" itemLabel="#{catalogo.descripcionL}" itemValue="#{catalogo.claveFila}"/>
+													<p:ajax event="change" global="false" process="bin" update="condicionEconomica productoTCB"
+														listener="#{relacionesCuentaController.actualizaCatalogoPan(pan)}"
+														partialSubmit="true"></p:ajax>								
+												</p:selectOneMenu>
+					                        </div>
+					                        <div class="grid_9">
+											    <p:outputLabel for="condicionEconomica" value="Condición económica"></p:outputLabel>
+											    <div class="clear"></div>
+											    <p:selectOneMenu id="condicionEconomica" value="#{pan.condicionEconomica}" 
+											    	disabled="#{pan.catalogoCondicionEconomica.isEmpty()}"
+											    	required="#{!param['disableValidation']}">										
+													<f:selectItem itemLabel="Seleccione un valor" itemDisabled="true" />									
+													<f:selectItems value="#{pan.catalogoCondicionEconomica}" 
+														var="catalogo" itemLabel="#{catalogo.descripcionL}" itemValue="#{catalogo.claveFila}"/>
+													<p:ajax event="change" global="false" process="condicionEconomica" partialSubmit="true"></p:ajax>								
+												</p:selectOneMenu>
+					                        </div>
+					                        <div class="grid_8">
+											    <p:outputLabel for="productoTCB" value="Producto TCB"></p:outputLabel>
+											    <div class="clear"></div>
+											    <p:selectOneMenu id="productoTCB" value="#{pan.productoTCB}" 
+											    	disabled="#{pan.catalogoProductosTcb.isEmpty()}"
+											    	required="#{!param['disableValidation']}">										
+													<f:selectItem itemLabel="Seleccione un valor" itemDisabled="true" />									
+													<f:selectItems value="#{pan.catalogoProductosTcb}" 
+														var="catalogo" itemLabel="#{catalogo.descripcionL}" itemValue="#{catalogo.claveFila}"/>
+													<p:ajax event="change" process="productoTCB" partialSubmit="true"></p:ajax>								
+												</p:selectOneMenu>
+					                        </div>
+											<div class="clear-row"></div>
+											<h:panelGroup layout="block" styleClass="grid_10" rendered="#{(pan.tipoAlta != TipoAltaEnum.NUEVA) 
+												and (pan.tipoAlta != TipoAltaEnum.RENOVACION)}">
+												<p:outputLabel value="PAN anterior" />
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="panAnterior" value="#{pan.panAnterior}" 
+											    	required="false">										
+													<f:selectItem itemLabel="Seleccione un valor" itemDisabled="true" />									
+													<f:selectItems value="#{relacionesCuentaController.obtenerPanesCombo()}" 
+														var="panConsultado" itemLabel="#{panConsultado.numeroPan}" itemValue="#{panConsultado.numeroPan}"/>
+												</p:selectOneMenu>
+											</h:panelGroup>
+											<div class="contenedor-fijo-formulario">
+											    <p:outputLabel for="tipoTarjeta" value="Tipo de tarjeta"></p:outputLabel>
+											    <div class="clear-3"></div>
+												<h:selectOneRadio id="tipoTarjeta" styleClass="tabla-radio radio-margin-right"
+													value="#{pan.tipoTarjeta}" required="#{!param['disableValidation']}">
+													<f:selectItem itemValue="PERSONALIZADA" itemLabel="Personalizada" />
+													<f:selectItem itemValue="PREESTAMPADA" itemLabel="Preestampada" />
+													<p:ajax event="change" global="false" update="relacionPan" process="tipoTarjeta" partialSubmit="true"></p:ajax>
+												</h:selectOneRadio>
+					                        </div>
+					                        <h:panelGroup layout="block" styleClass="#{relacionesCuentaController.verificaTipoPan(pan) ? 'grid_9':'display-none'}">
+												<p:message for="numeroPan" display="icon"></p:message>
+												<p:outputLabel rendered="#{relacionesCuentaController.verificaTipoPan(pan)}" value="PAN" for="numeroPan"/>
+												<div class="clear-3"></div>
+												<p:inputMask styleClass="sin-input numeros" id="numeroPan"  
+													rendered="#{relacionesCuentaController.verificaTipoPan(pan)}" placeHolder=""
+													value="#{pan.numeroPan}" mask="9?999-9999-9999-9999" 
+													required="#{!param['disableValidation']}" requiredMessage="">
+													<pe:keyFilter regEx="/[a-zA-Z0-9 ]*$/" />
+													<f:validator binding="#{panValidator}" />
+													<f:attribute name="binSeleccionado" value="#{pan.bin}"/>
+													<p:ajax event="change" global="false" process="numeroPan" update="relacionPan"
+														partialSubmit="true"></p:ajax>
+												</p:inputMask>
+											</h:panelGroup>
+					                        
+					                        <div class="clear"></div>
+										</p:panel>
+									</ui:repeat>
+                            </div>
+                        </div>
+                        <!--Botones secundarios de Cancelar u otros -->
+                        <p:commandButton styleClass="btn_secundario margin-top-10"
+                       		update=":dlgCancelarListado"
+							value="Ir a ficha de cuenta" 
+							action="#{relacionesCuentaController.cancelaSat()}"
+							immediate="true" rendered="#{relacionesCuentaController.isAlta}"/>
+						<p:commandButton styleClass="btn_secundario margin-top-10" 
+							update=":dlgCancelarListado"
+							value="Cancelar" 
+							action="#{relacionesCuentaController.cancelar()}"
+							immediate="true" rendered="#{!relacionesCuentaController.isAlta}"/>
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar" 
+							validateClient="true" update="@form :dlgGuardado"
+							rendered="#{relacionesCuentaController.cuentaBean.estado.equals('4')}"
+							action="#{relacionesCuentaController.guardadoSat(false)}">
+								<f:param name="disableValidation" value="false" />
+						</p:commandButton>
+						<c:if test="#{relacionesCuentaController.isAlta}">
+							<ui:include src="../store.xhtml">
+								<ui:param name="storeBean"
+									value="#{relacionesCuentaController}" />
+							</ui:include>
+						</c:if>
+                    </h:form>
+                </div>
+                <ui:include src="../../composites/listadosDialogo.xhtml">
+                    <ui:param name="dialogoGuardado" value="#{relacionesCuentaController.dialogoGuardado}" />
+                </ui:include>
+                <ui:include src="../../composites/listadosDialogoCancelar.xhtml">
+                	<ui:param name="managedBean" value="#{relacionesCuentaController}" />
+                	<ui:param name="aceptar" value="irAFichaCuenta" />
+                    <ui:param name="mostrarCancelar" value="#{relacionesCuentaController.mostrarCancelar}" />
+                </ui:include>
+				<p:dialog widgetVar="dlgSinBines" id="dlgSinBines"
+					appendTo="@(body)" header="Cuenta operativa sin catálogo de BIN" modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="#{relacionesCuentaController.sinBines}" closable="false" resizable="false"
+					draggable="false">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="La cuenta operativa seleccionada devolvío 0 resultados en el catálogo de BIN." />
+					<div class="clear"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgSinBines').hide();" id="cerrarDialogoBines"
+						value="Aceptar" immediate="true" />
+				</p:dialog>
+				<p:dialog widgetVar="dlgSinCO" id="dlgSinCO"
+					appendTo="@(body)" header="No existe una cuenta operativa en estado activo" modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="#{relacionesCuentaController.sinCuentaOperativa}" closable="false" resizable="false"
+					draggable="false">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="No existe una cuenta operativa en estado activo" />
+					<div class="clear"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgSinCO').hide();" id="cerrarDialogoCO"
+						value="Aceptar" immediate="true" />
+				</p:dialog>
+				<p:dialog widgetVar="dlgMaxAdicionales" id="dlgMaxAdicionales"
+					appendTo="@(body)" header="Solo se pueden agregar 9 adicionales" modal="true"
+					showEffect="fade" hideEffect="fade"
+					visible="false" closable="false" resizable="false"
+					draggable="false">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="Solo se pueden agregar 9 adicionales" />
+					<div class="clear"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgMaxAdicionales').hide();" id="cerrarMaxAdicionales"
+						value="Aceptar" immediate="true" />
+				</p:dialog>
+                
+            </div><!--termina container 48-->
+        </h:body>
+    </ui:define>
+</ui:composition>

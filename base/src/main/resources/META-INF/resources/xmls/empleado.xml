@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+   <!-- Mapeo de clases -->
+	<mapping map-id="consultaEmpleado" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaempleado.ResponseBansefi.OTRCONSEMPLTRNO.TRCONSEMPLEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.EmpleadoBean
+		</class-b>		
+		<field>
+		 	<a>EPPEDPOBJTRDV.idinternoemplep</a>
+		 	<b>numEmpleado</b>			
+		</field>
+		<field>
+			<a>EPPEDPOBJTRDV.codinternouo</a>
+		 	<b>centroPertenencia</b>			
+		</field>
+		<field>
+			<a>EPPEDPOBJTRDV.codcargoempl</a>
+		 	<b>cargo</b>			
+		</field>
+		<field>
+			<a>EPPEDPOBJTRDV.idinternope</a>
+		 	<b>datos.idInterna</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codtratmtopers</a>
+		 	<b>datos.tratamiento</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.nombinnombpila</a>
+		 	<b>datos.nombre</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.nombinape1IN</a>
+		 	<b>datos.apePaterno</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.nombinape2IN</a>
+		 	<b>datos.apeMaterno</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.sexoin</a>
+		 	<b>datos.sexo</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codidextpers</a>
+		 	<b>datos.tipoIdentificacion</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.idextpe</a>
+		 	<b>datos.numIdentificacion</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.idrfc</a>
+		 	<b>datos.rfc</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.idcurp</a>
+		 	<b>datos.curp</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codestcivilindv</a>
+		 	<b>datos.estadoCivil</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codrgmnmatrimin</a>
+		 	<b>datos.regimenEconomico</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codpaisnal</a>
+		 	<b>datos.paisNacionalidad</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codpaisres</a>
+		 	<b>datos.paisResidencia</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codrznaltapers</a>
+		 	<b>datos.razonAlta</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codidiompers</a>
+		 	<b>datos.idioma</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.numhijosin</a>
+		 	<b>datos.numHijos</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>PECONSINDVOBJTRDV.fechafallcrrepe</a>
+		 	<b>datos.fechaFallecimiento</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>PECONSINDVOBJTRDV.indconsjin</a>
+		 	<b>datos.relacionConsejero</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>PECONSINDVOBJTRDV.indaltocargoin</a>
+		 	<b>datos.relacionAltaCargo</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codsiteconpers</a>
+		 	<b>datos.situacionEconomica</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codcpcdadlglin</a>
+		 	<b>datos.solvenciaMoral</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>PECONSINDVOBJTRDV.fechainiccrt</a>
+		 	<b>datos.solvenciaMoralDesde</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>PECONSINDVOBJTRDV.fechafincrt</a>
+		 	<b>datos.solvenciaMoralHasta</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>PECONSINDVOBJTRDV.indcorreoofcna</a>
+		 	<b>datos.correspondenciaOficina</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codofcnacorr</a>
+		 	<b>datos.numOficina</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>PECONSINDVOBJTRDV.indpublcdpe</a>
+		 	<b>datos.noPublicidad</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>PECONSINDVOBJTRDV.indnodocum</a>
+		 	<b>datos.noRetencion</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>PECONSINDVOBJTRDV.fecnctoconstpe</a>
+		 	<b>datos.fechaNacimiento</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codpaisnacto</a>
+		 	<b>datos.pais</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codestlabindv</a>
+		 	<b>datos.estadoLaboral</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codcnoindv</a>
+		 	<b>datos.cno</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BooleanToStringConverter">
+			<a>PECONSINDVOBJTRDV.indautnmoin</a>
+		 	<b>datos.autonomo</b>			
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>PECONSINDVOBJTRDV.fechaautnmoin</a>
+		 	<b>datos.fechaAltaAutonomo</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codcnaepers</a>
+		 	<b>datos.cnae</b>			
+		</field>
+		<field>
+			<a>PECONSINDVOBJTRDV.codofcnaalta</a>
+		 	<b>datos.oficinaalta</b>			
+		</field>	
+	</mapping>	
+</mappings>

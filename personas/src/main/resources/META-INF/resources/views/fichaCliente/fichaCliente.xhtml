@@ -1,0 +1,177 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+	<ui:define name="contenido">
+		<h:body onload="#{fichaClienteController.verificarAlertas()}">
+            <div class="container_48">
+                <div class="contenedor">
+			<h:form styleClass="contenedor-form">
+				<pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" var="ConstantesFuncionales" />
+				<div class="titulo centrar-objeto btn-inline-set">
+					<p:commandButton icon="ui-icon-home" immediate="true" rendered="#{!fichaClienteController.origenBusqueda}" title="Inicio"
+							 action="#{fichaClienteController.volverInicio()}" ></p:commandButton>
+					<p:commandButton icon="ui-icon-arrow-1-w"  rendered="#{fichaClienteController.origenBusqueda}"
+						action="#{fichaClienteController.regresar()}" 
+						title="Volver atrás"></p:commandButton>
+					 <div>
+						 <h:panelGroup rendered="#{fichaClienteController.cliente != null}">
+	                    	<h2 class="gris-b">Ficha de </h2>
+							<h2 class="azul-b">#{fichaClienteController.cliente.getNombreCompleto()} </h2>
+							<h3 class="gris-b">#{fichaClienteController.getIdentificacion(fichaClienteController.cliente)}</h3>
+	                    </h:panelGroup>
+	                    <h:panelGroup rendered="#{fichaClienteController.cliente == null}">
+	                    	<h1>Ficha de cliente</h1>
+	                    </h:panelGroup>
+                    </div>
+                </div>
+                 <h:panelGroup rendered="#{fichaClienteController.cliente == null}">
+	                 <div class="contenedor-campos">
+	                 	<p:messages autoUpdate="true" id="messages" showDetail="true"></p:messages>
+	                 </div>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{fichaClienteController.cliente != null}">
+                <div class="contenedor-campos">
+                	<div class="float-right">
+						<p:commandButton styleClass="btn_secundario btn-icono-texto margin-right-10" id="alta" icon="cbs-e002-acuerdo-rel" value="Alta de cuenta" action="#{fichaClienteController.altaCuenta()}"
+							rendered="#{fichaClienteController.tipoCliente.tipoFicha == 1}"></p:commandButton>
+						
+						<p:menuButton styleClass="btn-opciones" icon="ui-icon-menu" id="mnuOpciones" value="Opciones" rendered="#{fichaClienteController.tipoCliente.tipoFicha != 3}">
+							<p:menuitem value="Modificar Datos" action="#{fichaClienteController.irModificacionDatos()}"
+										rendered="#{fichaClienteController.tipoCliente.tipoFicha != 2}"></p:menuitem>
+							<p:menuitem value="Relacionar Personas" action="#{fichaClienteController.irRelacionarPersonas()}"
+										rendered="#{fichaClienteController.tipoCliente.tipoFicha != 2}"></p:menuitem>
+							<p:menuitem value="Documentos de Personas" action="#{fichaClienteController.irAgregarDocumentos()}"
+										rendered="#{fichaClienteController.cliente.tipo.tipoFicha != 2}"></p:menuitem>
+							<p:menuitem value="Actividad Empresarial" action="#{fichaClienteController.irActividadEmpresarial()}"
+								rendered="#{fichaClienteController.cliente.tipoClienteEnum.codPe == 'J' or (fichaClienteController.cliente.tipoClienteEnum.codPe == 'F' and fichaClienteController.cliente.cnae != null and fichaClienteController.cliente.cnae != '')}"></p:menuitem>
+							<p:menuitem value="Otros Datos" action="#{fichaClienteController.irOtrosDatos()}"
+										rendered="#{fichaClienteController.tipoCliente.tipoFicha != 2}"></p:menuitem>
+							<p:menuitem value="Añadir Domicilios" action="#{fichaClienteController.irAnadirDomicilios()}"
+								rendered="#{fichaClienteController.tipoCliente.tipoFicha != 2}"></p:menuitem>
+							<p:menuitem value="Datos Económicos" action="#{fichaClienteController.irDatosEconomicos()}"
+										rendered="#{fichaClienteController.tipoCliente.tipoFicha != 2}"></p:menuitem>
+							<p:menuitem value="Ampliar bienes" action="#{fichaClienteController.irAmpliarBienes()}"
+										rendered="#{fichaClienteController.tipoCliente.tipoFicha != 2}"></p:menuitem>
+							<!--<p:menuitem value="Consulta Posición" action="#{fichaClienteController.consultaPosicion()}"-->
+										<!--rendered="#{fichaClienteController.tipoCliente.tipoFicha == 2}"></p:menuitem>-->
+							<!--<p:menuitem value="Añadir Balance" action="#{fichaClienteController.listaBalances()}"-->
+										<!--rendered="#{fichaClienteController.cliente.tipo.codPe == 'J'}"></p:menuitem>-->
+							<!--<p:menuitem value="Documentos de persona" action="#{fichaClienteController.consultaDocumentosPersona()}"-->
+										<!--rendered="#{fichaClienteController.tipoCliente.tipoFicha != 2}"></p:menuitem>-->
+						</p:menuButton>
+						
+						<p:commandButton styleClass="btn_secundario btn-icono-texto float-right margin-left-10" icon="ui-icon-print" action="#{fichaClienteController.printReport()}" value="Imprimir"></p:commandButton>
+					</div>	
+					
+					<div class="clear"></div>
+					<h:panelGroup rendered="#{fichaClienteController.cliente.anotaciones != null and fichaClienteController.cliente.anotaciones.size()>0}">
+								<div class="ui-messages-warn anotaciones">
+									<h3>Anotaciones</h3>
+									<div class="clear"></div>
+									<div class="margin-top-5">
+										<c:forEach var="anotacion" items="#{fichaClienteController.cliente.anotaciones.subList(0,fichaClienteController.anotacionesVisibles)}">
+											<div class="#{anotacion.prioridad.equals(ConstantesFuncionales.COD_PRIORIDAD_ANOTACION_ALTA)? 'elementos-anotaciones anotaciones-aviso':'elementos-anotaciones'}">
+												<p:commandLink value="#{fichaClienteController.getTipoAnotacion(anotacion.tipo)}: 
+												#{(anotacion.descripcionCorta != null and anotacion.descripcionCorta.trim().length() != 0) ? anotacion.descripcionCorta : fichaClienteController.obtenerSubCodigoAnotacion(anotacion.subcodigo)}"
+													action="#{fichaClienteController.detalleAnotacion(anotacion)}"/>
+												<h:outputLabel rendered="#{anotacion.respuestas != null and !anotacion.respuestas.isEmpty()}"><i class="fa fa-reply margin-left-5"></i></h:outputLabel>
+											</div>
+										</c:forEach>
+									</div>
+									<div class="clear margin-bottom-15"></div>
+									<p:commandButton styleClass="btn-mostrar float-right"
+										icon="fa fa-angle-down" value="Ver todas las anotaciones"
+										action="#{fichaClienteController.mostrarTodasAnotaciones()}"
+										update="@form" process="@this"
+										rendered="#{fichaClienteController.cliente.anotaciones.size() gt fichaClienteController.anotacionesVisibles}" />
+
+									<p:commandButton styleClass="btn-mostrar float-right"
+										icon="fa fa-angle-up" value="Ocultar anotaciones"
+										action="#{fichaClienteController.establecerAnotacionesVisibles()}"
+										update="@form" process="@this"
+										rendered="#{(fichaClienteController.cliente.anotaciones.size() eq fichaClienteController.anotacionesVisibles) and
+											(fichaClienteController.cliente.anotaciones.size() gt 6)}" />
+
+								</div>
+							</h:panelGroup>
+										
+					<f:subview id="clientePrimario">
+						<ui:include src="fichaClienteCliente.xhtml">
+							<ui:param name="persona" value="#{fichaClienteController.cliente}" />
+							<ui:param name="tipoRendered" value="true" />
+							<ui:param name="notGrupo" value="#{fichaClienteController.tipoCliente.tipoFicha != 2}" />
+						</ui:include>
+					</f:subview>
+
+					<h:panelGroup rendered="#{fichaClienteController.cliente.fusionado}">
+                        <div class="margin-top-10"></div>
+                        <div class="marco-info-ficha margin-bottom-10">
+                            <div>
+                                <span class="ui-messages-info-icon"></span>
+                                <h:outputLabel value="#{fichaClienteController.cliente.nombreCompleto} "/>
+                                <h:outputLabel>es un cliente fusionado.</h:outputLabel>
+                            </div>
+                        </div>
+                        <div class="margin-bottom-15"></div>
+					</h:panelGroup>
+					
+					<c:if test="#{fichaClienteController.hasRepresentante()}">
+                       <div class="margin-top-10"></div>
+                        <h:outputLabel styleClass="titulo-form margin-left-10" value="Representado por:"></h:outputLabel>
+                        <div class="margin-bottom-5"></div>
+						<ui:include src="fichaClienteCliente.xhtml">
+							<ui:param name="persona" value="#{fichaClienteController.cliente.representante}" />
+							<ui:param name="tipoRendered" value="false" />
+							<ui:param name="notGrupo" value="true"/>
+						</ui:include>
+					</c:if>
+					
+					<h:panelGroup rendered="#{fichaClienteController.mostrarAvisoRepresentante}">
+                        <div class="margin-top-10"></div>
+                        <div class="marco-info-ficha">
+                            <div>
+                                <span class="ui-messages-info-icon"></span>
+                                <h:outputLabel value="#{fichaClienteController.cliente.nombreCompleto} "/>
+                                <h:outputLabel rendered="#{fichaClienteController.cliente.tipo.codPe == 'F'}">no posee representante legal.</h:outputLabel>
+                                <h:outputLabel rendered="#{fichaClienteController.cliente.tipo.codPe == 'J'}">no posee apoderado.</h:outputLabel>
+                                <div class="margin-top-20"></div>
+                                <p:commandButton value="#{fichaClienteController.cliente.tipo.codPe == 'J' ? 'Alta de apoderado':'Alta representante legal'}"
+                                    action="#{fichaClienteController.altaRepresentanteLegal()}"></p:commandButton>
+                            </div>
+                        </div>
+					</h:panelGroup>
+					<div class="clear"></div>
+					<c:if test="#{fichaClienteController.tipoCliente.tipoFicha == 2}">
+						<ui:include src="fichaClienteGrupo.xhtml">
+							<ui:param name="cliente" value="#{fichaClienteController.cliente}" />
+						</ui:include>
+					</c:if>
+					
+					<div>
+						<c:if test="#{fichaClienteController.tipoCliente.tipoFicha == 1}">
+	                        <f:subview id="cuentas">
+	                            <div class="grid_12 alpha">
+	                              <div class="margin-top-25"></div>
+	                               <p:outputLabel styleClass="titulo-form" value="Cuentas" />
+	                            </div>
+	                            
+	                            <ui:include src="fichaClienteCuentas.xhtml" />
+	                        </f:subview>
+	                    </c:if>
+                    </div>
+                    
+                    <div class="clear"></div>
+                    
+				</div>
+				</h:panelGroup>
+			</h:form>
+			</div>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

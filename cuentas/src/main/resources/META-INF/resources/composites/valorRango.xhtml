@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:cc="http://java.sun.com/jsf/composite/composites">
+<head>
+<title>Composite valor rango</title>
+</head>
+<body>
+	<composite:interface>
+		<composite:attribute name="id"></composite:attribute>
+		<composite:attribute name="condValorRango" required="true"></composite:attribute>
+		<composite:attribute name="editable" default="true"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+		<div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}">
+
+			<cc:periodoValidez
+				from="#{cc.attrs.condValorRango.fechaEstadoActual}"
+				to="#{cc.attrs.condValorRango.fechaFinValidezFormateada}"
+				required="#{param['disableValidation']==null}"
+				editable="#{cc.attrs.editable}"></cc:periodoValidez>
+
+			<div class="grid_14">
+				<h:panelGroup
+					rendered="#{cc.attrs.condValorRango.alternateUnits or
+				    ((not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades ne 'F'))}">
+					<p:message id="rangeToVal" for="rangeValue" display="icon"></p:message>
+					<p:outputLabel for="rangeValue" value="Valor:"></p:outputLabel>
+					<div class="clear-3"></div>
+					<div class="grid_22">
+						<pe:inputNumber emptyValue="0" id="rangeValue"
+							thousandSeparator="," decimalPlaces="2" decimalSeparator="."
+							value="#{cc.attrs.condValorRango.valor}" minValue="0"
+							maxValue="999999999999.99"
+							required="#{param['disableValidation']==null}"
+							styleClass="arq-update" disabled="#{not cc.attrs.editable}">
+							<f:attribute name="minRange"
+								value="#{cc.attrs.condValorRango.minimo}" />
+							<f:attribute name="maxRange"
+								value="#{cc.attrs.condValorRango.maximo}" />
+							<f:validator validatorId="bigDecimalRangeValidator" />
+						</pe:inputNumber>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup
+					rendered="#{(not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades eq 'F')}">
+					<p:message id="rangeFechaToVal" for="rangeFechaValue"
+						display="icon"></p:message>
+					<p:outputLabel for="rangeFechaValue" value="Valor:"></p:outputLabel>
+					<div class="clear-3"></div>
+					<div class="grid_22">
+						<h:panelGroup rendered="#{cc.attrs.editable}">
+							<p:calendar id="rangeFechaValue"
+								value="#{cc.attrs.condValorRango.valorFecha}" showOn="button"
+								pattern="dd/MM/yyyy" mask="true" locale="es"
+								styleClass="arq-update">
+								<f:attribute name="beginDate"
+									value="#{cc.attrs.condValorRango.getMinimoFecha()}" />
+								<f:attribute name="endDate"
+									value="#{cc.attrs.condValorRango.getMaximoFecha()}" />
+								<f:validator validatorId="dateRangeValidator" />
+							</p:calendar>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{not cc.attrs.editable}">
+							<p:inputText value="#{cc.attrs.condValorRango.valorFecha}"
+								disabled="true">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:inputText>
+						</h:panelGroup>
+					</div>
+				</h:panelGroup>
+				<div class="grid_26">
+					<h:panelGroup
+						rendered="#{not cc.attrs.condValorRango.alternateUnits}">
+						<p:selectOneMenu id="valueUnits"
+							value="#{cc.attrs.condValorRango.unidades}"
+							required="#{cc.attrs.required}" styleClass="arq-update"
+							disabled="true">
+							<f:selectItems itemDisabled="true"
+								value="#{catalogoUtils.getCatalogo('TP_UM')}" var="entry"
+								itemValue="#{entry.claveFila}" itemLabel="#{entry.descripcionL}" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup rendered="#{cc.attrs.condValorRango.alternateUnits}">
+						<p:selectOneMenu id="valueUnitsMXN"
+							required="#{cc.attrs.required}" styleClass="arq-update"
+							disabled="true">
+							<f:selectItem itemDisabled="true" itemLabel="MXN" />
+						</p:selectOneMenu>
+					</h:panelGroup>
+				</div>
+			</div>
+
+			<div class="clear-row"></div>
+
+			<h:panelGroup
+				rendered="#{(not empty cc.attrs.condValorRango.preferente)
+        or (not empty cc.attrs.condValorRango.minimo) or (not empty cc.attrs.condValorRango.maximo) or (not empty cc.attrs.incremento)}">
+				<p:outputLabel styleClass="azul-b margin-left-10"
+					value="Estándar de producto" />
+
+				<div class="clear-row"></div>
+				<!-- Minimo -->
+				<div class="grid_8">
+					<p:outputLabel for="minimo" value="Mínimo" />
+					<div class="clear-3"></div>
+					<h:panelGroup
+						rendered="#{cc.attrs.condValorRango.alternateUnits or
+            ((not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades ne 'F'))}">
+						<pe:inputNumber emptyValue="0" id="minimo" thousandSeparator=","
+							decimalPlaces="2" decimalSeparator="."
+							value="#{cc.attrs.condValorRango.minimo}" disabled="true">
+						</pe:inputNumber>
+					</h:panelGroup>
+					<h:panelGroup
+						rendered="#{(not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades eq 'F')}">
+						<p:inputText value="#{cc.attrs.condValorRango.getMinimoFecha()}"
+							disabled="true">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputText>
+					</h:panelGroup>
+				</div>
+				<!-- Fin Minimo -->
+
+
+				<!-- Maximo -->
+				<div class="grid_8">
+					<p:outputLabel for="maximo" value="Máximo" />
+					<div class="clear-3"></div>
+					<h:panelGroup
+						rendered="#{cc.attrs.condValorRango.alternateUnits or
+            ((not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades ne 'F'))}">
+						<pe:inputNumber emptyValue="0" id="maximo" thousandSeparator=","
+							decimalPlaces="2" decimalSeparator="."
+							value="#{cc.attrs.condValorRango.maximo}" disabled="true">
+						</pe:inputNumber>
+					</h:panelGroup>
+					<h:panelGroup
+						rendered="#{(not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades eq 'F')}">
+						<p:inputText value="#{cc.attrs.condValorRango.getMaximoFecha()}"
+							disabled="true">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputText>
+					</h:panelGroup>
+				</div>
+				<!-- Fin Maximo -->
+
+
+				<!-- Preferente -->
+				<div class="grid_8">
+					<p:outputLabel for="preferente" value="Preferente" />
+					<div class="clear-3"></div>
+					<h:panelGroup
+						rendered="#{cc.attrs.condValorRango.alternateUnits or
+            ((not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades ne 'F'))}">
+						<pe:inputNumber emptyValue="0" id="preferente"
+							thousandSeparator="," decimalPlaces="2" decimalSeparator="."
+							value="#{cc.attrs.condValorRango.preferente}" disabled="true">
+						</pe:inputNumber>
+					</h:panelGroup>
+					<h:panelGroup
+						rendered="#{(not cc.attrs.condValorRango.alternateUnits) and (cc.attrs.condValorRango.unidades eq 'F')}">
+						<p:inputText value="#{cc.attrs.condValorRango.getPreferenteFecha()}"
+							disabled="true">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:inputText>
+					</h:panelGroup>
+				</div>
+				<!-- Fin Preferente -->
+
+				<!-- Multiplos -->
+				<div class="grid_8">
+					<p:outputLabel for="multiplos" value="Múltiplos" />
+					<div class="clear-3"></div>
+					<pe:inputNumber emptyValue="0" id="multiplos" thousandSeparator=","
+						decimalPlaces="2" decimalSeparator="."
+						value="#{cc.attrs.condValorRango.incremento}" disabled="true">
+					</pe:inputNumber>
+				</div>
+				<!-- Fin Multiplos -->
+			</h:panelGroup>
+		</div>
+	</composite:implementation>
+</body>
+</html>

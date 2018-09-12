@@ -1,0 +1,276 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmAltaNotificaciones" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{notificacionController.redirigirAInicio()}"
+								immediate="true">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+							<h1>Alta de notificaciones</h1>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Campos Obligatorios" />
+
+							<div class="clear-row"></div>
+
+							<h:outputLabel styleClass="txt-campos-oblg" id="camposObligatorios"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+
+							<div class="clear-row"></div>
+
+							<div class="grid_10">
+								<p:outputLabel value="Destinatario" for="cboDestinatario" />
+								<div class="clear-3"></div>
+								<p:selectOneMenu id="cboDestinatario"
+									panelStyleClass="combo-estandar" widgetVar="cboDestinatario"
+									disabled="#{notificacionController.botonAnadirDeshabilitado}"
+									value="#{notificacionController.destinatario}" required="true">
+									<f:selectItem itemValue="ENTIDAD" itemLabel="ENTIDAD" />
+									<f:selectItem itemValue="CENTRO" itemLabel="CENTRO" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="grid_3">
+								<div class="label-vacio"></div>
+								<div class="clear-3"></div>
+								<p:commandButton styleClass="btn-icono btn-anadir"
+									icon="ui-icon-circle-plus" id="btnAnadir" widgetVar="btnAnadir"
+									alt="Añadir" title="Añadir" update=":frmAltaNotificaciones"
+									actionListener="#{notificacionController.anadirNotificacion()}"
+									disabled="#{notificacionController.botonAnadirDeshabilitado}">
+									<f:param name="disableValidation" value="true" />
+								</p:commandButton>
+							</div>
+							<div class="clear-row"></div>
+
+							<h:panelGroup id="panel" layout="block"
+								styleClass="marco-componente"
+								rendered="#{notificacionController.destinatario.length() > 0}">
+
+								<div class="grid_30">
+
+									<div class="grid_12 alpha">
+										<p:outputLabel value="Destinatario" />
+										<div class="clear-3"></div>
+										<p:outputLabel styleClass="label-valor texto-sininput"
+											value="#{notificacionController.destinatario}" />
+									</div>
+
+									<div class="grid_24">
+										<div class="grid_24">
+											<p:message id="msgFechaVigenciaDesde"
+												for="calFechaVigenciaDesde" display="icon" />
+											<p:outputLabel value="Periodo de validez"
+												for="calFechaVigenciaDesde" />
+											<div class="clear-3"></div>
+											<p:calendar id="calFechaVigenciaDesde"
+												widgetVar="calFechaVigenciaDesde" locale="es" mask="true"
+												mindate="#{notificacionController.currentDate}"
+												pattern="dd/MM/yyyy" placeholder="Desde" required="true"
+												requiredMessage="" showOn="button"
+												value="#{notificacionController.notificacionNueva.fechaVigenteDesde}">
+												<f:attribute name="endDate"
+													value="#{notificacionController.notificacionNueva.fechaVigenteDesde}" />
+												<f:attribute name="beginDate"
+													value="#{notificacionController.currentDate}" />
+												<f:param name="disableValidation" value="true" />
+												<f:validator validatorId="dateRangeValidator"
+													disabled="#{param['disableValidation']==true}" />
+												<p:ajax event="change" global="false"
+													process="calFechaVigenciaDesde, calFechaVigenciaHasta"
+													update="calFechaVigenciaDesde, msgFechaVigenciaDesde, calFechaVigenciaHasta, msgFechaVigenciaHasta"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" global="false"
+													process="calFechaVigenciaDesde, calFechaVigenciaHasta"
+													update="calFechaVigenciaDesde, msgFechaVigenciaDesde, calFechaVigenciaHasta, msgFechaVigenciaHasta"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+										<div class="grid_24">
+											<p:message id="msgFechaVigenciaHasta"
+												for="calFechaVigenciaHasta" display="text" />
+											<p:outputLabel value="." styleClass="label-transparente" />
+											<div class="clear-3"></div>
+											<p:calendar id="calFechaVigenciaHasta"
+												widgetVar="calFechaVigenciaHasta" locale="es" mask="true"
+												mindate="#{notificacionController.notificacionNueva.fechaVigenteDesde != null ? notificacionController.notificacionNueva.fechaVigenteDesde : notificacionController.currentDate}"
+												pattern="dd/MM/yyyy" placeholder="Hasta" required="true"
+												requiredMessage="indicar la fecha hasta" showOn="button"
+												value="#{notificacionController.notificacionNueva.fechaVigenteHasta}">
+												<f:attribute name="beginDate"
+													value="#{notificacionController.notificacionNueva.fechaVigenteDesde}" />
+												<f:param name="disableValidation" value="true" />
+												<f:validator validatorId="dateRangeValidator"
+													disabled="#{param['disableValidation']==true}" />
+												<p:ajax event="change" global="false"
+													process="calFechaVigenciaDesde, calFechaVigenciaHasta"
+													update="calFechaVigenciaHasta, msgFechaVigenciaHasta, calFechaVigenciaDesde, msgFechaVigenciaDesde"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" global="false"
+													process="calFechaVigenciaDesde, calFechaVigenciaHasta"
+													update="calFechaVigenciaHasta, msgFechaVigenciaHasta, calFechaVigenciaDesde, msgFechaVigenciaDesde"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+									</div>
+
+									<div class="grid_12">
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<div class="centrado-vertical">
+											<p:outputLabel value="Urgente"
+												for="switchNotificacionUrgente" />
+										</div>
+										<div class="centrado-vertical">
+											<p:inputSwitch id="switchNotificacionUrgente" onLabel="Sí"
+												offLabel="No"
+												value="#{notificacionController.notificacionUrgente}">
+												<p:ajax event="change" global="false" />
+											</p:inputSwitch>
+										</div>
+									</div>
+
+									<div class="clear-row"></div>
+
+									<h:panelGroup class="grid_48 alpha"
+										rendered="#{notificacionController.destinatario == 'CENTRO'}">
+										<p:outputLabel value="Centro" for="acCentros" />
+										<div class="clear-3"></div>
+										<b:autoComplete id="acCentros"
+											value="#{notificacionController.centroSeleccionado}"
+											maxlength="45" catalogSource="catalogoCentrosLoaderTask"
+											var="item" itemLabel="#{item.descripcionL}"
+											itemValue="#{item}" converter="catalogoConverter"
+											forceSelection="true" required="true">
+											<p:ajax event="query" global="false" />
+										</b:autoComplete>
+									</h:panelGroup>
+
+								</div>
+
+								<div class="grid_18">
+									<p:outputLabel value="Texto" for="txtTextoNotificacion" id="lblTextoNotificacion"/>
+									<div class="clear-3"></div>
+									<p:inputTextarea id="txtTextoNotificacion"
+										widgetVar="txtTextoNotificacion" label="Texto"
+										counter="numCaracteresRestantes" maxlength="200"
+										counterTemplate="Restan {0} caracteres."
+										value="#{notificacionController.notificacionNueva.texto}"
+										required="true"
+										onblur="value=value.trim(); value=value.toUpperCase()">
+										<p:watermark for="txtTextoNotificacion"
+											value="Introduzca aquí el texto de la notificación" />
+									</p:inputTextarea>
+									<div class="clear"></div>
+									<p:outputLabel styleClass="opacidad-media"
+										id="numCaracteresRestantes" />
+								</div>
+
+								<div class="clear"></div>
+							</h:panelGroup>
+						</div>
+
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							id="btnCancelar" value="Cancelar" immediate="true"
+							onclick="PF('dlgConfirmarCancelacion').show();" />
+						<p:commandButton id="btnGuardar"
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar"
+							disabled="#{!notificacionController.botonAnadirDeshabilitado}"
+							actionListener="#{notificacionController.crearNotificacion()}"
+							update=":frmAltaNotificaciones" />
+
+					</h:form>
+
+					<p:dialog id="dlgConfirmarCancelacion" showEffect="fade"
+						hideEffect="fade" widgetVar="dlgConfirmarCancelacion"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false"
+						header="Confirmación requerida">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgConfirmarCancelacion').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar"
+							action="#{notificacionController.cancelarAltaNotificacion()}"
+							onclick="PF('dlgConfirmarCancelacion').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgOperacionExitosa" widgetVar="dlgOperacionExitosa"
+						showEffect="fade" hideEffect="fade" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="Resultado">
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="La notificación se dio de alta correctamente." />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgOperacionExitosa').hide();"
+							actionListener="#{notificacionController.reiniciarVista()}"
+							update=":frmAltaNotificaciones" />
+					</p:dialog>
+
+					<p:dialog id="dlgOperacionFallida" widgetVar="dlgOperacionFallida"
+						showEffect="fade" hideEffect="fade" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="Resultado">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Falló el alta de la notificación. Por favor, inténtelo más tarde." />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgOperacionFallida').hide();" />
+					</p:dialog>
+					
+					<p:dialog id="dlgLongitudMax" showEffect="fade"
+						hideEffect="fade" widgetVar="dlgLongitudMax"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false"
+						header="Longitud maxima">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="La longitud maxima del campo debe ser menor de 200 caracteres." />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgLongitudMax').hide();" />
+					</p:dialog>
+					
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

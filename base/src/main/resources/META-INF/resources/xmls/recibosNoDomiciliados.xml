@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+   <!-- Mapeo de clases -->	
+	<mapping map-id="respuestaConsultaRecibos" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultarecibonodomiciliado.ResponseBansefi</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.ReciboBean</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>fecha</a>
+			<b>fechaOperacion</b>
+		</field>	
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>hora</a>
+			<b>horaOperacion</b>
+		</field>
+		<field>
+			<a>sucdesc</a>
+			<b>centro</b>
+		</field>	
+		<field>
+			<a>referen</a>
+			<b>referencia</b>
+		</field>
+		<field>
+			<a>idtran</a>
+			<b>idTransaccion</b>
+		</field>
+		<field>
+			<a>numoper</a>
+			<b>numeroOperacion</b>
+		</field>
+		<field>
+			<a>leyenda</a>
+			<b>concepto</b>
+		</field>
+		<field>
+			<a>importe</a>
+			<b>importeEntregado</b>
+		</field>
+		<field>
+			<a>impcomi</a>
+			<b>importeComision</b>
+		</field>
+		<field>
+			<a>impiva</a>
+			<b>importeIva</b>
+		</field>
+		<field>
+			<a>imptotal</a>
+			<b>importeTotal</b>
+		</field>
+	</mapping>
+	
+</mappings>

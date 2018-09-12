@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="consultaOtrosTelFaxPersonaTelefono" wildcard="false"
+		map-null="false" map-empty-string="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.OtroValorBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.consultaotrostelfaxpersona.ResponseBansefi.OTRDRCONSDRELCTRTRN.TRDRCONSDRELCTREVTZ.TRDRCONSDRELCTREVTV
+		</class-b>
+		<field>
+		 	<a>clave</a>
+			<b>CODDIRELCTR</b>
+		</field>
+		<field>
+		 	<a>numero</a>
+			<b>VALORELCTRDR</b>
+		</field>
+    <field>
+      <a>valor</a>
+      <b>TXTELCTRDR</b>
+    </field>
+    <field>
+      <a>idInterno</a>
+      <b>NUMDIR</b>
+    </field>
+	</mapping>
+	<mapping map-id="consultaOtrosTelFaxPersonaInternet" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>mx.babel.bansefi.banksystem.personas.beans.OtroValorBean
+    </class-a>
+    <class-b>mx.babel.bansefi.banksystem.personas.webservices.consultaotrostelfaxpersona.ResponseBansefi.OTRDRCONSDRELCTRTRN.TRDRCONSDRELCTREVTZ.TRDRCONSDRELCTREVTV
+    </class-b>
+    <field>
+      <a>clave</a>
+      <b>CODDIRELCTR</b>
+    </field>
+    <field>
+      <a>valor</a>
+      <b>TXTELCTRDRAMPL</b>
+    </field>
+    <field>
+      <a>idInterno</a>
+      <b>NUMDIR</b>
+    </field>
+  </mapping>
+</mappings>

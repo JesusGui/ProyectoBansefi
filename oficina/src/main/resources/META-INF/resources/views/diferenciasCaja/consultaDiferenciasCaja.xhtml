@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<ui:debug hotkey="x" />
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form styleClass="contenedor-form" id="form">
+						<!--título de la ventana-->
+						<div class="titulo">
+							<!--botón atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{diferenciasCajaController.regresar}"></p:commandButton>
+							<h1>CONSULTA DIFERENCIAS DE CAJA CENTRO
+								#{diferenciasCajaController.numeroCentro}</h1>
+						</div>
+						<div class="contenedor-campos">
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+							<p:outputLabel
+								value="Introduzca los criterios de búsqueda que desea consultar" />
+							<div class="clear-3" />
+							<p:outputLabel value="* Campos obligatorios" />
+							<div class="clear-3" />
+							<div class="grid_10">
+								<p:outputLabel value="Rango de fechas*" />
+								<div class="clear-3" />
+								<p:calendar id="fechaDesde" widgetVar="fechaDesde" mask="true"
+									required="true"
+									mindate="#{diferenciasCajaController.fechaSistema}"
+									pattern="dd/MM/yyyy"
+									value="#{diferenciasCajaController.fechaDesde}">
+									<p:ajax event="dateSelect"
+										listener="#{diferenciasCajaController.verificarFechas}" />
+								</p:calendar>
+								<div class="clear-3" />
+								<p:message id="msgFechaDesde" for="fechaDesde" display="text" />
+							</div>
+							<div class="grid_10">
+								<p:calendar id="fechaHasta" widgetVar="fechaHasta" mask="true"
+									required="true"
+									mindate="#{diferenciasCajaController.fechaSistema}"
+									pattern="dd/MM/yyyy"
+									value="#{diferenciasCajaController.fechaHasta}">
+									<p:ajax event="dateSelect"
+										listener="#{diferenciasCajaController.verificarFechas}" />
+								</p:calendar>
+								<div class="clear-3" />
+								<p:message id="msgFechaHasta" for="fechaHasta" display="text" />
+							</div>
+							<div class="grid_10">
+								<p:outputLabel value="Destino*" />
+								<p:selectOneRadio id="destino"
+									value="#{diferenciasCajaController.destino}" required="true">
+									<f:selectItem itemLabel="Caja" itemValue="1" />
+									<f:selectItem itemLabel="Cajero" itemValue="2" />
+									<f:selectItem itemLabel="Ambas" itemValue="3" />
+								</p:selectOneRadio>
+							</div>
+							<div class="clear-3" />
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" action="#{diferenciasCajaController.cancelar}" />
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Buscar"
+							actionListener="#{diferenciasCajaController.buscar}"
+							update=":form:tablaDiferencias" />
+
+						<p:dataTable id="tablaDiferencias" var="dif"
+							value="#{diferenciasCajaController.lstDiferencias}" rendered="#{not empty diferenciasCajaController.lstDiferencias}">
+							<p:column headerText="Fecha">
+								<h:outputText value="#{dif.fecha}" />
+							</p:column>
+
+							<p:column headerText="Destino">
+								<h:outputText value="#{dif.destino}" />
+							</p:column>
+
+							<p:column headerText="Saldo Contabilidad">
+								<h:outputText value="#{dif.saldoContabilidad}" />
+							</p:column>
+
+							<p:column headerText="Arqueo">
+								<h:outputText value="#{dif.arqueo}" />
+							</p:column>
+
+							<p:column headerText="Diferencias">
+								<h:outputText value="#{dif.diferencias}" />
+							</p:column>
+						</p:dataTable>
+					</h:form>
+				</div>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

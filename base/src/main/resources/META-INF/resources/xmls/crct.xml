@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<!-- Mapeo de clases -->
+	<mapping map-id="crct" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultalistacrct.ResponseBansefi.OTRCRCTLSTTRNO.TRCRCTLSTEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.BienBean
+		</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="001,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.superficieConstruidaString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="002,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.partida</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="003,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.tipoCultivo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="004,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.tipoTerreno</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="005,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.horasRegadioString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="006,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.otrasString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="007,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.nombreFinca</b>
+		</field>
+<!-- 		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="008,CODCRCTBIEN,VALORCRCTBI"> -->
+<!-- 			<a>trcrctlstevtv</a> -->
+<!-- 			<b>datosValuacion.entidadValuadora</b> -->
+<!-- 		</field> -->
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="009,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.carga</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToBigIntegerConverter" custom-converter-param="010,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosValuacion.cantidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="011,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.matricula</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="012,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.marca</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="013,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.modelo</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="014,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.numeroSerie</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="015,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.fabricante</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="016,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.superficieInvernaderoString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="017,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.numeroLicPesca</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToDoubleConverter" custom-converter-param="018,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.tonelaje</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="019,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.puerto</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="021,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosValuacion.clase</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="022,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.entidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="024,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.concedidoString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="026,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.tipoInteresString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="027,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.duracion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="028,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.frecuenciaAmortizacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToDateConverter" custom-converter-param="029,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.fechaVencimiento</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="030,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.tipoDeuda</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="031,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.estado</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToBooleanConverter" custom-converter-param="032,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.primeraVivienda</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="034,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.superficieTerrenoString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="035,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.ciaAseguradora</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToBooleanConverter" custom-converter-param="036,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosTerreno.primeraHipoteca</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="037,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.contingencia</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="038,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.coberturaString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="039,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.beneficiario</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="040,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosDeuda.negocioString</b>
+		</field>
+		
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="041,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosValuacion.entidadValuadora</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="042,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.tipoSeguro</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="043,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.primaAnualString</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="044,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.cif</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToDateConverter" custom-converter-param="045,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.fechaAntiguedad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToDateConverter" custom-converter-param="046,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.fechaInicioCobertura</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToDateConverter" custom-converter-param="047,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.fechaFinCobertura</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="048,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.numeroPoliza</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToStringConverter" custom-converter-param="049,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosSeguro.numeroSeguro</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.converter.ArrayToBooleanConverter" custom-converter-param="998,CODCRCTBIEN,VALORCRCTBI">
+			<a>trcrctlstevtv</a>
+			<b>datosGenerales.verificado</b>
+		</field>
+
+	</mapping>
+
+</mappings>
+		
+		

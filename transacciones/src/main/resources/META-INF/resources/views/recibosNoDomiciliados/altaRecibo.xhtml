@@ -1,0 +1,326 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+	
+	<h:outputScript name="/js/validarRetiroForm.js" />
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+
+					<h:form id="form" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton title="Regresar" icon="ui-icon-arrow-1-w"
+								immediate="true"
+								action="#{altaReciboNoDomiciliadoController.volver}" />
+							<h1>Pago de recibos no domiciliados</h1>
+						</div>
+						<div class="contenedor-campos">
+
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Datos Obligatorios" />
+							<div class="margin-top-10"></div>
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							<div class="margin-top-10"></div>
+
+							<div class="grid_18">
+								<p:message for="emisora" type="icon" />
+								<p:outputLabel for="emisora" value="Emisora"></p:outputLabel>
+								<div class="clear-3"></div>
+								<b:autoComplete id="emisora" widgetVar="emisoraWidget"
+									value="#{altaReciboNoDomiciliadoController.emisoraSeleccionada}"
+									maxlength="50" catalog="TP_EMISORA_57" var="item"
+									itemLabel="#{item.descripcionL}" itemValue="#{item}"
+									converter="catalogoConverter" forceSelection="true"
+									onblur="value=value.toUpperCase()"
+									required="#{param['disableValidation']==null}"
+									requiredMessage="">
+									<p:ajax event="itemSelect" onstart="updpanelDatosCobro();"
+										listener="#{altaReciboNoDomiciliadoController.validarEmisora}"
+										update="@form" />
+									<p:ajax event="change"
+										onstart="if(PF('emisoraWidget').panel.is(':visible')) {return false;}updpanelDatosCobro();"
+										listener="#{altaReciboNoDomiciliadoController.validarEmisora}"
+										update="@form" />
+									<p:ajax event="query"></p:ajax>
+									<f:param name="disableValidation" value="true" />
+								</b:autoComplete>
+							</div>
+
+							<p:remoteCommand global="false" name="updpanelDatosCobro"
+								actionListener="#{altaReciboNoDomiciliadoController.validarEmisora}"
+								update="panelDatosCobro" process="@this">
+								<f:param name="disableValidation" value="true" />
+							</p:remoteCommand>
+
+							<div class="clear-row"></div>
+
+							<h:panelGroup id="panelDatosCobro">
+
+								<p:panel styleClass="panel-alta-recibos"
+									rendered="#{altaReciboNoDomiciliadoController.reciboBean.longitudReferencia != null}">
+
+									<h3 class="azul-b margin-left-10">Datos de pago</h3>
+
+									<div class="margin-top-10"></div>
+
+									<div class="grid_14">
+										<p:message for="referencia" display="icon" />
+										<p:outputLabel for="referencia" value="Referencia"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputMask id="referencia"
+											value="#{altaReciboNoDomiciliadoController.reciboBean.referencia}"
+											onblur="value=value.trim()"
+											required="#{param['disableValidation']==null}"
+											requiredMessage=""
+											maxlength="#{altaReciboNoDomiciliadoController.reciboBean.longitudReferencia}">
+											<p:ajax global="false" event="change" partialSubmit="true"
+												listener="#{altaReciboNoDomiciliadoController.calcularConcepto()}"
+												update="concepto importe" />
+											<f:validateLength
+												minimum="#{altaReciboNoDomiciliadoController.reciboBean.longitudReferencia !=null ?altaReciboNoDomiciliadoController.reciboBean.longitudReferencia:'1'}"
+												maximum="#{altaReciboNoDomiciliadoController.reciboBean.longitudReferencia !=null ?altaReciboNoDomiciliadoController.reciboBean.longitudReferencia:'30'}"
+												disabled="#{param['disableValidation']==true}" />
+											<pe:keyFilter for="referencia" regEx="/^[a-zA-Z0-9ñÑ ]*$/"
+												preventPaste="false" />
+											<f:param name="disableValidation" value="true" />
+										</p:inputMask>
+									</div>
+
+									<!-- El concepto solo se muestra para la emisora Gobierno del DF -->
+									<h:panelGroup
+										rendered="#{'01681141' eq altaReciboNoDomiciliadoController.reciboBean.emisora}">
+										<div class="grid_20">
+											<p:outputLabel for="concepto" value="Concepto"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												id="concepto"
+												value="#{altaReciboNoDomiciliadoController.reciboBean.concepto}"></p:outputLabel>
+										</div>
+									</h:panelGroup>
+
+									<div class="clear-row"></div>
+
+									<div class="grid_14">
+										<p:outputLabel for="formaCobro" value="Forma de pago" />
+										<div class="clear-3"></div>
+										<p:selectOneRadio id="formaCobro"
+											value="#{altaReciboNoDomiciliadoController.reciboBean.formaCobro}"
+											required="#{param['disableValidation']==null}"
+											requiredMessage="">
+											<f:selectItem itemLabel="Efectivo" itemValue="1" />
+											<f:selectItem itemLabel="Cargo a cuenta" itemValue="2" />
+											<p:ajax global="false"
+												listener="#{altaReciboNoDomiciliadoController.limpiarDatosCuenta()}"
+												process="@this"
+												update="panelCargoCuenta importe"
+												partialSubmit="true" />
+											<f:param name="disableValidation" value="true" />
+										</p:selectOneRadio>
+									</div>
+
+									<h:panelGroup id="panelCargoCuenta">
+										<div class="clear-row"></div>
+										<!-- Campo Número de cuenta -->
+										<div class="grid_8">
+											<p:outputLabel for="numCuenta" value="No. de Cuenta"
+												rendered="#{'2' eq altaReciboNoDomiciliadoController.reciboBean.formaCobro}"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask onblur="value=value.trim()" id="numCuenta"
+												value="#{altaReciboNoDomiciliadoController.reciboBean.numeroCuenta}"
+												label="Cuenta" maxlength="10"
+												required="#{param['disableValidation']==null}"
+												requiredMessage=""
+												rendered="#{'2' eq altaReciboNoDomiciliadoController.reciboBean.formaCobro}">
+												<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="true"/>
+												<p:ajax global="false" event="blur"
+													listener="#{altaReciboNoDomiciliadoController.validarCuenta()}"
+													process="@this" update="panelCargoCuenta"
+													partialSubmit="true"></p:ajax>
+											</p:inputMask>
+										</div>
+
+										<!-- boton de busqueda de cuentas -->
+										<div class="grid_3 omega">
+											<div class="label-vacio"></div>
+											<div class="clear-3"></div>
+											<!-- boton de busqueda de cuentas -->
+											<p:commandButton styleClass="btn-icono-conbackground"
+												immediate="true"
+												rendered="#{'2' eq altaReciboNoDomiciliadoController.reciboBean.formaCobro}"
+												action="#{altaReciboNoDomiciliadoController.buscarCuenta()}"
+												icon="ui-icon-search" />
+										</div>
+
+										<div class="grid_24">
+											<p:outputLabel value="Titular"
+												rendered="#{'2' eq altaReciboNoDomiciliadoController.reciboBean.formaCobro}" />
+											<div class="clear-3" />
+											<h:outputLabel styleClass="label-valor input-label-valor"
+												id="titular"
+												value="#{altaReciboNoDomiciliadoController.reciboBean.titular}"
+												rendered="#{'2' eq altaReciboNoDomiciliadoController.reciboBean.formaCobro}" />
+										</div>
+									</h:panelGroup>
+
+									<div class="clear-row"></div>
+
+									<!-- No se pide importe para pagos de Comision federal de electricidad -->
+
+									<div class="grid_12">
+										<p:message for="importe" display="icon" />
+										<p:outputLabel for="importe" value="Importe"></p:outputLabel>
+										<div class="clear-3"></div>
+										<pe:inputNumber id="importe" styleClass="pe-inputNumber"
+											required="#{param['disableValidation']==null}"
+											decimalPlaces="2" decimalSeparator="." placeholder="Importe"
+											requiredMessage="" thousandSeparator="," minValue="0"
+											maxValue="999999999999.99"
+											disabled="#{'01681142' eq altaReciboNoDomiciliadoController.reciboBean.emisora}"
+											value="#{altaReciboNoDomiciliadoController.reciboBean.importeEntregado}">
+<!-- 											<p:ajax global="false" event="blur" -->
+<!-- 												listener="#{altaReciboNoDomiciliadoController.calcularImportes()}" -->
+<!-- 												update="importeComision, importeSubTotal" process="@this" -->
+<!-- 												partialSubmit="true"></p:ajax> -->
+											<f:param name="disableValidation" value="true" />
+											<f:validateDoubleRange
+												minimum="#{param['disableValidation']!=null ? '0.00' : '0.01'}" />
+										</pe:inputNumber>
+										<span class="pe-inputNumber-suffix">MXN</span>
+									</div>
+									<div class="clear-row"></div>
+
+<!-- 									<div class="grid_12"> -->
+<!-- 										<p:outputLabel value="Importe comisión"></p:outputLabel> -->
+<!-- 										<div class="clear-3"></div> -->
+<!-- 										<h:outputLabel id="importeComision" -->
+<!-- 											styleClass="input-label-valor-importe bold" -->
+<!-- 											value="#{altaReciboNoDomiciliadoController.reciboBean.importeComision}"> -->
+<!-- 											<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 												maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" -->
+<!-- 												minIntegerDigits="1" minFractionDigits="2" /> -->
+<!-- 										</h:outputLabel> -->
+<!-- 									</div> -->
+
+<!-- 									<div class="clear-row"></div> -->
+
+<!-- 									<div class="grid_12"> -->
+<!-- 										<p:outputLabel value="Importe subtotal"></p:outputLabel> -->
+<!-- 										<div class="clear-3"></div> -->
+<!-- 										<h:outputLabel id="importeSubTotal" -->
+<!-- 											styleClass="input-label-valor-importe bold" -->
+<!-- 											value="#{altaReciboNoDomiciliadoController.reciboBean.importeSubtotal}"> -->
+<!-- 											<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 												maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 												pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" -->
+<!-- 												minIntegerDigits="1" minFractionDigits="2" /> -->
+<!-- 										</h:outputLabel> -->
+<!-- 									</div> -->
+									<div class="clear"></div>
+
+									<div class="posicion-absoluta-btn">
+										<p:commandButton styleClass="btn-consultar"
+											icon="ui-icon-arrow-1-s" value="Realizar pago"
+											action="#{altaReciboNoDomiciliadoController.confirmarAltaRecibo}"
+											update="@form,:dlgAltaRecibo" />
+									</div>
+
+								</p:panel>
+
+							</h:panelGroup>
+
+						</div>
+
+						<div class="margin-top-10"></div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario" value="Cancelar"
+							immediate="true"
+							action="#{altaReciboNoDomiciliadoController.volver}" />
+
+					</h:form>
+				</div>
+
+				<p:dialog widgetVar="dlgAltaRecibo" id="dlgAltaRecibo"
+					appendTo="@(body)" header="Titulo de la modal" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<div class="modal-mensaje">
+						<p:outputLabel>Va a realizar un pago de recibo <span
+								class="azul-b bold">#{altaReciboNoDomiciliadoController.emisoraSeleccionada.descripcionL}</span>
+							<span class="azul-b bold">
+								#{altaReciboNoDomiciliadoController.tipoPago()}</span> con importe de </p:outputLabel>
+						<h:outputText id="importeSubTotal" styleClass="azul-b bold"
+							value="#{altaReciboNoDomiciliadoController.reciboBean.importeEntregado}">
+							<f:convertNumber type="currency" groupingUsed="true"
+								maxFractionDigits="2" maxIntegerDigits="12" pattern="#,##0.00 ¤"
+								locale="es_MX" currencySymbol="MXN" minIntegerDigits="1"
+								minFractionDigits="2" />
+						</h:outputText>
+					</div>
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion" value=" ¿Desea continuar?" />
+
+					<div class="margin-bottom-20"></div>
+
+					<p:commandButton styleClass="btn_secundario_dialog"
+						onclick="PF('dlgAltaRecibo').hide()" id="btnCancelar"
+						value="Cancelar" immediate="true" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="btnGuardar" value="Continuar" widgetVar="btnGuardar"
+						onclick="PF('dlgAltaRecibo').hide()"
+						action="#{altaReciboNoDomiciliadoController.guardar()}" />
+				</p:dialog>
+			</div>
+
+			<p:dialog id="dlgErrorEmisora" widgetVar="dlgErrorEmisora"
+				appendTo="@(body)" closable="false" dynamic="true" showEffect="fade"
+				hideEffect="fade" draggable="false" modal="true" resizable="false"
+				header="Error">
+				<!--icono de la modal -->
+				<span class="ui-messages-error-icon error-dialog"></span>
+				<!--mensaje de la modal styleClass="modal-mensaje" -->
+				<p:outputLabel styleClass="modal-mensaje"
+					value="La emisora no ha podido cargarse correctamente. Por favor, inténtelo nuevamente." />
+				<div class="clear"></div>
+				<!--botones de la modal primarios y secundarios -->
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					id="aceptarRespuesta" widgetVar="btnAceptarRespuesta"
+					onclick="PF('btnAceptarRespuesta').disable(); PF('dlgErrorEmisora').hide();"
+					oncomplete="PF('btnAceptarRespuesta').enable()" value="Aceptar" />
+			</p:dialog>
+			
+			
+			<!-- Confirm para eliminar domicilios -->
+					<p:dialog appendTo="@(body)" header="¡Atención!" closable="false" resizable="false"
+						showEffect="fade" hideEffect="fade"
+						widgetVar="dlgValidaCuenta" dynamic="true" modal="true">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="La cuenta ingresada es errónea, verifique" />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							widgetVar="btnGuardarUno" onclick="PF('dlgValidaCuenta').hide();" />
+					</p:dialog>
+			
+			
+
+		</h:body>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoConsultaListaBaseCalculoCondiciones" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultalistabasecalculocondiciones.ResponseBansefi.OTRCONSLISTAPSPKPSPK.TRCONSLISTAPSPKPSPKE.PSDATOSRLPKPSV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.cuentas.beans.BaseCalculoCondicionesBean
+    </class-b>
+    <field>
+      <a>IDPDS2</a>
+      <b>idPds</b>
+    </field>
+    <field>
+      <a>IDPARMCD2</a>
+      <b>parmCd</b>
+    </field>
+    <field>
+      <a>NOMBPDS</a>
+      <b>nombrePds</b>
+    </field>
+    <field>
+      <a>CODCATUM</a>
+      <b>categoriaUM</b>
+    </field>
+    <field>
+      <a>CODESTRCTPARMCD</a>
+      <b>codEstructuraParmCd</b>
+    </field>
+    <field>
+      <a>CODRLPKPS</a>
+      <b>codRelacionPKPS</b>
+    </field>
+    <field>
+      <a>NOMBPARMCD</a>
+      <b>nomParmCd</b>
+    </field>
+  </mapping>
+</mappings>

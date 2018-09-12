@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div>
+		<h:panelGroup rendered="#{cliente.integrantes.isEmpty()}">
+			<div class="margin-top-10"></div>
+                        <div class="marco-info-ficha">
+                            <div>
+                                <span class="ui-messages-info-icon"></span>
+                                <h:outputLabel value="#{fichaClienteController.cliente.nombreCompleto} "/>
+                                <h:outputLabel>no posee integrantes. Acceda a la ficha de cliente de una persona física o moral para crear la relación con el grupo.</h:outputLabel>
+                                <div class="margin-top-20"></div>
+                            </div>
+                        </div>
+                        <div class="margin-bottom-15"></div>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{!cliente.integrantes.isEmpty()}">
+		    <h:outputLabel styleClass="titulo-form margin-left-10" value="Conformado por:"></h:outputLabel>
+			<div class="margin-bottom-5"></div>
+            <div class="contenedor-wrap">
+                <ui:repeat var="persona" value="#{cliente.integrantes}">
+                   <div class="elementos-grupos">
+                        <ui:include src="fichaClienteCliente.xhtml">
+                            <ui:param name="persona" value="#{persona}" />
+                            <ui:param name="tipoRendered" value="false" />
+                            <ui:param name="notGrupo" value="true"/>
+                        </ui:include>
+                    </div>
+                </ui:repeat>
+            </div>
+         </h:panelGroup>
+	</div>
+</ui:composition>

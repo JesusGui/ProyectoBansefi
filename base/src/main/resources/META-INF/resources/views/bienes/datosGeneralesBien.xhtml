@@ -1,0 +1,196 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+
+	<p:fieldset legend="Datos generales">
+
+		<div class="margin-top-10"></div>		
+
+		<h:panelGroup layout="block" rendered="#{bien.clase eq 1}">
+
+			<div class="grid_8">
+				<p:message id="fechaValAntiguedad#{myVarStatus.index}"
+					for="fechaAntiguedad#{myVarStatus.index}" display="icon"></p:message>
+				<p:outputLabel id="fechaAntiguedadLabel#{myVarStatus.index}"
+					for="fechaAntiguedad#{myVarStatus.index}" value="F. Antigüedad" />
+				<div class="clear-3"></div>
+				<p:calendar id="fechaAntiguedad#{myVarStatus.index}"
+					requiredMessage="" pattern="dd/MM/yyyy" showOn="button"
+					value="#{bien.datosGenerales.fechaAntiguedad}" mask="true"
+					locale="es" maxdate="#{bienesController.currentDate}">
+					<f:attribute name="endDate"
+						value="#{bien.direccionRegistral.fechaExpedicion != null ? bien.direccionRegistral.fechaExpedicion : bienesController.currentDate}"
+						/>
+					<f:validator validatorId="dateRangeValidator" />
+					<p:ajax event="change"
+						process="fechaAntiguedad#{myVarStatus.index}"
+						update="fechaAntiguedad#{myVarStatus.index},fechaValAntiguedad#{myVarStatus.index},fechaAntiguedadLabel#{myVarStatus.index}"
+						partialSubmit="true" />
+					<p:ajax event="dateSelect"
+						process="fechaAntiguedad#{myVarStatus.index}"
+						update="fechaAntiguedad#{myVarStatus.index},fechaValAntiguedad#{myVarStatus.index},fechaAntiguedadLabel#{myVarStatus.index}"
+						partialSubmit="true" />
+				</p:calendar>
+
+				
+
+			</div>
+			<div class="grid_10">
+				<p:outputLabel value="Estado" />
+				<div class="clear-3"></div>
+				<p:selectOneMenu value="#{bien.datosGenerales.estado}"
+					disabled="#{bien.tipo eq 750}">
+					<f:selectItem itemValue="#{null}" itemLabel="Seleccione un valor"
+						noSelectionOption="true" />
+					<f:selectItems value="#{catalogoUtils.getCatalogo('ESTADO_BIEN')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+				</p:selectOneMenu>
+			</div>
+			<div class="grid_15">
+				<div class="label-vacio"></div>
+				<div class="clear-3"></div>
+				<p:selectBooleanCheckbox styleClass="centrado-vertical"
+					value="#{bien.datosGenerales.verificado}" />
+				<p:outputLabel styleClass="centrado-vertical" value="Verificado" />
+			</div>
+		</h:panelGroup>
+		
+		<div class="clear-row"></div>
+
+		<h:panelGroup layout="block" rendered="#{bien.clase eq 2}">
+			
+			<div class="grid_8">
+				<p:message id="fechaValFin#{myVarStatus.index}"
+					for="fechaFin#{myVarStatus.index}" display="icon"></p:message>
+				<p:outputLabel id="fechaFinLabel#{myVarStatus.index}"
+					for="fechaFin#{myVarStatus.index}" value="Fecha Fin" />
+				<div class="clear-3"></div>
+				<p:calendar id="fechaFin#{myVarStatus.index}" requiredMessage=""
+					pattern="dd/MM/yyyy" showOn="button"
+					value="#{bien.datosGenerales.fechaFin}" mask="true" locale="es"
+					mindate="#{bienesController.currentDate}">
+					<f:attribute name="beginDate"
+						value="#{bienesController.currentDate}" />
+					<f:validator validatorId="dateRangeValidator" />
+					<p:ajax event="change" process="fechaFin#{myVarStatus.index}"
+						update="fechaFin#{myVarStatus.index},fechaValFin#{myVarStatus.index},fechaFinLabel#{myVarStatus.index}"
+						partialSubmit="true" />
+					<p:ajax event="dateSelect" process="fechaFin#{myVarStatus.index}"
+						update="fechaFin#{myVarStatus.index},fechaValFin#{myVarStatus.index},fechaFinLabel#{myVarStatus.index}"
+						partialSubmit="true" />
+				</p:calendar>
+
+			</div>
+			<div class="grid_11">
+				<p:outputLabel value="Ing./gastos mensuales" />
+				<div class="clear-3"></div>
+				<pe:inputNumber emptyValue="0" label="Valor"
+					maxValue="9999999999999.99" decimalPlaces="2" decimalSeparator="."
+					thousandSeparator="," styleClass="pe-inputNumber"
+					value="#{bien.datosGenerales.ingresoGastoMensual}" placeholder="Importe">
+				</pe:inputNumber>
+				<span class="pe-inputNumber-suffix">MXN</span>
+			</div>
+			<div class="grid_11">
+				<p:outputLabel value="Ing./gastos anuales" />
+				<div class="clear-3"></div>
+				<pe:inputNumber emptyValue="0" label="Valor"
+					maxValue="9999999999999.99" decimalPlaces="2" decimalSeparator="."
+					thousandSeparator="," styleClass="pe-inputNumber"
+					value="#{bien.datosGenerales.ingresoGastoAnual}" placeholder="Importe">
+				</pe:inputNumber>
+				<span class="pe-inputNumber-suffix">MXN</span>
+			</div>
+			<div class="grid_6">
+				<div class="label-vacio"></div>
+				<div class="clear-3"></div>
+				<p:selectBooleanCheckbox styleClass="centrado-vertical"
+					value="#{bien.datosGenerales.justificado}" />
+				<p:outputLabel styleClass="centrado-vertical" value="Justificado" />
+			</div>
+
+			<div class="grid_4">
+				<div class="label-vacio"></div>
+				<div class="clear-3"></div>
+				<p:selectBooleanCheckbox styleClass="centrado-vertical"
+					value="#{bien.datosGenerales.fijo}" />
+				<p:outputLabel styleClass="centrado-vertical" value="Fijos" />
+			</div>
+		</h:panelGroup>
+
+		<div class="clear"></div>
+
+		<h:panelGroup layout="block"
+			rendered="#{bien.tipo ge 460 and bien.tipo le 498}">
+			<div class="grid_7">
+				<p:outputLabel value="Matrícula" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosGenerales.matricula}" maxlength="10"
+					onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_10">
+				<p:outputLabel value="Marca" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosGenerales.marca}" maxlength="15"
+					onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_4">
+				<p:outputLabel value="Modelo" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosGenerales.modelo}" maxlength="15"
+					onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_10">
+				<p:outputLabel value="Fabricante" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosGenerales.fabricante}"
+					maxlength="15" onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_11">
+				<p:outputLabel value="Nº serie" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosGenerales.numeroSerie}"
+					maxlength="20" onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_6">
+				<p:outputLabel value="Tonelaje" />
+				<div class="clear-3"></div>
+				<pe:inputNumber emptyValue="0" maxlength="5" maxValue="99999.99"
+					decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+					value="#{bien.datosGenerales.tonelaje}" />
+			</div>
+			<div class="clear-row"></div>
+			<div class="grid_8">
+				<p:outputLabel value="Nº lic. pesca" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosGenerales.numeroLicPesca}"
+					maxlength="10" onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+			<div class="grid_12">
+				<p:outputLabel value="Puerto" />
+				<div class="clear-3"></div>
+				<p:inputText value="#{bien.datosGenerales.puerto}" maxlength="20"
+					onblur="this.value=this.value.toUpperCase()">
+				</p:inputText>
+			</div>
+
+		</h:panelGroup>
+
+	</p:fieldset>
+
+
+
+</ui:composition>

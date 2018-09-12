@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  xmlns:cc="http://java.sun.com/jsf/composite/composites">
+  <head>
+	<title>Composite valor comision</title>
+  </head>
+  <body>
+	<composite:interface>
+      <composite:attribute name="id"></composite:attribute>
+	  <composite:attribute name="validezFrom" required="true" ></composite:attribute>
+	  <composite:attribute name="validezTo"></composite:attribute>
+	  <composite:attribute name="esComisionFija" type="java.lang.Boolean" default="true"></composite:attribute>
+	  <composite:attribute name="importeFijo"></composite:attribute>
+	  <composite:attribute name="calculoProducto"></composite:attribute>
+    <composite:attribute name="preferente"></composite:attribute>
+    <composite:attribute name="minimo"></composite:attribute>
+    <composite:attribute name="maximo"></composite:attribute>
+    <composite:attribute name="multiplos"></composite:attribute>
+	  <composite:attribute name="comision"></composite:attribute>
+	 <composite:attribute name="baseCalculo"></composite:attribute>
+   <composite:attribute name="baseCalculoDesc"></composite:attribute>
+	  <composite:attribute name="agruClop"></composite:attribute>
+	  <composite:attribute name="impMinimo"></composite:attribute>
+	  <composite:attribute name="impMaximo"></composite:attribute>
+	  <composite:attribute name="franquicia"></composite:attribute>
+    <composite:attribute name="editable" default="true"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+	  <div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}">	  
+		<p:outputLabel styleClass="margin-left-10" value="Base del cálculo: #{cc.attrs.baseCalculoDesc}" rendered="#{not cc.attrs.esComisionFija}"></p:outputLabel>
+		<div class="clear-row"></div>
+
+          <cc:periodoValidez from="#{cc.attrs.validezFrom}" to="#{cc.attrs.validezTo}"
+            editable="#{cc.attrs.editable?(cc.attrs.esComisionFija): false}"></cc:periodoValidez>
+            
+<!-- Comision Fija -->
+          <h:panelGroup layout="block" styleClass="grid_8" rendered="#{cc.attrs.esComisionFija}">       
+              <p:message id="rangeToVal" for="importe" display="icon"></p:message>
+          	<p:outputLabel for="importe" value="Importe" />
+          	<div class="clear-3"></div>
+	        <pe:inputNumber emptyValue="0" id="importe" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+					 value="#{cc.attrs.importeFijo}" minValue="0" maxValue="999999999999.99" required="#{param['disableValidation']==null}"
+					 styleClass="arq-update" disabled="#{not cc.attrs.editable}">					 
+                   <f:attribute name="minRange" value="#{cc.attrs.minimo}" />
+                   <f:attribute name="maxRange" value="#{cc.attrs.maximo}" />
+                   <f:validator validatorId="bigDecimalRangeValidator" />
+			</pe:inputNumber>
+          </h:panelGroup>
+          <h:panelGroup layout="block" styleClass="grid_8" rendered="#{cc.attrs.esComisionFija}">
+          	<p:outputLabel for="calculoProducto" value="Form. Cál. Pdo." />
+          	<div class="clear-3"></div>
+	       		<p:inputMask id="calculoProducto" value="#{catalogoUtils.getCatalogoDesc('FORM_CALCULO', cc.attrs.calculoProducto)}" disabled="true"></p:inputMask>
+          </h:panelGroup>
+          
+          <div class="clear-row"></div>
+          
+          <h:panelGroup rendered="#{cc.attrs.esComisionFija and ((not empty cc.attrs.preferente)
+        or (not empty cc.attrs.minimo) or (not empty cc.attrs.maximo) or (not empty cc.attrs.incremento))}">
+              <p:outputLabel styleClass="azul-b margin-left-10" value="Estándar de producto" />
+              
+              <div class="clear-row"></div>
+              
+        <!-- Minimo -->
+              <div class="grid_8">
+                    <p:outputLabel for="minimo" value="Mínimo" />
+                    <div class="clear-3"></div>
+                    <pe:inputNumber emptyValue="0" id="minimo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                       value="#{cc.attrs.minimo}" disabled="true">
+                    </pe:inputNumber>
+              </div>
+        <!-- Fin Minimo -->
+                  
+                  
+        <!-- Maximo -->
+              <div class="grid_8">
+                    <p:outputLabel for="maximo" value="Máximo" />
+                    <div class="clear-3"></div>
+                    <pe:inputNumber emptyValue="0" id="maximo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                   value="#{cc.attrs.maximo}" disabled="true">
+                </pe:inputNumber>
+              </div>
+        <!-- Fin Maximo -->
+                  
+                  
+        <!-- Preferente -->
+              <div class="grid_8">
+                      <p:outputLabel for="preferente" value="Preferente" />
+                      <div class="clear-3"></div>
+                      <pe:inputNumber emptyValue="0" id="preferente" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                           value="#{cc.attrs.preferente}" disabled="true">
+                      </pe:inputNumber>
+              </div>
+        <!-- Fin Preferente -->
+        
+        <!-- Multiplos -->
+              <div class="grid_8">
+                    <p:outputLabel for="multiplos" value="Múltiplos" />
+                    <div class="clear-3"></div>
+                    <pe:inputNumber emptyValue="0" id="multiplos" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                       value="#{cc.attrs.multiplos}" disabled="true">
+                </pe:inputNumber>
+              </div>
+        <!-- Fin Multiplos -->
+        </h:panelGroup>
+<!-- Fin Comision Fija -->
+
+		<div class="clear-row"></div>
+
+<!-- Comision Variable -->        
+        <h:panelGroup rendered="#{not cc.attrs.esComisionFija}">
+<!-- Comision -->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        			<p:outputLabel for="comision" value="Comisión" />
+        			<div class="clear-3"></div>
+        			<div class="grid_24">
+		        		<pe:inputNumber emptyValue="0" id="comision" decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+						 value="#{cc.attrs.comision}" disabled="true">
+						</pe:inputNumber>
+					</div>
+					<div class="grid_24">
+						<p:selectOneMenu id="comisionUds" disabled="true" >
+		             	<f:selectItem itemDisabled="true" itemLabel="%"/>
+				        </p:selectOneMenu>
+			        </div>
+        	</h:panelGroup>
+<!-- Fin Comision -->
+<!-- Base Calculo -->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="baseCalculo" value="Base cálculo" />
+        		<div class="clear-3"></div>
+            <p:inputMask id="baseCalculo" value="#{cc.attrs.baseCalculoDesc}" disabled="true"></p:inputMask>
+        	</h:panelGroup>
+<!-- Fin Base Calculo -->
+<!-- Agrup Clop -->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="agruClop" value="Agru. Clop" />
+        		<div class="clear-3"></div>
+	       		<p:inputMask id="agruClop" value="#{cc.attrs.agruClop}" disabled="true"></p:inputMask>
+        	</h:panelGroup>
+<!-- Fin Agrup Clop -->
+<!-- Importe Minimo -->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="impMinimo" value="Imp. Mínimo" />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="impMinimo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+					 value="#{cc.attrs.impMinimo}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Importe Minimo -->
+<!-- Importe Maximo -->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="impMaximo" value="Imp. Máximo" />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="impMaximo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+					 value="#{cc.attrs.impMaximo}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Importe Maximo -->
+<!-- Franquicia -->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="franquicia" value="Franquicia" />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="franquicia" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+					 value="#{cc.attrs.franquicia}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Franquicia -->
+        </h:panelGroup>
+<!-- Fin Comision Variable -->   
+	  </div>
+	</composite:implementation>
+  </body>
+</html>

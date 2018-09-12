@@ -1,0 +1,122 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+
+					<div class="contenedor-form">
+
+						<div class="titulo">
+							<h2 class="gris-b">#{detalleRecogidaEfectivoController.recogidaEfectivoBean.tituloResumen}</h2>
+							<h2 class="azul-b">#{detalleRecogidaEfectivoController.formateaNumero()}</h2>
+							<br />
+							<h2 class="gris-b">DEL CENTRO </h2>
+							<h2 class="azul-b">#{detalleRecogidaEfectivoController.recogidaEfectivoBean.centro}</h2>
+						</div>
+
+						<div class="contenedor-campos">
+							<h:form id="formDetalleRecogida">
+								<div class="grid_5 float-right">
+									<p:commandButton
+										styleClass="btn_secundario btn-icono-texto float-right"
+										value="Imprimir" icon="ui-icon-print"
+										action="#{detalleRecogidaEfectivoController.imprimirDetalle()}"></p:commandButton>
+								</div>
+								
+								<h:panelGroup id="tipoPeticion">
+									<div class="grid_6">
+										<p:outputLabel value="Tipo de petición" />
+										<h4>
+											<p:outputLabel rendered="#{detalleRecogidaEfectivoController.recogidaEfectivoBean.indicadorUrgencia eq 0}"
+												value="ORDINARIA" />
+											<p:outputLabel rendered="#{detalleRecogidaEfectivoController.recogidaEfectivoBean.indicadorUrgencia gt 0}"
+												value="URGENTE" />
+										</h4>
+									</div>
+								</h:panelGroup>
+
+								<h:panelGroup id="noUrgente" rendered="#{detalleRecogidaEfectivoController.mostrarUrgente}">
+									<div class="grid_6">
+										<p:outputLabel value="Número de urgente" />
+										<h4>
+											<p:outputLabel
+												value="#{detalleRecogidaEfectivoController.recogidaEfectivoBean.indicadorUrgencia}" />
+										</h4>
+									</div>
+								</h:panelGroup>
+								
+								<div class="grid_6">
+									<h:panelGroup rendered="#{detalleRecogidaEfectivoController.mostrarEstatus}">
+									<p:outputLabel value="Estatus" />
+									<div class="clear-3"></div>
+									<div class="clear-3"></div>
+									<div class="clear-3"></div>
+									<p:outputLabel styleClass="azul-b"
+										value="#{detalleRecogidaEfectivoController.recogidaEfectivoBean.estatusL}" />
+										
+									</h:panelGroup>
+								</div>						
+								
+								<div class="clear-row"></div>
+								<div class="clear-3"></div>
+
+								<p:remoteCommand name="onload"
+									onsuccess="resizeParrillaColumns()"
+									oncomplete="resizeParrillaColumns()" autoRun="true"></p:remoteCommand>
+
+								<b:parrilla
+									parrillaBean="#{detalleRecogidaEfectivoController.parrilla}"
+									precinto="#{detalleRecogidaEfectivoController.precinto}"
+									filtro="#{detalleRecogidaEfectivoController.editable}"
+									editable="#{detalleRecogidaEfectivoController.editable}" />
+
+								<div class="clear-row"></div>
+								<div class="clear-3"></div>
+								
+								<div class="grid_48">
+									<p:outputLabel value="Observaciones">
+										<p:inputTextarea value="#{detalleRecogidaEfectivoController.recogidaEfectivoBean.observacion}" disabled="true" />
+									</p:outputLabel>
+								</div>
+								
+								<div class="clear-row"></div>
+								<div class="clear-3"></div>
+								
+								<div class="float-right">
+									<p:commandButton id="btnRegresar"
+										styleClass="btn_primario margin-top-10 margin-right-10"
+										value="Regresar a recogida efectivo" 
+										action="#{detalleRecogidaEfectivoController.irRecogidaEfectivo()}"/>
+																	
+									<p:commandButton id="btnCerrar"
+										styleClass="btn_secundario margin-top-10 margin-right-10"
+										value="Cerrar" 
+										action="#{detalleRecogidaEfectivoController.irInicio()}"/>
+								</div>
+
+								<div class="clear-row"></div>
+								<div class="clear-3"></div>
+
+							</h:form>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

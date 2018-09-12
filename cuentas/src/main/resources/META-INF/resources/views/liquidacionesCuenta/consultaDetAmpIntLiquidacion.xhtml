@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="formDetAmpliadoLiq" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{liquidacionesController.navegaDetalleLiquidacion()}"></p:commandButton>
+							<div>
+							<h2 class="gris-b">Detalle ampliado de liquidación</h2>
+							<div class="clear"></div>
+							<h2 class="rojo-b">#{liquidacionesController.cuentaBean.tipoCuenta} </h2>
+							<h2 class="gris-b">
+								<h:outputText styleClass="sub-h"
+									value="(#{liquidacionesController.cuentaBean.numeroCuenta}), " />
+								<h:outputText
+									value="#{liquidacionesController.liquidacionSeleccionada.periodoDesdeLiquidacion}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText value=" - " />
+								<h:outputText
+									value="#{liquidacionesController.liquidacionSeleccionada.periodoHastaLiquidacion}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<!-- 								<h:outputText value=", " -->
+								<!-- 									rendered="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.codCuenta != null}" /> -->
+								<!-- 								<h:outputText -->
+								<!-- 									value="#{liquidacionesController.obtenerDescCatalogoConceptoMovs(liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.codCuenta)}" /> -->
+							</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<h3 class="azul-b">#{liquidacionesController.cuentaBean.nombreTitular}</h3>
+							
+							<div class="margin-bottom-10"></div>
+
+							<p:dataTable id="tblConceptos"
+								value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.listaConceptosIntermedios}"
+								var="conceptoIntermedio" selectionMode="single"
+								rowKey="#{conceptoIntermedio}" selection="#{conceptoIntermedio}">
+								<p:ajax event="rowSelect"
+									listener="#{liquidacionesController.seleccionaConceptoIntermedio}" />
+								<p:column headerText="Depósito">
+									<h:outputText value="#{conceptoIntermedio.numDeposito}" />
+								</p:column>
+								<p:column headerText="Importe de interés">
+									<h:outputText styleClass="float-right"
+										value="#{conceptoIntermedio.interesDevengado}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Valor base">
+									<h:outputText styleClass="float-right"
+										value="#{conceptoIntermedio.valorBase}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="%">
+									<h:outputText value="#{conceptoIntermedio.porcentajeIntereses}" />
+								</p:column>
+								<p:column headerText="Periodo de liquidación">
+									<h:outputText value="#{conceptoIntermedio.fechaDesdeTramo}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</h:outputText>
+									<h:outputText value=" - " />
+									<h:outputText value="#{conceptoIntermedio.fechaHastaTramo}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="Importe franquicia">
+									<h:outputText styleClass="float-right"
+										value="#{conceptoIntermedio.baseFranquicia}">
+										<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+											currencySymbol="MXN" />
+									</h:outputText>
+								</p:column>
+								<p:column headerText="% franquicia">
+									<h:outputText
+										value="#{conceptoIntermedio.porcentajeIntFranquicia}" />
+								</p:column>
+							</p:dataTable>
+
+						</div>
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

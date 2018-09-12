@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  xmlns:cc="http://java.sun.com/jsf/composite/composites">
+  <head>
+	<title>Composite rango</title>
+  </head>
+  <body>
+	<composite:interface>
+      <composite:attribute name="id"></composite:attribute>
+	  <composite:attribute name="validezFrom" required="true" ></composite:attribute>
+	  <composite:attribute name="validezTo"></composite:attribute>
+	  <composite:attribute name="preferente" required="true"></composite:attribute>
+	  <composite:attribute name="minimo" required="true"></composite:attribute>
+	  <composite:attribute name="maximo" required="true"></composite:attribute>
+	  <composite:attribute name="unidades" required="true"></composite:attribute>
+	  <composite:attribute name="incremento" required="true"></composite:attribute>
+    <composite:attribute name="editable" default="true"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+	  <div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" >
+	  
+          <cc:periodoValidez from="#{cc.attrs.validezFrom}" to="#{cc.attrs.validezTo}" 
+            editable="#{cc.attrs.editable}"></cc:periodoValidez>
+            
+          
+<!-- Preferente -->
+			<div class="grid_8">
+              <p:message id="rangeToVal" for="preferente" display="icon"></p:message>
+	          	<p:outputLabel for="preferente" value="Preferente" />
+	          	<div class="clear-3"></div>
+	          	<pe:inputNumber emptyValue="0" id="preferente" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+									 value="#{cc.attrs.preferente}" minValue="0" maxlength="15" required="#{param['disableValidation']==null}"
+									 styleClass="arq-update" disabled="#{not cc.attrs.editable}">
+                   <f:attribute name="minRange" value="#{cc.attrs.minimo}" />
+                   <f:attribute name="maxRange" value="#{cc.attrs.maximo}" />
+                   <f:validator validatorId="bigDecimalRangeValidator" />
+				      </pe:inputNumber>
+			</div>
+<!-- Fin Preferente -->
+          
+          
+<!-- Minimo -->
+			<div class="grid_8">
+	         	<p:outputLabel for="minimo" value="Mínimo" />
+	         	<div class="clear-3"></div>
+	         	<pe:inputNumber emptyValue="0" id="minimo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+							 value="#{cc.attrs.minimo}" disabled="true">
+						</pe:inputNumber>
+			</div>
+<!-- Fin Minimo -->
+          
+          
+<!-- Maximo -->
+			<div class="grid_8">
+	         	<p:outputLabel for="maximo" value="Máximo" />
+	         	<div class="clear-3"></div>
+	         	<pe:inputNumber emptyValue="0" id="maximo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+					 value="#{cc.attrs.maximo}" disabled="true">
+				</pe:inputNumber>
+			</div>
+<!-- Fin Maximo -->
+          
+          
+<!-- Incremento -->
+			<div class="grid_8">
+	         	<p:outputLabel for="incremento" value="Incremento" />
+	         	<div class="clear-3"></div>
+	         	<pe:inputNumber emptyValue="0" id="incremento" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+							 value="#{cc.attrs.incremento}" disabled="true">
+				</pe:inputNumber>
+			</div>
+<!-- Fin Incremento -->
+          
+          
+<!-- Unidades -->
+			<div class="grid_8">
+				<div class="label-vacio"></div>
+				<div class="clear-3"></div>
+	         	<p:selectOneMenu id="unidades" value="#{cc.attrs.unidades}" disabled="true">
+	            	<f:selectItems itemDisabled="true" value="#{catalogoUtils.getCatalogo('TP_UM')}" var="entry"
+	       				itemValue="#{entry.claveFila}" itemLabel="#{entry.descripcionL}" />
+	       		</p:selectOneMenu>
+       		</div>
+<!-- Fin Unidades -->
+          
+	  </div>
+	</composite:implementation>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<div class="grid_24">
+		<p:outputLabel value="No. Operación sistema: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.numOperacion}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Tipo: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.tipoCheque}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Cuenta librada: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.acuerdoLibrado}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Importe: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.importe}">
+			<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+				currencySymbol="MXN" />
+		</p:outputLabel>
+		<div class="clear"></div>
+		<p:outputLabel value="No. Documento: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.numDocumento}" />
+	</div>
+	<div class="grid_24">
+		<p:outputLabel value="Código de seguridad: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.codSeguridad}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Dígito intercambio: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.digitoIntercambio}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Dígito premarcado: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.digitoPremarcado}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Fecha presentación: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.chequeBancarioBean.fechaPresentacion}"
+			rendered="#{apunteController.fechaPresentacionOculta == false}">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</p:outputLabel>
+		<div class="clear"></div>
+		<p:outputLabel styleClass="bold" value="Segunda presentación"
+			rendered="#{apunteController.chequeBancarioBean.indSegPres != null and apunteController.chequeBancarioBean.indSegPres == 'S'}" />
+		<p:outputLabel styleClass="bold" value="Posterior presentación"
+			rendered="#{apunteController.chequeBancarioBean.indSegPres != null and apunteController.chequeBancarioBean.indSegPres == 'R'}" />
+	</div>
+
+	<div class="clear-row"></div>
+
+	<div class="grid_48">
+		<p:outputLabel value="Cláusulas: "
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S'}" />
+	</div>
+	<div class="clear"></div>
+	<div class="grid_16">
+		<!-- 1 Endosado, 2 Decl. Equiv., 3 Protesto, 4 Req. Notarial, 5 No truncable, 6 Pago parcial, 7 No a la orden -->
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescClausula(1)}"
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S' and apunteController.chequeBancarioBean.clausulas.substring(1,2) == 'S'}" />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescClausula(2)}"
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S' and apunteController.chequeBancarioBean.clausulas.substring(2,3) == 'S'}" />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescClausula(3)}"
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S' and apunteController.chequeBancarioBean.clausulas.substring(3,4) == 'S'}" />
+	</div>
+	<div class="grid_16">
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescClausula(4)}"
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S' and apunteController.chequeBancarioBean.clausulas.substring(4,5) == 'S'}" />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescClausula(5)}"
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S' and apunteController.chequeBancarioBean.clausulas.substring(5,6) == 'S'}" />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescClausula(6)}"
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S' and apunteController.chequeBancarioBean.clausulas.substring(6,7) == 'S'}" />
+	</div>
+	<div class="grid_16">
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescClausula(7)}"
+			rendered="#{apunteController.chequeBancarioBean.clausulas.substring(0, 1) == 'S' and apunteController.chequeBancarioBean.clausulas.substring(7,8) == 'S'}" />
+	</div>
+	<div class="clear"></div>
+
+</ui:composition>

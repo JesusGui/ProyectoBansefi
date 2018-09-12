@@ -1,0 +1,924 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	template="../../templates/plantilla-inicio.xhtml"> 
+
+	<ui:define name="contenido">
+
+		<h:outputScript name="/js/personas.js" />
+
+		<h:body>
+			<div class="container_48">
+				<!-- Se agregó div contenedores -->
+				<div class="contenedor">
+
+					<h:form id="formAltaCliente1" styleClass="contenedor-form">
+
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+
+						<h:panelGroup
+							rendered="#{altaClienteController.modificacionCliente ne true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+									title="Volver atrás" onclick="PF('dlgCancelarAlta').show();">
+								</p:commandButton>
+								<h1>Alta de cliente</h1>
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{altaClienteController.modificacionCliente eq true}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+									title="Volver atrás"
+									onclick="PF('dlgCancelarModificacion').show();">
+								</p:commandButton>
+								<div>
+									<h2 class="gris-b">Modificación de</h2>
+									<h2 class="azul-b">#{altaClienteController.cliente.nombre}
+										#{altaClienteController.cliente.apePaterno !=null
+										?altaClienteController.cliente.apePaterno:''}
+										#{altaClienteController.cliente.apeMaterno !=null
+										?altaClienteController.cliente.apeMaterno:''}</h2>
+									<h3 class="gris-b">(#{altaClienteController.obtenerDescripcionTpDoc()}
+										#{altaClienteController.cliente.numIdentificacion})</h3>
+								</div>
+							</div>
+						</h:panelGroup>
+
+						<br />
+						<!--  Botones de arriba -->
+						<div class="wiz-pasos">
+							<p:commandButton styleClass="activo textfill"
+								value="Datos Personales" />
+							<p:commandButton styleClass="inactivo textfill padding-15"
+								value="Lugar de nacimiento y datos de ocupación"
+								onclick="acordion()"
+								action="#{altaClienteController.irAPaso2DesdePaso1()}"
+								ajax="true" update="formAltaCliente1" />
+							<p:commandButton styleClass="inactivo textfill"
+								value="Cédula de conocimiento" disabled="true" />
+						</div>
+
+						<!--contenedor del wizard-->
+						<div class="wiz-contenedor">
+							<div class="wiz-atras"></div>
+							<div class="contenedor-campos">
+
+								<p:outputLabel styleClass="txt-campo-obligatorio"
+									value="*Campos Obligatorios" />
+								<br />
+								<h:outputLabel styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+								<p:messages for="formCliente" showIcon="false"
+									rendered="#{facesContext.validationFailed}"/>
+								<br />
+								<p:focus context="accformAltaCliente1" />
+								<p:accordionPanel widgetVar="accordionAlta1" multiple="true"
+									dynamic="true" id="accformAltaCliente1" activeIndex="0,1,2">
+
+									<!-- Tab de Datos Personales -->
+									<p:tab title="Datos Personales">
+
+										<div class="grid_6">
+											<p:outputLabel for="tratamiento" value="Tratamiento"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="tratamiento"
+												value="#{altaClienteController.cliente.tratamiento}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_TRATMTO_PERS')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel for="nombre" value="Nombre (s)"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="nombre"
+												value="#{altaClienteController.cliente.nombre}"
+												maxlength="30"
+												required="#{param['disableValidation']==null}">
+												<f:param name="disableValidation" value="true" />
+												<pe:keyFilter preventPaste="true"/>
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+												<p:ajax global="false" onstart="value=value.toUpperCase()"
+													event="change" process="@form"
+													listener="#{altaClienteController.validarClienteExistente()}"
+													update=":dlgEliminados :dlgRedireccion">
+												</p:ajax>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel for="apellidoPaterno" value="Apellido Paterno"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="apellidoPaterno"
+												value="#{altaClienteController.cliente.apePaterno}"
+												maxlength="30"
+												required="#{param['disableValidation']==null}">
+												<f:param name="disableValidation" value="true" />
+												<pe:keyFilter preventPaste="true"/>
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+												<p:ajax global="false" onstart="value=value.toUpperCase()"
+													event="change" process="@form"
+													listener="#{altaClienteController.validarClienteExistente()}"
+													update=":dlgEliminados :dlgRedireccion">
+												</p:ajax>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel for="apellidoMaterno" value="Apellido Materno"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="apellidoMaterno"
+												value="#{altaClienteController.cliente.apeMaterno}"
+												maxlength="30">
+												<f:param name="disableValidation" value="true" />
+												<pe:keyFilter preventPaste="true"/>
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+												<p:ajax global="false" onstart="value=value.toUpperCase()"
+													event="change" process="@form"
+													listener="#{altaClienteController.validarClienteExistente()}"
+													update=":dlgEliminados :dlgRedireccion">
+												</p:ajax>
+											</p:inputMask>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_20">
+
+											<div class="grid_28 alpha">
+												<p:message id="identificacionTipoVal"
+													for="identificacionTipo" display="icon"></p:message>
+												<p:outputLabel for="identificacionTipo"
+													value="Identificación"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="identificacionTipo"
+													value="#{altaClienteController.cliente.tipoIdentificacion}"
+													required="#{param['disableValidation']==null}"
+													requiredMessage="">
+													<f:param name="disableValidation" value="true" />
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{altaClienteController.selectIdentificaciones}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+													<p:ajax global="false" event="change" partialSubmit="true" process="@form"
+														listener="#{altaClienteController.validarClienteExistente()}"
+														update=":dlgEliminados :dlgRedireccion" />
+													<f:validator validatorId="clienteMenorValidator" />
+													<f:attribute name="tag" value="tipoidentificacion" />
+													<f:attribute name="date"
+														value="#{altaClienteController.cliente.fechaNacimiento}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_20 omega float-right">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<p:inputMask id="identificacionNum"
+													value="#{altaClienteController.cliente.numIdentificacion}"
+													maxlength="14"
+													required="#{param['disableValidation']==null}"
+													placeholder="Número">
+													<f:param name="disableValidation" value="true" />
+													<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/"/>
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="A"/>
+													<p:ajax global="false" process="@form"
+														onstart="value=value.toUpperCase().trim()" event="change"
+														listener="#{altaClienteController.validarClienteExistente()}"
+														update=":dlgEliminados :dlgRedireccion">
+													</p:ajax>
+												</p:inputMask>
+											</div>
+
+										</div>
+
+										<div class="grid_8">
+											<p:message id="rfcVal" for="rfc" display="icon"></p:message>
+											<p:outputLabel for="rfc" value="RFC"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="rfc"
+												value="#{altaClienteController.cliente.rfc}" maxlength="13"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/"/>
+												<f:validator binding="#{personaFisicaRFCValidator}" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:message id="curpVal" for="curp" display="icon"></p:message>
+											<p:outputLabel for="curp" value="CURP"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:inputMask id="curp"
+												value="#{altaClienteController.cliente.curp}" maxlength="18"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/" />
+												<f:validator binding="#{curpValidator}" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel for="sexo" value="Sexo"></p:outputLabel>
+											<div class="clear"></div>
+											<p:selectOneRadio id="sexo"
+												value="#{altaClienteController.cliente.sexo}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="H" itemLabel="Hombre" />
+												<f:selectItem itemValue="M" itemLabel="Mujer" />
+											</p:selectOneRadio>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_8">
+												<p:message id="fechaNacimientoVal" for="fechaNacimiento"
+													display="icon"></p:message>
+												<p:outputLabel for="fechaNacimiento"
+													value="Fecha de Nacimiento"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:calendar id="fechaNacimiento"
+													value="#{altaClienteController.cliente.fechaNacimiento}"
+													required="#{param['disableValidation']==null}"
+													pattern="dd/MM/yyyy" mask="true" showOn="button"
+													locale="es" requiredMessage="">
+													<f:attribute name="endDate"
+														value="#{contextoUtils.getFechaContableActual()}" />
+													<f:attribute name="tag" value="fechaNacimiento" />
+													<f:validator validatorId="dateRangeValidator" />
+													<p:ajax global="false" event="change"
+														process="fechaNacimiento"
+														update="fechaNacimiento,fechaNacimientoVal"
+														partialSubmit="true" />
+													<p:ajax global="false" event="dateSelect"
+														process="fechaNacimiento"
+														update="fechaNacimiento,fechaNacimientoVal"
+														partialSubmit="true" />
+												</p:calendar>
+												<pe:keyFilter for="fechaNacimiento"></pe:keyFilter>
+											</div>
+
+											<div class="grid_12">
+												<p:outputLabel for="estadoCivil" value="Estado Civil"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="estadoCivil"
+													value="#{altaClienteController.cliente.estadoCivil}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_EST_CIVIL_INDV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+													<p:ajax global="false" event="change"
+														listener="#{altaClienteController.actualizarRegimenEconomico()}"
+														onstart="updateRegEco"
+														update="estadoCivil,regimenEconomico,regimenGroup"
+														process="@this" />
+													<f:param name="disableValidation" value="true" />
+												</p:selectOneMenu>
+											</div>
+
+											<p:remoteCommand name="updateRegEco" immediate="true"
+												actionListener="#{altaClienteController.actualizarRegimenEconomico()}"
+												update="estadoCivil,regimenEconomico" process="estadoCivil" />
+
+											<h:panelGroup id="regimenGroup" layout="block"
+												styleClass="#{altaClienteController.cliente.estadoCivil.equals(ConstantesFuncionales.TP_EST_CIVIL_INDV_CASADO) ? 'grid_12':''}">
+												<p:outputLabel id="regimenEconomicoLabel"
+													for="regimenEconomico" value="Régimen Económico"
+													rendered="#{altaClienteController.cliente.estadoCivil.equals(ConstantesFuncionales.TP_EST_CIVIL_INDV_CASADO)}" />
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="regimenEconomico"
+													required="#{param['disableValidation']==null and altaClienteController.cliente.estadoCivil.equals(ConstantesFuncionales.TP_EST_CIVIL_INDV_CASADO)}"
+													value="#{altaClienteController.cliente.regimenEconomico}"
+													rendered="#{altaClienteController.cliente.estadoCivil.equals(ConstantesFuncionales.TP_EST_CIVIL_INDV_CASADO)}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_RGMN_MATRI_INDV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</h:panelGroup>
+
+											<div class="grid_8">
+												<p:outputLabel for="paisNacionalidad"
+													value="País de Nacionalidad"></p:outputLabel>
+												<div class="clear-3"></div>
+												<b:autoComplete id="paisNacionalidad"
+													value="#{altaClienteController.paisNacionalidadSelected}"
+													maxlength="50" catalogSource="catalogoPaisesUtils"
+													var="item" itemLabel="#{item.descripcionL}"
+													itemValue="#{item}" converter="catalogoConverter"
+													forceSelection="true"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<p:ajax event="query" global="false"></p:ajax>
+												</b:autoComplete>
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"
+													for="paisNacionalidad" />
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel for="paisResidencia"
+													value="País de Residencia"></p:outputLabel>
+												<div class="clear-3"></div>
+												<b:autoComplete id="paisResidencia"
+													value="#{altaClienteController.paisResidenciaSelected}"
+													maxlength="50" catalogSource="catalogoPaisesUtils"
+													var="item" itemLabel="#{item.descripcionL}"
+													itemValue="#{item}" converter="catalogoConverter"
+													forceSelection="true"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<p:ajax event="query" global="false"></p:ajax>
+												</b:autoComplete>
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/"
+													for="paisResidencia" />
+											</div>
+
+										</div>
+
+										<div class="grid_20">
+											<p:outputLabel for="razonAlta" value="Razón de Alta"></p:outputLabel>
+											<div class="clear-3"></div>
+											<p:selectOneMenu id="razonAlta"
+												value="#{altaClienteController.cliente.razonAlta}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_RZN_ALTA_PERS')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+									</p:tab>
+
+									<!-- Tab de Domicilio -->
+
+									<p:tab title="Domicilio" id="tabDomicilio">
+
+										<div class="row-flex">
+											<h:panelGroup
+												rendered="#{altaClienteController.modificacionCliente ne true}">
+												<div class="grid_16">
+													<p:outputLabel for="comprobanteDomicilio"
+														value="Comprobante de Domicilio"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:selectOneMenu id="comprobanteDomicilio"
+														value="#{altaClienteController.cliente.domicilios[0].comprobanteDomicilio}"
+														required="#{param['disableValidation']==null}">
+														<f:selectItem itemValue="#{null}"
+															itemLabel="Seleccione un valor" noSelectionOption="true" />
+														<f:selectItems
+															value="#{altaClienteController.selectComprobanteDomicilio}"
+															var="item" itemValue="#{item.claveFila}"
+															itemLabel="#{item.descripcionL}" />
+													</p:selectOneMenu>
+												</div>
+
+												<div class="grid_14">
+													<p:outputLabel for="descripcion" value="Descripción"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:inputMask id="descripcion"
+														value="#{altaClienteController.cliente.domicilios[0].descripcion}"
+														maxlength="60"
+														required="#{param['disableValidation']==null}"
+														onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+														<f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+													</p:inputMask>
+												</div>
+											</h:panelGroup>
+
+											<div class="grid_10">
+												<p:outputLabel for="regimenOcupacion"
+													value="Régimen de Ocupación"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="regimenOcupacion"
+													value="#{altaClienteController.cliente.domicilios[0].regimenOcupacion}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_OCUPACION_VIV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel for="telefono" value="Teléfono"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask id="telefono"
+													value="#{altaClienteController.cliente.domicilios[0].telefono}"
+													maxlength="14"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[0-9]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="C"/>
+												</p:inputMask>
+											</div>
+
+										</div>
+
+										<componente:domicilio controller="#{altaClienteController}"
+											codigoPostalRequerido="#{param['disableValidation']==null}"
+											municipioRequerido="#{param['disableValidation']==null}"
+											estadoRequerido="#{param['disableValidation']==null}"
+											paisRequerido="#{param['disableValidation']==null}"
+											tipoCalleRequerido="#{param['disableValidation']==null}"
+											calleRequerido="#{param['disableValidation']==null}"
+											numExtRequerido="#{param['disableValidation']==null}"
+											coloniaRequerido="#{param['disableValidation']==null}"
+											estadoReadOnly="#{param['disableValidation']==null}"
+											paisReadOnly="#{param['disableValidation']==null}">
+											<f:param name="disableValidation" value="true" />
+										</componente:domicilio>
+									</p:tab>
+
+									<!-- Tab de Otros Datos -->
+
+									<p:tab title="Otros Datos">
+
+										<div class="row-flex">
+
+											<div class="grid_8">
+												<p:outputLabel for="idioma" value="Idioma"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="idioma"
+													value="#{altaClienteController.cliente.idioma}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_IDIOM_PERS')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_4">
+												<p:outputLabel for="numHijos" value="N° de Hijos"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask id="numHijos"
+													value="#{altaClienteController.cliente.numHijos}"
+													maxlength="2" onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[0-9]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="C"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_10">
+												<p:message id="situacionEconomicaVal"
+													for="situacionEconomica" display="icon"></p:message>
+												<p:outputLabel for="situacionEconomica"
+													value="Situación Económica"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="situacionEconomica"
+													value="#{altaClienteController.cliente.situacionEconomica}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_SIT_ECON_PERS')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+													<f:validator validatorId="clienteMenorValidator" />
+													<f:attribute name="tag" value="situacioneconomica" />
+													<f:attribute name="date"
+														value="#{altaClienteController.cliente.fechaNacimiento}" />
+												</p:selectOneMenu>
+											</div>
+
+											<div class="grid_26">
+												<div class="grid_48">
+													<p:outputLabel value="Correspondencia"></p:outputLabel>
+												</div>
+												<div class="clear-3"></div>
+												<div class="grid_11">
+													<p:selectBooleanCheckbox styleClass="centrado-vertical"
+														id="noPublicidad"
+														value="#{altaClienteController.cliente.noPublicidad}" />
+													<h:outputLabel styleClass="centrado-vertical"
+														value="No publicidad" />
+												</div>
+
+												<h:panelGroup id="panelOficina">
+													<div class="grid_11">
+														<p:selectBooleanCheckbox styleClass="centrado-vertical"
+															id="oficina"
+															value="#{altaClienteController.cliente.correspondenciaOficina}">
+															<p:ajax global="false" event="change"
+																listener="#{altaClienteController.actualizarOficina()}"
+																update=":formAltaCliente1:accformAltaCliente1:panelOficina"
+																process="oficina,#{altaClienteController.cliente.correspondenciaOficina eq true ? 'oficinaNum':''}" />
+															<f:param name="disableValidation" value="true" />
+														</p:selectBooleanCheckbox>
+														<h:outputLabel styleClass="centrado-vertical"
+															value="En la Oficina" />
+													</div>
+
+													<div class="grid_26">
+														<h:panelGroup id="oficinaNumPanelActivo"
+															rendered="#{altaClienteController.cliente.correspondenciaOficina}">
+															<b:autoComplete id="oficinaNum"
+																placeholder="Número de oficina"
+																value="#{altaClienteController.oficinaSelected}"
+																maxlength="30" catalogSource="catalogoCentrosLoaderTask"
+																var="item" itemLabel="#{item.descripcionL}"
+																itemValue="#{item}" converter="catalogoConverter"
+																forceSelection="true"
+																required="#{param['disableValidation']==null}"
+																onblur="value=value.toUpperCase()">
+																<p:ajax event="query" global="false"></p:ajax>
+															</b:autoComplete>
+															<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\- ]*$/"
+																for="oficinaNum" />
+														</h:panelGroup>
+
+														<h:panelGroup id="oficinaNumPanelInactivo"
+															rendered="#{!altaClienteController.cliente.correspondenciaOficina}">
+															<b:autoComplete id="oficinaNumInactivo"
+																placeholder="Número de oficina"
+																disabled="true"
+																value="#{altaClienteController.oficinaSelected}"
+																maxlength="30" catalogSource="catalogoCentrosLoaderTask"
+																var="item" itemLabel="#{item.descripcionL}"
+																itemValue="#{item}" converter="catalogoConverter"
+																forceSelection="true"
+																required="#{param['disableValidation']==null}"
+																onblur="value=value.toUpperCase()">
+																<p:ajax event="query" global="false"></p:ajax>
+															</b:autoComplete>
+														</h:panelGroup>
+													</div>
+												</h:panelGroup>
+
+
+											</div>
+
+										</div>
+
+										<div class="row-flex">
+											<h:panelGroup
+												rendered="#{altaClienteController.modificacionCliente eq true}">
+												<div class="grid_8">
+													<p:message id="fechaFallecimientoVal"
+														for="fechaFallecimiento" display="icon" />
+													<p:outputLabel for="fechaFallecimiento"
+														value="Fecha de fallecimiento" />
+													<div class="clear-3"></div>
+													<p:calendar id="fechaFallecimiento"
+														value="#{altaClienteController.cliente.fechaFallecimiento}"
+														pattern="dd/MM/yyyy" mask="true" showOn="button"
+														locale="es" requiredMessage="">
+														<f:attribute name="beginDate"
+															value="#{altaClienteController.cliente.fechaFallecimiento}" />
+														<f:attribute name="endDate"
+															value="#{contextoUtils.getFechaContableActual()}" />
+														<f:validator validatorId="dateRangeValidator" />
+														<p:ajax global="false" event="change"
+															process="fechaFallecimiento"
+															update="fechaFallecimiento,fechaFallecimientoVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="fechaFallecimiento"
+															update="fechaFallecimiento,fechaFallecimientoVal"
+															partialSubmit="true" />
+													</p:calendar>
+													<pe:keyFilter for="fechaFallecimiento"></pe:keyFilter>
+												</div>
+											</h:panelGroup>
+
+											<div class="grid_13">
+												<p:outputLabel value="Relación con la entidad"></p:outputLabel>
+												<div class="clear"></div>
+												<div class="grid_24">
+													<p:selectBooleanCheckbox styleClass="centrado-vertical"
+														id="Consejero"
+														value="#{altaClienteController.cliente.relacionConsejero}" />
+													<h:outputLabel styleClass="centrado-vertical"
+														value="Consejero" />
+												</div>
+												<div class="grid_24">
+													<p:selectBooleanCheckbox styleClass="centrado-vertical"
+														id="AltoCargo"
+														value="#{altaClienteController.cliente.relacionAltaCargo}" />
+													<h:outputLabel styleClass="centrado-vertical"
+														value="Alto Cargo" />
+												</div>
+											</div>
+
+											<div class="grid_11">
+												<p:message id="solvenciaMoralVal" for="solvenciaMoral"
+													display="icon"></p:message>
+												<p:outputLabel for="solvenciaMoral"
+													value="Capacidad de actuar"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:selectOneMenu id="solvenciaMoral"
+													value="#{altaClienteController.cliente.solvenciaMoral}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_CPCDAD_LGL_INDV')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+													<p:ajax global="false" event="change"
+														update="fechasSolvencia" process="@this" />
+													<f:validator validatorId="clienteMenorValidator" />
+													<f:attribute name="tag" value="capacidadactuar" />
+													<f:attribute name="date"
+														value="#{altaClienteController.cliente.fechaNacimiento}" />
+													<f:param name="disableValidation" value="true" />
+												</p:selectOneMenu>
+											</div>
+
+
+											<h:panelGroup id="fechasSolvencia">
+												<div class="grid_20">
+													<p:message id="fechaDesdeSolvenciaMoralVal"
+														for="fechaDesdeSolvenciaMoral" display="icon"
+														rendered="#{altaClienteController.cliente.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}">
+													</p:message>
+													<p:outputLabel id="fechaDesdeSolvenciaMoralLabel"
+														for="fechaDesdeSolvenciaMoral" value="Rango de fechas"
+														rendered="#{altaClienteController.cliente.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}" />
+													<div class="clear-3"></div>
+													<!-- Se agrega required para que siempre que se muestre sea requerido -->
+													<p:calendar id="fechaDesdeSolvenciaMoral"
+														required="true"
+
+														requiredMessage=""
+														value="#{altaClienteController.cliente.solvenciaMoralDesde}"
+														pattern="dd/MM/yyyy" mask="true" showOn="button"
+														locale="es" placeholder="Desde"
+														rendered="#{altaClienteController.cliente.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}">
+														<f:attribute name="beginDate"
+															value="#{altaClienteController.cliente.solvenciaMoralDesde}" />
+														<f:attribute name="endDate"
+															value="#{altaClienteController.cliente.solvenciaMoralHasta}" />
+														<f:attribute name="tag" value="solvenciaMoral" />
+														<f:validator validatorId="dateRangeValidator" />
+														<p:ajax global="false" event="change"
+															process="fechaDesdeSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral,fechaDesdeSolvenciaMoralVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="fechaDesdeSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral,fechaDesdeSolvenciaMoralVal"
+															partialSubmit="true" />
+													</p:calendar>
+													<pe:keyFilter for="fechaDesdeSolvenciaMoral"></pe:keyFilter>
+												</div>
+
+												<div class="grid_20">
+													<div class="label-vacio"></div>
+													<div class="clear-3"></div>
+													<!-- Se agrega required para que siempre que se muestre sea requerido -->
+													<p:calendar id="fechaHastaSolvenciaMoral"
+														required="true"
+
+														value="#{altaClienteController.cliente.solvenciaMoralHasta}"
+														pattern="dd/MM/yyyy" mask="true" showOn="button"
+														locale="es" placeholder="Hasta" requiredMessage=""
+														rendered="#{altaClienteController.cliente.solvenciaMoral.equals(ConstantesFuncionales.TP_CPCDAD_LGL_INDV_LIMITADA_TEMPORAL)}">
+														<p:ajax global="false" event="change"
+															process="fechaHastaSolvenciaMoral,fechaDesdeSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral,fechaDesdeSolvenciaMoralVal"
+															partialSubmit="true" />
+														<p:ajax global="false" event="dateSelect"
+															process="fechaHastaSolvenciaMoral,fechaDesdeSolvenciaMoral"
+															update="fechaDesdeSolvenciaMoral,fechaDesdeSolvenciaMoralVal"
+															partialSubmit="true" />
+													</p:calendar>
+													<pe:keyFilter for="fechaHastaSolvenciaMoral"></pe:keyFilter>
+												</div>
+											</h:panelGroup>
+										</div>
+
+									</p:tab>
+
+									<!-- Fin Tabs -->
+
+								</p:accordionPanel>
+
+							</div>
+							<div class="wiz-siguiente">
+								<p:commandButton id="siguiente1" icon="ui-icon-arrow-1-e"
+									onclick="acordion()"
+									action="#{altaClienteController.irAPaso2DesdePaso1()}"
+									ajax="true" update="formAltaCliente1" title="Siguiente" />
+							</div>
+						</div>
+
+						<!--  Botones de siguiente y Cancelar -->
+
+						<h:panelGroup
+							rendered="#{altaClienteController.modificacionCliente ne true}">
+							<p:commandButton styleClass="btn_secundario  margin-top-10"
+								id="cancelarA" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarAlta').show();" />
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{altaClienteController.modificacionCliente eq true}">
+							<p:commandButton styleClass="btn_secundario margin-top-10"
+								id="cancelarM" immediate="true" value="Cancelar"
+								onclick="PF('dlgCancelarModificacion').show();" />
+						</h:panelGroup>
+
+						<p:dialog widgetVar="dlgAltaClienteExistente"
+							id="dlgAltaClienteExistente" appendTo="@(body)"
+							header="Aviso cliente ya existente" modal="true" visible="false"
+							closable="false" resizable="false" draggable="false"
+							showEffect="fade" hideEffect="fade">
+							<span class="ui-messages-warn-icon warn-dialog"></span>
+							<p:outputLabel styleClass="modal-mensaje"
+								value="¡Atención! Está intentando dar de alta a un cliente ya existente" />
+							<div class="margin-bottom-20"></div>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								onclick="PF('dlgAltaClienteExistente').hide();" id="VolverAlta1"
+								value="Aceptar" immediate="true" />
+						</p:dialog>
+	
+						<ui:include src="../store.xhtml">
+							<ui:param name="storeBean" value="#{altaClienteController}" />
+						</ui:include>
+
+					</h:form>
+
+				</div>
+
+				<!-- plantilla de ventana de diálogo -->
+
+				<p:dialog widgetVar="dlgEliminados" id="dlgEliminados"
+					appendTo="@(body)" dynamic="true" modal="true" showEffect="fade"
+					hideEffect="fade"
+					visible="#{altaClienteController.mensajeEliminados.mostrar}"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="#{altaClienteController.mensajeEliminados.mensaje}." />
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						update=":formAltaCliente1" value="Aceptar"
+						onclick="PF('dlgEliminados').hide();" />
+				</p:dialog>
+				
+				<p:dialog widgetVar="dlgRedireccion" id="dlgRedireccion"
+					appendTo="@(body)" dynamic="true" modal="true" showEffect="fade"
+					hideEffect="fade"
+					visible="#{altaClienteController.mensajeRedireccion.mostrar}"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="#{altaClienteController.mensajeRedireccion.mensaje}." />
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						update=":formAltaCliente1" value="Aceptar"
+						action="#{altaClienteController.redireccionarBusqueda()}" />
+				</p:dialog>
+				
+				
+				<p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta"
+					appendTo="@(body)" header="Cancelar alta cliente" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atención! Está a punto de cancelar el alta de cliente" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarAlta').hide();" id="VolverAlta" -->
+<!-- 						value="Continuar con el alta" immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartar" value="No guardar" -->
+<!-- 						action="#{altaClienteController.cancelarAltaModificacion()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardar" value="Guardar" onclick="return storeData();" /> -->
+						
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaClienteController.cancelarAltaModificacion()}" 
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgCancelarModificacion"
+					id="dlgCancelarModificacion" appendTo="@(body)"
+					header="Cancelar modificacion cliente" modal="true" visible="false"
+					closable="false" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+<!-- 					<p:outputLabel styleClass="modal-mensaje" -->
+<!-- 						value="¡Atención! Está a punto de cancelar la modificación de cliente" /> -->
+<!-- 					<div class="clear"></div> -->
+<!-- 					<p:outputLabel styleClass="modal-accion" -->
+<!-- 						value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!-- 					<div class="margin-bottom-20"></div> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog" -->
+<!-- 						onclick="PF('dlgCancelarModificacion').hide();" -->
+<!-- 						id="VolverModificacion" value="Continuar con la modificación" -->
+<!-- 						immediate="true" /> -->
+<!-- 					<p:commandButton styleClass="btn_secundario_dialog margin-left-10" -->
+<!-- 						id="descartarM" value="No guardar" -->
+<!-- 						action="#{altaClienteController.cancelarAltaModificacion()}" /> -->
+<!-- 					<p:commandButton styleClass="btn_principal_dialog_derecha" -->
+<!-- 						id="guardarM" value="Guardar" onclick="return storeData();" /> -->
+					
+					<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaClienteController.cancelarAltaModificacion()}" 
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgIrPaso2" id="dlgIrPaso2" appendTo="@(body)"
+					header="Aviso cliente con un solo apellido" modal="true"
+					visible="false" closable="false" resizable="false"
+					draggable="false" showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! No ha informado el Apellido Materno del cliente." />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Desea certificar que el cliente cuenta con un solo apellido?" />
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_secundario_dialog"
+						onclick="PF('dlgIrPaso2').hide();" value="Cancelar"
+						immediate="true" />
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgIrPaso2').hide();"
+						action="#{altaClienteController.irAPaso2()}" value="Aceptar"
+						immediate="true" />
+				</p:dialog>
+
+				<p:dialog widgetVar="dlgDocumentoNoPrincipal"
+					id="dlgDocumentoNoPrincipal" appendTo="@(body)"
+					header="Identificacion no principal" modal="true" visible="false"
+					closable="false" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade">
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! La Identificación no es principal." />
+					<div class="clear"></div>
+					<div class="margin-bottom-20"></div>
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						value="Aceptar" onclick="PF('dlgDocumentoNoPrincipal').hide()" />
+				</p:dialog>
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

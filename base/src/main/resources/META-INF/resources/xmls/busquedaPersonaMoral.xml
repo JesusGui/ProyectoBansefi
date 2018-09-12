@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="busquedaDenominacionMoral">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.busqueda.PersonaMoralBusquedaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.busquedanombre.Ejecutar.ITRPECBNOMBRECNSTRN.TRPECBNOMBRECNSEVTY.PEORGCBDENOMV
+		</class-b>
+		<field>
+			<a>razonSocial</a>
+			<b>denomlegalorc</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="busquedaActaConstitutiva">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.busqueda.PersonaMoralBusquedaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.busquedaidexterna.Ejecutar.ITRPECBIDEXTERNACNS.TRPECBIDEXTERNACNSE.PEIDEXTCBIDEXTV
+		</class-b>
+		<field>
+			<a>actaConstitutiva</a>
+			<b>idextpe</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="busquedaPorIdInternaMoral">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.busqueda.PersonaMoralBusquedaBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.busquedaidinterna.Ejecutar.ITRPECLCBDACNSTRNI.TRPECLCBDACNSEVTY.PEPERSP
+		</class-b>
+		<field>
+			<a>idInterna</a>
+			<b>idinternope</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="mapeoPersonaMoral">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.busquedanombre.ResponseBansefi.OTRPECBNOMBRECNSTRN.TRPECBNOMBRECNSEVTZ.TRPECBNOMBRECNSEVTV
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.busqueda.PersonaMoralBusquedaBean
+		</class-b>
+		<field>
+			<a>denomlegalorc</a>
+			<b>razonSocial</b>
+		</field>
+		<field>
+			<a>fecnctoconstpe</a>
+			<b>actaConstitutiva</b>
+		</field>
+		<field>
+			<a>idinternope</a>
+			<b>idInterna</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="mapeoPersonaMoralExterno">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.busquedaidexterna.ResponseBansefi.OTRPECBIDEXTERNACNS.TRPECBIDEXTERNACNSE.TRPECBIDEXTERNACNSE1
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.busqueda.PersonaMoralBusquedaBean
+		</class-b>
+		<field>
+			<a>nomb50</a>
+			<b>razonSocial</b>
+		</field>
+		<field>
+			<a>fecnctoconstpe</a>
+			<b>actaConstitutiva</b>
+		</field>
+		<field>
+			<a>idinternope</a>
+			<b>idInterna</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="resultadosBusquedaNombreMoral">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.busquedanombre.ResponseBansefi.OTRPECBNOMBRECNSTRN.TRPECBNOMBRECNSEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.controllers.BusquedaController
+		</class-b>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.WrapperConvertidorListasPersonaMoralUtils">
+			<a>trpecbnombrecnsevtv</a>
+			<b>datos</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="resultadosBusquedaExternaMoral">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.busquedaidexterna.ResponseBansefi.OTRPECBIDEXTERNACNS.TRPECBIDEXTERNACNSE
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.controllers.BusquedaController
+		</class-b>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.WrapperConvertidorListasExternaUtils" custom-converter-param="personaMoral">
+			<a>trpecbidexternacnse</a>
+			<b>datos</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="resultadoBusquedaIdInternaMoral">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.busquedaidinterna.ResponseBansefi.OTRPECLCBDACNSTRNO.TRPECLCBDACNSEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.busqueda.PersonaMoralBusquedaBean
+		</class-b>
+		<field>
+			<a>idinternope</a>
+			<b>IdInterna</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="resultadosPersonaMoral">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.busquedapersonasmorales.ResponseBansefi
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.busqueda.PersonaMoralBusquedaBean
+		</class-b>
+		<field>
+			<a>denlegal</a>
+			<b>razonSocial</b>
+		</field>
+		<field>
+			<a>idexterno</a>
+			<b>actaConstitutiva</b>
+		</field>
+		<field>
+			<a>domicilio</a>
+			<b>domicilio</b>
+		</field>
+		<field>
+			<a>idinterno</a>
+			<b>idInterna</b>
+		</field>
+	</mapping>
+	
+</mappings>

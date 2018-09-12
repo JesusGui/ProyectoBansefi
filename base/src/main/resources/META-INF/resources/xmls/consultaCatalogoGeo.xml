@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+   <!-- Mapeo de clases -->
+	<mapping map-id="resConsultaCatalogoGeo" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.arq.catalogo.beans.CatalogoGeoBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.webservices.catalogogeo.ResponseBansefi</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.BigIntegerToIntegerConverter">
+			<a>id</a>
+			<b>cpnumargeo</b>
+		</field>
+		<field>
+			<a>numArGeo</a>
+			<b>cpnumaglocine</b>
+		</field>
+		<field>
+			<a>codigoPostal</a>
+			<b>cpcodpostal</b>
+		</field>
+		<field>
+			<a>subCodigoPostal</a>
+			<b>cpsubcdpostal</b>
+		</field>
+		<field>
+			<a>numAgLocine</a>
+			<b>cpnumaglocine</b>
+		</field>
+		<field>
+			<a>codigoProvincia</a>
+			<b>cpcodprovincia</b>
+		</field>
+		<field>
+			<a>nombreLocalidad</a>
+			<b>linomblocalidad</b>
+		</field>
+		<field>
+			<a>indPzaBancaria</a>
+			<b>liindpzabncria</b>
+		</field>
+		<field>
+			<a>codigoMunicipio</a>
+			<b>licodmunicipio</b>
+		</field>
+		<field>
+			<a>codigoEntidadColectiva</a>
+			<b>licodentcolec</b>
+		</field>
+		<field>
+			<a>nombreMunicipio</a>
+			<b>munombmunicipio</b>
+		</field>
+		<field>
+			<a>prNumArGeo</a>
+			<b>prnumargeo</b>
+		</field>
+		<field>
+			<a>codigoComunidadAutonoma</a>
+			<b>prcodcomautnma</b>
+		</field>
+		<field>
+			<a>nombreProvincia</a>
+			<b>prnombprovincia</b>
+		</field>
+		<field>
+			<a>prefijoTelefono</a>
+			<b>prpreftlfno</b>
+		</field>
+		<field>
+			<a>matricula</a>
+			<b>prmatricula</b>
+		</field>
+		<field>
+			<a>codigoImpuesto</a>
+			<b>prcodimpto</b>
+		</field>
+		<field>
+			<a>caNumArGeo</a>
+			<b>canumargeo</b>
+		</field>
+		<field>
+			<a>nombreComunidadAutonoma</a>
+			<b>canombcomautnma</b>
+		</field>
+	</mapping>	
+</mappings>

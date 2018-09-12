@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<div class="grid_24">
+		<!--Columna 1 -->
+		<p:outputLabel value="Cheque: " />
+		<p:outputLabel styleClass="bold" value="#{origen.numCheque}" />
+		<div class="clear"></div>
+		<p:outputLabel value="N° de cuenta: " />
+		<p:outputLabel styleClass="bold" value="#{origen.numeroCuenta}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Conformado: " />
+		<p:outputLabel styleClass="bold" value="#{origen.conformado}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Titular: " />
+		<p:outputLabel styleClass="bold" value="#{origen.titular}" />
+		<div class="clear"></div>
+		<p:outputLabel value="N° talonario: " />
+		<p:outputLabel styleClass="bold" value="#{origen.talonario}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Tipo de talonario: " />
+		<p:outputLabel styleClass="bold" value="#{apunteController.obtenerTipoTalonario(origen)}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Disposición: " />
+		<p:outputLabel styleClass="bold" value="#{apunteController.obtenerDisposicion(origen.disposicion)}" />
+		<div class="clear"></div>
+	</div>
+	<div class="grid_24">
+		<!--Columna 2 -->
+		<p:outputLabel value="Fecha de caducidad: " />
+		<p:outputLabel styleClass="bold" value="#{origen.fechaCaducidad}">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</p:outputLabel>
+		<div class="clear"></div>
+		<p:outputLabel value="N° cuenta cargo: " />
+		<p:outputLabel styleClass="bold" value="#{origen.numeroCuentaCargo}"/>
+		<div class="clear"></div>
+		<p:outputLabel value="Centro: " />
+		<p:outputLabel styleClass="bold" value="#{origen.centro}"/>
+		<div class="clear"></div>
+		<p:outputLabel value="Estado: " />
+		<p:outputLabel styleClass="bold" value="#{apunteController.obtenerEstadoCheque(origen.estado)}"/>
+		<div class="clear"></div>
+		<p:outputLabel value="Situación de pago: " />
+		<p:outputLabel styleClass="bold" value="#{apunteController.obtenerSituacionPago(origen)}"/>
+		<div class="clear"></div>
+		<p:outputLabel value="Importe Cheque: " />
+		<p:outputLabel styleClass="bold" value="#{origen.importeCheque}">
+			<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />	
+		</p:outputLabel>
+		<div class="clear"></div>
+		<p:outputLabel value="Importe Pendiente: " />
+		<p:outputLabel styleClass="bold" value="#{origen.importePendiente}">
+			<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+		</p:outputLabel>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</ui:composition>

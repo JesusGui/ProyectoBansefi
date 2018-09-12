@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="altaMercadosOrganizados" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.MercadoOrganizadoBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.altamercadosorganizados.Ejecutar.ITRPEALTAMERCADOSORG.TRPEALTAMERCADOSORGE
+		</class-b>
+		<field>
+		 	<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+		 	<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+		 	<a>codigoMercado</a>
+			<b>codmercadosorg</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="bajaMercadosOrganizados" wildcard="false"
+		map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.MercadoOrganizadoBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.bajamercadosorganizados.Ejecutar.ITRPEBAJAMERCADOSORG.TRPEBAJAMERCADOSORGE
+		</class-b>
+		<field>
+		 	<a>entidad</a>
+			<b>codnrbeen</b>
+		</field>
+		<field>
+		 	<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+		 	<a>codigoMercado</a>
+			<b>codmercadosorg</b>
+		</field>
+		<field>
+		 	<a>fechaIniCrt</a>
+			<b>fechainiccrt</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="consultaMercadosOrganizados" wildcard="false"
+		map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultamercadosorganizados.ResponseBansefi.OTRPECONSMERCADOSORG.TRPECONSMERCADOSORGE.TRPECONSMERCADOSORGE1
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.MercadoOrganizadoBean
+		</class-b>
+		<field>
+		 	<a>codnrbeen</a>
+			<b>entidad</b>
+		</field>
+		<field>
+		 	<a>idinternope</a>
+			<b>idInterno</b>
+		</field>
+		<field>
+		 	<a>codmercadosorg</a>
+			<b>codigoMercado</b>
+		</field>
+		<field>
+		 	<a>fechainiccrt</a>
+			<b>fechaIniCrt</b>
+		</field>
+	</mapping>
+</mappings>

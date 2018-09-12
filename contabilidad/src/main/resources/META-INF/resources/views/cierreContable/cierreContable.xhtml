@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+				<div class="contenedor">
+
+					<h:form id="frmCierreContable" styleClass="contenedor-form col-70">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás">
+							</p:commandButton>
+							<h1>Cierre contable de oficina</h1>
+						</div>
+
+						<div class="contenedor-campos">
+							
+							<h:panelGroup layout="block" id="msgContrasenaCP" styleClass="ui-messages-warn" rendered="#{!cierreContableController.contrasenaVacia and !cierreContableController.contrasenaCorrecta}">
+								<span class="ui-messages-warn-icon"></span>
+								<p:outputLabel styleClass="color-warn" value="¡Atención! La contraseña es incorrecta." />
+							</h:panelGroup>
+
+							<h:outputLabel id="msgFacesValidation"
+								styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed and cierreContableController.contrasenaVacia}" />
+
+							<div class="contenedor-espacioobjetos">
+							
+							<div>
+								<p:outputLabel value="Centro" />
+								<div class="clear-3"></div>
+								<p:outputLabel styleClass="label-valor sin-padding" value="#{contextoUtils.getSucursal()}" />
+							</div>
+
+							<div>
+								<p:outputLabel value="Usuario" />
+								<div class="clear-3"></div>
+								<p:outputLabel styleClass="label-valor sin-padding" value="#{contextoUtils.getId()}" />
+							</div>
+
+							<div class="grid_12 omega">
+								<p:outputLabel value="Contraseña" for="txtContrasenaCP" />
+								<div class="clear-3"></div>
+								<p:password id="txtContrasenaCP"
+									value="#{cierreContableController.contrasena}" maxlength="18"
+									required="#{param['disableValidation'] == null}"
+									requiredMessage="" placeholder="Contraseña" />
+							</div>
+							
+							</div>
+
+						</div>
+
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar"
+							action="#{cierreContableController.cancelarCierre()}" />
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Aceptar"
+							actionListener="#{cierreContableController.verificarContrasena()}"
+							process="@form" update="@form" />
+
+					</h:form>
+
+					<p:dialog id="dlgConfirmarCierreContable"
+						widgetVar="dlgConfirmarCierreContable" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="Confirmación requerida"
+						showEffect="fade" hideEffect="fade">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención!" />
+						<div class="clear margin-bottom-10"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que desea hacer el cierre contable de oficina?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar"
+							onclick="PF('dlgConfirmarCierreContable').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar"
+							actionListener="#{cierreContableController.realizarCierre()}"
+							oncomplete="PF('dlgConfirmarCierreContable').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgExitoCierreContable"
+						widgetVar="dlgExitoCierreContable" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="Operacion Exitosa"
+						showEffect="fade" hideEffect="fade">
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<div class="modal-mensaje">
+							<p:outputLabel value="El cierre contable de oficina del dia " />
+							<p:outputLabel styleClass="modal-mensaje-detalle" value="#{contextoUtils.getFechaContableActual()}">
+								<f:convertDateTime pattern="dd/MM/yyyy"
+									timeZone="America/Mexico_City" />
+							</p:outputLabel>
+							<p:outputLabel value=" se ha efectuado correctamente." />
+						</div>
+						<div class="clear"></div>
+
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgExitoCierreContable').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgErrorCierreContable"
+						widgetVar="dlgErrorCierreContable" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" header="Confirmación requerida"
+						showEffect="fade" hideEffect="fade">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Falló el cierre contable de oficina. Por favor, inténtelo más tarde." />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgErrorCierreContable').hide();" />
+					</p:dialog>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

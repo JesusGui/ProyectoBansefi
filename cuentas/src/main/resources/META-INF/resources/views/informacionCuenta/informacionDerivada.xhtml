@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<div class="contenedor-form col-70">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!-- Boton atrás -->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{informacionDerivadaController.irAtras()}">
+							</p:commandButton>
+							<div>
+								<h2>
+									<h:outputFormat styleClass="gris-b"
+										value="Informe de derivadas de "
+										rendered="#{informacionDerivadaController.cuentaBean != null}"></h:outputFormat>
+									<h:outputFormat styleClass="rojo-b"
+										value="#{informacionDerivadaController.cuentaBean.tipoCuenta} "
+										rendered="#{informacionDerivadaController.cuentaBean != null}"></h:outputFormat>
+									<h:outputFormat styleClass="gris-b sub-h"
+										value="(#{informacionDerivadaController.cuentaBean.numeroCuenta})"
+										rendered="#{informacionDerivadaController.cuentaBean != null}"></h:outputFormat>
+								</h2>
+							</div>
+						</div>
+
+						<h:form id="frmDerivada">
+							<div class="contenedor-campos ">
+							
+									<p:commandButton styleClass="btn_secundario btn-icono-texto float-right"
+										id="btnImprimir" icon="ui-icon-print" value="Imprimir"
+										onclick="printContenedorCamposId('printArea');"></p:commandButton>
+										
+								<div id="printArea">
+									<div class="impresion derivada">
+
+										<h3 class="mostrar-en-impresion">
+											<h:outputFormat value="Informe de derivadas de "
+												rendered="#{informacionDerivadaController.cuentaBean != null}"></h:outputFormat>
+											<h:outputFormat
+												value="#{informacionDerivadaController.cuentaBean.tipoCuenta} "
+												rendered="#{informacionDerivadaController.cuentaBean != null}"></h:outputFormat>
+											<h:outputFormat
+												value="(#{informacionDerivadaController.cuentaBean.numeroCuenta})"
+												rendered="#{informacionDerivadaController.cuentaBean != null}"></h:outputFormat>
+										</h3>
+										<h:panelGroup layout="block" styleClass="sinresultados sin-margen"
+														rendered="#{informacionDerivadaController.cuentaBean == null}" >
+											<div>
+												<p:outputLabel value="No se pudo obtener la información de la cuenta." />
+												 </div>
+										</h:panelGroup>
+
+										<h2 class="float-left margin-top-15">
+											<h:outputFormat styleClass="azul-b #{informacionDerivadaController.titular.persona.claseTipoPersona()}"
+												value="#{informacionDerivadaController.cuentaBean.nombreTitular} "
+												rendered="#{informacionDerivadaController.cuentaBean != null}"></h:outputFormat>
+										</h2>
+
+										<div class="clear-row"></div>
+										
+										<h:panelGroup layout="block" styleClass="sinresultados sin-margen"
+														rendered="#{informacionDerivadaController.informacionDerivada.size() gt 0 ? false : true}" >	
+											<div>
+												<p:outputLabel value="#{informacionDerivadaController.mensaje}" />
+											</div>
+										</h:panelGroup>
+										
+										<p:dataTable id="listaDerivadas" var="lista"
+											value="#{informacionDerivadaController.informacionDerivada}"
+											rendered="#{informacionDerivadaController.informacionDerivada.size() gt 0 ? true : false}"
+											rows="#{informacionDerivadaController.pagina}">
+											<p:column headerText="INFORMACIÓN DERIVADA">
+												<h:outputText value="#{lista.descripcionInformacion}" />
+											</p:column>
+
+											<p:column headerText="VALOR">
+												<h:outputText value="#{lista.valor}" />
+											</p:column>
+										</p:dataTable>
+										<p:commandButton id="btnMas" value="Ver más resultados"
+											icon="fa fa-refresh" iconPos="right"
+											update="listaDerivadas, @form"
+											actionListener="#{informacionDerivadaController.agregaPagina()}"
+											rendered="#{informacionDerivadaController.pagina lt 
+												informacionDerivadaController.informacionDerivada.size() ? true : false}">
+										</p:commandButton>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</h:body>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<p:dialog widgetVar="dlgAvisoNoRelacionado" id="dlgAvisoNoRelacionado" header="#{title}" modal="true" resizable="false" showEffect="fade" hideEffect="fade"
+		closable="false" dynamic="true" appendTo="@(body)" visible="#{detalleCuentaUtils.muestraDialogo and (not facesContext.validationFailed)}">
+		<span class="ui-messages-warn-icon warn-dialog"></span>
+		<p:outputLabel styleClass="modal-mensaje" value="¡Atención! La documentación que ha introducido no está relacionada con la cuenta." />
+		<div class="clear"></div>
+		<p:outputLabel styleClass="modal-accion" value="¿Desea continuar de todos modos?"/>
+		<div class="margin-bottom-20"></div>
+		<p:commandButton styleClass="btn_secundario_dialog" value="Cancelar" immediate="true"
+			onclick="PF('dlgAvisoNoRelacionado').hide();" />						
+		<p:commandButton styleClass="btn_principal_dialog_derecha" value="Continuar"
+			oncomplete="PF('dlgAvisoNoRelacionado').hide();"
+			action="#{bean[action]}" />
+		</p:dialog>
+</ui:composition>

@@ -1,0 +1,346 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<ui:debug hotkey="x" />
+		<h:body>
+			<div class="container_48">
+				<h:outputStylesheet>
+					.ui-outputlabel .ui-outputlabel-rfi {
+						position: relative;
+						float: left;
+					}
+				</h:outputStylesheet>
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formaContadores" styleClass="contenedor-form col-70">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{contadoresPuestoController.rutaInicio}"
+								immediate="true"></p:commandButton>
+							<h1>Contadores de Puesto</h1>
+							<!-- Version: Lunes 20 Julio 2015 17:05 -->
+						</div>
+						<div class="contenedor-campos" id="printArea1">
+							<!-- <div class="posicion-btn-impresion">
+								<p:commandButton title="Imprimir"
+									styleClass="btn-icono btn-impresion" icon="ui-icon-print"
+									onclick="printContenedorCamposId('printArea1');" />
+							</div> -->
+							<p:outputLabel styleClass="margin-left-10"
+								value="Introduzca el número de puesto y centro que desea consultar."></p:outputLabel>
+
+							<div class="clear-row"></div>
+
+							<p:outputLabel styleClass="margin-left-10 txt-campo-obligatorio"
+								value="*Datos Obligatorios" />
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							<div class="margin-top-20"></div>
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+							<div class="contenedor-espacioobjetos">
+								<div class="grid_24">
+									<p:outputLabel value="Centro" />
+									<div class="clear-3"></div>
+									<h:outputText styleClass="label-valor texto-sininput" value="#{contadoresPuestoController.centro}" />
+								</div>
+								<div class="grid_6">
+									<p:outputLabel value="Puesto:" for="puesto"/>
+									<div class="clear-3"></div>
+									<p:inputMask id="puesto" label="puesto" maxlength="2"
+										required="true" value="#{contadoresPuestoController.puesto}" >
+										<p:ajax event="keyup" update="terminal" partialSubmit="true"
+											process="@this"
+											listener="#{contadoresPuestoController.actualizarTerminal()}" />
+										<pe:keyFilter regEx="/^[0-9]*$/" />
+									</p:inputMask>
+								</div>
+								<div class="grid_6">
+									<h:outputLabel value="Terminal" />
+									<div class="clear-3"></div>
+									<h:outputLabel styleClass="label-valor texto-sininput"
+										id="terminal" value="#{contadoresPuestoController.terminal}" />
+								</div>
+								<!-- 									<div class="ui-grid-col-3"> -->
+								<!-- 										<h:outputText value="Tipo de contador*" /> -->
+								<!-- 										<br /> -->
+								<!-- 										<p:selectOneRadio id="tipoContador" -->
+								<!-- 											value="#{contadoresPuestoController.tipoContador}" -->
+								<!-- 											required="true"> -->
+								<!-- 											<f:selectItem itemLabel="Local" itemValue="local" /> -->
+								<!-- 											<f:selectItem itemLabel="Host" itemValue="host" /> -->
+								<!-- 										</p:selectOneRadio> -->
+								<!-- 										<div class="clear-3" /> -->
+								<!-- 										<p:message id="msgTipoContador" for="tipoContador" -->
+								<!-- 											display="text" /> -->
+								<!-- 									</div> -->
+								<div>
+									<p:commandButton
+										styleClass="btn-icono-texto margin-top-5"
+										icon="fa fa-search" id="botonBuscar"
+										value="#{contadoresPuestoController.mensajeBotonBuscar}"
+										action="#{contadoresPuestoController.buscar}" update="@form"
+										widgetVar="botonBuscar" onclick="PF('botonBuscar').disable()"
+										oncomplete="PF('botonBuscar').enable()" />
+								</div>
+							</div>
+							<div class="clear-row"></div>
+
+
+
+							<!-- 							Resultados -->
+							<h3 class="azul-b margin-left-10">
+								<h:outputText value="Resultados de búsqueda"
+									rendered="#{contadoresPuestoController.muestraResultados}" />
+							</h3>
+							
+							<div class="margin-top-10"></div>
+
+							<h:panelGroup
+								rendered="#{contadoresPuestoController.muestraResultados}">
+
+								<div class="grid_24">
+									<h:outputLabel styleClass="azul-b" value="Caja" />
+									<h:panelGroup id="basic" layout="block"
+										styleClass="marco-componente">
+
+										<div class="clear-row"></div>
+
+										<div class="grid_16">
+											<div class="label-vacio"></div>
+										</div>
+										<div class="grid_24">
+											<p:outputLabel styleClass="float-right">On</p:outputLabel>
+										</div>
+										<!-- 											<div class="ui-grid-col-4">Off</div> -->
+										<div class="clear-row"></div>
+										<div class="grid_16">
+											<p:outputLabel styleClass="float-right">Cobros</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<h:outputLabel styleClass="float-right bold"
+												value="#{contadoresPuestoController.contadoresPuestoBean.cobrosOnCaja}">
+												<f:convertNumber type="currency" groupingUsed="true"
+													maxFractionDigits="2" maxIntegerDigits="12"
+													minIntegerDigits="1" minFractionDigits="2"
+													currencyCode="MXN" />
+											</h:outputLabel>
+										</div>
+										<!-- 											<div class="ui-grid-col-4"> -->
+										<!-- 												<h:outputText -->
+										<!-- 													value="#{contadoresPuestoController.contadoresPuestoBean.cobrosOffCaja}"> -->
+										<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+										<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+										<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+										<!-- 														currencyCode="MXN" /> -->
+										<!-- 												</h:outputText> -->
+										<!-- 											</div> -->
+										<div class="clear-row"></div>
+										<div class="grid_16">
+											<p:outputLabel styleClass="float-right">Pagos</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<h:outputLabel styleClass="float-right bold"
+												value="#{contadoresPuestoController.contadoresPuestoBean.pagosOnCaja}">
+												<f:convertNumber type="currency" groupingUsed="true"
+													maxFractionDigits="2" maxIntegerDigits="12"
+													minIntegerDigits="1" minFractionDigits="2"
+													currencyCode="MXN" />
+											</h:outputLabel>
+										</div>
+										<!-- 											<div class="ui-grid-col-4"> -->
+										<!-- 												<h:outputText -->
+										<!-- 													value="#{contadoresPuestoController.contadoresPuestoBean.pagosOffCaja}"> -->
+										<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+										<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+										<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+										<!-- 														currencyCode="MXN" /> -->
+										<!-- 												</h:outputText> -->
+										<!-- 											</div> -->
+										<div class="clear-row"></div>
+										<div class="grid_16">
+											<p:outputLabel styleClass="float-right">Diferencia</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<h:outputLabel styleClass="float-right bold"
+												value="#{contadoresPuestoController.contadoresPuestoBean.diferenciaOnCaja}">
+												<f:convertNumber type="currency" groupingUsed="true"
+													maxFractionDigits="2" maxIntegerDigits="12"
+													minIntegerDigits="1" minFractionDigits="2"
+													currencyCode="MXN" />
+											</h:outputLabel>
+										</div>
+										<!-- 											<div class="ui-grid-col-4"> -->
+										<!-- 												<h:outputText -->
+										<!-- 													value="#{contadoresPuestoController.contadoresPuestoBean.diferenciaOffCaja}"> -->
+										<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+										<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+										<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+										<!-- 														currencyCode="MXN" /> -->
+										<!-- 												</h:outputText> -->
+										<!-- 											</div> -->
+										<div class="clear"></div>
+									</h:panelGroup>
+								</div>
+
+								<div class="grid_24">
+									<h:outputLabel styleClass="azul-b" value="Cuenta de intervención" />
+
+									<h:panelGroup id="basic2" layout="block"
+										styleClass="marco-componente">
+
+										<div class="clear-row"></div>
+
+										<div class="grid_16">
+											<div class="label-vacio"></div>
+										</div>
+										<div class="grid_24">
+											<p:outputLabel styleClass="float-right">On</p:outputLabel>
+										</div>
+										<!-- 											<div class="ui-grid-col-4">Off</div> -->
+										<div class="clear-row"></div>
+										<div class="grid_16">
+											<p:outputLabel styleClass="float-right">Debe</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<h:outputLabel styleClass="float-right bold"
+												value="#{contadoresPuestoController.contadoresPuestoBean.deberOnIntervencion}">
+												<f:convertNumber type="currency" groupingUsed="true"
+													maxFractionDigits="2" maxIntegerDigits="12"
+													minIntegerDigits="1" minFractionDigits="2"
+													currencyCode="MXN" />
+											</h:outputLabel>
+										</div>
+
+										<!-- 											<div class="ui-grid-col-4"> -->
+										<!-- 												<h:outputText -->
+										<!-- 													value="#{contadoresPuestoController.contadoresPuestoBean.deberOffIntervencion}"> -->
+										<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+										<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+										<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+										<!-- 														currencyCode="MXN" /> -->
+										<!-- 												</h:outputText> -->
+										<!-- 											</div> -->
+										<div class="clear-row"></div>
+										<div class="grid_16">
+											<p:outputLabel styleClass="float-right">Haber</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<h:outputLabel styleClass="float-right bold"
+												value="#{contadoresPuestoController.contadoresPuestoBean.haberOnIntervencion}">
+												<f:convertNumber type="currency" groupingUsed="true"
+													maxFractionDigits="2" maxIntegerDigits="12"
+													minIntegerDigits="1" minFractionDigits="2"
+													currencyCode="MXN" />
+											</h:outputLabel>
+										</div>
+
+										<!-- 											<div class="ui-grid-col-4"> -->
+										<!-- 												<h:outputText -->
+										<!-- 													value="#{contadoresPuestoController.contadoresPuestoBean.haberOffIntervencion}"> -->
+										<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+										<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+										<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+										<!-- 														currencyCode="MXN" /> -->
+										<!-- 												</h:outputText> -->
+										<!-- 											</div> -->
+										<div class="clear-row"></div>
+										<div class="grid_16">
+											<p:outputLabel styleClass="float-right">Diferencia</p:outputLabel>
+										</div>
+										<div class="grid_24">
+											<h:outputLabel styleClass="float-right bold"
+												value="#{contadoresPuestoController.contadoresPuestoBean.diferenciaOnIntervencion}">
+												<f:convertNumber type="currency" groupingUsed="true"
+													maxFractionDigits="2" maxIntegerDigits="12"
+													minIntegerDigits="1" minFractionDigits="2"
+													currencyCode="MXN" />
+											</h:outputLabel>
+										</div>
+
+										<!-- 											<div class="ui-grid-col-4"> -->
+										<!-- 												<h:outputText -->
+										<!-- 													value="#{contadoresPuestoController.contadoresPuestoBean.diferenciaOffIntervencion}"> -->
+										<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+										<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+										<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+										<!-- 														currencyCode="MXN" /> -->
+										<!-- 												</h:outputText> -->
+										<!-- 											</div> -->
+										<div class="clear"></div>
+									</h:panelGroup>
+								</div>
+								<div class="clear"></div>
+							</h:panelGroup>
+
+							<div class="clear-row"></div>
+							<h:panelGroup layout="block" styleClass="sinresultados"
+								rendered="#{contadoresPuestoController.busquedaSinResultados}">
+								<div>
+									<p:outputLabel
+										value="No se han encontrado resultados con los siguientes filtros " />
+									<br />
+									<p:outputLabel value="Terminal: #{contadoresPuestoController.terminal}" />
+										
+								</div>
+							</h:panelGroup>
+						</div>
+
+						<p:commandButton
+							styleClass="btn_secundario margin-top-10 margin-right-10"
+							id="botonCancelar" value="Cancelar" immediate="true"
+							action="#{contadoresCentroController.rutaInicio}" />
+
+						<p:commandButton styleClass="btn_secundario"
+							id="borrarContadoresOn" value="BORRAR CONTADORES ON"
+							rendered="#{contadoresPuestoController.muestraBotonesBorrar}"
+							onclick="PF('dlgConfirmacionOn').show()">
+						</p:commandButton>
+
+
+
+					</h:form>
+					<p:dialog appendTo="@(body)" header="¡Atención!" showEffect="fade" hideEffect="fade" closable="false"
+						widgetVar="dlgConfirmacionOn" dynamic="true" modal="true" draggable="false" resizable="false">
+
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que deba borrar los contadores de puesto On?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" onclick="PF('dlgConfirmacionOn').hide()" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" immediate="true"
+							oncomplete="PF('dlgConfirmacionOn').hide(); PF('btnBorrarOn').enable();"
+							action="#{contadoresPuestoController.borrarContadoresOn}"
+							widgetVar="btnBorrarOn" onclick="PF('btnBorrarOn').disable()"
+							update=":formaContadores" />
+					</p:dialog>
+
+
+				</div>
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,1856 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"> 
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<pe:importConstants
+				className="mx.babel.bansefi.banksystem.base.enums.EstadoListadosEnum"
+				var="EstadoListadosEnum" />
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="frmRelacionesCliente" styleClass="contenedor-form">
+
+						<pe:blockUI widgetVar="blockUIWidget1" />
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{relacionesClienteController.volver()}"
+								rendered="#{relacionesClienteController.relacionesAgregadas.size() == 0 and relacionesClienteController.relacionesModificadas.size() == 0 and relacionesClienteController.relacionesEliminadas.size() == 0}">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								onclick="PF('dlgConfirmarCancelacion').show();"
+								rendered="#{relacionesClienteController.relacionesAgregadas.size() > 0 or relacionesClienteController.relacionesModificadas.size() > 0 or relacionesClienteController.relacionesEliminadas.size() > 0}">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+							<div>
+								<h2 class="gris-b">Relacionar personas con</h2>
+								<h2 class="azul-b">#{relacionesClienteController.clienteBean.nombreCompleto}</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="*Datos Obligatorios" />
+
+							<div class="clear-row"></div>
+
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							<p:messages for="formCliente" showIcon="false" rendered="#{facesContext.validationFailed}"/>
+							<div class="margin-top-10"></div>
+
+							<div class="grid_15 alpha">
+								<p:outputLabel id="lblTipoRelacion" value="Tipo de relación:" />
+								<span class="ui-outputlabel-rfi">*</span>
+								<div class="clear-3"></div>
+								<p:selectOneMenu id="cboTipoRelacion"
+									panelStyleClass="combo-estandar" widgetVar="cboTipoRelacion"
+									value="#{relacionesClienteController.tipoRelacion}">
+									<f:selectItems var="item"
+										value="#{relacionesClienteController.elementos}"
+										itemValue="#{item.value}" itemLabel="#{item.label}" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="grid_3">
+								<div class="label-vacio"></div>
+								<div class="clear-3"></div>
+
+								<p:commandButton styleClass="btn-icono btn-anadir"
+									icon="ui-icon-circle-plus" id="btnAnadir" widgetVar="btnAnadir"
+									alt="Añadir" title="Añadir"
+									actionListener="#{relacionesClienteController.crearRelacion()}"
+									update=":frmRelacionesCliente">
+									<f:param name="disableValidation" value="true" />
+								</p:commandButton>
+
+							</div>
+
+							<div class="clear-row"></div>
+
+							<c:forEach var="accionista"
+								items="#{relacionesClienteController.relacionesCliente.accionistas}"
+								varStatus="iterador">
+								<p:focus context="panelAccionista#{iterador.index}" />
+								<p:panel id="panelAccionista#{iterador.index}"
+									styleClass="panel-dinamico consultado">
+									<h:panelGroup
+										rendered="#{accionista.estado == EstadoListadosEnum.CONSULTADO or accionista.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+											icon="ui-icon-trash" alt="Eliminar accionista"
+											title="Eliminar accionista"
+											actionListener="#{relacionesClienteController.eliminarAccionista(accionista, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{accionista.estado == EstadoListadosEnum.CONSULTADO and not(accionista.estado == EstadoListadosEnum.MODIFICADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar accionista"
+											title="Editar accionista"
+											actionListener="#{relacionesClienteController.modificarAccionista(accionista, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{accionista.estado == EstadoListadosEnum.CONSULTADO and not(accionista.estado == EstadoListadosEnum.ELIMINADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-rotate-left" alt="Deshacer eliminar"
+											title="Deshacer eliminar"
+											actionListener="#{relacionesClienteController.restaurarAccionista(accionista, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{accionista.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="ACCIONISTA" />
+										</div>
+
+										<div class="grid_24">
+											<p:outputLabel value="Nombre:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{accionista.nombre} #{accionista.apellidoPaterno} #{accionista.apellidoMaterno}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="RFC:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{accionista.rfc}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="% Accionariado:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{accionista.porcentaje}" />
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+
+									<h:panelGroup
+										rendered="#{accionista.estado == EstadoListadosEnum.MODIFICADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel margin-left-5"
+											icon="fa fa-rotate-left" alt="Deshacer edición"
+											title="Deshacer edición"
+											actionListener="#{relacionesClienteController.restaurarAccionistaModificado(accionista, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="ACCIONISTA" />
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Nombre(s)" for="nomAccionista#{iterador.index}" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="nomAccionista#{iterador.index}"
+													value="#{accionista.nombre}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Apellido Paterno" for="aPaternoAccionista#{iterador.index}"/>
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="aPaternoAccionista#{iterador.index}"
+													value="#{accionista.apellidoPaterno}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Apellido Materno" for="aMaternoAccionista#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="aMaternoAccionista#{iterador.index}" 
+													value="#{accionista.apellidoMaterno}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:message for="rfcAccionista#{iterador.index}"
+													display="icon" />
+												<p:outputLabel value="RFC" />
+												<div class="clear-3"></div>
+												<p:inputMask id="rfcAccionista#{iterador.index}"
+													value="#{accionista.rfc}" maxlength="13"
+													onblur="value=value.toUpperCase()" mask="aaaa999999?***"
+													requiredMessage="">
+													<f:param name="disableValidation" value="true" />
+													<f:validator binding="#{personaFisicaRFCValidator}" />
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:message
+													for="porcentajeAccionistaModificado#{iterador.index}"
+													display="icon" />
+												<p:outputLabel value="% Accionariado" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<pe:inputNumber
+													id="porcentajeAccionistaModificado#{iterador.index}"
+													minValue="0.00" maxValue="100.00" decimalPlaces="2"
+													decimalSeparator="." thousandSeparator=","
+													value="#{accionista.porcentaje}"
+													required="#{param['disableValidation'] == null}"
+													requiredMessage="">
+													<f:param name="disableValidation" value="true" />
+													<f:validator validatorId="porcentajeValidator" />
+												</pe:inputNumber>
+											</div>
+
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="accionistaAgregado"
+								items="#{relacionesClienteController.obtenerListaAccionistasAgregados()}"
+								varStatus="iterador">
+								<p:focus context="panelAccionistaAgregado#{iterador.index}" />
+								<p:panel id="panelAccionistaAgregado#{iterador.index}"
+									styleClass="panel-dinamico nuevo">
+									<p:commandButton
+										styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+										icon="ui-icon-trash" alt="Eliminar accionista"
+										title="Eliminar accionista"
+										actionListener="#{relacionesClienteController.eliminarAccionista(accionistaAgregado)}"
+										update=":frmRelacionesCliente">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<div class="clear margin-bottom-5"></div>
+
+									<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="ACCIONISTA" />
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Nombre(s)" for="nomAccionistaAgregado#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="nomAccionistaAgregado#{iterador.index}"
+												value="#{accionistaAgregado.nombre}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Apellido Paterno" for="aPaternoAccionistaAgregado#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="aPaternoAccionistaAgregado#{iterador.index}"
+												value="#{accionistaAgregado.apellidoPaterno}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Apellido Materno" for="aMaternoAccionistaAgregado#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="aMaternoAccionistaAgregado#{iterador.index}" 
+												value="#{accionistaAgregado.apellidoMaterno}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:message for="rfcAccionistaAgregado#{iterador.index}"
+												display="icon" />
+											<p:outputLabel value="RFC" />
+											<div class="clear-3"></div>
+											<p:inputMask id="rfcAccionistaAgregado#{iterador.index}"
+												value="#{accionistaAgregado.rfc}" maxlength="13"
+												onblur="value=value.toUpperCase()" mask="aaaa999999?***"
+												requiredMessage="">
+												<f:param name="disableValidation" value="true" />
+												<f:validator binding="#{personaFisicaRFCValidator}" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:message
+												for="porcentajeAccionistaAgregado#{iterador.index}"
+												display="icon" />
+											<p:outputLabel value="% Accionariado" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<pe:inputNumber
+												id="porcentajeAccionistaAgregado#{iterador.index}"
+												minValue="0.00" maxValue="100.00" decimalPlaces="2"
+												decimalSeparator="." thousandSeparator=","
+												value="#{accionistaAgregado.porcentaje}"
+												required="#{param['disableValidation'] == null}"
+												requiredMessage="">
+												<f:param name="disableValidation" value="true" />
+												<f:validator validatorId="porcentajeValidator" />
+											</pe:inputNumber>
+										</div>
+
+									</div>
+
+									<div class="clear"></div>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="funcionario"
+								items="#{relacionesClienteController.relacionesCliente.funcionarios}"
+								varStatus="iterador">
+								<p:panel styleClass="panel-dinamico consultado">
+									<h:panelGroup
+										rendered="#{funcionario.estado == EstadoListadosEnum.CONSULTADO or funcionario.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+											icon="ui-icon-trash" alt="Eliminar funcionario"
+											title="Eliminar funcionario"
+											actionListener="#{relacionesClienteController.eliminarFuncionario(funcionario, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{funcionario.estado == EstadoListadosEnum.CONSULTADO and not(funcionario.estado == EstadoListadosEnum.MODIFICADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar funcionario"
+											title="Editar funcionario"
+											actionListener="#{relacionesClienteController.modificarFuncionario(funcionario, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{funcionario.estado == EstadoListadosEnum.CONSULTADO and not(funcionario.estado == EstadoListadosEnum.ELIMINADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton
+											styleClass="btn-icono btn-panel margin-left-5"
+											icon="fa fa-rotate-left" alt="Deshacer eliminar"
+											title="Deshacer eliminar"
+											actionListener="#{relacionesClienteController.restaurarFuncionario(funcionario, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{funcionario.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="FUNCIONARIO" />
+										</div>
+
+										<div class="grid_24">
+											<p:outputLabel value="Nombre:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{funcionario.nombre} #{funcionario.apellidoPaterno} #{funcionario.apellidoMaterno}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="RFC:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{funcionario.rfc}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Puesto:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{funcionario.puesto}" />
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+									<h:panelGroup
+										rendered="#{funcionario.estado == EstadoListadosEnum.MODIFICADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel margin-left-5"
+											icon="fa fa-rotate-left" alt="Deshacer edición"
+											title="Deshacer edición"
+											actionListener="#{relacionesClienteController.restaurarFuncionarioModificado(funcionario, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="FUNCIONARIO" />
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Nombre(s)" for="nomFuncionario#{iterador.index}" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="nomFuncionario#{iterador.index}"
+													value="#{funcionario.nombre}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Apellido Paterno" for="aPaternoFuncionario#{iterador.index}"/>
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="aPaternoFuncionario#{iterador.index}" 
+													value="#{funcionario.apellidoPaterno}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_11">
+												<p:outputLabel value="Apellido Materno" for="aMaternoFuncionario#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="aMaternoFuncionario#{iterador.index}" 
+													value="#{funcionario.apellidoMaterno}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:message for="rfcFuncionario#{iterador.index}"
+													display="icon" />
+												<p:outputLabel value="RFC" />
+												<div class="clear-3"></div>
+												<p:inputMask id="rfcFuncionario#{iterador.index}"
+													value="#{funcionario.rfc}" maxlength="13"
+													onblur="value=value.toUpperCase()" mask="aaaa999999?***"
+													requiredMessage="">
+													<f:param name="disableValidation" value="true" />
+													<f:validator binding="#{personaFisicaRFCValidator}" />
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="Puesto" for="puestoFuncionario#{iterador.index}" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="puestoFuncionario#{iterador.index}"
+													value="#{funcionario.puesto}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="funcionarioAgregado"
+								items="#{relacionesClienteController.obtenerListaFuncionariosAgregados()}"
+								varStatus="iterador">
+								<p:panel id="panelFuncionarioAgregado#{iterador.index}"
+									styleClass="panel-dinamico nuevo">
+									<p:commandButton
+										styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+										icon="ui-icon-trash" alt="Eliminar funcionario"
+										title="Eliminar funcionario"
+										actionListener="#{relacionesClienteController.eliminarFuncionario(funcionarioAgregado)}"
+										update=":frmRelacionesCliente">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<div class="clear margin-bottom-5"></div>
+
+									<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="FUNCIONARIO" />
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Nombre(s)" for="nomFuncionarioAgregado#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="nomFuncionarioAgregado#{iterador.index}"
+												value="#{funcionarioAgregado.nombre}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Apellido Paterno" for="aPaternoFuncionarioAgregado#{iterador.index}"/>
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask
+												id="aPaternoFuncionarioAgregado#{iterador.index}"
+												value="#{funcionarioAgregado.apellidoPaterno}"
+												maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_11">
+											<p:outputLabel value="Apellido Materno" for="aMaternoFuncionarioAgregado#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="aMaternoFuncionarioAgregado#{iterador.index}" 
+												value="#{funcionarioAgregado.apellidoMaterno}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:message for="rfcFuncionarioAgregado#{iterador.index}"
+												display="icon" />
+											<p:outputLabel value="RFC" />
+											<div class="clear-3"></div>
+											<p:inputMask id="rfcFuncionarioAgregado#{iterador.index}"
+												value="#{funcionarioAgregado.rfc}" maxlength="13"
+												onblur="value=value.toUpperCase()" mask="aaaa999999?***"
+												requiredMessage="">
+												<f:param name="disableValidation" value="true" />
+												<f:validator binding="#{personaFisicaRFCValidator}" />
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Puesto" for="puestoFuncionarioAgregado#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="puestoFuncionarioAgregado#{iterador.index}"
+												value="#{funcionarioAgregado.puesto}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+									</div>
+
+									<div class="clear"></div>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="grupo"
+								items="#{relacionesClienteController.relacionesCliente.grupos}"
+								varStatus="iterador">
+								<p:panel styleClass="panel-dinamico consultado">
+									<p:commandButton
+										styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+										icon="ui-icon-trash" alt="Eliminar grupo"
+										title="Eliminar grupo"
+										actionListener="#{relacionesClienteController.eliminarGrupo(grupo, component.parent.clientId)}"
+										update=":frmRelacionesCliente"
+										rendered="#{grupo.estado == EstadoListadosEnum.CONSULTADO}">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<p:commandButton styleClass="btn-icono btn-panel"
+										icon="fa fa-rotate-left" alt="Deshacer eliminar"
+										title="Deshacer eliminar"
+										actionListener="#{relacionesClienteController.restaurarGrupo(grupo, component.parent.clientId)}"
+										update=":frmRelacionesCliente"
+										rendered="#{grupo.estado == EstadoListadosEnum.ELIMINADO}">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<div class="clear margin-bottom-5"></div>
+
+									<div class="grid_6">
+										<p:outputLabel value="Tipo de relación:" />
+										<div class="clear-3"></div>
+										<p:outputLabel styleClass="label-valor texto-sininput"
+											value="GRUPO" />
+									</div>
+
+									<div class="grid_10">
+										<p:outputLabel value="Nombre:" />
+										<div class="clear-3"></div>
+										<p:outputLabel styleClass="label-valor texto-sininput"
+											value="#{grupo.nombre}" />
+									</div>
+
+									<div class="grid_10">
+										<p:outputLabel value="Identificación:" />
+										<div class="clear-3"></div>
+										<p:outputLabel styleClass="label-valor texto-sininput"
+											value="#{grupo.idExterna}" />
+									</div>
+
+									<div class="grid_10">
+										<p:outputLabel value="Tipo de grupo:" />
+										<div class="clear-3"></div>
+										<p:outputLabel styleClass="label-valor texto-sininput"
+											value="#{relacionesClienteController.obtenerDescripcionTipoGrupo(grupo.tipoGrupo)}" />
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel value="Motivo de baja"
+											rendered="#{grupo.estado == EstadoListadosEnum.ELIMINADO}" />
+										<div class="clear-3"></div>
+										<p:inputMask value="#{grupo.motivoBaja}" maxlength="18"
+											rendered="#{grupo.estado == EstadoListadosEnum.ELIMINADO}"
+											onblur="value=value.trim(); value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ ]*$/" />
+										</p:inputMask>
+									</div>
+									<div class="clear"></div>
+								</p:panel>
+							</c:forEach>
+
+
+							<c:forEach var="persona"
+								items="#{relacionesClienteController.relacionesCliente.personas}"
+								varStatus="iterador">
+								<p:panel styleClass="panel-dinamico consultado">
+									<h:panelGroup
+										rendered="#{persona.estado == EstadoListadosEnum.CONSULTADO or persona.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+											icon="ui-icon-trash" alt="Eliminar persona"
+											title="Eliminar persona"
+											actionListener="#{relacionesClienteController.eliminarPersona(persona, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{persona.estado == EstadoListadosEnum.CONSULTADO and not(persona.estado == EstadoListadosEnum.MODIFICADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar persona"
+											title="Editar persona"
+											actionListener="#{relacionesClienteController.modificarPersona(persona, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{persona.estado == EstadoListadosEnum.CONSULTADO and not(persona.estado == EstadoListadosEnum.ELIMINADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-rotate-left" alt="Deshacer eliminar"
+											title="Deshacer eliminar"
+											actionListener="#{relacionesClienteController.restaurarPersona(persona, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{persona.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="PERSONA" />
+										</div>
+
+										<div class="grid_12">
+											<p:outputLabel value="Relación con el cliente:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{persona.relacionSeleccionada.descripcionL}" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Id. Oficial:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{persona.idExterna}" />
+										</div>
+
+										<div class="grid_22">
+											<p:outputLabel value="Nombre:" />
+											<div class="clear-3" />
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="#{persona.nombre}" />
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+									<h:panelGroup
+										rendered="#{persona.estado == EstadoListadosEnum.MODIFICADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel margin-left-5"
+											icon="fa fa-rotate-left" alt="Deshacer edición"
+											title="Deshacer edición"
+											actionListener="#{relacionesClienteController.restaurarPersonaModificada(persona, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="PERSONA" />
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="Id. oficial" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask disabled="true" value="#{persona.idExterna}"
+													maxlength="14"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-Z0-9áéíóúÁÉÍÓÚ\- ]*$/"
+														preventPaste="false" />
+													<p:ajax event="blur" global="false" process="@form"
+														onstart="value=value.trim(); value=value.toUpperCase()"
+														listener="#{relacionesClienteController.buscarPersona(persona, component.clientId)}"
+														update="lblNombrePersona#{iterador.index}" />
+													<f:param name="disableValidation" value="true" />
+												</p:inputMask>
+											</div>
+
+											<div class="grid_20">
+												<p:outputLabel value="Titular de la cuenta" />
+												<div class="clear-3" />
+
+												<p:outputLabel id="lblNombrePersona#{iterador.index}"
+													styleClass="label-valor texto-sininput"
+													value="#{persona.nombre}" />
+
+											</div>
+
+											<div class="grid_14">
+												<p:outputLabel value="Relación con el cliente" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<!-- <b:autoComplete disabled="true" catalog="TP_PERS_RL_PERS"
+													var="item" value="#{persona.relacionSeleccionada}"
+													itemLabel="#{item.descripcionL}" itemValue="#{item}"
+													converter="catalogoConverter" forceSelection="true"
+													required="#{param['disableValidation'] == null}">
+													<p:ajax event="query" global="false" />
+												</b:autoComplete> -->
+												<p:autoComplete disabled="true"
+													value="#{persona.relacionSeleccionada}" var="item"
+													itemLabel="#{item.descripcionL}" itemValue="#{item}"
+													converter="#{relacionesClienteController.conversor}" maxResults="5"
+													completeMethod="#{relacionesClienteController.completarCatalogo}"
+													required="#{param['disableValidation'] == null}">
+													<p:ajax event="query" global="false" />
+											</p:autoComplete>
+											</div>
+
+										</div>
+
+										<div class="grid_32">
+											<p:outputLabel value="Observaciones" />
+											<div class="clear-3"></div>
+											<p:inputMask value="#{persona.observaciones}" maxlength="60"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ ]*$/" />
+												<p:ajax event="blur" process="@this" update="@this" immediate="true"/>
+												<p:ajax event="change" process="@this" update="@this" immediate="true"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:message id="msgFechaInicioPersona#{iterador.index}"
+												for="calFechaInicioPersona#{iterador.index}" display="icon" />
+											<p:outputLabel value="Fecha inicio"/>
+											<div class="clear-3"></div>
+											<p:calendar id="calFechaInicioPersona#{iterador.index}" label="Fecha inicio"
+												locale="es" mask="true" mindate="#{persona.fechaCreacion}"
+												pattern="dd/MM/yyyy" requiredMessage=""
+												value="#{persona.fechaInicio}" showOn="button">
+												<f:attribute name="beginDate"
+													value="#{persona.fechaCreacion}" />
+												<f:param name="disableValidation" value="true" />
+												<!-- A petición de la UANL se deshabilita validación de la fecha de inicio -->
+												<!-- <f:validator validatorId="dateRangeValidator" -->
+												<!-- disabled="#{param['disableValidation']==true}" /> -->
+												<p:ajax event="change" global="false"
+													process="calFechaInicioPersona#{iterador.index}, calFechaFinPersona#{iterador.index}"
+													update="calFechaInicioPersona#{iterador.index}, msgFechaInicioPersona#{iterador.index}, calFechaFinPersona#{iterador.index}, msgFechaFinPersona#{iterador.index}"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" global="false"
+													process="calFechaInicioPersona#{iterador.index}, calFechaFinPersona#{iterador.index}"
+													update="calFechaInicioPersona#{iterador.index}, msgFechaInicioPersona#{iterador.index}, calFechaFinPersona#{iterador.index}, msgFechaFinPersona#{iterador.index}"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+
+										<div class="grid_8">
+											<p:message id="msgFechaFinPersona#{iterador.index}"
+												for="calFechaFinPersona#{iterador.index}" display="icon" />
+											<p:outputLabel value="Fecha fin" />
+											<div class="clear-3"></div>
+											<p:calendar id="calFechaFinPersona#{iterador.index}" label="Fecha fin"
+												locale="es" mask="true"
+												mindate="#{relacionesClienteController.obtenerFechaFinMinima(persona.fechaInicio)}"
+												pattern="dd/MM/yyyy" requiredMessage=""
+												value="#{persona.fechaFin}" showOn="button">
+												<f:attribute name="beginDate"
+													value="#{relacionesClienteController.obtenerFechaFinMinima(persona.fechaInicio)}" />
+												<f:param name="disableValidation" value="true" />
+												<f:validator validatorId="dateRangeValidator"
+													disabled="#{param['disableValidation']==true}" />
+												<p:ajax event="change" global="false"
+													process="calFechaInicioPersona#{iterador.index}, calFechaFinPersona#{iterador.index}"
+													update="calFechaFinPersona#{iterador.index}, msgFechaFinPersona#{iterador.index}, calFechaInicioPersona#{iterador.index}, msgFechaInicioPersona#{iterador.index}"
+													partialSubmit="true" />
+												<p:ajax event="dateSelect" global="false"
+													process="calFechaInicioPersona#{iterador.index}, calFechaFinPersona#{iterador.index}"
+													update="calFechaFinPersona#{iterador.index}, msgFechaFinPersona#{iterador.index}, calFechaInicioPersona#{iterador.index}, msgFechaInicioPersona#{iterador.index}"
+													partialSubmit="true" />
+											</p:calendar>
+										</div>
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="grupoAgregado"
+								items="#{relacionesClienteController.obtenerListaGruposAgregados()}"
+								varStatus="iterador">
+								<p:panel id="panelGrupoAgregado#{iterador.index}"
+									styleClass="panel-dinamico nuevo">
+									<p:commandButton
+										styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+										icon="ui-icon-trash" alt="Eliminar grupo"
+										title="Eliminar grupo"
+										actionListener="#{relacionesClienteController.eliminarGrupo(grupoAgregado)}"
+										update=":frmRelacionesCliente">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<div class="clear margin-bottom-5"></div>
+
+									<div class="grid_6">
+										<p:outputLabel value="Tipo de relación:" />
+										<div class="clear-3"></div>
+										<p:outputLabel styleClass="label-valor texto-sininput"
+											value="GRUPO" />
+									</div>
+
+									<div class="grid_12">
+										<p:outputLabel value="Tipo" />
+										<span class="ui-outputlabel-rfi">*</span>
+										<div class="clear-3"></div>
+										<p:selectOneMenu id="tipoGrupoAgregado#{iterador.index}"
+											panelStyleClass="combo-estandar"
+											value="#{grupoAgregado.tipoGrupo}"
+											required="#{param['disableValidation'] == null}">
+											<p:ajax event="change" resetValues="true"
+												listener="#{relacionesClienteController.vaciarCamposGrupo(grupoAgregado)}"
+												update="idGrupoAgregado#{iterador.index}, lblNombreGrupo#{iterador.index}" />
+											<f:selectItems var="item"
+												value="#{catalogoUtils.getCatalogo('TP_GRP')}"
+												itemValue="#{item.claveFila}"
+												itemLabel="#{item.descripcionL}" />
+										</p:selectOneMenu>
+									</div>
+
+									<div class="grid_8">
+										<p:outputLabel value="Identificación" />
+										<span class="ui-outputlabel-rfi">*</span>
+										<div class="clear-3"></div>
+										<p:inputMask id="idGrupoAgregado#{iterador.index}"
+											value="#{grupoAgregado.idExterna}" maxlength="14"
+											required="#{param['disableValidation'] == null}"
+											onblur="value=value.trim(); value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[a-zA-Z0-9\-]*$/" preventPaste="false" />
+											<p:ajax event="blur" global="false" process="@form"
+												listener="#{relacionesClienteController.buscarGrupo(grupoAgregado, component.clientId)}"
+												update="lblNombreGrupo#{iterador.index}" />
+											<f:param name="disableValidation" value="true" />
+										</p:inputMask>
+									</div>
+
+									<div class="float-left">
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton styleClass="btn-icono-conbackground"
+											icon="ui-icon-search" alt="Buscar grupo" title="Buscar grupo"
+											action="#{relacionesClienteController.redirigirABusquedaGrupo(grupoAgregado)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+									</div>
+
+									<div class="grid_20">
+										<div class="label-vacio" />
+										<div class="clear-3" />
+										<div class="input-label-valor">
+											<p:outputLabel id="lblNombreGrupo#{iterador.index}"
+												styleClass="label-valor" value="#{grupoAgregado.nombre}" />
+										</div>
+									</div>
+									<div class="clear"></div>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="personaAgregada"
+								items="#{relacionesClienteController.obtenerListaPersonasAgregadas()}"
+								varStatus="iterador">
+								<p:panel id="panelPersonaAgregada#{iterador.index}"
+									styleClass="panel-dinamico nuevo">
+									<p:commandButton
+										styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+										icon="ui-icon-trash" alt="Eliminar persona"
+										title="Eliminar persona"
+										actionListener="#{relacionesClienteController.eliminarPersona(personaAgregada)}"
+										update=":frmRelacionesCliente">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<div class="clear margin-bottom-5"></div>
+
+									<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="PERSONA" />
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Id. oficial" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="idPersonaAgregada#{iterador.index}"
+												value="#{personaAgregada.idExterna}" maxlength="14"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-Z0-9áéíóúÁÉÍÓÚ\- ]*$/"
+													preventPaste="false" />
+												<p:ajax event="blur" global="false" process="@form"
+													onstart="value=value.trim(); value=value.toUpperCase()"
+													listener="#{relacionesClienteController.buscarPersona(personaAgregada, component.clientId)}"
+													update="lblNombrePersonaAgregada#{iterador.index}" />
+												<f:param name="disableValidation" value="true" />
+											</p:inputMask>
+										</div>
+
+
+										<div class="grid_2">
+											<div class="label-vacio"></div>
+											<div class="clear-3"></div>
+											<p:commandButton styleClass="btn-icono-conbackground"
+												icon="ui-icon-search" alt="Buscar persona"
+												title="Buscar persona"
+												action="#{relacionesClienteController.redirigirABusquedaPersona(personaAgregada)}">
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+										</div>
+										<div class="grid_2">
+											<div class="label-vacio"></div>
+											<div class="clear-3"></div>
+											<p:commandButton styleClass="btn-icono-conbackground"
+												icon="ui-icon-person" alt="Dar de alta persona"
+												title="Dar de alta persona"
+												action="#{relacionesClienteController.redirigirAAltaPersona(personaAgregada)}">
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+										</div>
+
+										<div class="grid_17">
+											<p:outputLabel value="Titular de la cuenta" for="lblNombrePersonaAgregada#{iterador.index}"/>
+											<div class="clear-3" />
+											<div class="input-label-valor">
+												<p:outputLabel
+													id="lblNombrePersonaAgregada#{iterador.index}"
+													styleClass="label-valor" value="#{personaAgregada.nombre}" 
+													required="true"/>
+											</div>
+										</div>
+
+										<div class="grid_14">
+											<p:outputLabel value="Relación con el cliente" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<!-- <b:autoComplete id="relacionPersonaAgregada#{iterador.index}"
+												catalog="TP_PERS_RL_PERS" var="item" 
+												typePers="#{relacionesClienteController.clienteBean.tipo.codPe}"
+												value="#{personaAgregada.relacionSeleccionada}"
+												itemLabel="#{item.descripcionL}" itemValue="#{item}"
+												converter="catalogoConverterRP" forceSelection="true"
+												required="#{param['disableValidation'] == null}">
+												<p:ajax event="query" global="false" />
+											</b:autoComplete> -->
+											<p:autoComplete id="relacionPersonaAgregada#{iterador.index}"
+												styleClass="autocomplete-buscador" widgetVar="relacionPersonaAgregada#{iterador.index}"
+												value="#{personaAgregada.relacionSeleccionada}" var="item"
+												itemLabel="#{item.descripcionL}" itemValue="#{item}"
+												converter="#{relacionesClienteController.conversor}" maxResults="5"
+												completeMethod="#{relacionesClienteController.completarCatalogo}"
+												required="#{param['disableValidation'] == null}">
+												<p:ajax event="query" global="false" />
+											</p:autoComplete>
+										</div>
+
+									</div>
+
+									<div class="grid_32">
+										<p:outputLabel value="Observaciones" />
+										<div class="clear-3"></div>
+										<p:inputMask value="#{personaAgregada.observaciones}"
+											maxlength="60"
+											onblur="value=value.trim(); value=value.toUpperCase()">
+											<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ ]*$/" />
+											<p:ajax event="blur" process="@this" update="@this" immediate="true"/>
+											<p:ajax event="change" process="@this" update="@this" immediate="true"/>
+										</p:inputMask>
+									</div>
+
+									<div class="grid_8">
+										<p:message id="msgFechaInicioPersonaAgregada#{iterador.index}"
+											for="calFechaInicioPersonaAgregada#{iterador.index}"
+											display="icon" />
+										<p:outputLabel value="Fecha inicio"/>
+										<div class="clear-3"></div>
+										<p:calendar
+											id="calFechaInicioPersonaAgregada#{iterador.index}" label="Fecha inicio"
+											locale="es" mask="true"
+											mindate="#{relacionesClienteController.currentDate}"
+											pattern="dd/MM/yyyy" requiredMessage=""
+											value="#{personaAgregada.fechaInicio}" showOn="button">
+											<f:attribute name="beginDate"
+												value="#{relacionesClienteController.currentDate}" />
+											<f:param name="disableValidation" value="true" />
+											<!-- A petición de la UANL se deshabilita validación de la fecha de inicio -->
+											<!-- <f:validator validatorId="dateRangeValidator" -->
+											<!-- disabled="#{param['disableValidation']==true}" /> -->
+											<p:ajax event="change" global="false"
+												process="calFechaInicioPersonaAgregada#{iterador.index}, calFechaFinPersonaAgregada#{iterador.index}"
+												update="calFechaInicioPersonaAgregada#{iterador.index}, msgFechaInicioPersonaAgregada#{iterador.index}, calFechaFinPersonaAgregada#{iterador.index}, msgFechaFinPersonaAgregada#{iterador.index}"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect" global="false"
+												process="calFechaInicioPersonaAgregada#{iterador.index}, calFechaFinPersonaAgregada#{iterador.index}"
+												update="calFechaInicioPersonaAgregada#{iterador.index}, msgFechaInicioPersonaAgregada#{iterador.index}, calFechaFinPersonaAgregada#{iterador.index}, msgFechaFinPersonaAgregada#{iterador.index}"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+
+									<div class="grid_8">
+										<p:message id="msgFechaFinPersonaAgregada#{iterador.index}"
+											for="calFechaFinPersonaAgregada#{iterador.index}"
+											display="icon" />
+										<p:outputLabel value="Fecha fin" />
+										<div class="clear-3"></div>
+										<p:calendar id="calFechaFinPersonaAgregada#{iterador.index}" label="Fecha fin"
+											locale="es" mask="true"
+											mindate="#{relacionesClienteController.obtenerFechaFinMinima(personaAgregada.fechaInicio)}"
+											pattern="dd/MM/yyyy" requiredMessage=""
+											value="#{personaAgregada.fechaFin}" showOn="button">
+											<f:attribute name="beginDate"
+												value="#{relacionesClienteController.obtenerFechaFinMinima(personaAgregada.fechaInicio)}" />
+											<f:param name="disableValidation" value="true" />
+											<f:validator validatorId="dateRangeValidator"
+												disabled="#{param['disableValidation']==true}" />
+											<p:ajax event="change" global="false"
+												process="calFechaInicioPersonaAgregada#{iterador.index}, calFechaFinPersonaAgregada#{iterador.index}"
+												update="calFechaFinPersonaAgregada#{iterador.index}, msgFechaFinPersonaAgregada#{iterador.index}, calFechaInicioPersonaAgregada#{iterador.index}, msgFechaInicioPersonaAgregada#{iterador.index}"
+												partialSubmit="true" />
+											<p:ajax event="dateSelect" global="false"
+												process="calFechaInicioPersonaAgregada#{iterador.index}, calFechaFinPersonaAgregada#{iterador.index}"
+												update="calFechaFinPersonaAgregada#{iterador.index}, msgFechaFinPersonaAgregada#{iterador.index}, calFechaInicioPersonaAgregada#{iterador.index}, msgFechaInicioPersonaAgregada#{iterador.index}"
+												partialSubmit="true" />
+										</p:calendar>
+									</div>
+									<div class="clear"></div>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="refBancaria"
+								items="#{relacionesClienteController.relacionesCliente.referenciasBancarias}"
+								varStatus="iterador">
+								<p:panel styleClass="panel-dinamico consultado">
+									<h:panelGroup
+										rendered="#{refBancaria.estado == EstadoListadosEnum.CONSULTADO or refBancaria.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+											icon="ui-icon-trash" alt="Eliminar referencia bancaria"
+											title="Eliminar referencia bancaria"
+											actionListener="#{relacionesClienteController.eliminarReferenciaBancaria(refBancaria, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{refBancaria.estado == EstadoListadosEnum.CONSULTADO and not(refBancaria.estado == EstadoListadosEnum.MODIFICADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar referencia bancaria"
+											title="Editar referencia bancaria"
+											actionListener="#{relacionesClienteController.modificarReferenciaBancaria(refBancaria, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{refBancaria.estado == EstadoListadosEnum.CONSULTADO and not(refBancaria.estado == EstadoListadosEnum.ELIMINADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-rotate-left" alt="Deshacer eliminar"
+											title="Deshacer eliminar"
+											actionListener="#{relacionesClienteController.restaurarReferenciaBancaria(refBancaria, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{refBancaria.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="REF. BANCARIA" />
+											</div>
+
+											<div class="grid_22">
+												<p:outputLabel value="Nombre del banco:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{refBancaria.banco}" />
+											</div>
+
+											<div class="grid_10">
+												<p:outputLabel value="Número de cuenta:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{refBancaria.numCuenta}" />
+											</div>
+
+											<div class="grid_10">
+												<p:outputLabel value="Tipo de cuenta:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{refBancaria.tipoCuenta}" />
+											</div>
+
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+
+									<h:panelGroup
+										rendered="#{refBancaria.estado == EstadoListadosEnum.MODIFICADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel margin-left-5"
+											icon="fa fa-rotate-left" alt="Deshacer edición"
+											title="Deshacer edición"
+											actionListener="#{relacionesClienteController.restaurarRefBancariaModificada(refBancaria, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="REF. BANCARIA" />
+											</div>
+
+											<div class="grid_22">
+												<p:outputLabel value="Nombre del banco" for="nomRefBancaria#{iterador.index}" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="nomRefBancaria#{iterador.index}"
+													value="#{refBancaria.banco}" maxlength="30"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_10">
+												<p:outputLabel value="Número de cuenta" for="cuentaRefBancaria#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="cuentaRefBancaria#{iterador.index}" 
+													value="#{refBancaria.numCuenta}" maxlength="18">
+													<pe:keyFilter regEx="/[\d]/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="C"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_10">
+												<p:outputLabel value="Tipo de cuenta" for="tipoCuentaRefBancaria#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="tipoCuentaRefBancaria#{iterador.index}" 
+													value="#{refBancaria.tipoCuenta}" maxlength="15"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="A"/>
+												</p:inputMask>
+											</div>
+
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="refBancariaAgregada"
+								items="#{relacionesClienteController.obtenerListaRefBancariasAgregadas()}"
+								varStatus="iterador">
+								<p:panel id="panelRefBancariaAgregada#{iterador.index}"
+									styleClass="panel-dinamico nuevo">
+									<p:commandButton
+										styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+										icon="ui-icon-trash" alt="Eliminar referencia bancaria"
+										title="Eliminar referencia bancaria"
+										actionListener="#{relacionesClienteController.eliminarReferenciaBancaria(refBancariaAgregada)}"
+										update=":frmRelacionesCliente">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<div class="clear margin-bottom-5"></div>
+
+									<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="REF. BANCARIA" />
+										</div>
+
+										<div class="grid_22">
+											<p:outputLabel value="Nombre del banco" for="nomRefBancariaAgregada#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="nomRefBancariaAgregada#{iterador.index}"
+												value="#{refBancariaAgregada.banco}" maxlength="30"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Número de cuenta" for="cuentaRefBancariaAgregada#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="cuentaRefBancariaAgregada#{iterador.index}" 
+												value="#{refBancariaAgregada.numCuenta}" maxlength="18">
+												<pe:keyFilter regEx="/[\d]/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_10">
+											<p:outputLabel value="Tipo de cuenta" for="tipoCuentaRefBancariaAgregada#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="tipoCuentaRefBancariaAgregada#{iterador.index}"
+												value="#{refBancariaAgregada.tipoCuenta}" maxlength="15"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="A"/>
+											</p:inputMask>
+										</div>
+
+									</div>
+
+									<div class="clear"></div>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="refComercial"
+								items="#{relacionesClienteController.relacionesCliente.referenciasComerciales}"
+								varStatus="iterador">
+								<p:panel styleClass="panel-dinamico consultado">
+									<h:panelGroup
+										rendered="#{refComercial.estado == EstadoListadosEnum.CONSULTADO or refComercial.estado == EstadoListadosEnum.ELIMINADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+											icon="ui-icon-trash" alt="Eliminar referencia comercial"
+											title="Eliminar referencia comercial"
+											actionListener="#{relacionesClienteController.eliminarReferenciaComercial(refComercial, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{refComercial.estado == EstadoListadosEnum.CONSULTADO and not(refComercial.estado == EstadoListadosEnum.MODIFICADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-pencil" alt="Editar referencia comercial"
+											title="Editar referencia comercial"
+											actionListener="#{relacionesClienteController.modificarReferenciaComercial(refComercial, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{refComercial.estado == EstadoListadosEnum.CONSULTADO and not(refComercial.estado == EstadoListadosEnum.ELIMINADO)}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<p:commandButton styleClass="btn-icono btn-panel"
+											icon="fa fa-rotate-left" alt="Deshacer eliminar"
+											title="Deshacer eliminar"
+											actionListener="#{relacionesClienteController.restaurarReferenciaComercial(refComercial, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente"
+											rendered="#{refComercial.estado == EstadoListadosEnum.ELIMINADO}">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="REF. COMERCIAL" />
+											</div>
+
+											<div class="grid_14">
+												<p:outputLabel value="Nombre:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{refComercial.nombre}" />
+											</div>
+
+											<div class="grid_10">
+												<p:outputLabel value="Giro:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{refComercial.giro}" />
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="Teléfono:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{refComercial.telefono}" />
+											</div>
+
+											<div class="grid_10">
+												<p:outputLabel value="Relación con el cliente:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="#{refComercial.relacion}" />
+											</div>
+
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+									<h:panelGroup
+										rendered="#{refComercial.estado == EstadoListadosEnum.MODIFICADO}">
+										<p:commandButton
+											styleClass="btn-icono btn-panel margin-left-5"
+											icon="fa fa-rotate-left" alt="Deshacer edición"
+											title="Deshacer edición"
+											actionListener="#{relacionesClienteController.restaurarRefComercialModificada(refComercial, component.parent.parent.clientId)}"
+											update=":frmRelacionesCliente">
+											<f:param name="disableValidation" value="true" />
+										</p:commandButton>
+										<div class="clear margin-bottom-5"></div>
+
+										<div class="row-flex">
+
+											<div class="grid_6">
+												<p:outputLabel value="Tipo de relación:" />
+												<div class="clear-3"></div>
+												<p:outputLabel styleClass="label-valor texto-sininput"
+													value="REF. COMERCIAL" />
+											</div>
+
+											<div class="grid_12">
+												<p:outputLabel value="Nombre" for="nomRefComercial#{iterador.index}" />
+												<span class="ui-outputlabel-rfi">*</span>
+												<div class="clear-3"></div>
+												<p:inputMask id="nomRefComercial#{iterador.index}"
+													value="#{refComercial.nombre}" maxlength="50"
+													onblur="value=value.trim(); value=value.toUpperCase()"
+													required="#{param['disableValidation'] == null}">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="Giro" for="giroRefComercial#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="giroRefComercial#{iterador.index}" 
+													value="#{refComercial.giro}" maxlength="20"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_12">
+												<p:outputLabel value="Domicilio" for="domicRefComercial#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="domicRefComercial#{iterador.index}"
+													value="#{refComercial.domicilio}" maxlength="50"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="A"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="Teléfono" for="telRefComercial#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="telRefComercial#{iterador.index}" 
+													value="#{refComercial.telefono}" maxlength="15">
+													<pe:keyFilter regEx="/[\d]/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="C"/>
+												</p:inputMask>
+											</div>
+
+											<div class="grid_8">
+												<p:outputLabel value="Relación con el cliente" for="relacionRefComercial#{iterador.index}" />
+												<div class="clear-3"></div>
+												<p:inputMask id="relacionRefComercial#{iterador.index}" 
+													value="#{refComercial.relacion}" maxlength="50"
+													onblur="value=value.trim(); value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="B"/>
+												</p:inputMask>
+											</div>
+
+										</div>
+
+										<div class="clear"></div>
+									</h:panelGroup>
+								</p:panel>
+							</c:forEach>
+
+							<c:forEach var="refComercialAgregada"
+								items="#{relacionesClienteController.obtenerListaRefComercialesAgregadas()}"
+								varStatus="iterador">
+								<p:panel id="panelRefComercialAgregada#{iterador.index}"
+									styleClass="panel-dinamico nuevo">
+									<p:commandButton
+										styleClass="btn-icono btn-panel btn-eliminar margin-left-5"
+										icon="ui-icon-trash" alt="Eliminar referencia comercial"
+										title="Eliminar referencia comercial"
+										actionListener="#{relacionesClienteController.eliminarReferenciaComerial(refComercialAgregada)}"
+										update=":frmRelacionesCliente">
+										<f:param name="disableValidation" value="true" />
+									</p:commandButton>
+									<div class="clear margin-bottom-5"></div>
+
+									<div class="row-flex">
+
+										<div class="grid_6">
+											<p:outputLabel value="Tipo de relación:" />
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput"
+												value="REF. COMERCIAL" />
+										</div>
+
+										<div class="grid_12">
+											<p:outputLabel value="Nombre" for="nomRefComercialAgregada#{iterador.index}" />
+											<span class="ui-outputlabel-rfi">*</span>
+											<div class="clear-3"></div>
+											<p:inputMask id="nomRefComercialAgregada#{iterador.index}" 
+												value="#{refComercialAgregada.nombre}" maxlength="50"
+												onblur="value=value.trim(); value=value.toUpperCase()"
+												required="#{param['disableValidation'] == null}">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Giro" for="giroRefComercialAgregada#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="giroRefComercialAgregada#{iterador.index}"
+												value="#{refComercialAgregada.giro}" maxlength="20"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_12">
+											<p:outputLabel value="Domicilio" for="domicRefComercialAgregada#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="domicRefComercialAgregada#{iterador.index}"
+												value="#{refComercialAgregada.domicilio}" maxlength="50"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="A"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Teléfono" for="telRefComercialAgregada#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="telRefComercialAgregada#{iterador.index}" 
+												value="#{refComercialAgregada.telefono}" maxlength="15">
+												<pe:keyFilter regEx="/[\d]/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="C"/>
+											</p:inputMask>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel value="Relación con el cliente" for="relacionRefComercialAgregada#{iterador.index}" />
+											<div class="clear-3"></div>
+											<p:inputMask id="relacionRefComercialAgregada#{iterador.index}" 
+												value="#{refComercialAgregada.relacion}" maxlength="50"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[a-zA-ZñÑ\- ]*$/" />
+												<f:validator validatorId="camposValidator"/>
+												<f:attribute name="tipoValidacion" value="B"/>
+											</p:inputMask>
+										</div>
+
+									</div>
+
+									<div class="clear"></div>
+								</p:panel>
+							</c:forEach>
+						</div>
+
+						<p:commandButton id="btnCancelar" widgetVar="btnCancelar"
+							styleClass="btn_secundario margin-top-10" value="Cancelar"
+							onclick="PF('dlgConfirmarCancelacion').show();"
+							rendered="#{relacionesClienteController.relacionesAgregadas.size() > 0 or relacionesClienteController.relacionesModificadas.size() > 0 or relacionesClienteController.relacionesEliminadas.size() > 0}" />
+						<p:commandButton id="btnCancelar2" widgetVar="btnCancelar2"
+							styleClass="btn_secundario margin-top-10" value="Cancelar"
+							action="#{relacionesClienteController.cancelar()}"
+							rendered="#{relacionesClienteController.relacionesAgregadas.size() == 0 and relacionesClienteController.relacionesModificadas.size() == 0 and relacionesClienteController.relacionesEliminadas.size() == 0}" />
+						<p:commandButton id="btnGuardar" widgetVar="btnGuardar"
+							styleClass="btn_primario float-right margin-top-10"
+							value="Guardar"
+							action="#{relacionesClienteController.verificarCambios()}"
+							update=":frmRelacionesCliente, :dlgConfirmarEliminacion, :dlgNotificacionSinCambios, :dlgOperacionExitosa, :dlgOperacionFallida :dlgDuplicados" />
+
+					</h:form>
+
+					<p:dialog id="dlgMismoCliente" widgetVar="dlgMismoCliente"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="¡Atención!">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! No es posible relacionar con la misma persona." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="Por favor, seleccione a una persona diferente." />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" update=":frmRelacionesCliente"
+							onclick="PF('dlgMismoCliente').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgBusqueda" widgetVar="dlgBusqueda"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="¡Atención!">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="La identificación oficial proporcionada generó varias coincidencias." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea ir al buscador para seleccionar el cliente correcto?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" immediate="true"
+							onclick="PF('dlgBusqueda').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar"
+							action="#{relacionesClienteController.redirigirABusquedaPersona(relacionesClienteController.personaABuscar)}"
+							oncomplete="PF('dlgBusqueda').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgBusquedaGrupo" widgetVar="dlgBusquedaGrupo"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="¡Atención!">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="La identificación proporcionada generó varias coincidencias." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea ir al buscador para seleccionar el grupo correcto?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" immediate="true"
+							onclick="PF('dlgBusquedaGrupo').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar"
+							action="#{relacionesClienteController.redirigirABusquedaGrupo(relacionesClienteController.grupoABuscar)}"
+							oncomplete="PF('dlgBusquedaGrupo').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgConfirmarCancelacion"
+						widgetVar="dlgConfirmarCancelacion" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						showEffect="fade" hideEffect="fade" resizable="false"
+						header="Confirmación requerida">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Sí continua perderá todos los cambios." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgConfirmarCancelacion').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar"
+							action="#{relacionesClienteController.cancelar()}"
+							onclick="PF('dlgConfirmarCancelacion').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgNotificacionSinCambios"
+						widgetVar="dlgNotificacionSinCambios" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						showEffect="fade" hideEffect="fade" resizable="false"
+						header="¡Atención!">
+						<span class="ui-messages-info-icon info-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="No se han realizado cambios." />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgNotificacionSinCambios').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgErrorPorcentaje" widgetVar="dlgErrorPorcentaje"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="¡Atención!">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! La suma de los porcentajes de accionariado es mayor al 100%." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="Por favor, revise los valores asignados." />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgErrorPorcentaje').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgRelacionInvalida" widgetVar="dlgRelacionInvalida"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="¡Atención!">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{relacionesClienteController.claveRelacionInvalida}" />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgRelacionInvalida').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgGrupoNoEncontrado"
+						widgetVar="dlgGrupoNoEncontrado" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" showEffect="fade" hideEffect="fade"
+						header="¡Atención!">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Grupo '#{relacionesClienteController.mensajeOperacionFallida}' no encontrado. Por favor verifique los datos." />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgGrupoNoEncontrado').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgPersonaNoEncontrada"
+						widgetVar="dlgPersonaNoEncontrada" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						resizable="false" showEffect="fade" hideEffect="fade"
+						header="¡Atención!">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Persona '#{relacionesClienteController.mensajeOperacionFallida}' no encontrada. Por favor verifique los datos." />
+						<div class="clear"></div>
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgPersonaNoEncontrada').hide();" />
+					</p:dialog>
+
+					<p:dialog id="dlgConfirmarEliminacion"
+						widgetVar="dlgConfirmarEliminacion" appendTo="@(body)"
+						closable="false" dynamic="true" draggable="false" modal="true"
+						showEffect="fade" hideEffect="fade" resizable="false"
+						header="Confirmación requerida">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<div class="modal-mensaje">
+							<p:outputLabel
+								value="¡Atención! Está a punto de eliminar #{relacionesClienteController.relacionesEliminadas.size()} " />
+							<p:outputLabel value="relación."
+								rendered="#{relacionesClienteController.relacionesEliminadas.size() == 1}" />
+							<p:outputLabel value="relaciones."
+								rendered="#{relacionesClienteController.relacionesEliminadas.size() > 1}" />
+						</div>
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgConfirmarEliminacion').hide();" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar"
+							action="#{relacionesClienteController.guardar()}"
+							onclick="PF('dlgConfirmarEliminacion').hide();"
+							update=":frmRelacionesCliente" />
+					</p:dialog>
+
+					<p:dialog id="dlgOperacionExitosa" widgetVar="dlgOperacionExitosa"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="Resultado">
+						<span class="ui-messages-exito-icon exito-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Las relaciones se modificaron correctamente."
+							rendered="#{((relacionesClienteController.relacionesModificadas.size() > 0 and (relacionesClienteController.relacionesAgregadas.size() == 0 and relacionesClienteController.relacionesEliminadas.size() == 0)) or (relacionesClienteController.relacionesModificadas.size() > 0 and (relacionesClienteController.relacionesAgregadas.size() > 0 or relacionesClienteController.relacionesEliminadas.size() > 0)) or (relacionesClienteController.relacionesModificadas.size() == 0 and (relacionesClienteController.relacionesAgregadas.size() > 0 and relacionesClienteController.relacionesEliminadas.size() > 0)))}" />
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Las relaciones se dieron de alta correctamente."
+							rendered="#{relacionesClienteController.relacionesAgregadas.size() > 0 and (relacionesClienteController.relacionesModificadas.size() == 0 and relacionesClienteController.relacionesEliminadas.size() == 0)}" />
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Las relaciones se eliminaron correctamente."
+							rendered="#{relacionesClienteController.relacionesEliminadas.size() > 0 and (relacionesClienteController.relacionesAgregadas.size() == 0 and relacionesClienteController.relacionesModificadas.size() == 0)}" />
+						<div class="clear"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgOperacionExitosa').hide();"
+							action="#{relacionesClienteController.refrescarPagina()}" />
+					</p:dialog>
+
+					<p:dialog id="dlgOperacionFallida" widgetVar="dlgOperacionFallida"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="Resultado">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{relacionesClienteController.mensajeOperacionFallida}" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgOperacionExitosa').hide();"
+							action="#{relacionesClienteController.refrescarPagina()}" />
+					</p:dialog>
+					
+					<p:dialog id="dlgOperacionFallidaSinRefresh" widgetVar="dlgOperacionFallidaSinRefresh"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="Resultado">
+						<span class="ui-messages-error-icon error-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{relacionesClienteController.mensajeOperacionFallida}" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha" immediate="true"
+							update=":frmRelacionesCliente"
+							action="#{relacionesClienteController.consultarPersonasRelacionadas()}"
+							value="Aceptar" oncomplete="PF('dlgOperacionFallidaSinRefresh').hide();" />
+					</p:dialog>
+					
+					<p:dialog id="dlgDuplicados" widgetVar="dlgDuplicados"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="Resultado">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención!. #{relacionesClienteController.mensajeRelDuplicado}" />
+
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgDuplicados').hide();" />
+					</p:dialog>
+					
+					<p:dialog id="dlgFaltaDatos" widgetVar="dlgFaltaDatos"
+						appendTo="@(body)" closable="false" dynamic="true"
+						draggable="false" modal="true" resizable="false" showEffect="fade"
+						hideEffect="fade" header="Resultado">
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención!. El titular de la cuenta no puede ser vacío. Por favor busca el titular de la cuenta con el botón Buscar persona." />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Aceptar" onclick="PF('dlgFaltaDatos').hide();" />
+					</p:dialog>
+					
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

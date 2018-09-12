@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<!-- Mapeo de clases -->
+	<mapping map-id="consultaActividadEmpresarial" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.webservices.consultadatosempresarialespersona.ResponseBansefi.OTRPECONSCOMPLEMPRTR.TRPECONSCOMPLEMPREVT
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.beans.ActividadEmpresarialBean
+		</class-b>
+		<field>
+		 	<a>codtpempresa</a>
+			<b>tipoEmpresa</b>
+		</field>
+		<field>
+		 	<a>codseccnaepe</a>
+			<b>sectorEconomico</b>
+		</field>
+		<field>
+		 	<a>numemplpe</a>
+			<b>numEmpleados</b>
+		</field>
+		<field>
+		 	<a>numsucpe</a>
+			<b>numSucursales</b>
+		</field>
+		<field>
+		 	<a>numsocpe</a>
+			<b>numSocios</b>
+		</field>
+		<field>
+		 	<a>cuotamercadope</a>
+			<b>cuotaMercado</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fecvacdesdepe</a>
+			<b>inicioVacacional</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fecvachastape</a>
+			<b>finVacacional</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fecinisocpe</a>
+			<b>inicioSociedad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fecfinsocpe</a>
+			<b>finSociedad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.ObtenerParteFechaConverter" custom-converter-param="dd">
+		 	<a>feccierreejpe</a>
+			<b>diaCierreEjercicio</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.ObtenerParteFechaConverter" custom-converter-param="MM">
+		 	<a>feccierreejpe</a>
+			<b>mesCierreEjercicio</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fectransfpe</a>
+			<b>fechaTransformacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fecultpresestad</a>
+			<b>fechaPresentacion</b>
+		</field>
+		<field>
+		 	<a>jornadalabpe</a>
+			<b>jornadaLaboral</b>
+		</field>
+		<field>
+		 	<a>presporpe</a>
+			<b>presentado</b>
+		</field>
+		<field>
+		 	<a>codcalifinsolv</a>
+			<b>calificacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>feccalipe</a>
+			<b>fechaCalificacion</b>
+		</field>
+		<field>
+		 	<a>soccalipe</a>
+			<b>sociedadCalif</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="altaActividadEmpresarial" wildcard="false"
+		map-null="false" map-empty-string="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.ActividadEmpresarialBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.altadatosempresarialespersona.Ejecutar.ITRPEALTACOMPLEMPRTR.TRPEALTACOMPLEMPREVT
+		</class-b>
+		<field>
+		 	<a>idInterno</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+		 	<a>tipoEmpresa</a>
+			<b>codtpempresa</b>
+		</field>
+		<field>
+		 	<a>sectorEconomico</a>
+			<b>codseccnaepe</b>
+		</field>
+		<field>
+		 	<a>numEmpleados</a>
+			<b>numemplpe</b>
+		</field>
+		<field>
+		 	<a>numSucursales</a>
+			<b>numsucpe</b>
+		</field>
+		<field>
+		 	<a>numSocios</a>
+			<b>numsocpe</b>
+		</field>
+		<field>
+		 	<a>cuotaMercado</a>
+			<b>cuotamercadope</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>inicioVacacional</a>
+			<b>fecvacdesdepe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>finVacacional</a>
+			<b>fecvachastape</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>inicioSociedad</a>
+			<b>fecinisocpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>finSociedad</a>
+			<b>fecfinsocpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToStringConverter">
+		 	<a>fechaCierreEjercicio</a>
+			<b>feccierreejpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fechaTransformacion</a>
+			<b>fectransfpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fechaPresentacion</a>
+			<b>fecultpresestad</b>
+		</field>
+		<field>
+		 	<a>jornadaLaboral</a>
+			<b>jornadalabpe</b>
+		</field>
+		<field>
+		 	<a>presentado</a>
+			<b>presporpe</b>
+		</field>
+		<field>
+		 	<a>calificacion</a>
+			<b>codcalifinsolv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fechaCalificacion</a>
+			<b>feccalipe</b>
+		</field>
+		<field>
+		 	<a>sociedadCalif</a>
+			<b>soccalipe</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="modificacionActividadEmpresarial" wildcard="false"
+		map-null="false" map-empty-string="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.ActividadEmpresarialBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.modificaciondatosempresarialespersona.Ejecutar.ITRPEMODIFCOMPLEMPRT.TRPEMODIFCOMPLEMPREV
+		</class-b>
+		<field>
+		 	<a>tipoEmpresa</a>
+			<b>codtpempresa</b>
+		</field>
+		<field>
+		 	<a>sectorEconomico</a>
+			<b>codseccnaepe</b>
+		</field>
+		<field>
+		 	<a>numEmpleados</a>
+			<b>numemplpe</b>
+		</field>
+		<field>
+		 	<a>numSucursales</a>
+			<b>numsucpe</b>
+		</field>
+		<field>
+		 	<a>numSocios</a>
+			<b>numsocpe</b>
+		</field>
+		<field>
+		 	<a>cuotaMercado</a>
+			<b>cuotamercadope</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>inicioVacacional</a>
+			<b>fecvacdesdepe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>finVacacional</a>
+			<b>fecvachastape</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>inicioSociedad</a>
+			<b>fecinisocpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>finSociedad</a>
+			<b>fecfinsocpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToStringConverter">
+		 	<a>fechaCierreEjercicio</a>
+			<b>feccierreejpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fechaTransformacion</a>
+			<b>fectransfpe</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fechaPresentacion</a>
+			<b>fecultpresestad</b>
+		</field>
+		<field>
+		 	<a>jornadaLaboral</a>
+			<b>jornadalabpe</b>
+		</field>
+		<field>
+		 	<a>presentado</a>
+			<b>presporpe</b>
+		</field>
+		<field>
+		 	<a>calificacion</a>
+			<b>codcalifinsolv</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+		 	<a>fechaCalificacion</a>
+			<b>feccalipe</b>
+		</field>
+		<field>
+		 	<a>sociedadCalif</a>
+			<b>soccalipe</b>
+		</field>
+	</mapping>
+</mappings>

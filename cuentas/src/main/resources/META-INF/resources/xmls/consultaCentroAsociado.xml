@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+        	
+	  <mapping map-id="consultaCentroAsociado" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultaCentroAsociado.ResponseBansefi.OTRCONSUTODASOFIACTR.TRCONSUTODASOFIACEVT
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.CentroAsociadoBean
+		</class-b>
+				
+		<field>
+			<a>codinternouo</a>
+			<b>centro</b>      
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter" custom-converter-param="YYYY">
+			<a>fechainicio</a>
+			<b>fechaInicio</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter" >
+			<a>fechacrre</a>
+			<b>fechaFin</b>
+		</field>
+		<field>
+			<a>codrlacuo</a>
+			<b>codRel</b>      
+		</field>
+	</mapping>
+	
+</mappings>

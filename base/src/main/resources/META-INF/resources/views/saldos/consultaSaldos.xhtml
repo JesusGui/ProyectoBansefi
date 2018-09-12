@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  template="../../templates/plantilla-inicio.xhtml"> 
+	
+	<ui:define name="contenido">
+    <h:body>
+        <div class="container_48">
+            <!-- Se agregó div contenedores -->
+            <div class="contenedor">
+                <div class="contenedor-form">
+                
+                <pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" var="ConstantesFuncionales" />
+
+                    <div class="titulo centrar-objeto btn-inline-set">
+                        <p:commandButton icon="ui-icon-arrow-1-w" immediate="true" action="#{saldosController.irInicio()}"></p:commandButton>
+                        <h1>Consulta de saldos</h1>
+                    </div>
+
+                    <div class="contenedor-campos">
+
+                        <h:form id="formSaldos">
+
+                            <p:outputLabel styleClass="margin-left-10" value="Introduzca el número de cuenta y el cliente que desea consultar su Saldo"></p:outputLabel>
+                            
+                            <div class="margin-top-10"></div>
+
+                            <p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" value="*Campos Obligatorios"></p:outputLabel>
+                            
+                            <div class="margin-top-10"></div>
+
+                            <h:outputText styleClass="txt-campos-oblg grid_40" value="Los campos marcados en rojo son requeridos" rendered="#{facesContext.validationFailed}" />
+
+                                            
+                            <ui:include src="../../composites/detalleCuenta.xhtml">
+                                <ui:param name="detalleCuentaUtils" value="#{saldosController.saldoBean.detalleCuentaUtils}" />
+                                <ui:param name="bean" value="#{saldosController}" />
+                                <ui:param name="action" value="comprobarInterveniente" />
+                                <ui:param name="buscar" value="buscarCuenta" />
+                            </ui:include>
+
+
+                            <div class="clear"></div>
+
+                            <div class="margin-bottom-25"></div>
+
+                        </h:form>
+
+
+                        <ui:include src="../../composites/detalleCuentaDialog.xhtml">
+                            <ui:param name="detalleCuentaUtils" value="#{saldosController.saldoBean.detalleCuentaUtils}" />
+                            <ui:param name="bean" value="#{saldosController}" />
+                            <ui:param name="action" value="continuar" />
+                            <ui:param name="title" value="Consulta movimientos" />
+                        </ui:include>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</ui:define>
+</ui:composition>

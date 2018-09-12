@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="mapeoNotificacion" wildcard="false" map-null="false"
+		trim-strings="true" type="bi-directional">
+		<class-a>
+			mx.babel.arq.sesion.contexto.beans.NotificacionBean
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.base.webservices.mensajes.ResponseBansefi
+		</class-b>
+		<field>
+			<a>clave</a>
+			<b>CLAVE</b>
+		</field>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.base.utils.PrioridadNotificacionConverter">
+			<a>indUrgencia</a>
+			<b>PRIORIDAD</b>
+		</field>
+		<field>
+			<a>entidad</a>
+			<b>ENTIDAD</b>
+		</field>
+		<field>
+			<a>region</a>
+			<b>REGION</b>
+		</field>
+		<field>
+			<a>centro</a>
+			<b>CENTRO</b>
+		</field>
+		<field>
+			<a>terminal</a>
+			<b>TERMINAL</b>
+		</field>
+		<field>
+			<a>destinatario</a>
+			<b>USUARIO</b>
+		</field>
+		<field>
+			<a>texto</a>
+			<b>TEXTO</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>fechaVigenteDesde</a>
+			<b>FECVIGDESDE</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>fechaVigenteHasta</a>
+			<b>FECVIGHASTA</b>
+		</field>
+		<field>
+			<a>usuarioCreacion</a>
+			<b>USUARIOALTA</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>fechaCreacion</a>
+			<b>FECHAALTA</b>
+		</field>
+	</mapping>
+</mappings>

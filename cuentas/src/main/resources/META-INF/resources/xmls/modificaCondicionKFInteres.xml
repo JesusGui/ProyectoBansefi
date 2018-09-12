@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="llamadaModificaCondicionKFInteres" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.modificacondicionkfinteres.Ejecutar.ITRMODIFICARKFINTTRN.TRMODIFICARKFINTEVTY
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionInteresBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KFRESULTFILAE.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KFRESULTFILAE.FECHAINICVAL1</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KFESTRCTINT1V.CODINT</a>
+      <b>tipo</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTFIJV.INTVALOR</a>
+      <b>valorIntFijo</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.INTINCREM</a>
+      <b>diferencialIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.INTMIN</a>
+      <b>interesMinIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.INTMAX</a>
+      <b>interesMaxIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.INTFRECREV</a>
+      <b>frecuenciaRevIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.FRACCIONREV</a>
+      <b>fraccionRevIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.PCTMINREV</a>
+      <b>porcentajeMinRevIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.CODREFINT</a>
+      <b>codReferenciaIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.CODCRITREV</a>
+      <b>codCriterioRevIntVar</b>
+    </field>
+    <field>
+      <a>KFESTRCTINTVARV.FORMAREV</a>
+      <b>formaRevIntVar</b>
+    </field>
+  </mapping>
+</mappings>

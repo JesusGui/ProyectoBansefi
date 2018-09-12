@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+		
+		<pe:importEnum type="mx.babel.bansefi.banksystem.base.beans.domain.TipoCliente" var="TipoCliente" />
+		<ui:param name="masDatosVisbility" value="false" />
+		
+		    <p:outputLabel id="nombre_cliente" rendered="#{!tipoRendered}"
+		    	styleClass="#{fichaClienteController.claseTipoPersona(persona)} margin-left-10" value="#{persona.getNombreCompleto()}" />
+			<h:outputLabel id="identificacion_cliente" rendered="#{!tipoRendered}"
+				value=" #{fichaClienteController.getIdentificacion(persona)}"/>
+			<div class="clear-row"></div>	
+            <div class="sin-margen #{tipoRendered? 'marco-datospersonales':'marco-datosrepresentante'}">				
+				<h:outputLabel value="#{fichaClienteController.getTipoDescripcion(persona)}" rendered="#{tipoRendered and fichaClienteController.muestraTipo(persona.getTipoClienteEnum())}"/>
+				<div class="clear"></div>
+			    <h:outputLabel value="RFC: " rendered="#{notGrupo}"/>
+			    <h:outputLabel styleClass="bold" value="#{persona.rfc}" id="rfc" rendered="#{notGrupo}"/>
+			    <div class="clear"></div>
+			    <h:panelGroup rendered="#{notGrupo}">
+				    <h:outputLabel value="ID. INTERNA: " />
+				    <h:outputLabel styleClass="bold" value="#{persona.idInterna}" id="id_interno" />
+			    </h:panelGroup>
+			     <h:panelGroup rendered="#{!notGrupo}">
+				    <h:outputLabel value="TIPO GRUPO: " />
+				    <h:outputLabel styleClass="bold" value="#{fichaClienteController.obtenerTipoGrupo(persona.tipoGrupo)}" id="tipoGrupo" />
+			    </h:panelGroup>
+			    <div class="clear"></div>
+			    <h:outputLabel value="DOMICILIO: " rendered="#{notGrupo}"/>
+			    <h:outputLabel styleClass="bold" value="#{fichaClienteController.getDireccion(persona)}" id="domicilio" rendered="#{notGrupo}"/>
+			    <div class="clear"></div>
+			    <h:outputLabel value="TELÉFONO: " rendered="#{notGrupo}"/>
+			    <h:outputLabel styleClass="bold" value="#{fichaClienteController.getTelefono(persona)}" id="telefono" rendered="#{notGrupo}"/>
+			    <div class="clear"></div>
+			    <h:outputLabel id="label_fecha_nacimiento" value="#{fichaClienteController.getLabelFecha(persona)} " />
+			    <h:outputLabel styleClass="bold" value="#{persona.obtenerFechaNac()}" id="fecha_nacimiento" >
+			    </h:outputLabel>
+			    <div class="clear"></div>
+			    <h:panelGroup rendered="#{fichaClienteController.cliente.tipoClienteEnum.codPe == 'F'}">
+				    <h:outputLabel value="ID INTEGRANTE: " rendered="#{persona.idIntegrante != null}"/>
+				    <h:outputLabel styleClass="bold" value="#{persona.idIntegrante}" id="idIntegrante" rendered="#{persona.idIntegrante != null}"/>
+				    <div class="clear"></div>
+			    </h:panelGroup>
+			    <c:if test="#{(fichaClienteController.cliente.tipoClienteEnum.codPe == 'E') or (fichaClienteController.cliente.tipoClienteEnum.codPe == 'F' and fichaClienteController.cliente.isGestor)}">
+						<h:outputLabel value="Nombre de gestor: "/>
+					    <h:outputLabel styleClass="bold" value="#{fichaClienteController.cliente.datosGestor.nombreGestor}" id="nombreGestor" />
+					    <div class="clear"></div>
+					    <h:outputLabel value="#{fichaClienteController.cliente.datosGestor.indicadorExterno == '1' ? 'Externo':'Interno'} tipo: "/>
+					    <h:outputLabel styleClass="bold" value="#{fichaClienteController.cliente.datosGestor.tipoGestor}" id="tipoGestor" />
+					    <div class="clear"></div>
+					    <h:outputLabel value="Estado:"/>
+					    <h:outputLabel styleClass="bold" value="#{fichaClienteController.cliente.datosGestor.estado}" id="estadoGestor" />
+					    <div class="clear"></div>
+					    <h:outputLabel value="Fecha de alta:"/>
+					    <h:outputLabel styleClass="bold" value="#{fichaClienteController.cliente.datosGestor.fechaAlta}" id="fechaAltaGestor">
+					    	<f:convertDateTime pattern="dd/MM/yyyy" />
+					    </h:outputLabel>
+					    <div class="clear"></div>
+					</c:if>
+                    <!--<p:commandButton id="modificarDatos" styleClass="btn_secundario btn-icono bottom-right" icon="ui-icon-modify" title="Modificar datos"-->
+                    	<!--action="#{fichaClienteController.modificarCliente(persona)}"></p:commandButton>-->
+            </div>
+	
+</ui:composition>

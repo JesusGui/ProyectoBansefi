@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<!-- Mapeo de clases -->
+	<mapping map-id="consultaDetalleAnotacion" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultaanotaciones.ResponseBansefi.OTRANCONSDATOSDPTRN.TRANCONSDATOSDPEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.AnotacionBean
+		</class-b>
+		<field>
+			<a>anantcne.codantcn</a>
+			<b>tipo</b>
+		</field>
+		<field>
+			<a>anantcne.subcdantcn</a>
+			<b>subcodigo</b>
+		</field>
+		<field>
+			<a>anantcne.numeroantcn</a>
+			<b>numero</b>
+		</field>
+		<field>
+			<a>anantcne.codgrpantcn</a>
+			<b>area</b>
+		</field>		
+		<field>
+			<a>anantcne.txtlarga</a>
+			<b>descripcionLarga</b>
+		</field>
+		<field>
+			<a>anantcne.txtbreve</a>
+			<b>descripcionCorta</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>anantcne.fechacrre</a>
+			<b>fechaCierre</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>anantcne.fechainicio</a>
+			<b>fechaInicio</b>
+		</field>		
+		<field>
+			<a>anantcne.codecvantcn</a>
+			<b>codEstadoAnotacion</b>
+		</field>
+		<field>
+			<a>anantcne.indprdad</a>
+			<b>prioridad</b>
+		</field>
+		<field>
+			<a>anantcne.dstnantcn</a>
+			<b>dirigidoA</b>
+		</field>
+		<field>
+			<a>anemplorigenv.idinternoemplep</a>
+			<b>idEmpleado</b>
+		</field>
+		<field>
+			<a>anemplorigenv.nomb50</a>
+			<b>nombreEmpleado</b>
+		</field>						
+	</mapping>		
+	
+	<mapping map-id="listadoAnotacion" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultalistaanotaciones.ResponseBansefi.OTRANCONSANOTMTRNO.TRANCONSANOTMEVTZ.ANANTCNE</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.AnotacionBean</class-b>
+		<field>
+			<a>numeroantcn</a>
+			<b>numero</b>
+		</field>
+		<field>
+			<a>codantcn</a>
+			<b>tipo</b>
+		</field>
+		<field>
+			<a>txtbreve</a>
+			<b>descripcionCorta</b>
+		</field>
+		<field>
+			<a>txtlarga</a>
+			<b>descripcionLarga</b>
+		</field>
+		<field>
+			<a>codecvantcn</a>
+			<b>codEstadoAnotacion</b>
+		</field>
+		<field>
+			<a>subcdantcn</a>
+			<b>subcodigo</b>
+		</field>
+		<field>
+			<a>indprdad</a>
+			<b>prioridad</b>
+		</field>
+		<field>
+			<a>dstnantcn</a>
+			<b>dirigidoA</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechacrre</a>
+			<b>fechaCierre</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechainicio</a>
+			<b>fechaInicio</b>
+		</field>
+	</mapping>
+	
+	<mapping map-id="anotacionesComposite" wildcard="false" map-null="true" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.anotacionesCuenta.ResponseBansefi.OTRINFORAVISOSANTRNO.STDANAVMSJV.STDANAVMSJLS</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.AnotacionBean</class-b>
+		<field>
+			<a>numeroantcn</a>
+			<b>numero</b>
+		</field>
+		<field>
+			<a>codantcn</a>
+			<b>tipo</b>
+		</field>
+		<field>
+			<a>descripantcnv[0].stdchar11</a>
+			<b>codEstadoAnotacion</b>
+		</field>
+		<field>
+			<a>indprdad</a>
+			<b>prioridad</b>
+		</field>
+		<field>
+			<a>descindprdadv[0].stdchar07</a>
+			<b>identificadorBusqueda</b>
+		</field>
+		<field>
+			<a>subcdantcn</a>
+			<b>subcodigo</b>
+		</field>
+		<field>
+			<a>stddescrcantcnv[0].stdchar30</a>
+			<b>descripcionCorta</b>
+		</field>
+	</mapping>	
+	
+</mappings>

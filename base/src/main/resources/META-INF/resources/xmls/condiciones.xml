@@ -1,0 +1,1543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<!-- Mapeo de clases -->
+	<mapping map-id="consultaCuentaTramo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionTramoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaInteres" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionInteresBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaComision" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionComisionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaValorLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaValorRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaDefault" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.CondicionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaRangoValorMinimo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTRNGV[0].RNGMIN</a>
+      <b>minimo</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCuentaValorRangoValor" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacuenta.ResponseBansefi.OTRCONSULTAACUERDOTRN.TRCONSULTAACUERDOEVTZ.TRCONSVALMSVKAEVTZ.KACDAC1V
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTVRNGV[0].RNGVALOR</a>
+      <b>valor</b>
+    </field>
+  </mapping>
+	<!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaTramo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionTramoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaInteres" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionInteresBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaComision" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionComisionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaValorLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaValorRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaDefault" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.CondicionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaRangoValorMinimo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTRNGV[0].RNGMIN</a>
+      <b>minimo</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaProdSimplesPorCuentaValorRangoValor" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultaproductossimplesporcuenta.ResponseBansefi.OTRPRESENTACIONACTRNO.TRPRESENTACIONACEVTZ.TRCONSVALMSVKPEVTZ.KACDAC1V
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTVRNGV[0].RNGVALOR</a>
+      <b>valor</b>
+    </field>
+  </mapping>
+  
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFTramo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionTramoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFInteres" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionInteresBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFComision" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionComisionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFValorLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFValorRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFDefault" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.CondicionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>  
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFRangoValorMinimo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTRNGV[0].RNGMIN</a>
+      <b>minimo</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosPeticionIPFValorRangoValor" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatospeticionipf.ResponseBansefi.OTRDATOSPETIMPSCNPAG.TRDATOSPETIMPSCNPAGE.TRDATOSPETIMPSCNPAGE1
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTVRNGV[0].RNGVALOR</a>
+      <b>valor</b>
+    </field>
+  </mapping>
+  
+  
+  <mapping map-id="consultaCondicionesCuentaTramo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionTramoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaInteres" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionInteresBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaComision" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionComisionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaValorLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaValorRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaDefault" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V.KACDACE
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.CondicionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKA</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaRangoValorMinimo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTRNGV[0].RNGMIN</a>
+      <b>minimo</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaCondicionesCuentaValorRangoValor" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultacondiciones.ResponseBansefi.OTRCONSVALMSVKATRNO.TRCONSVALMSVKAEVTZ.KACDAC1V
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>KAESTRCTVRNGV[0].RNGVALOR</a>
+      <b>valor</b>
+    </field>
+  </mapping>
+  
+  
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFTramo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionTramoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFInteres" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionInteresBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFComision" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionComisionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFValorLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorListaBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFValorRango" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFDefault" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1.IPDATOSCONDV
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.CondicionBean
+    </class-b>
+    <field>
+      <a>IDPARMCD</a>
+      <b>clave</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAINICVAL</a>
+      <b>fechaInicioValidez</b>
+    </field>
+    <field>
+      <a>CODECVKS</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>CODPROFCD</a>
+      <b>codProfCd</b>
+    </field>
+    <field>
+      <a>CODESTRCTCD</a>
+      <b>codEstrctCd</b>
+    </field>
+    <field>
+      <a>INDCDAC</a>
+      <b>indCdAc</b>
+    </field>
+  </mapping>  
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFRangoValorMinimo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionRangoBean
+    </class-b>
+    <field>
+      <a>KSESTRCTRNGV[0].RNGMIN</a>
+      <b>minimo</b>
+    </field>
+  </mapping>
+  <!-- Mapeo de clases -->
+  <mapping map-id="consultaDatosIPFValorRangoValor" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.base.webservices.consultadatosipf.ResponseBansefi.OTRDATOSRENIMPSCNPAG.TRDATOSRENIMPSCNPAGE.TRDATOSRENIMPSCNPAGE1
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.CondicionValorRangoBean
+    </class-b>
+    <field>
+      <a>KSESTRCTVRNGV[0].RNGVALOR</a>
+      <b>valor</b>
+    </field>
+  </mapping>
+  
+</mappings>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaDetalleDiarioElectronico" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoResultadoBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.webservices.consultadetallediarioelectronico.Ejecutar</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="yyyy-MM-dd">
+			<a>fechaContable</a>
+			<b>icondia02I.fecha</b>
+		</field>
+		<field>
+			<a>id</a>
+			<b>icondia02I.idtask</b>
+		</field>
+		<field>
+			<a>centro</a>
+			<b>icondia02I.centro</b>
+		</field>
+		<field>
+			<a>terminal</a>
+			<b>icondia02I.termin</b>
+		</field>
+		<field>
+			<a>entidad</a>
+			<b>icondia02I.entidad</b>
+		</field>
+
+	</mapping>
+	<mapping map-id="respuestaDetalleDiarioElectronico" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.webservices.consultadetallediarioelectronico.ResponseBansefi</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoDetalleRespuestaBean</class-b>
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.oficina.converters.DiarioElectronicoDetalleEntradasConverter"  >
+			<a>ocondia02O.campoentrada</a>
+			<b>camposEntradas</b>
+		</field>		
+		<field
+			custom-converter="mx.babel.bansefi.banksystem.oficina.converters.DiarioElectronicoDetalleSalidasConverter"  >
+			<a>ocondia02O.campossalida</a>
+			<b>camposSalidas</b>
+		</field>		
+
+	</mapping>
+	<mapping map-id="consultaDiarioElectronico" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoBusquedaBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.webservices.consultadiarioelectronico.Ejecutar</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="yyyy-MM-dd">
+			<a>contableDesde</a>
+			<b>fechadesde</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="yyyy-MM-dd">
+			<a>contableHasta</a>
+			<b>fechahasta</b>
+		</field>
+		<field>
+			<a>importeDesde</a>
+			<b>importedesde</b>
+		</field>
+		<field>
+			<a>importeHasta</a>
+			<b>importehasta</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="HH.mm.ss">
+			<a>tecleoDesde</a>
+			<b>horaini</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="HH.mm.ss">
+			<a>tecleoHasta</a>
+			<b>horafin</b>
+		</field>
+		<field>
+			<a>signoContable</a>
+			<b>signo</b>
+		</field>
+		<field>
+			<a>tipoOperacion</a>
+			<b>tipooperacion</b>
+		</field>
+		<field>
+			<a>cuenta</a>
+			<b>acuerdo</b>
+		</field>
+		<field>
+			<a>usuario</a>
+			<b>usuario</b>
+		</field>
+
+	</mapping>
+	<mapping map-id="respuestaDiarioElectronico" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.webservices.consultadiarioelectronico.ResponseBansefi</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoResultadoBean</class-b>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="yyyy-MM-dd">
+			<a>fecha</a>
+			<b>fechaContable</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="HH.mm.ss">
+			<a>horainicio</a>
+			<b>horaTecleo</b>
+		</field>
+		<field>
+			<a>idtask</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a>secuencia</a>
+			<b>numSecuencia</b>
+		</field>
+		<field>
+			<a>entidad</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>centro</a>
+			<b>centro</b>
+		</field>
+		<field>
+			<a>termin</a>
+			<b>terminal</b>
+		</field>
+		<field>
+			<a>usuario</a>
+			<b>usuario</b>
+		</field>
+		<field>
+			<a>servicio</a>
+			<b>debeHaber</b>
+		</field>
+		<field>
+			<a>estatusoperacion</a>
+			<b>respuesta</b>
+		</field>
+		<field>
+			<a>acuerdo</a>
+			<b>cuenta</b>
+		</field>
+		<field>
+			<a>tipooperacion</a>
+			<b>tipoOperacion</b>
+		</field>
+		<field>
+			<a>importe</a>
+			<b>importe</b>
+		</field>
+		<field>
+			<a>codigo</a>
+			<b>codigo</b>
+		</field>
+		<field>
+			<a>terminanul</a>
+			<b>terminalAnulacion</b>
+		</field>
+		<field>
+			<a>usuarioanul</a>
+			<b>usuarioAnulacion</b>
+		</field>
+		<field>
+			<a>servicanul</a>
+			<b>servicioAnulacion</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter" custom-converter-param="HH.mm.ss">
+			<a>horaanul</a>
+			<b>fechaAnulacion</b>
+		</field>
+		<field>
+			<a>idtaskanul</a>
+			<b>numeroSecuenciaAnulacion</b>
+		</field>
+		
+	</mapping>
+	<mapping map-id="traspasoTotalDatosDiarioElectronico" wildcard="true" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoDetalleRespuestaBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoDetalleRespuestaBean</class-b>
+		<field-exclude>
+			<a>unificacion</a>
+			<b>unificacion</b>
+		</field-exclude>		
+	</mapping>
+	<mapping map-id="traspasoInicialDatosDiarioElectronico" wildcard="false"
+		map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoResultadoBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.oficina.beans.DiarioElectronicoDetalleRespuestaBean</class-b>
+		<field>
+			<a>id</a>
+			<b>idTransaccion</b>
+		</field>
+		<field>
+			<a>terminal</a>
+			<b>terminal</b>
+		</field>
+		<field>
+			<a>usuario</a>
+			<b>usuario</b>
+		</field>
+		<field>
+			<a>centro</a>
+			<b>centro</b>
+		</field>
+		<field>
+			<a>fechaContable</a>
+			<b>fechaContable</b>
+		</field>
+		<field>
+			<a>horaTecleo</a>
+			<b>horaTecleo</b>
+		</field>
+		<field>
+			<a>cuenta</a>
+			<b>noCuenta</b>
+		</field>
+		<field>
+			<a>importe</a>
+			<b>importe</b>
+		</field>
+		<field>
+			<a>numSecuencia</a>
+			<b>noSecuencia</b>
+		</field>
+		<field>
+			<a>debeHaber</a>
+			<b>debeHaber</b>
+		</field>
+		<field>
+			<a>tipoOperacion</a>
+			<b>tipoOperacion</b>
+		</field>	
+		<field>
+			<a>respuesta</a>
+			<b>respuesta</b>
+		</field>	
+	</mapping>
+</mappings>

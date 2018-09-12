@@ -1,0 +1,105 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+<ui:define name="contenido">
+
+    <h:body>
+        <div class="contenedor">
+            <div class="contenedor-form col-30">
+
+                <div class="titulo">
+                    <p:commandButton icon="ui-icon-home" action="#{anulacionApunteController.cancelar()}" immediate="true" ></p:commandButton>   
+                    <p:commandButton icon="ui-icon-print" action="#{altaApunteController.generaPlantillaDeposito()}" immediate="true" ></p:commandButton>                  
+                </div>
+
+                <h:form>
+
+                    <div class="contenedor-campos">
+
+                        <div class="margin-bottom-20"></div>
+
+                        <p:outputLabel value="Ha anulado un " />
+                        <p:outputLabel styleClass="detalle" value="#{anulacionApunteController.apuntesBean.tipoApunte}" />
+                        <div class="clear"></div>
+                        
+                        <p:outputLabel value="de cuenta " />
+                        <div class="clear"></div>
+                        
+                        <p:outputLabel styleClass="detalle" value="#{anulacionApunteController.apuntesBean.numCuenta}" />
+                        <div class="clear"></div>
+
+                        <p:outputLabel value="con titular:" />
+                        <div class="clear"></div>
+                                           
+                        <p:outputLabel styleClass="detalle" value="#{anulacionApunteController.apuntesBean.titular}" />
+                        <div class="clear"></div>
+
+                       	<p:outputLabel value="por valor de:" />
+                       	<div class="clear"></div>
+                       	
+                        <h:outputText styleClass="detalle" value="#{anulacionApunteController.apuntesBean.importe}">
+                        	<f:convertNumber type="currency" currencySymbol="MXN" />
+                        </h:outputText>
+                        <div class="clear"></div>
+
+                     
+                        <div class="margin-bottom-20"></div>
+
+                       <p:outputLabel value="Código de operación: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.obtenerCodigoOperacion()}" />
+                        <div class="clear"></div>
+                        
+                        <p:outputLabel value="Código de transacción: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.tipoApunte}" />
+                        <div class="clear"></div>
+                        
+                        <p:outputLabel value="ID transacción: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.numTransaccion}" />
+                        <div class="clear"></div>
+                        
+                        <p:outputLabel value="Concepto: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.concepto}" />
+                        <div class="clear"></div>
+                        
+                        <p:outputLabel value="Fecha valor: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.fechaValor}">
+                        	 <f:convertDateTime  pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                        
+                        <p:outputLabel value="Fecha operacion: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.fechaOperacion}">
+                        	 <f:convertDateTime  pattern="dd/MM/yyyy"/>
+                        </p:outputLabel>
+                        
+                        <p:outputLabel value="Hora operacion: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.horaOperacion}" />
+                        
+                        <p:outputLabel value="Terminal: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.terminal}" />
+                        
+                        <p:outputLabel value="Entidad: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.puesto}" />
+                        
+                        <p:outputLabel value="Centro: " />
+                        <p:outputLabel styleClass="resumen-detalle" value="#{anulacionApunteController.apuntesBean.centro}" />
+                    </div>
+
+                    <div class="margin-top-20"></div>
+
+                    <p:commandButton styleClass="btn_secundario margin-top-10" value="Inicio" 
+                        	action="#{anulacionApunteController.cancelar()}" immediate="true"/>
+                    <p:commandButton styleClass="btn_primario float-right margin-top-10" value="Realizar Nueva anulación" 
+                        	action="#{anulacionApunteController.inicio()}" immediate="true"/>
+                </h:form>
+            </div>
+        </div>
+
+    </h:body>
+
+</ui:define>
+</ui:composition>

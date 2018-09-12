@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:pe="http://primefaces.org/ui/extensions"
+	  xmlns:cc="http://java.sun.com/jsf/composite/composites">
+  <head>
+	<title>Composite valor interes</title>
+  </head>
+  <body>
+	<composite:interface>
+      <composite:attribute name="id"></composite:attribute>
+	  <composite:attribute name="validezFrom" required="true" ></composite:attribute>
+	  <composite:attribute name="validezTo"></composite:attribute>
+	  <composite:attribute name="esTipoFijo" type="java.lang.Boolean" default="true"></composite:attribute>
+    <composite:attribute name="baseCalculoDesc"></composite:attribute>
+	  <composite:attribute name="valorFijo"></composite:attribute>
+    <composite:attribute name="preferenteFijo" required="true"></composite:attribute>
+    <composite:attribute name="minimoFijo"></composite:attribute>
+    <composite:attribute name="maximoFijo"></composite:attribute>
+    <composite:attribute name="multiplosFijo"></composite:attribute>
+	  <composite:attribute name="valorActual"></composite:attribute>
+	  <composite:attribute name="referencia"></composite:attribute>
+	  <composite:attribute name="criterio"></composite:attribute>
+	  <composite:attribute name="frec"></composite:attribute>
+	  <composite:attribute name="forma"></composite:attribute>
+	  <composite:attribute name="fechaRev"></composite:attribute>
+	  <composite:attribute name="diferencial"></composite:attribute>
+	  <composite:attribute name="minimo"></composite:attribute>
+	  <composite:attribute name="maximo"></composite:attribute>
+	  <composite:attribute name="fraccion"></composite:attribute>
+	  <composite:attribute name="porcentaje"></composite:attribute>
+    <composite:attribute name="editable" default="true"></composite:attribute>
+	</composite:interface>
+	<composite:implementation>
+	  <div id="#{(empty cc.attrs.id)?cc.clientId:cc.attrs.id}" >
+		<p:outputLabel styleClass="margin-left-10" value="Base del cálculo: #{cc.attrs.baseCalculoDesc}"></p:outputLabel>
+		<div class="clear-row"></div>
+	
+          <cc:periodoValidez from="#{cc.attrs.validezFrom}" to="#{cc.attrs.validezTo}"
+             editable="#{cc.attrs.editable}"></cc:periodoValidez>
+            
+<!-- Interes Fijo -->
+<!-- Valor -->
+          <h:panelGroup layout="block" styleClass="grid_6" rendered="#{cc.attrs.esTipoFijo}">          
+              <p:message id="rangeToVal" for="valorFijo" display="icon"></p:message>
+          	<p:outputLabel for="valorFijo" value="Valor:" />
+          	<div class="clear-3"></div>
+	        <pe:inputNumber emptyValue="0" id="valorFijo"  decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+							 value="#{cc.attrs.valorFijo}" minValue="0" maxValue="100.000" required="#{param['disableValidation']==null}"
+							 styleClass="arq-update" disabled="#{not cc.attrs.editable}">							 
+                   <f:attribute name="minRange" value="#{cc.attrs.minimoFijo}" />
+                   <f:attribute name="maxRange" value="#{cc.attrs.maximoFijo}" />
+                   <f:validator validatorId="bigDecimalRangeValidator" />
+					</pe:inputNumber>
+          </h:panelGroup>
+          <div class="clear-row"></div>
+<!-- Fin Valor -->
+          <h:panelGroup rendered="#{cc.attrs.esTipoFijo and ((not empty cc.attrs.preferente)
+        or (not empty cc.attrs.minimoFijo) or (not empty cc.attrs.maximoFijo) or (not empty cc.attrs.incremento))}">
+              <p:outputLabel styleClass="azul-b margin-left-10" value="Estándar de producto" />
+              
+              <div class="clear-row"></div>
+        <!-- Minimo -->
+              <div class="grid_8">
+                    <p:outputLabel for="minimoFijo" value="Mínimo" />
+                    <div class="clear-3"></div>
+                    <pe:inputNumber emptyValue="0" id="minimoFijo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                       value="#{cc.attrs.minimoFijo}" disabled="true">
+                    </pe:inputNumber>
+              </div>
+        <!-- Fin Minimo -->
+                  
+                  
+        <!-- Maximo -->
+              <div class="grid_8">
+                    <p:outputLabel for="maximoFijo" value="Máximo" />
+                    <div class="clear-3"></div>
+                    <pe:inputNumber emptyValue="0" id="maximoFijo" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                   value="#{cc.attrs.maximoFijo}" disabled="true">
+                </pe:inputNumber>
+              </div>
+        <!-- Fin Maximo -->
+                  
+                  
+        <!-- Preferente -->
+              <div class="grid_8">
+                      <p:outputLabel for="preferente" value="Preferente" />
+                      <div class="clear-3"></div>
+                      <pe:inputNumber emptyValue="0" id="preferente" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                           value="#{cc.attrs.preferenteFijo}" disabled="true">
+                      </pe:inputNumber>
+              </div>
+        <!-- Fin Preferente -->
+        
+        <!-- Multiplos -->
+              <div class="grid_8">
+                    <p:outputLabel for="multiplos" value="Múltiplos" />
+                    <div class="clear-3"></div>
+                    <pe:inputNumber emptyValue="0" id="multiplos" thousandSeparator="," decimalPlaces="2" decimalSeparator="." 
+                       value="#{cc.attrs.multiplosFijo}" disabled="true">
+                </pe:inputNumber>
+              </div>
+        <!-- Fin Multiplos -->
+        </h:panelGroup>
+     
+<!-- Fin Interes Fijo -->
+<!-- Interes Variable -->
+        <h:panelGroup rendered="#{not cc.attrs.esTipoFijo}">
+<!-- Valor Actual-->
+        	<h:panelGroup layout="block" styleClass="grid_6">
+        		<p:outputLabel for="valorActual" value="Valor actual" />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="valorActual" decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+					 value="#{cc.attrs.valorActual}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Valor Actual-->
+<!-- Referencia-->
+        	<h:panelGroup layout="block" styleClass="grid_6">
+        		<p:outputLabel for="referencia" value="Referencia" />
+        		<div class="clear-3"></div>
+        		<p:selectOneMenu id="referencia" value="#{cc.attrs.referencia}" disabled="true">
+	            	<f:selectItems itemDisabled="true" value="#{catalogoUtils.getCatalogo('TP_REF_INT')}" var="entry"
+        				itemValue="#{entry.claveFila}" itemLabel="#{entry.descripcionL}" />
+	       		</p:selectOneMenu>
+        	</h:panelGroup>
+<!-- Fin Referencia-->
+<!-- Criterio-->
+        	<h:panelGroup layout="block" styleClass="grid_24">
+        		<p:outputLabel for="criterio" value="Criterio Rev." />
+        		<div class="clear-3"></div>
+	       		<p:inputMask id="criterio" value="#{catalogoUtils.getCatalogoDesc('TP_CRIT_REV',cc.attrs.criterio)}"
+	       		  disabled="true"></p:inputMask>
+        	</h:panelGroup>
+<!-- Fin Criterio -->
+<!-- Frecuencia Revision-->
+        	<h:panelGroup layout="block" styleClass="grid_6">
+        		<p:outputLabel for="frec" value="Frec. Rev." />
+        		<div class="clear-3"></div>
+            <p:inputMask id="frec" value="#{catalogoUtils.getCatalogoDesc('FREC_REV_PERIOD', cc.attrs.frec)}" disabled="true"></p:inputMask>
+        	</h:panelGroup>
+<!-- Fin Frecuencia Revision-->
+<!-- Forma Revision-->
+        	<h:panelGroup layout="block" styleClass="grid_6">
+        		<p:outputLabel for="forma" value="Forma Rev." />
+        		<div class="clear-3"></div>
+            <p:inputMask id="forma" value="#{catalogoUtils.getCatalogoDesc('FORM_REVISION', cc.attrs.forma)}" disabled="true"></p:inputMask>
+        	</h:panelGroup>
+        	<div class="clear-row"></div>
+<!-- Fin Forma Revision-->
+        </h:panelGroup>
+        <h:panelGroup rendered="#{not cc.attrs.esTipoFijo}">
+<!-- Fecha revision-->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="fechaRev" value="Fecha 1ª Rev." />
+        		<div class="clear-3"></div>
+					  <p:inputText id="fechaRev" value="#{(cc.attrs.fechaRev eq '')?null:cc.attrs.fechaRev}" disabled="true">
+	            <f:convertDateTime pattern="dd/MM/yyyy" />
+	          </p:inputText>
+        	</h:panelGroup>
+<!-- Fin Fecha revision-->
+<!-- Diferencial-->
+        	<h:panelGroup layout="block" styleClass="grid_8">        	          
+            <p:message id="rangeToValDif" for="diferencial" display="icon"></p:message>
+        		<p:outputLabel for="diferencial" value="Diferencial" />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="diferencial" decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+					   value="#{cc.attrs.diferencial}" minValue="0" maxValue="100.000" required="#{param['disableValidation']==null}"
+					   styleClass="arq-update" disabled="#{not cc.attrs.editable}">
+                   <f:attribute name="minRange" value="#{cc.attrs.minimo}" />
+                   <f:attribute name="maxRange" value="#{cc.attrs.maximo}" />
+                   <f:validator validatorId="bigDecimalRangeValidator" />
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Diferencial-->
+<!-- Minimo-->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="minimo" value="Mínimo" />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="minimo" decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+					 value="#{cc.attrs.minimo}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Minimo-->
+<!-- Maximo-->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="maximo" value="Máximo" />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="maximo" decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+					 value="#{cc.attrs.maximo}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Maximo-->
+<!-- Fraccion-->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="fraccion" value="Fracción Rev." />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="fraccion" decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+					 value="#{cc.attrs.fraccion}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Fraccion-->
+<!-- Porcentaje-->
+        	<h:panelGroup layout="block" styleClass="grid_8">
+        		<p:outputLabel for="porcentaje" value="% Mínimo Rev." />
+        		<div class="clear-3"></div>
+        		<pe:inputNumber emptyValue="0" id="porcentaje" decimalPlaces="3" decimalSeparator="." thousandSeparator=","
+					 value="#{cc.attrs.porcentaje}" disabled="true">
+				</pe:inputNumber>
+        	</h:panelGroup>
+<!-- Fin Porcentaje-->
+        </h:panelGroup>
+<!-- Fin Interes Variable -->
+	  </div>
+	</composite:implementation>
+  </body>
+</html>

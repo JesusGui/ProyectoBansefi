@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+   <!-- Mapeo de clases -->
+   <mapping  map-id="busquedaDomicilio" wildcard="false" map-null="false" trim-strings="true">
+   		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioTipoBean</class-a>
+   		<class-b>mx.babel.bansefi.banksystem.base.beans.busqueda.DomiciliosClienteBusquedaBean</class-b>
+   		<field>
+   			<a>stringGrouping</a>
+   			<b>tipo</b>
+   		</field>
+   		<field>
+   			<a>nombreCalle</a>
+   			<b>calle</b>
+   		</field>   		
+   		<field>
+   			<a>numeroDireccion</a>
+   			<b>numeroDireccion</b>
+   		</field>
+   </mapping>
+   
+	<mapping map-id="domicilio" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.webservices.consultadomicilio.ResponseBansefi.OTRPECONSDOMICTRNO.TRPECONSDOMICEVTZ
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioTipoBean
+		</class-b>
+		<field>
+			<a>numtlfnodomic</a>
+			<b>telefono</b>
+		</field>
+		<field>
+			<a>codregimocup</a>
+			<b>regimenOcupacion</b>
+		</field>
+		<field>
+			<a>codpostalag</a>
+			<b>codigoPostal</b>
+		</field>
+		<field>
+			<a>codvia</a>
+			<b>tipoCalle</b>
+		</field>
+		<field>
+			<a>codargeo</a>
+			<b>codArGeo</b>
+		</field>
+		<field>
+			<a>numargeo</a>
+			<b>numArGeo</b>
+		</field>
+		<field>
+   			<a>numdir</a>
+   			<b>numeroDireccion</b>
+   		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="01">
+			<a>compdomicv</a>
+			<b>nombreCalle</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="02">
+			<a>compdomicv</a>
+			<b>numeroExterior</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="03">
+			<a>compdomicv</a>
+			<b>interior</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="04">
+			<a>compdomicv</a>
+			<b>entrada</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="05">
+			<a>compdomicv</a>
+			<b>departamento</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="06">
+			<a>compdomicv</a>
+			<b>casa</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="07">
+			<a>compdomicv</a>
+			<b>bloque</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="08">
+			<a>compdomicv</a>
+			<b>fase</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="09">
+			<a>compdomicv</a>
+			<b>edificio</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="10">
+			<a>compdomicv</a>
+			<b>colonia</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="11">
+			<a>compdomicv</a>
+			<b>unidadHabitacional</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="12">
+			<a>compdomicv</a>
+			<b>manzana</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="13">
+			<a>compdomicv</a>
+			<b>lote</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.wrappers.utils.DomicilioConverter" custom-converter-param="99">
+			<a>compdomicv</a>
+			<b>otrosDatos</b>
+		</field>
+	</mapping>
+	<mapping map-id="domicilioTipoBean" wildcard="true" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioBean</class-a>
+		<class-b>mx.babel.bansefi.banksystem.base.beans.domain.DomicilioBean</class-b>
+		<field-exclude>
+			<a>numeroDireccion</a>
+			<b>numeroDireccion</b>
+		</field-exclude>
+	</mapping>
+	
+</mappings>

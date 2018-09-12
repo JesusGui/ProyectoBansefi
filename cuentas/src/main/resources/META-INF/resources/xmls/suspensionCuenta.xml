@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="llamadaModificaCondicionValorLista" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>mx.babel.bansefi.banksystem.cuentas.beans.SuspenderCuentaBean</class-a>
+    <class-b>mx.babel.bansefi.banksystem.cuentas.webservices.suspendercuenta.Ejecutar.ITRSUSPENDERACTRNI.TRSUSPENDERACEVTY</class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>fechaDesde</a>
+      <b>FDESDEHASTAV.stdfecha</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>fechaHasta</a>
+      <b>FDESDEHASTAV.stdfecha2</b>
+    </field>
+    <field>
+      <a>fechaAnteriorDesde</a>
+      <b>FDESDEHASTAANTERIORV.stdfecha</b>
+    </field>
+    <field>
+      <a>fechaAnteriorHasta</a>
+      <b>FDESDEHASTAANTERIORV.stdfecha2</b>
+    </field>
+    <field>
+      <a>horaPlanificada</a>
+      <b>horaplanif</b>
+    </field>
+    <field>
+      <a>cuentaBean.entidad</a>
+      <b>ACACP.codnrbeen</b>
+    </field>
+    <field>
+      <a>cuentaBean.centro</a>
+      <b>ACACP.codcentuo</b>
+    </field>
+    <field>
+      <a>cuentaBean.numeroCuenta</a>
+      <b>ACACP.numsecac</b>
+    </field>
+  </mapping> 
+</mappings>

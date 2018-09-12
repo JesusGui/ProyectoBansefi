@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	
+	<div class="grid_40">
+		<p:messages showDetail="true" for="detalleCuenta" autoUpdate="true" escape="false" closable="false" />
+    </div>
+
+<div class="grid_40 alpha">
+	    	
+	<h:panelGroup id="panelAnotaciones" rendered="#{detalleCuentaUtils.anotaciones != null and detalleCuentaUtils.anotaciones.size() > 0}">
+		<div class="ui-messages-warn anotaciones">
+			<h3>Anotaciones</h3>
+			<div class="clear"></div>
+			<div class="contenedor-wrap">
+				<c:forEach var="anotacion" items="#{detalleCuentaUtils.anotaciones.subList(0,bean.anotacionesVisibles)}">
+					<div class="#{anotacion.prioridad.equals(ConstantesFuncionales.COD_PRIORIDAD_ANOTACION_ALTA)? 'elementos-anotaciones anotaciones-aviso':'elementos-anotaciones'}">
+						<p:commandLink value="#{bean.getTipoAnotacion(anotacion.tipo)}:
+							#{(anotacion.descripcionCorta != null and anotacion.descripcionCorta.trim().length() != 0) ? anotacion.descripcionCorta : bean.obtenerSubCodigoAnotacion(anotacion.subcodigo)}"
+							action="#{bean.detalleAnotacion(anotacion)}" process="@this"/>
+						<h:outputLabel rendered="#{anotacion.respuestas != null and !anotacion.respuestas.isEmpty()}" ><i class="fa fa-reply margin-left-5"></i></h:outputLabel>
+					</div>
+				</c:forEach>
+			</div>
+			<div class="margin-bottom-15"></div>
+			<p:commandButton styleClass="btn-mostrar float-right"
+				icon="fa fa-angle-down" value="Ver todas las anotaciones"
+				action="#{bean.mostrarTodasAnotaciones()}" immediate="true"
+				update="@form" proccess="@this"
+				rendered="#{detalleCuentaUtils.anotaciones.size() gt bean.anotacionesVisibles}"/>
+													
+				<p:commandButton styleClass="btn-mostrar float-right"
+					icon="fa fa-angle-up" value="Ocultar anotaciones"
+					action= "#{bean.establecerAnotacionesVisibles()}" immediate="true"
+					update="@form" proccess="@this"
+					rendered="#{(detalleCuentaUtils.anotaciones.size() eq bean.anotacionesVisibles) and
+					(detalleCuentaUtils.anotaciones.size() gt 6)}"/>
+		</div>
+	</h:panelGroup>
+	    	
+	
+	          
+		<div class="grid_9">
+	        <p:outputLabel value="N° de cuenta" for="cuentaConsulta" />
+	        <div class="clear-3"></div>
+	        <p:inputMask id="cuentaConsulta" value="#{detalleCuentaUtils.numeroCuenta}" label="Cuenta" maxlength="10" required="true">
+	            <pe:keyFilter regEx="/[0-9_]/i" preventPaste="false"/>
+	            <p:ajax event="blur" listener="#{bean.buscaTitular()}" 
+	            	update="titularLabel titularCuenta titularCuentaError 
+	            		realizarConsulta cuentaConsulta @form" global="false"></p:ajax>
+	        </p:inputMask>
+	    </div>
+	    
+	    <div class="grid_3">
+	    	<div class="label-vacio"></div>
+	    	<div class="clear-3"></div>
+	    	<p:commandButton id="btnBuscarCuenta" styleClass="btn-icono-conbackground" icon="ui-icon-search" immediate="true" action="#{bean[buscar]}" title="Buscar cuenta"></p:commandButton>
+	    </div>
+	    
+	    <div class="grid_36">
+	    	<h:outputLabel styleClass="mensaje-incorrecto" id="titularCuentaError" value="El número de cuenta es incorrecto" 
+	        	style="display:#{detalleCuentaUtils.muestraTitularError ? 'block' : 'none' }"/>
+	        <h:outputLabel id="titularLabel" value="Titular de la cuenta:"/>
+	        <div class="clear-3"></div>
+	        <div class="input-label-valor">
+	        	<h:outputLabel styleClass="label-valor" id="titularCuenta" value="#{detalleCuentaUtils.nombreTitular}" 
+	        	style="display:#{detalleCuentaUtils.muestraTitular ? 'flex' : 'none' }" />
+	        </div>
+	        
+	    </div>
+	    
+	    <div class="clear-row"></div>
+	
+	    <div class="grid_28">
+	    	<div class="grid_33 alpha">
+		        <p:outputLabel value="Identificación" for="tipoIdentificacion" />
+		        <div class="clear-3"></div>
+		        <p:selectOneMenu id="tipoIdentificacion" value="#{detalleCuentaUtils.codigoDocumento}" required="true">
+		        	<p:ajax event="change" update="tipoIdentificacion" global="false" />  
+		            <f:selectItem itemLabel="Seleccione un valor" itemDisabled="true" />
+		            <c:forEach items="#{detalleCuentaUtils.codigosIdentificacion}" var="item">
+						<c:if test="#{item.claveFila != 'F3'}">
+							<f:selectItem
+								itemValue="#{item.claveFila}"
+		                		itemLabel="#{item.descripcionL}" />
+						</c:if>
+					</c:forEach>
+		        </p:selectOneMenu>
+		    	</div>
+	
+		    <div class="grid_15">
+		        <div class="label-vacio"></div>
+		        <div class="clear-3"></div>
+		        <p:inputMask placeholder="Número" id="idExterno" value="#{detalleCuentaUtils.idExterno}" required="true" maxlength="14">
+		        	<p:ajax event="change" update="idExterno" global="false" />  
+		        	<pe:keyFilter regEx="/^[a-zA-Z0-9áéíóúÁÉÍÓÚ\- ]*$/" />
+		        </p:inputMask>
+		    </div>
+		</div>
+</div>
+
+	<div class="clear"></div>
+
+	<div class="posicion-absoluta-btn">
+
+    <p:commandButton styleClass="btn-consultar" id="realizarConsulta" value="Consultar" icon="fa fa-search" 
+    update="@form :dlgAvisoNoRelacionado" validateClient="true" action="#{bean[action]}"/>
+	
+</div>
+
+</ui:composition>

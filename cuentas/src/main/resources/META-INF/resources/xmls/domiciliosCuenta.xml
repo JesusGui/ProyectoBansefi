@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaDomiciliosCuenta" wildcard="false" trim-strings="true" map-null="false">
+		<class-a>mx.babel.bansefi.banksystem.cuentas.webservices.consultadomicilioscuenta.ResponseBansefi.OTRCONSUDIRACTRNO.TRCONSUDIRACEVTZ.DATOSDIRPERV</class-a>
+		<class-b>mx.babel.bansefi.banksystem.cuentas.beans.DomicilioCuentaBean</class-b>
+		<field>
+			<a>nomb50</a>
+			<b>nombreCliente</b>
+		</field>
+		<field>
+			<a>domic50</a>
+			<b>domicilio</b>
+		</field>
+		<field>
+			<a>nomblocalidadag</a>
+			<b>nombreLocalidad</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+			<a>fechainicio</a>
+			<b>fechaInicio</b>
+		</field>
+		<field>
+			<a>numdir</a>
+			<b>numeroDireccion</b>
+		</field>
+		<field>
+			<a>idinternope</a>
+			<b>idPersona</b>
+		</field>
+		<field>
+			<a>codpersrldir</a>
+			<b>codPersDir</b>
+		</field>
+		<field>
+			<a>codinternouo</a>
+			<b>centro</b>
+		</field>
+	</mapping>
+</mappings>

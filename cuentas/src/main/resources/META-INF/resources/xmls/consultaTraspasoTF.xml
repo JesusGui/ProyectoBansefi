@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaTraspasoTF" wildcard="false"
+		map-null="false" map-empty-string="false" trim-strings="true">
+		<class-a>
+			mx.babel.bansefi.banksystem.cuentas.webservices.consultatraspasotf.ResponseBansefi.OTRPETCNOBTETRFRCIATR.TRPETCNOBTETRFRCIAEVT
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.cuentas.beans.TraspasoTFBean
+   		</class-b>
+    <field>
+      <a>tftrfrciae.numsecdf</a>
+      <b>idTransferencia</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>tftrfrciae.fechapres</a>
+      <b>fechaRecepcion</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>tftrfrciav.fechavalor</a>
+      <b>fechaValor</b>
+    </field>
+    <field>
+      <a>tftrfrciav.efofcnaordnte</a>
+      <b>origenEntidad</b>
+    </field>
+    <field>
+      <a>tftrfrciav.uoordnte</a>
+      <b>origenCentro</b>
+    </field>
+    <field>
+      <a>tfnombresv.nombreordenante</a>
+      <b>origenOrdenante</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>tftrfrciav.fechaalta</a>
+      <b>origenFechaEmision</b>
+    </field>
+    <field>
+      <a>tfctadestv.numsecac</a>
+      <b>destinoCuenta</b>
+    </field>
+    <field>
+      <a>tfctadestv.codcsbof</a>
+      <b>destinoCentro</b>
+    </field>
+    <field>
+      <a>tfnombresv.nombrebnficiario</a>
+      <b>destinoBeneficiario</b>
+    </field>
+     <field>
+      <a>dfdocfncroe.impnominal</a>
+      <b>importe</b>
+    </field>
+      <field>
+      <a>tftrfrciae.txtconceptotf</a>
+      <b>concepto</b>
+    </field>
+     <field>
+      <a>dfdocfncroe.codsitdffot</a>
+      <b>codigoClaseTransaccion</b>
+    </field>    
+     <field>
+      <a>tftrfrciae.refordenantetf</a>
+      <b>referenciaOrdenante</b>
+    </field>
+     <field>
+      <a>tftrfrciae.refbnficiariotf</a>
+      <b>referenciaBeneficiario</b>
+    </field>
+     <field>
+      <a>tftrfrciae.idextpa</a>
+      <b>idBeneficiario</b>
+    </field>
+     <field>
+      <a>tftrfrciae.codidextpers</a>
+      <b>tipoIdBeneficiario</b>
+    </field>
+     <field>
+      <a>tftrfrciav.codmotdevtfcsb</a>
+      <b>codigoMotivoDevolucion</b>
+    </field>   
+  </mapping>
+ 
+</mappings>

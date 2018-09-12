@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoDatosDetalleIPF" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultadatosdetalleipf.ResponseBansefi.OTRCONSIMPSCNINDIVTRN.TRCONSIMPSCNINDIVEVT.TRCONSIMPSCNINDIVEVT1</class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.DatosDetalleIPFBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>FECHAVALOR</a>
+      <b>fechaApertura</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>IPFECHAVTOV.STDFECHA</a>
+      <b>fechaVencimiento</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>IPPROXLIQV.STDFECHA</a>
+      <b>fechaProxLiq</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>IPFULTLIQV.STDFECHA</a>
+      <b>fechaUltLiq</b>
+    </field>
+    <field>
+      <a>IDTRAMEADO</a>
+      <b>trameado</b>
+    </field>
+    <field>
+      <a>IPDURACIPV.RNGVALOR</a>
+      <b>duracion</b>
+    </field>
+    <field>
+      <a>IPDURACIPV.CODUM</a>
+      <b>duracionUds</b>
+    </field>
+    <field>
+      <a>IPFRECLIQIPV.RNGVALOR</a>
+      <b>freqLiquidacion</b>
+    </field>
+    <field>
+      <a>IPFRECLIQIPV.CODUM</a>
+      <b>freqLiquidacionUds</b>
+    </field>
+    <field>
+      <a>IMPSDO</a>
+      <b>importe</b>
+    </field>
+    <field>
+      <a>IPINTERESV.CODREFINT</a>
+      <b>interesVCodRefInt</b>
+    </field>
+    <field>
+      <a>IPINTERESV.INTVALOR</a>
+      <b>interesVIntValor</b>
+    </field>
+    <field>
+      <a>IPINTERESV.INTINCREM</a>
+      <b>interesVIntIncrem</b>
+    </field>
+    <field>
+      <a>CODECVIMPSCN</a>
+      <b>estado</b>
+    </field>
+  </mapping>
+</mappings>

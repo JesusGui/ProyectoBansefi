@@ -1,0 +1,257 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formDiario" styleClass="contenedor-form">
+						<!--título d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+						<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{diarioElectronicoController.volver()}"></p:commandButton>
+							<h1>Diario electrónico</h1>
+						</div>
+						<div class="contenedor-campos">
+							<h3 class="azul-b">CONSULTA TRANSACCIONES</h3>
+							<div class="margin-top-10"></div>
+							<p:outputLabel
+								value="Para ver más información haga clic en la transacción que desea consultar"></p:outputLabel>
+							<div class="margin-top-20"></div>
+
+							<div class="centrar-objeto">
+								<div class="cuadra col-40">
+									<p:outputLabel value="Total debe:"></p:outputLabel>
+									<p:outputLabel styleClass="float-right"
+										value="#{diarioElectronicoController.calculaTotalDeberHaber('D')}">
+										<f:convertNumber type="currency" groupingUsed="true"
+											maxFractionDigits="2" maxIntegerDigits="12"
+											minIntegerDigits="1" minFractionDigits="2" currencyCode="MXN" />
+									</p:outputLabel>
+								</div>
+								<div class="clear-3"></div>
+								<div class="cuadra col-40">
+									<p:outputLabel value="Total haber:"></p:outputLabel>
+									<p:outputLabel styleClass="float-right"
+										value="#{diarioElectronicoController.calculaTotalDeberHaber('H')}">
+										<f:convertNumber type="currency" groupingUsed="true"
+											maxFractionDigits="2" maxIntegerDigits="12"
+											minIntegerDigits="1" minFractionDigits="2" currencyCode="MXN" />
+									</p:outputLabel>
+								</div>
+							</div>
+
+							<div class="clear-row"></div>
+
+							<div class="grid_48 tabla-posicion">
+								<p:dataTable id="diarioTable" var="diarioBeanList"
+									value="#{diarioElectronicoController.diarioBeanListPagina}"
+									draggableColumns="false" resizableColumns="false"
+									rowStyleClass="#{diarioElectronicoController.getEntryStyle(diarioBeanList.respuesta)}"
+									selectionMode="single"
+									selection="#{diarioElectronicoController.selectedRow}"
+									rowKey="#{diarioBeanList.id}"
+									emptyMessage="LA BÚSQUEDA NO ORIGINÓ NINGÚN RESULTADO">
+									<f:facet name="header">
+										<p:commandButton id="toggler" type="button" value="Columnas"
+											icon="fa fa-table" styleClass="float-right btn-sin-fondo" />
+										<p:columnToggler datasource="diarioTable" trigger="toggler" />
+
+										<!-- 									<p:tooltip id="toolTipExcel" for="btnExcel" value="Exportar Excel" /> -->
+									</f:facet>
+									<p:ajax event="rowSelect"
+										listener="#{diarioElectronicoController.mostrarDetalle}"
+										update="@all" immediate="true" />
+
+
+									<!-- 								<p:column headerText="Fecha de Operación"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.fechaOperacion}"> -->
+									<!-- 										<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+									<!-- 									</h:outputText> -->
+									<!-- 								</p:column> -->
+
+									<p:column headerText="FECHA CONTABLE"  >
+										<h:outputText value="#{diarioBeanList.fechaContable}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
+
+									<!-- 								<p:column headerText="FECHA VALOR"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.fechaValor}"> -->
+									<!-- 										<f:convertDateTime pattern="dd/MM/yyyy" /> -->
+									<!-- 									</h:outputText> -->
+									<!-- 								</p:column> -->
+
+									<p:column headerText="HORA DE TECLEO"  >
+										<h:outputText value="#{diarioBeanList.horaTecleo}">
+											<f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City"/>
+										</h:outputText>
+									</p:column>
+
+									<!-- 								<p:column headerText="Hora de Operación"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.horaInicio}" /> -->
+									<!-- 								</p:column> -->
+
+									<!-- 								<p:column headerText="Puesto"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.puesto}" /> -->
+									<!-- 								</p:column> -->
+
+									<p:column headerText="Nº CUENTA"  >
+										<h:outputText value="#{diarioBeanList.cuenta}" />
+									</p:column>
+
+									<p:column headerText="IMPORTE">
+										<h:outputText styleClass="float-right"
+											value="#{diarioBeanList.importe}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2"
+												currencyCode="MXN" />
+										</h:outputText>
+									</p:column>
+
+									<!-- 								<p:column headerText="Transacción"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.tipoOperacion}" /> -->
+									<!-- 								</p:column> -->
+
+									<!-- 								<p:column headerText="CLOB"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.clob}" /> -->
+									<!-- 								</p:column> -->
+
+									<!-- 								<p:column headerText="SUBCLOB"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.subclob}" /> -->
+									<!-- 								</p:column> -->
+
+									<p:column headerText="D/H">
+										<h:outputText value="#{diarioBeanList.debeHaber}" />
+									</p:column>
+
+									<!-- 								<p:column headerText="C/I"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.cajaIntervencion}" /> -->
+									<!-- 								</p:column> -->
+
+									<!-- 								<p:column headerText="Situación"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.situacion}" /> -->
+									<!-- 								</p:column> -->
+
+									<p:column headerText="ESTADO">
+										<h:outputText value="#{diarioBeanList.codigo}" />
+									</p:column>
+
+									<p:column headerText="TERMINAL">
+										<h:outputText value="#{diarioBeanList.terminal}" />
+									</p:column>
+
+									<p:column headerText="USUARIO">
+										<h:outputText value="#{diarioBeanList.usuario}" />
+									</p:column>
+
+									<p:column headerText="CENTRO">
+										<h:outputText value="#{diarioBeanList.centro}" />
+									</p:column>
+
+									<p:column headerText="TIPO DE OPERACIÓN"  >
+										<h:outputText value="#{diarioBeanList.tipoOperacion}" />
+									</p:column>
+
+									<p:column headerText="Nº DE SECUENCIA"  >
+										<h:outputText value="#{diarioBeanList.numSecuencia}" />
+									</p:column>
+
+									<!-- 								<p:column headerText="Usuario Autorizado"> -->
+									<!-- 									<h:outputText value="#{diarioBeanList.usuario}" /> -->
+									<!-- 								</p:column> -->
+								</p:dataTable>
+
+								<div class="margin-top-10"></div>
+
+								<p:outputLabel
+									styleClass="referencia-color-estado-sinrespuesta float-right">"Sin respuesta"</p:outputLabel>
+								<p:outputLabel
+									styleClass="referencia-color-estado-mal float-right margin-right-10">"Mal"</p:outputLabel>
+								<p:outputLabel
+									styleClass="referencia-color-estado-bien float-right margin-right-10">"Bien"</p:outputLabel>
+								<p:outputLabel styleClass="float-right margin-right-10">Tipo de respuesta:</p:outputLabel>
+
+							</div>
+							
+
+							<div class="clear"></div>
+							<div class="margin-top-20"></div>
+							<div class="centrar-objeto">
+								<p:commandButton value="Ver más datos" styleClass="btn-mostrar"
+									icon="fa fa-refresh" iconPos="right"
+									update="@form"
+									action="#{diarioElectronicoController.verMas()}" validateClient="true"
+									rendered="#{diarioElectronicoController.isMasDatos()}">
+								</p:commandButton>								
+							</div>
+
+						</div>
+						<div class="margin-top-10"></div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario" value="Cancelar"
+							action="#{diarioElectronicoController.cancelar()}" />
+						<p:commandButton styleClass="btn_primario float-right"
+							value="Realizar otra consulta"
+							action="#{diarioElectronicoController.inicio()}" />
+					</h:form>
+				</div>
+
+				<!-- Dialogo para confirmar la anulación de la operación -->
+				<p:dialog widgetVar="dlgConfirmacionAnulacion" showEffect="fade" hideEffect="fade"
+					id="dlgConfirmacionAnulacion" appendTo="@(body)"
+					header="Confirmación de anulación" modal="true" visible="false"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-exito-icon exito-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="La operación ha sido anulada correctamente." />
+					<div class="clear"></div>
+					<div class="margin-bottom-20"></div>
+					<!--<p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="" value="Cancelar" action="" />-->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						id="confirmar" value="Aceptar"
+						onclick="PF('dlgConfirmacionAnulacion').hide();"
+						update=":formDiario" immediate="true" />
+				</p:dialog>
+				
+				<!-- 			Dialogo para indicar que ocurrio un error al consultar el detalle -->
+			<p:dialog widgetVar="dlgErrorDetalle" showEffect="fade" hideEffect="fade"
+					appendTo="@(body)" header="Error consulta" modal="true" visible="false"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-error-icon error-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="Ocurrió un error al consultar el detalle del movimiento." />
+					<div class="clear"></div>
+					<div class="margin-bottom-20"></div>
+					<!--<p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="" value="Cancelar" action="" />-->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						 value="Aceptar"
+						onclick="PF('dlgErrorEtalle').hide();"
+						update=":formDiario" immediate="true" />
+				</p:dialog>
+			</div>
+
+			<!-- <script src="../../js/custom_table.js"></script>
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$('div[id$=diarioTable]').tablabansefi();
+				});
+			</script> -->
+		</h:body>
+	</ui:define>
+</ui:composition>

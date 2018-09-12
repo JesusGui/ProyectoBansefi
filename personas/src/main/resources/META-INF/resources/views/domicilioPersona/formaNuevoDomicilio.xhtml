@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente">
+
+	<p:panel id="panelNuevoDomicilio" styleClass="panel-dinamico nuevo"
+		rendered="#{'nuevo' eq domicilioPersonaController.tipoAlta and domicilioPersonaController.renderAnadirDomicilio}"
+		header="">
+		<f:facet name="actions">
+			<p:commandButton styleClass="btn-icono btn-panel btn-eliminar"
+				icon="ui-icon-trash" alt="Eliminar domicilio"
+				title="Eliminar domicilio" immediate="true" update="@form"
+				process="@form"
+				actionListener="#{domicilioPersonaController.cancelarNuevoDomicilio()}"
+				partialSubmit="true" />
+		</f:facet>
+		<h:panelGroup layout="block" styleClass="grid_48">
+			<div class="grid_22">
+				<p:message id="msgComparteTags" for="comparteTags" display="icon" />
+				<p:outputLabel for="comparteTags" value="Tipo de domicilio"></p:outputLabel>
+				<div class="clear-3"></div>
+				<p:selectManyCheckbox styleClass="checkTipoDomicilio"
+					value="#{domicilioPersonaController.domicilioController.domicilioBean.tagsTipoDomicilio}"
+					required="true" id="comparteTags">
+					<f:selectItem itemLabel="Habitual" itemValue="HABITUAL"
+						itemDisabled="#{domicilioPersonaController.isPersonaMoral() or domicilioPersonaController.isDomicilioHabitual(-1)}" />
+					<f:selectItem itemLabel="Fiscal" itemValue="FISCAL"
+						itemDisabled="#{domicilioPersonaController.isDomicilioFiscal(-1)}" />
+					<f:selectItem itemLabel="Postal" itemValue="POSTAL" />
+					<f:selectItem itemLabel="Social" itemValue="SOCIAL"
+						itemDisabled="#{domicilioPersonaController.isPersonaFisica() or domicilioPersonaController.isDomicilioSocial(-1)}" />
+					<!-- 										<f:selectItem itemLabel="Habitual" itemValue="HABITUAL" -->
+					<!-- 											itemDisabled="#{domicilioPersonaController.isPersonaMoral()}" /> -->
+					<!-- 										<f:selectItem itemLabel="Fiscal" itemValue="FISCAL" /> -->
+					<!-- 										<f:selectItem itemLabel="Postal" itemValue="POSTAL" /> -->
+					<!-- 										<f:selectItem itemLabel="Social" itemValue="SOCIAL" -->
+					<!-- 											itemDisabled="#{domicilioPersonaController.isPersonaFisica()}" /> -->
+					<p:ajax process="@this" partialSubmit="true" update="@(.checkTipoDomicilio)"
+						global="false" immediate="true" />
+				</p:selectManyCheckbox>
+			</div>
+			<!-- ROW -->
+			<div class="grid_14">
+				<p:message id="msgRegimenOcupacion" for="altaRegimenOcupacion"
+					display="icon" />
+				<p:outputLabel value="Regimen de ocupación"
+					for="altaRegimenOcupacion"></p:outputLabel>
+				<div class="clear-3"></div>
+				<p:selectOneMenu
+					value="#{domicilioPersonaController.domicilioController.domicilioBean.codigoRegimenOcupacion}"
+					required="true" id="altaRegimenOcupacion">
+					<f:selectItem itemLabel="Seleccione un regimen de ocupación"
+						itemValue="" />
+					<f:selectItems
+						value="#{catalogoUtils.getCatalogo('TP_OCUPACION_VIV')}"
+						var="item" itemValue="#{item.claveFila}"
+						itemLabel="#{item.descripcionL}" />
+					<p:ajax process="@this" partialSubmit="true" />
+				</p:selectOneMenu>
+			</div>
+			<div class="grid_8">
+				<p:message id="msgAltaTelefono" for="altaTelefono" display="icon" />
+				<p:outputLabel value="Teléfono" for="altaTelefono"></p:outputLabel>
+				<div class="clear-3"></div>
+				<p:inputText
+					value="#{domicilioPersonaController.domicilioController.domicilioBean.telefono}"
+					maxlength="12" required="true" id="altaTelefono">
+				</p:inputText>
+				<pe:keyFilter for="altaTelefono" regEx="/^[0-9\.\(\)\-\ ]*$/" />
+				<!-- 					<pe:keyFilter for="altaTelefono" regEx="/^[\d]*$/" /> -->
+				
+			</div>
+			<!-- ROW -->
+			<div class="clear-row"></div>
+			<componente:domicilio controller="#{domicilioPersonaController}"
+				append="Nuevo" codigoPostalRequerido="true"
+				municipioRequerido="true" tipoCalleRequerido="true"
+				calleRequerido="true" numExtRequerido="true" coloniaRequerido="true" />
+
+
+			<div class="clear"></div>
+		</h:panelGroup>
+		<div class="clear"></div>
+	</p:panel>
+</ui:composition>

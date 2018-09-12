@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/plantilla-inicio.xhtml">
+    <ui:define name="contenido">
+        <h:body>
+            <div class="container_48">
+				<h:outputScript name="/js/datosAdicionales.js" />
+                <div class="contenedor">
+                    <!--inicia el hform-->
+                    <h:form id="formDatosAdicionales" styleClass="contenedor-form">
+                    	<pe:importConstants className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales" var="ConstantesFuncionales" />
+                    	
+                    	<div class="titulo centrar-objeto btn-inline-set">
+                            <!--botón atras-->
+                            <h:commandButton class="btn-titulo-atras" value="" title="Volver atrás" action="#{datosAdicionalesController.redirectHome()}"></h:commandButton>
+                            <p:commandButton icon="ui-icon-arrow-1-w"></p:commandButton>
+                            <div>
+                            <h2>
+		                        <h:outputFormat styleClass="gris-b" value="Ampliar otros datos de "></h:outputFormat>
+		                        <h:outputFormat styleClass="rojo-b" value="#{datosAdicionalesController.cuentaBean.tipoCuenta} "></h:outputFormat>
+		                        <h:outputFormat styleClass="gris-b sub-h" value="(#{datosAdicionalesController.cuentaBean.numeroCuenta})"></h:outputFormat>
+                        	</h2>
+                        	</div>
+                        </div>
+                        
+                            <div class="contenedor-campos">
+                            	<h:outputLabel styleClass="txt-campos-oblg grid_40"
+											value="Los campos marcados en rojo son requeridos"
+											rendered="#{facesContext.validationFailed}" />
+											
+                               <p:outputLabel rendered="false" styleClass="txt-campo-obligatorio margin-left-10" value="*Campos Obligatorios"></p:outputLabel>
+                               <div class="margin-top-10"></div>
+                               <p:dataScroller styleClass="despliegue-datos-adicionales" id="lstData" var="dato" value="#{datosAdicionalesController.datosAdicionales}">
+								
+										<h:panelGroup layout="block" styleClass="grid_8 margin-top-10 grupo-campo-datos" rendered="#{dato.indicadorEstructura eq ConstantesFuncionales.ESTR_CUENTA}" >
+												<div class="campo-datos-adicionales">
+												<p:message for="txtCuenta" display="icon" />
+												<p:outputLabel value="#{dato.informacionAdicional}:" />
+												<div class="clear-3"></div>
+												<p:inputMask id="txtCuenta" value="#{dato.valor}" maxlength="10"> 
+													<pe:keyFilter regEx="/[0-9_]/i" />
+												</p:inputMask>
+												</div>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="grid_24 margin-top-10 grupo-campo-datos" rendered="#{dato.indicadorEstructura eq ConstantesFuncionales.ESTR_TEXTO}" >
+												<div class="campo-datos-adicionales">
+												<p:message for="txtTexto" display="icon" />
+												<p:outputLabel value="#{dato.informacionAdicional}:" for="txtTexto"/>
+												<div class="clear-3"></div>
+												<p:inputText id="txtTexto" value="#{dato.valor}" maxlength="40" required="#{dato.requerido}">
+												</p:inputText>
+												</div>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="grid_9 margin-top-10 grupo-campo-datos" rendered="#{dato.indicadorEstructura eq ConstantesFuncionales.ESTR_CENTRO}" >
+												<div class="campo-datos-adicionales">
+												<p:message for="txtIdCentro" display="icon" />
+												<p:outputLabel value="#{dato.informacionAdicional}:" for="txtIdCentro"/>
+												<div class="clear-3"></div>
+												<p:inputMask id="txtIdCentro" value="#{dato.valor}" maxlength="4" required="#{dato.requerido}" placeholder="Código"> 
+													<pe:keyFilter regEx="/[0-9_]/i" />
+												</p:inputMask>
+												</div>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="grid_9 margin-top-10 grupo-campo-datos" rendered="#{dato.indicadorEstructura eq ConstantesFuncionales.ESTR_INDICADOR}" >
+												<div class="campo-datos-adicionales">
+												<p:message for="cboIndicador" display="icon" />
+												<p:outputLabel value="#{dato.informacionAdicional}:" />
+												<div class="clear-3"></div>
+												<p:inputSwitch id="cboIndicador" offLabel="No" onLabel="Si"
+													value="#{dato.inputSwitch}" disabled="#{dato.deshabilitado}"/>
+												</div>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="grid_12 margin-top-10 grupo-campo-datos" rendered="#{dato.indicadorEstructura eq ConstantesFuncionales.ESTR_IMPORTE}" >
+												<div class="campo-datos-adicionales">
+												<p:outputLabel value="#{dato.informacionAdicional}:"/>
+												<div class="clear-3"></div>
+												<p:message id="importeDepositoVal" display="icon" for="txtImporte"></p:message>
+												<pe:inputNumber id="txtImporte" value="#{dato.importe}:"
+													label="Importe" maxValue="9999999999999.99" required="false"
+													decimalPlaces="2" decimalSeparator="." thousandSeparator=","
+													styleClass="pe-inputNumber" placeholder="Importe">
+												</pe:inputNumber>
+												<span class="pe-inputNumber-suffix">MXN</span>
+												</div>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="grid_48 margin-top-10 grupo-campo-datos" rendered="#{dato.indicadorEstructura eq ConstantesFuncionales.ESTR_TELEFONO}" >
+											<div class="campo-datos-adicionales">
+											<div class="grid_12 alpha">
+												<p:message for="txtTelefono" display="icon" />
+												<p:outputLabel styleClass="validacion-datosadicionales" value="#{dato.informacionAdicional}:" for="txtTelefono"/>
+												<div class="clear-3"></div>
+												<p:inputMask id="txtTelefono" value="#{dato.valor}" maxlength="10" > 
+													<pe:keyFilter regEx="/[0-9]/i" preventPaste="false"/>
+													<f:validator validatorId="TelefonoDAValidator" disabled="#{param['disableValidation']==true}"/>
+												</p:inputMask>
+											</div>
+											<div class="grid_36"> 
+												<div class="clear-3"></div> 
+					                            <p:outputLabel
+													value='Se ha entregado al cliente el documento de la relación del teléfono con el acuerdo' />
+					                            <div class="grid_14 alpha">
+					                            <div class="clear-3"></div>
+					                            <p:inputSwitch id="telefonoSwitch" offLabel="No" onLabel="Si"
+													value="#{dato.inputSwitch}" />
+					                            </div>
+					                        </div>
+					                        </div>
+										</h:panelGroup>
+								</p:dataScroller>
+                               <div class="clear"></div>
+                            </div> <!--termina contenedor-campos-->
+                            
+                        
+                        <h:commandButton value="Cancelar" styleClass="btn_secundario_input margin-top-10"
+									action="#{datosAdicionalesController.redirectHome()}" immediate="true"/>
+						<p:commandButton value="Guardar" styleClass="btn_primario float-right margin-top-10"
+									actionListener="#{datosAdicionalesController.save()}" update="@form" disabled="#{not datosAdicionalesController.isCuentaActiva()}"/>
+									
+			</h:form>
+			<p:dialog id="dlgTelefono" widgetVar="dlgTelefono"
+				appendTo="@(body)" header="¡Atención!" closable="false"
+				showEffect="fade" hideEffect="fade"
+				 resizable="false" dynamic="true" modal="true">
+
+				<!--icono de la modal -->
+				<span class="ui-messages-info-icon info-dialog"></span>
+				<!--accion a tomar por el usuario styleClass="modal-accion"-->
+				<p:outputLabel styleClass="modal-mensaje"
+					value="¡Atención! Es obligatorio entregar al cliente el documento de Activación/Desactivación/Modificación de la relación del teléfono con la cuenta." />
+				<div class="clear"></div>
+				<!--botones de la modal primarios y secundarios -->
+				<p:commandButton
+					styleClass="btn_principal_dialog_derecha"
+					value="Aceptar"
+					onclick="PF('dlgTelefono').hide();" />
+			</p:dialog>
+			
+			<p:dialog id="dlgModificacion" widgetVar="dlgModificacion"
+				appendTo="@(body)" header="¡Éxito!" closable="false"
+				showEffect="fade" hideEffect="fade"
+				resizable="false" dynamic="true" modal="true">
+
+				<!--icono de la modal -->
+				<span class="ui-messages-exito-icon exito-dialog"></span>
+				<!--accion a tomar por el usuario styleClass="modal-accion"-->
+				<p:outputLabel styleClass="modal-mensaje"
+					value="Los datos se guardaron correctamente." />
+				<div class="clear"></div>
+				
+				<p:outputLabel styleClass="modal-accion"
+					value="¿Desea volver a imprimir el contrato?" 
+					rendered="#{datosAdicionalesController.habilitarImpresion}" />
+				<div class="margin-bottom-20"></div>
+		
+				<!--botones de la modal primarios y secundarios -->
+				<p:commandButton
+					styleClass="btn_secundario_dialog"
+					value="Cerrar"
+					onclick="PF('dlgModificacion').hide();" 
+					rendered="#{datosAdicionalesController.habilitarImpresion and 
+									(datosAdicionalesController.cuentaBean.entidad eq '0166')}"/>
+				
+				<p:commandButton
+					styleClass="btn_principal_dialog_derecha"
+					value="Aceptar"
+					onclick="PF('dlgModificacion').hide();" 
+					rendered="#{!datosAdicionalesController.habilitarImpresion}"/>
+					
+				<p:commandButton
+					styleClass="btn_principal_dialog_derecha"
+					value="Volver a imprimir"
+					action="#{datosAdicionalesController.reimpresion()}" 
+					rendered="#{datosAdicionalesController.habilitarImpresion and 
+									(datosAdicionalesController.cuentaBean.entidad eq '0166')}"/>
+				<div class="margin-bottom-20"></div>
+
+			</p:dialog>
+			
+			<!-- MODAL PARA CUANDO NO SE HAYA REALIZADO CAMBIO ALGUNO -->
+			<p:dialog id="dlgSinModificacion" widgetVar="dlgSinModificacion"
+				appendTo="@(body)" header="¡Éxito!" closable="false"
+				showEffect="fade" hideEffect="fade"
+				resizable="false" dynamic="true" modal="true">
+
+				<!--icono de la modal -->
+				<span class="ui-messages-info-icon info-dialog"></span>
+				<p:outputLabel styleClass="modal-mensaje"
+					value="No se han realizado cambios." />
+				<div class="clear"></div>
+				<p:commandButton
+					styleClass="btn_principal_dialog_derecha"
+					value="Aceptar"
+					onclick="PF('dlgSinModificacion').hide();" />
+				<div class="margin-bottom-20"></div>
+			</p:dialog>
+			
+			<p:dialog appendTo="@(body)" header="¡Atención!" closable="false"
+					showEffect="fade" hideEffect="fade"
+				widgetVar="dlgVolver" resizable="false" dynamic="true" modal="true">
+
+				<!--icono de la modal -->
+				<span class="ui-messages-warn-icon warn-dialog"></span>
+				<!--accion a tomar por el usuario styleClass="modal-accion"-->
+				<p:outputLabel styleClass="modal-mensaje"
+					value="¡Atención! Si continua perderá todos los cambios." />
+				<div class="clear"></div>
+				<p:outputLabel styleClass="modal-accion"
+					value="¿Desea continuar de todos modos?" />
+				<div class="margin-bottom-20"></div>
+				<!--botones de la modal primarios y secundarios -->
+				<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+					value="Cancelar" onclick="PF('dlgVolver').hide()" />
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					value="Continuar" immediate="true"
+					action="#{datosAdicionalesController.regresar()}"
+					widgetVar="btnGuardar" />
+			</p:dialog>
+			
+			<!-- MODAL PARA INDICAR QUE NO SE PUEDE ELIMINAR EL IMPORTE -->
+			<p:dialog appendTo="@(body)" header="¡Atención!" closable="false"
+					showEffect="fade" hideEffect="fade"
+					widgetVar="dlgImporte" resizable="false" dynamic="true" modal="true">
+				<!--icono de la modal -->
+				<span class="ui-messages-warn-icon warn-dialog"></span>
+				<!--accion a tomar por el usuario styleClass="modal-accion"-->
+				<p:outputLabel styleClass="modal-mensaje"
+					value="¡Atención! No puede eliminar un importe previamente capturado. Por favor introduzca un valor mayor a 0.00" />
+				<div class="clear"></div>
+				<!--botones de la modal primarios y secundarios -->
+				<p:commandButton
+					styleClass="btn_principal_dialog_derecha"
+					value="Aceptar"
+					onclick="PF('dlgImporte').hide();" />
+			</p:dialog>
+			
+			</div>
+			</div>
+		</h:body>
+	</ui:define>
+</ui:composition>

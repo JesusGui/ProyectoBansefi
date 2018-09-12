@@ -1,0 +1,243 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:outputScript name="/js/personas.js" />
+
+		<h:body onload="acordionCentro();clonarBean();">
+			<div class="container_48">
+				<div class="contenedor">
+					<div class="contenedor-form">
+						<h:form id="formAltaCentro">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" id="lnkVolver"
+									action="#{altaCentroController.validarCancelar()}">
+									<f:param name="disableValidation" value="true" />
+								</p:commandButton>
+								<h1>#{altaCentroController.modificacion ? 'Modificación' :
+									'Alta'} de centro</h1>
+							</div>
+							<p:remoteCommand name="clonarBean"
+								actionListener="#{altaCentroController.clonarBean()}"></p:remoteCommand>
+							<div class="contenedor-campos">
+								<!--agregar-campos-->
+								<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+									value="*Campos Obligatorios"></p:outputLabel>
+
+
+								<div class="margin-top-10"></div>
+								<h:outputText styleClass="txt-campos-oblg"
+									value="Los campos marcados en rojo son requeridos"
+									rendered="#{facesContext.validationFailed}" />
+								<p:accordionPanel widgetVar="accordionCentro" multiple="true"
+									dynamic="true" id="panelDatos" activeIndex="0,1">
+									<p:tab title="Datos del Centro" id="datosCentro">
+
+										<div class="grid_8">
+											<p:outputLabel value="Centro" for="txtIdCentro" />
+											<p:autoComplete id="txtIdCentro"
+												value="#{altaCentroController.altaCentro.numero}"
+												maxlength="4"
+												completeMethod="#{catalogoCentrosLoaderTask.getCodigosCentros}"
+												itemLabel="#{item}" itemValue="#{item}"
+												required="#{param['disableValidation']==null}"
+												placeholder="Código"
+												disabled="#{altaCentroController.modificacion}">
+												<p:ajax global="false" event="blur"
+													listener="#{altaCentroController.formatearCentro()}"
+													update="txtIdCentro" process="@this"></p:ajax>
+											</p:autoComplete>
+											<pe:keyFilter for="txtIdCentro"
+												testFunction="return justNumbers(c);" />
+										</div>
+
+										<div class="grid_16">
+											<p:outputLabel value="Nombre" for="txtNombreCentro" />
+											<p:inputText id="txtNombreCentro"
+												value="#{altaCentroController.altaCentro.nombre}"
+												required="#{param['disableValidation']==null}"
+												placeholder="Nombre" maxlength="36"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\- ]*$/"
+													preventPaste="false" />
+											</p:inputText>
+										</div>
+
+
+										<div class="grid_24">
+											<p:outputLabel value="Modalidad" for="selectModalidad" />
+											<p:selectOneMenu id="selectModalidad"
+												value="#{altaCentroController.altaCentro.modalidad}"
+												style="width:150px"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemLabel="Selecciona una opción" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_MDLDAD_CENT')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_24">
+											<p:outputLabel value="Plaza Bancaria" for="txtPlazaBanc" />
+											<div class="clear"></div>
+											<b:autoComplete
+												value="#{altaCentroController.catalogoSeleccionado}"
+												id="txtPlazaBanc" catalog="TP_PLAZA_BANCARIA" var="item"
+												itemLabel="#{item.descripcionL}" itemValue="#{item}"
+												converter="catalogoConverter" forceSelection="true"
+												required="#{param['disableValidation']==null}">
+												<p:ajax event="query" global="false"></p:ajax>
+											</b:autoComplete>
+										</div>
+
+										<div class="grid_24">
+											<p:outputLabel value="Desg. Ctble." for="selectDesg" />
+											<p:selectOneMenu id="selectDesg"
+												value="#{altaCentroController.altaCentro.desgCtble}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemLabel="Selecciona una opción" itemValue=""
+													noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('DESGLOSE_CTBLE')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="clear-row"></div>
+
+										<div class="grid_8">
+											<p:outputLabel value="¿Es centro controlador?"
+												for="switchControlador" />
+											<div class="clear-3"></div>
+											<p:inputSwitch
+												value="#{altaCentroController.altaCentro.controlador}"
+												id="switchControlador" onLabel="Si" offLabel="No"
+												required="#{param['disableValidation']==null}">
+												<p:ajax global="false" event="change"
+													listener="#{altaCentroController.cambioSwitch()}"
+													update=":formAltaCentro:panelDatos:panelAplicacion"></p:ajax>
+											</p:inputSwitch>
+										</div>
+
+										<h:panelGroup id="panelAplicacion">
+											<div class="grid_24">
+												<p:outputLabel id="outputAplicacion" value="Aplicación"
+													for="cmbAplicacion"
+													rendered="#{altaCentroController.pintarCampoAplicacion}" />
+												<div class="clear"></div>
+												<p:selectCheckboxMenu id="cmbAplicacion"
+													value="#{altaCentroController.aplicacionesSeleccionadas}"
+													label="Selecciona una opción" filter="true"
+													filterMatchMode="contains"
+													rendered="#{altaCentroController.pintarCampoAplicacion}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_CENT_CTRL')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectCheckboxMenu>
+											</div>
+										</h:panelGroup>
+
+										<div class="clear"></div>
+									</p:tab>
+									<p:tab title="Domicilio">
+
+										<div class="grid_10">
+											<p:outputLabel for="regimenOcupacion"
+												value="Régimen de Ocupación"></p:outputLabel>
+											<p:selectOneMenu id="regimenOcupacion"
+												value="#{altaCentroController.domicilioController.domicilioBean.regimenOcupacion}"
+												required="#{param['disableValidation']==null}">
+												<f:selectItem itemValue="#{null}"
+													itemLabel="Seleccione un valor" noSelectionOption="true" />
+												<f:selectItems
+													value="#{catalogoUtils.getCatalogo('TP_OCUPACION_VIV')}"
+													var="item" itemValue="#{item.claveFila}"
+													itemLabel="#{item.descripcionL}" />
+											</p:selectOneMenu>
+										</div>
+
+										<div class="grid_8">
+											<p:outputLabel for="telefono" value="Teléfono"></p:outputLabel>
+											<p:inputMask id="telefono"
+												value="#{altaCentroController.domicilioController.domicilioBean.telefono}"
+												maxlength="14"
+												required="#{param['disableValidation']==null}"
+												onblur="value=value.toUpperCase()">
+												<pe:keyFilter regEx="/[\d\-\.]/" />
+											</p:inputMask>
+										</div>
+										<div class="clear-row"></div>
+
+										<componente:domicilio controller="#{altaCentroController}"
+											codigoPostalRequerido="#{param['disableValidation']==null}"
+											tipoCalleRequerido="#{param['disableValidation']==null}"
+											calleRequerido="#{param['disableValidation']==null}"
+											numExtRequerido="#{param['disableValidation']==null}"
+											coloniaRequerido="#{param['disableValidation']==null}" />
+									</p:tab>
+								</p:accordionPanel>
+							</div>
+							<!--termina contenedor-campos-->
+							<div class="margin-top-10"></div>
+							<p:commandButton styleClass="btn_secundario" value="Cancelar"
+								action="#{altaCentroController.validarCancelar()}"
+								update="formAltaCentro :dlgCancelar">
+								<f:param name="disableValidation" value="true" />
+							</p:commandButton>
+							<p:commandButton styleClass="btn_principal_dialog_derecha"
+								value="Siguiente" update="formAltaCentro :dlgGuardado"
+								ajax="true" action="#{altaCentroController.siguiente()}"></p:commandButton>
+
+						</h:form>
+
+					</div>
+					<!--termina contenedor-form-->
+				</div>
+				<!--termina contenedor-->
+			</div>
+			<!--termina container-48-->
+			<ui:include src="../../composites/listadosDialogo.xhtml">
+				<ui:param name="dialogoGuardado"
+					value="#{altaCentroController.dialogoGuardado}" />
+			</ui:include>
+
+			<p:dialog widgetVar="dlgCancelar" id="dlgCancelar" appendTo="@(body)"
+				header="Cancelar #{altaCentroController.modificacion ? 'modificación' :
+								'alta'} de centro"
+				modal="true" visible="false" closable="false" resizable="false"
+				showEffect="fade" hideEffect="fade" dynamic="true">
+				<span class="ui-messages-info-icon info-dialog"></span>
+				<p:outputLabel styleClass="modal-mensaje"
+					value="¡Atención! Si continua perderá todos los cambios" />
+				<div class="clear"></div>
+				<p:outputLabel styleClass="modal-accion"
+					value="¿Desea continuar de todos modos?" />
+				<div class="margin-bottom-20"></div>
+				<p:commandButton styleClass="btn_principal_dialog_derecha"
+					id="VolverAlta" action="#{altaCentroController.redirigirInicio()}"
+					value="Continuar" immediate="true" />
+				<p:commandButton styleClass="btn_secundario_dialog" id="descartar"
+					value="Cancelar" onclick="PF('dlgCancelar').hide();" />
+
+			</p:dialog>
+
+
+		</h:body>
+	</ui:define>
+
+</ui:composition>

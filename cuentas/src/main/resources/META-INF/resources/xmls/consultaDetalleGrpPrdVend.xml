@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="consultaDetalleGrpPrdVend" wildcard="false"
+		map-null="false" map-empty-string="false" trim-strings="true">
+		<class-a>
+			mx.babel.bansefi.banksystem.cuentas.webservices.consultadetallegrpprdvend.Ejecutar.ITRLISTATVTRNI.TRLISTATVEVTY.TVTRFAPDVP
+		</class-a>
+		<class-b>
+			mx.babel.bansefi.banksystem.cuentas.beans.TarifaBean
+    </class-b>
+    <field>
+      <a>CODLINEA</a>
+      <b>linea</b>
+    </field><field>
+      <a>IDGRPPD</a>
+      <b>grupo</b>
+    </field><field>
+      <a>IDPDV</a>
+      <b>producto</b>
+    </field>
+  </mapping>
+  <mapping map-id="respuestaDetalleGrpPrdVend" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.beans.TarifaBean
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultadetallegrpprdvend.ResponseBansefi.OTRLISTATVTRNO.TRLISTATVEVTZ.TRLISTATVEVTV
+    </class-b>
+    <field>
+      <a>tipoCuota</a>
+      <b>CODTPTARIFA</b>
+    </field>
+    <field>
+      <a>nombre</a>
+      <b>NOMBTRFAPDV</b>
+    </field>
+    <field>
+      <a>descripcion</a>
+      <b>DESCRTRFAPDV</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>fechaComercializacion</a>
+      <b>FECHACOMRCLCN</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>fechaAlta</a>
+      <b>FECHAECVACT</b>
+    </field>
+    <field>
+      <a>estado</a>
+      <b>CODECVTRFAPDV</b>
+    </field>
+    <field>
+      <a>id</a>
+      <b>IDTRFAPDV</b>
+    </field>
+  </mapping>
+</mappings>

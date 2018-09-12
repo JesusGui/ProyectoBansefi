@@ -1,0 +1,425 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<!-- Se agregó div contenedores -->
+				<div class="contenedor">
+
+
+					<h:form id="formAltaAnotaciones" styleClass="contenedor-form">
+
+						<!-- Simplemente se pone para que cargue la libreria de primefaces EXT -->
+						<pe:blockUI widgetVar="blockUIWidget1">
+						</pe:blockUI>
+
+						<pe:importConstants
+							className="mx.babel.bansefi.banksystem.base.constants.ConstantesFuncionales"
+							var="ConstantesFuncionales" />
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w" immediate="true"
+								action="#{anotacionesController.cancelarAltaAnotaciones()}" />
+							<h1>Alta de anotaciones</h1>
+						</div>
+
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Campos Obligatorios" />
+
+							<div class="margin-top-10"></div>
+
+							<h:outputText styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							<div class="margin-top-10"></div>
+							<div class="grid_8">
+								<p:outputLabel for="tipo" value="Tipo"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectOneMenu panelStyleClass="combo-estandar" id="tipo" value="#{anotacionesController.tipo}"
+									required="#{param['disableValidationCabecera']==null}">
+									<f:selectItem
+										itemValue="#{ConstantesFuncionales.TIPOS_ANOTACION[0]}"
+										itemLabel="INFORMATIVA" />
+									<f:selectItem
+										itemValue="#{ConstantesFuncionales.TIPOS_ANOTACION[1]}"
+										itemLabel="AVISO" />
+								</p:selectOneMenu>
+							</div>
+
+							<div class="grid_8">
+								<p:outputLabel for="dirigidoa" value="Dirigido a"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectOneMenu panelStyleClass="combo-estandar" id="dirigidoa"
+									value="#{anotacionesController.dirigidoA}"
+									required="#{param['disableValidationCabecera']==null}">
+									<f:selectItem
+										itemValue="#{ConstantesFuncionales.DEST_ANTCN[0]}"
+										itemLabel="CUENTAS" />
+									<f:selectItem
+										itemValue="#{ConstantesFuncionales.DEST_ANTCN[1]}"
+										itemLabel="CLIENTES" />
+								</p:selectOneMenu>
+							</div>
+							<div class="grid_3">
+								<div class="label-vacio"></div>
+								<div class="clear-3"></div>
+								<p:commandButton id="anadir" update="@form" process="@form" title="Añadir anotación"
+									icon="ui-icon-circle-plus" styleClass="btn-icono btn-anadir"
+									actionListener="#{anotacionesController.anadirAnotacion()}">
+									<f:param name="disableValidation" value="true" />
+								</p:commandButton>
+							</div>
+							<div class="clear-row"></div>
+
+							<h:panelGroup id="AnotacionesACrear" layout="block"	styleClass="grid_48">
+								<c:forEach var="anotacion"
+									items="#{anotacionesController.anotaciones}"
+									varStatus="myVarStatus">
+
+									<p:panel id="anotacionesCreadas#{myVarStatus.index}"
+										styleClass="panel-dinamico nuevo">
+										<div class="grid_3 alpha">
+											<p:commandButton id="eliminaAnotacion#{myVarStatus.index}"
+												styleClass="btn-panel btn-eliminar margin-left-5" title="Eliminar"
+												update="@form" process="@form" icon="ui-icon-trash"
+												actionListener="#{anotacionesController.eliminaAnotacion(anotacion)}">
+												<f:param name="disableValidation" value="true" />
+											</p:commandButton>
+										</div>
+										
+										<div class="clear-row"></div>
+										<div class="grid_10">
+											<p:outputLabel value="Tipo"/>
+											<div class="clear-3"></div>
+											<p:outputLabel styleClass="label-valor texto-sininput" value="INFORMATIVA"
+												rendered="#{anotacion.tipo.equals(ConstantesFuncionales.TIPOS_ANOTACION[0])}" />
+											<p:outputLabel styleClass="label-valor texto-sininput" value="AVISO"
+												rendered="#{anotacion.tipo.equals(ConstantesFuncionales.TIPOS_ANOTACION[1])}" />
+										</div>
+
+										<h:panelGroup id="cuentasAIncluir#{myVarStatus.index}"
+											rendered="#{anotacion.dirigidoA.equals(ConstantesFuncionales.DEST_ANTCN[0])}">
+
+											<div class="grid_12">
+												<p:outputLabel for="numeroCuenta_#{myVarStatus.index}"
+													value="Número de Cuenta" />
+												<div class="clear-3" />
+												<p:inputMask id="numeroCuenta_#{myVarStatus.index}"
+													value="#{anotacion.identificadorBusqueda}" maxlength="10"
+													onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/[\d\-\.]/" preventPaste="false" />
+												</p:inputMask>
+											</div>
+											<div class="grid_3 omega">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<!--  Este boton es la lupa de busqueda enlazada a clientes -->
+												<p:commandButton id="buscarCue_#{myVarStatus.index}"
+													title="Buscar cuentas" styleClass="btn-icono-conbackground"
+													icon="ui-icon-search"
+													action="#{anotacionesController.buscarCuentas(myVarStatus.index)}"
+													ajax="true">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+											</div>
+											<div class="grid_3 alpha">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<p:commandButton id="anadirCue_#{myVarStatus.index}"
+													title="Añadir cuenta" styleClass="btn-icono btn-anadir"
+													icon="ui-icon-circle-plus" update="@form" process="@form"
+													actionListener="#{anotacionesController.anadirElemento(anotacion,myVarStatus.index)}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+											</div>
+
+											<div class="clear"></div>
+
+											<p:dataList id="cuentasIncluidas_#{myVarStatus.index}"
+												styleClass="grid_48 reset-list anotaciones-alta-panel"
+												value="#{anotacion.identificadoresDescripciones}" var="cuenta"
+												varStatus="myVarStatus1"
+												rendered="#{anotacion.identificadoresDescripciones.size() > 0}">
+												<div class="clear"></div>
+												<div class="anotaciones-bloque-cuenta">
+													<p:commandButton
+														id="eliminaElementoC_#{myVarStatus.index}_#{myVarStatus1.index}"
+														styleClass="btn-panel btn-eliminar margin-left-5"
+														icon="fa fa-times" title="Eliminar"
+														update="@form" process="@form"
+														actionListener="#{anotacionesController.eliminaElemento(anotacion,cuenta)}">
+														<f:param name="disableValidation" value="true" />
+													</p:commandButton>
+													<p:outputLabel styleClass="bold" value="#{cuenta}" />
+												</div>
+											</p:dataList>
+										</h:panelGroup>
+										<h:panelGroup id="personasAIncluir#{myVarStatus.index}"
+											rendered="#{anotacion.dirigidoA.equals(ConstantesFuncionales.DEST_ANTCN[1])}">
+											<div class="grid_12">
+												<p:outputLabel for="idPersona_#{myVarStatus.index}"
+													value="Id Oficial" />
+												<div class="clear-3" />
+												<p:inputMask id="idPersona_#{myVarStatus.index}"
+													value="#{anotacion.identificadorBusqueda}" maxlength="14"
+													onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ ]*$/" preventPaste="false" />
+												</p:inputMask>
+											</div>
+											<div class="float-left margin-right-10">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<!--  Este boton es la lupa de busqueda enlazada a clientes -->
+												<p:commandButton id="btnOpciones_#{myVarStatus.index}" title="Buscar personas" styleClass="btn-icono-conbackground" type="button" icon="cbs-e006-buscar-menu"/>
+												<p:menu id="buscarCli_#{myVarStatus.index}" value="Buscar" overlay="true" my="left top" at="left bottom"
+														trigger="btnOpciones_#{myVarStatus.index}">
+													<p:menuitem value="Buscar persona física" action="#{anotacionesController.buscarClientes(myVarStatus.index)}">
+														<f:param name="disableValidation" value="true" />
+													</p:menuitem>
+													<p:menuitem value="Buscar persona moral"  action="#{anotacionesController.buscarClientesMoral(myVarStatus.index)}">
+														<f:param name="disableValidation" value="true" />
+													</p:menuitem>
+												</p:menu>
+											</div>
+											<div class="float-left">
+												<div class="label-vacio"></div>
+												<div class="clear-3"></div>
+												<p:commandButton id="anadirCli_#{myVarStatus.index}"
+													title="Añadir" styleClass="btn-icono btn-anadir"
+													icon="ui-icon-circle-plus"
+													update="@form" process="@form"
+													actionListener="#{anotacionesController.anadirElemento(anotacion,myVarStatus.index)}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+											</div>
+											<div class="clear-3"></div>
+											<p:dataList id="personasIncluidas_#{myVarStatus.index}"
+												styleClass="grid_48 reset-list anotaciones-alta-panel"
+												value="#{anotacion.identificadoresDescripciones}" var="persona"
+												varStatus="myVarStatus2"
+												rendered="#{anotacion.identificadoresDescripciones.size() > 0}">
+												<div class="clear"></div>
+												<div class="anotaciones-bloque-cuenta">
+												<p:commandButton title="Eliminar"
+													styleClass="btn-panel btn-eliminar margin-left-5"
+													id="eliminaElementoC_#{myVarStatus.index}_#{myVarStatus2.index}"
+													update="@form" process="@form" icon="ui-icon-trash"
+													actionListener="#{anotacionesController.eliminaElemento(anotacion,persona)}">
+													<f:param name="disableValidation" value="true" />
+												</p:commandButton>
+												<p:outputLabel styleClass="bold" value="#{persona}" />
+												</div>
+											</p:dataList>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{anotacion.identificadores.size() > 0}">
+											<div class="clear"></div>
+											<div class="grid_8">
+												<p:outputLabel value="Prioridad"></p:outputLabel>
+												<h:panelGroup>
+													<span class="ui-outputlabel-rfi"> *</span>
+												</h:panelGroup>
+												<div class="clear-3" />
+												<p:selectOneMenu id="prioridad#{myVarStatus.index}"
+													value="#{anotacion.prioridad}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('PRIORIDAD_ANOTACION')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+											<div class="grid_18">
+												<h:panelGroup rendered="#{anotacion.tipo.equals(ConstantesFuncionales.TIPOS_ANOTACION[0])}">
+													<p:outputLabel value="Subcódigo"></p:outputLabel>
+													<h:panelGroup>
+														<span class="ui-outputlabel-rfi"> *</span>
+													</h:panelGroup>
+													<div class="clear-3"></div>
+													<p:selectOneMenu id="subcodigo#{myVarStatus.index}"
+														value="#{anotacion.subcodigo}"
+														required="#{param['disableValidation']==null}">
+														<f:selectItem itemValue="#{null}"
+															itemLabel="Seleccione un valor" noSelectionOption="true" />
+														<f:selectItems
+															value="#{anotacionesController.subCodigoInformativas}"
+															var="item" itemValue="#{item.claveFila}"
+															itemLabel="#{item.descripcionL}" />
+													</p:selectOneMenu>
+												</h:panelGroup>
+												<h:panelGroup
+													rendered="#{anotacion.tipo.equals(ConstantesFuncionales.TIPOS_ANOTACION[1])}">
+													<p:outputLabel value="Subcódigo"></p:outputLabel>
+													<h:panelGroup>
+														<span class="ui-outputlabel-rfi"> *</span>
+													</h:panelGroup>
+													<div class="clear-3"></div>
+													<p:selectOneMenu id="subcodigo_#{myVarStatus.index}"
+														value="#{anotacion.subcodigo}"
+														required="#{param['disableValidation']==null}">
+														<f:selectItem itemValue="#{null}"
+															itemLabel="Seleccione un valor" noSelectionOption="true" />
+														<f:selectItems
+															value="#{anotacionesController.subCodigoAvisos}"
+															var="item" itemValue="#{item.claveFila}"
+															itemLabel="#{item.descripcionL}" />
+													</p:selectOneMenu>
+												</h:panelGroup>
+											</div>
+											<div class="grid_14">
+												<p:outputLabel value="Área" />
+												<h:panelGroup>
+													<span class="ui-outputlabel-rfi"> *</span>
+												</h:panelGroup>
+												<div class="clear-3" />
+												<p:selectOneMenu id="area#{myVarStatus.index}"
+													value="#{anotacion.area}"
+													required="#{param['disableValidation']==null}">
+													<f:selectItem itemValue="#{null}"
+														itemLabel="Seleccione un valor" noSelectionOption="true" />
+													<f:selectItems
+														value="#{catalogoUtils.getCatalogo('TP_GRP_ANTCN')}"
+														var="item" itemValue="#{item.claveFila}"
+														itemLabel="#{item.descripcionL}" />
+												</p:selectOneMenu>
+											</div>
+											<div class="grid_8">
+												<p:message id="fechaCierreVal#{myVarStatus.index}"
+													for="fechaCierre#{myVarStatus.index}" display="icon" />
+												<p:outputLabel for="fechaCierre#{myVarStatus.index}"
+													value="Fecha Cierre" />
+												<div class="clear-3" />
+												<p:calendar id="fechaCierre#{myVarStatus.index}"
+													value="#{anotacion.fechaCierre}" pattern="dd/MM/yyyy"
+													mask="true" showOn="button" locale="es"
+													mindate="#{anotacionesController.currentDate}">
+													<f:attribute name="beginDate"
+														value="#{anotacionesController.currentDate}" />
+													<f:validator validatorId="dateRangeValidator" />
+												</p:calendar>
+											</div>
+											<div class="clear-row" />
+											<div class="grid_18">
+												<p:outputLabel value="Descripción Breve" />
+												<h:panelGroup>
+													<span class="ui-outputlabel-rfi"> *</span>
+												</h:panelGroup>
+												<div class="clear-3" />
+												<p:inputMask id="descripicionBreve#{myVarStatus.index}"
+													value="#{anotacion.descripcionCorta}" maxlength="30"
+													required="#{param['disableValidation']==null}"
+													onblur="value=value.toUpperCase();value=value.trim()">
+													<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ\- ]*$/"
+														preventPaste="false" />
+												</p:inputMask>
+											</div>
+											<div class="grid_30">
+												<p:outputLabel for="descripicionLarga#{myVarStatus.index}"
+													value="Descripción Larga" />
+												<div class="clear-3" />
+												<p:inputTextarea id="descripicionLarga#{myVarStatus.index}"
+													autoResize="true" rows="2"
+													value="#{anotacion.descripcionLarga}" maxlength="300"
+													onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[a-zA-Z0-9ñÑ\- ]*$/"
+														preventPaste="false" />
+												</p:inputTextarea>
+											</div>
+											<div class="clear"></div>
+										</h:panelGroup>
+									</p:panel>
+								</c:forEach>
+							</h:panelGroup>
+							<div class="clear"></div>
+						</div>
+						<div class="margin-top-10" />
+						<!--  Botones de siguiente y Cancelar -->
+						<p:commandButton styleClass="btn_secundario" id="Cancelar"
+							immediate="true" value="Cancelar"
+							action="#{anotacionesController.cancelarAltaAnotaciones()}" />
+
+						<p:commandButton value="Guardar"
+							styleClass="btn_principal_dialog_derecha "
+							action="#{anotacionesController.guardarAnotaciones()}"
+							ajax="true" update="formAltaAnotaciones">
+							<f:param name="disableValidationCabecera" value="true" />
+						</p:commandButton>	
+					</h:form>
+					<div class="clear"></div>
+				</div>
+				<p:dialog widgetVar="dlgAltaCorrecta" id="dlgAltaCorrecta" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+                      modal="true" visible="false" closable="false" resizable="false"  draggable="false">
+                      <span class="ui-messages-exito-icon exito-dialog"></span>
+                      <p:outputLabel  styleClass="modal-mensaje" value="Las anotaciones se dieron de alta correctamente" />
+                      <div class="clear"></div>
+                      <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" action="#{anotacionesController.inicio()}"/>
+            	</p:dialog>
+            	
+            	<p:dialog widgetVar="dlgUnDestinatario" id="dlgUnDestinatario" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+                      modal="true" visible="false" closable="false" resizable="false" draggable="false">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+                      <p:outputLabel  styleClass="modal-mensaje" value="Debe introducir al menos un destinatario para cada una de las anotaciones" />
+                      <div class="clear"></div>
+                      <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgUnDestinatario').hide();" value="Aceptar" immediate="true"/>
+            	</p:dialog>            	
+            	
+            	<p:dialog widgetVar="dlgDestNoEncontrado" id="dlgDestNoEncontrado" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+                      modal="true" visible="false" closable="false" resizable="false"  draggable="false">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+                      <p:outputLabel  styleClass="modal-mensaje" value="El destinatario introducido no existe, por favor introduzca un destinatario válido" />
+                      <div class="clear"></div>
+                      <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgDestNoEncontrado').hide();" value="Aceptar" immediate="true"/>
+            	</p:dialog>
+            	
+            	<p:dialog widgetVar="dlgDestDuplicado" id="dlgDestDuplicado" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+                      modal="true" visible="false" closable="false" resizable="false"  draggable="false">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+                      <p:outputLabel  styleClass="modal-mensaje" value="No se permiten destinatarios duplicados." />
+                      <div class="clear"></div>
+                      <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgDestDuplicado').hide();" value="Aceptar" immediate="true"/>
+            	</p:dialog>
+            	
+            	<p:dialog widgetVar="dlgDestNumerico" id="dlgDestNumerico" appendTo="@(body)" showEffect="fade" hideEffect="fade"
+                      modal="true" visible="false" closable="false" resizable="false"  draggable="false">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+                      <p:outputLabel  styleClass="modal-mensaje" value="El valor introducido para el destinatario debe ser de tipo numérico" />
+                      <div class="clear"></div>
+                      <p:commandButton styleClass="btn_principal_dialog_derecha" onclick="PF('dlgDestNumerico').hide();" value="Aceptar" immediate="true"/>
+            	</p:dialog>
+            	
+            	<p:dialog widgetVar="dlgBusqueda" id="dlgBusqueda" appendTo="@(body)" dynamic="true" modal="true" showEffect="fade" hideEffect="fade"
+					visible="false" closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-info-icon info-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje" value="La Identificación oficial proporcionada generó varias coincidencias." />
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion" value="¿Desea ir al buscador para seleccionar el cliente correcto?" />
+			        <div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_secundario_dialog margin-right-10" value="Cancelar" immediate="true" onclick="PF('dlgBusqueda').hide();"/>
+					<p:commandButton styleClass="btn_principal_dialog_derecha margin-left-10" action="#{anotacionesController.buscarClientes(anotacionesController.posicionPersonaCuenta)}"
+						value="Buscar persona física" oncomplete="PF('dlgBusqueda').hide();"/>
+					<p:commandButton styleClass="btn_principal_dialog_derecha" action="#{anotacionesController.buscarClientesMoral(anotacionesController.posicionPersonaCuenta)}"
+						value="Buscar persona moral" oncomplete="PF('dlgBusqueda').hide();"/>					
+				</p:dialog>
+            	
+				<div class="clear"></div>
+			</div>
+			<div class="clear"></div>
+
+		</h:body>
+	</ui:define>
+
+</ui:composition>

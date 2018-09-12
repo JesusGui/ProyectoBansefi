@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping map-id="resultadoConsultaDetalleTramo" wildcard="false"
+    map-null="false" map-empty-string="false" trim-strings="true">
+    <class-a>
+      mx.babel.bansefi.banksystem.cuentas.webservices.consultadetalletramo.ResponseBansefi.OTRCONSVALMSVKFTRNO.TRCONSVALMSVKFEVTZ.KFRESULTFILA1V
+    </class-a>
+    <class-b>
+      mx.babel.bansefi.banksystem.base.beans.productossimples.condiciones.tramos.SubTramoBean
+    </class-b>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHACRREVAL</a>
+      <b>fechaFinValidez</b>
+    </field>
+    <field custom-converter="mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter">
+      <a>KACOMUNV.FECHAECVACT</a>
+      <b>fechaEstadoActual</b>
+    </field>
+    <field>
+      <a>KACOMUNV.CODECVKA</a>
+      <b>estado</b>
+    </field>
+    <field>
+      <a>KAMATRIZV.IDTRAMEADO</a>
+      <b>idTrameado</b>
+    </field>
+    <field>
+      <a>KAMATRIZV.CODFORAPLCTR</a>
+      <b>codForAplcTr</b>
+    </field>
+    <field>
+      <a>KAMATRIZV.IDPDS1</a>
+      <b>idPds</b>
+    </field>
+    <field>
+      <a>KAMATRIZV.IDPARMCD1</a>
+      <b>idParamcd</b>
+    </field>
+    <field>
+      <a>KAMATRIZV.CODAGRUCLOP</a>
+      <b>codAgruClop</b>
+    </field>
+  </mapping>
+</mappings>

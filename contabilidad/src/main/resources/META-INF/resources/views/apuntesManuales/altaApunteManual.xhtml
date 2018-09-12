@@ -1,0 +1,243 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui">
+
+	<!-- Parametros -->
+	<ui:param name="altaApunteBean"
+		value="#{apuntesManualesController.altaApunteBean}" />
+	<ui:param name="controller" value="#{apuntesManualesController}" />
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="form" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás"
+								action="#{controller.cancelar()}" immediate="true"></p:commandButton>
+							<h1>Apunte manual</h1>
+						</div>
+						<div class="contenedor-campos">
+
+							<p:outputLabel styleClass="txt-campo-obligatorio margin-left-10"
+								value="*Datos Obligatorios" />
+							<div class="margin-top-10"></div>
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+							<div class="margin-top-10"></div>
+
+							<div class="grid_15">
+								<p:outputLabel value="Nº de cuenta contable"
+									for="cuentaContable"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:autoComplete id="cuentaContable" required="true"
+									value="#{altaApunteBean.cuentaContableBean}" maxResults="5"
+									minQueryLength="0" forceSelection="true"
+									completeMethod="#{controller.getCuentasContables}" var="cuenta"
+									itemLabel="#{cuenta.idCuentaContable} #{cuenta.nombreCuentaContable}"
+									itemValue="#{cuenta}"
+									converter="#{cuentaContableBeanConverter}"
+									widgetVar="cuentasContables">
+									<p:ajax event="query" process="@this" global="false" />
+								</p:autoComplete>
+							</div>
+
+							<div class="contenedor-fijo-formulario">
+								<p:outputLabel styleClass="label-vacio"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectBooleanCheckbox styleClass="centrado-vertical"
+									disabled="#{controller.checksDeshabilitados}"
+									value="#{altaApunteBean.apunteManual}" />
+								<p:outputLabel styleClass="centrado-vertical"
+									value="Apunte manual"></p:outputLabel>
+							</div>
+
+							<div class="contenedor-fijo-formulario">
+								<p:outputLabel styleClass="label-vacio"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectBooleanCheckbox styleClass="centrado-vertical"
+									disabled="#{controller.checksDeshabilitados}"
+									value="#{altaApunteBean.apunteContable}" />
+								<p:outputLabel styleClass="centrado-vertical" value="Contable"></p:outputLabel>
+							</div>
+
+							<div class="grid_14">
+								<p:outputLabel value="Centro destino" for="centro"></p:outputLabel>
+								<div class="clear-3"></div>
+								<b:autoComplete id="centro" placeholder="Centro destino"
+									value="#{altaApunteBean.oficinaDestino}" maxlength="5"
+									catalogSource="catalogoCentrosLoaderTask" var="item"
+									itemLabel="#{item.descripcionL}" itemValue="#{item}"
+									converter="catalogoConverter" forceSelection="true"
+									required="true" disabled="#{controller.checksDeshabilitados}">
+									<p:ajax event="query" global="false"></p:ajax>
+								</b:autoComplete>
+								<pe:keyFilter for="centro" regEx="/^[\d]*$/"
+									preventPaste="false" />
+							</div>
+
+							<div class="grid_5">
+								<p:outputLabel styleClass="label-vacio"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectBooleanCheckbox styleClass="centrado-vertical"
+									disabled="#{controller.checksDeshabilitados}"
+									value="#{altaApunteBean.noForzoso}" />
+								<p:outputLabel styleClass="centrado-vertical" value="No forzoso"></p:outputLabel>
+							</div>
+							<div class="clear-row"></div>
+							<div class="grid_10">
+								<p:outputLabel for="importe" value="Importe"></p:outputLabel>
+								<div class="clear-3"></div>
+								<pe:inputNumber required="true" id="importe"
+									styleClass="pe-inputNumber" decimalPlaces="2"
+									decimalSeparator="." thousandSeparator=","
+									maxValue="999999999999.99" value="#{altaApunteBean.importe}"
+									placeholder="Importe">
+									<p:ajax process="@this" />
+								</pe:inputNumber>
+								<span class="pe-inputNumber-suffix">MXN</span>
+							</div>
+
+							<div class="grid_9">
+								<p:outputLabel for="tipoOperacion" value="Tipo de Operación"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectOneRadio id="tipoOperacion" required="true"
+									styleClass="width-100" value="#{altaApunteBean.tipoOperacion}">
+									<f:selectItem itemLabel="Debe" itemValue="D" />
+									<f:selectItem itemLabel="Haber" itemValue="H" />
+									<p:ajax process="@this" update="datosContrapartida panels" />
+								</p:selectOneRadio>
+							</div>
+
+							<div class="grid_29">
+								<p:outputLabel for="concepto" value="Concepto"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:inputText id="concepto" required="true"
+									value="#{altaApunteBean.concepto}"
+									onblur="value=value.toUpperCase()"></p:inputText>
+							</div>
+							<div class="clear-row"></div>
+							<div class="contenedor-fijo-formulario">
+								<p:outputLabel for="datosContrapartida"
+									value="Datos de contrapartida"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:selectOneRadio id="datosContrapartida" required="true"
+									value="#{altaApunteBean.datosContrapartida}">
+									<f:selectItem itemLabel="Caja MXN" itemValue="04" />
+									<f:selectItem itemLabel="Intervención" itemValue="03" />
+									<c:if test="#{'D' eq altaApunteBean.tipoOperacion}">
+										<f:selectItem itemLabel="Abono cuenta" itemValue="CT" />
+									</c:if>
+									<c:if test="#{'H' eq altaApunteBean.tipoOperacion}">
+										<f:selectItem itemLabel="Cargo a cuenta" itemValue="CT" />
+									</c:if>
+									<p:ajax process="@this" update="panels" />
+								</p:selectOneRadio>
+							</div>
+							<div class="clear-row"></div>
+							<h:panelGroup id="panels">
+								<h:panelGroup id="panelClaveOperacion"
+									rendered="#{'03' eq altaApunteBean.datosContrapartida or 'CT' eq altaApunteBean.datosContrapartida}">
+									<!--                                    <c:if test="#{'2' eq altaApunteBean.datosContrapartida or '3' eq altaApunteBean.datosContrapartida or '4' eq altaApunteBean.datosContrapartida}"> -->
+									<div class="grid_10">
+										<p:outputLabel for="claveOperacion" value="Clave de operación"></p:outputLabel>
+										<div class="clear-3"></div>
+										<b:autoComplete id="claveOperacion"
+											value="#{altaApunteBean.claveOperacion}" maxlength="5"
+											catalog="TP_CLOP" var="item" itemLabel="#{item.descripcionL}"
+											itemValue="#{item}" converter="catalogoConverter"
+											forceSelection="true" onblur="value=value.toUpperCase()"
+											required="true" requiredMessage="">
+											<p:ajax event="query" process="@this" global="false" />
+										</b:autoComplete>
+									</div>
+									<!--                                    </c:if> -->
+								</h:panelGroup>
+								<h:panelGroup id="panelCuenta"
+									rendered="#{'CT' eq altaApunteBean.datosContrapartida}">
+									<!--                                    <c:if test="#{'3' eq altaApunteBean.datosContrapartida or '4' eq altaApunteBean.datosContrapartida}"> -->
+									<!-- Cuenta -->
+									<div class="grid_8">
+										<p:outputLabel for="cuenta" id="cuentaLabel"
+											value="N° de Cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="cuenta" value="#{altaApunteBean.cuenta}"
+											maxlength="10" required="true">
+											<p:ajax event="blur"
+												listener="#{controller.comprobarCuentaRetiro()}"
+												process="@this"
+												update="titularCuentaNombre titularCuentaError"
+												global="false"></p:ajax>
+											<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="false" />
+										</p:inputText>
+									</div>
+
+									<!-- boton de busqueda de cuentas -->
+									<div class="grid_2">
+										<!-- boton de busqueda de cuentas -->
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton styleClass="btn-icono-conbackground"
+											id="busquedaPersona" immediate="true" title="Buscar cuenta"
+											action="#{controller.buscarPersona()}" icon="ui-icon-search"
+											ajax="true"></p:commandButton>
+									</div>
+
+									<div class="grid_28">
+										<h:outputText styleClass="mensaje-incorrecto"
+											id="titularCuentaError"
+											value="El número de cuenta es incorrecto"
+											style="display: block"
+											rendered="#{controller.muestraTitularError}" />
+										<h:outputLabel id="titularCuenta"
+											value="Titular de la cuenta:" />
+										<div class="clear-3"></div>
+										<div class="input-label-valor">
+
+											<h:outputLabel styleClass="label-valor"
+												id="titularCuentaNombre" value="#{controller.textoTitular}"
+												style="display:flex" />
+										</div>
+									</div>
+									<!--                                    </c:if> -->
+								</h:panelGroup>
+							</h:panelGroup>
+
+
+							<div class="clear"></div>
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" action="#{controller.cancelar()}" update="@form"
+							immediate="true" />
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Realizar apunte" action="#{controller.guardar()}"
+							update="@form" />
+					</h:form>
+				</div>
+
+				<!--
+plantilla de ventana de di�logo
+-->
+
+				
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

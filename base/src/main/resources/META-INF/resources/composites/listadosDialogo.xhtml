@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<p:dialog widgetVar="dlgGuardado" id="dlgGuardado" appendTo="@(body)"
+		dynamic="true" modal="true" showEffect="fade" hideEffect="fade"
+		visible="#{dialogoGuardado.mostrar}"
+		closable="false" resizable="false" draggable="false">
+		<!--icono de la modal -->
+		<span class="ui-messages-#{dialogoGuardado.icono}-icon #{dialogoGuardado.icono}-dialog"></span>
+		<!--mensaje de la modal styleClass="modal-mensaje" -->
+		<div class="modal-mensaje">
+		<p:outputLabel value="#{dialogoGuardado.mensaje}" />
+		<br />
+		<h:panelGroup rendered="#{not empty dialogoGuardado.detalles}">
+			<p:outputLabel styleClass="bold" value="#{dialogoGuardado.detalles}" escape="false" />
+			<!--mensaje de la modal styleClass="modal-mensaje" -->
+		</h:panelGroup>
+		</div>
+		<div class="clear margin-bottom-10"></div>
+		<!--botones de la modal primarios y secundarios -->
+		<p:commandButton styleClass="btn_principal_dialog_derecha"
+			value="Aceptar" oncomplete="PF('dlgGuardado').hide();">
+			<f:setPropertyActionListener target="#{dialogoGuardado.mostrar}" value="false"/>	
+		</p:commandButton>
+	</p:dialog>
+</ui:composition>

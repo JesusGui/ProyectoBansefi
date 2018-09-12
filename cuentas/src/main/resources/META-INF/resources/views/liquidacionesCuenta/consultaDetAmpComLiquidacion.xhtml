@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"> 
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="formDetAmpComisionLiq" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{liquidacionesController.navegaDetalleLiquidacion()}" />
+							<div>
+								<h2 class="gris-b">Detalle ampliado de liquidación:</h2>
+								<div class="clear"></div>
+								<h2 class="rojo-b">#{liquidacionesController.cuentaBean.tipoCuenta}</h2>
+								<h3 class="gris-b">(#{liquidacionesController.cuentaBean.numeroCuenta}),</h3>
+								<h2 class="gris-b">
+									<h:outputText
+										value="#{liquidacionesController.liquidacionSeleccionada.periodoDesdeLiquidacion}"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.periodoDesdeLiquidacion != null}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</h2>
+								<h2 class="gris-b">
+									<h:outputText value="-"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.periodoDesdeLiquidacion != null and liquidacionesController.liquidacionSeleccionada.periodoHastaLiquidacion != null}" />
+								</h2>
+								<h2 class="gris-b">
+									<h:outputText
+										value="#{liquidacionesController.liquidacionSeleccionada.periodoHastaLiquidacion}"
+										rendered="#{liquidacionesController.liquidacionSeleccionada.periodoHastaLiquidacion != null}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<h3 class="azul-b">#{liquidacionesController.cuentaBean.nombreTitular}</h3>
+
+							<div class="margin-bottom-10"></div>
+							<p:outputLabel styleClass="azul-b"
+								value="Consulta de Comisión / Gasto" />
+
+							<div class="marco-datospersonales orden-2-columnas">
+								<p:outputLabel value="Prod. Vendible: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.cuentaBean.tipoCuenta}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Parámetro: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.nomParametro}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Comisión/Gasto/Impuesto: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.comision}">
+									<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="Forma aplicación: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.formaAplicacion}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Precio: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.precio}">
+									<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+										currencySymbol="%" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="Fecha valor base: " />
+								<!-- Se remueve despliegue de fecha valor a petición de la UANL (correo del 28/09/2015)  
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.fechaBase}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:outputLabel>
+								-->
+								<div class="clear"></div>
+								<p:outputLabel value="Base cálculo: " />
+								<p:outputLabel styleClass="bold" value="" />
+								<div class="clear"></div>
+								<p:outputLabel value="Valor base: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.valorBase}">
+									<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="Franquicia: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.baseFranquicia}">
+									<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+										currencySymbol="MXN" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="Núm. Tramo: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.numTramo}" />
+							</div>
+
+							<div class="clear"></div>
+
+						</div>
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>

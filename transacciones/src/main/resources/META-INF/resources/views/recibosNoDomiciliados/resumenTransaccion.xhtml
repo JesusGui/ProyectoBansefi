@@ -1,0 +1,173 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="contenido">
+
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+
+					<h:form id="form" styleClass="contenedor-form contenedor-resumen-recibos">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton title="Ir al inicio" icon="ui-icon-home"
+								action="#{altaReciboNoDomiciliadoController.nuevoPago}"></p:commandButton>
+							<h1>Pago de recibos no domiciliados</h1>
+						</div>
+						<div class="contenedor-campos">
+								<p:commandButton styleClass="btn_secundario btn-icono-texto float-right" icon="ui-icon-print" value="Imprimir" actionListener="#{altaReciboNoDomiciliadoController.printReport()}" rendered="#{altaReciboNoDomiciliadoController.habilitaImpresion}"/>
+								<p:outputLabel styleClass="titulo-detalle" value="Resumen de transacción" />
+								<div class="clear-row"></div>
+								<p:outputLabel value="Emisora: " />
+								<p:outputLabel styleClass="detalle"
+									value="#{altaReciboNoDomiciliadoController.obtenerDescEmisora()}" />
+
+							<div class="clear-row"></div>
+							
+							<div class="row-flex">
+								<div class="grid_12 push_8">
+									<p:outputLabel value="Importe:" />
+								</div>
+								<div class="grid_20 push_8">
+									<p:outputLabel styleClass="detalle float-right"
+										value="#{altaReciboNoDomiciliadoController.reciboBean.importeEntregado}">
+										<f:convertNumber type="currency" groupingUsed="true"
+											maxFractionDigits="2" maxIntegerDigits="12"
+											minIntegerDigits="1" minFractionDigits="2" 
+											pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+									</p:outputLabel>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="row-flex">
+								<div class="grid_12 push_8">
+									<p:outputLabel value="Importe comisión:" />
+								</div>
+								<div class="grid_20 push_8">
+									<p:outputLabel styleClass="detalle float-right"
+										value="#{altaReciboNoDomiciliadoController.reciboBean.importeComision}">
+										<f:convertNumber type="currency" groupingUsed="true"
+											maxFractionDigits="2" maxIntegerDigits="12"
+											minIntegerDigits="1" minFractionDigits="2"
+											pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+									</p:outputLabel>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="row-flex">
+								<div class="grid_12 push_8">
+									<p:outputLabel value="Importe IVA comisión:" />
+								</div>
+								<div class="grid_20 push_8">
+									<p:outputLabel styleClass="detalle float-right"
+										value="#{altaReciboNoDomiciliadoController.reciboBean.importeIva}">
+										<f:convertNumber type="currency" groupingUsed="true"
+											maxFractionDigits="2" maxIntegerDigits="12"
+											minIntegerDigits="1" minFractionDigits="2" 
+											pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+									</p:outputLabel>
+								</div>
+							</div>
+							<div class="clear"></div>
+							<div class="row-flex">
+								<div class="grid_12 push_8">
+									<p:outputLabel value="Importe Total:" />
+								</div>
+								<div class="grid_20 push_8">
+									<p:outputLabel styleClass="detalle float-right"
+										value="#{altaReciboNoDomiciliadoController.reciboBean.importeTotal}">
+										<f:convertNumber type="currency" groupingUsed="true"
+											maxFractionDigits="2" maxIntegerDigits="12"
+											minIntegerDigits="1" minFractionDigits="2" 
+											pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+									</p:outputLabel>
+								</div>
+							</div>
+							<div class="clear"></div>
+							
+								<div class="margin-top-10 grid_12 push_8">
+									<p:outputLabel value="Importe con letra:" />
+								</div>
+								<div class="grid_20 push_8 align-right">
+									<p:outputLabel styleClass="detalle"
+								value="#{altaReciboNoDomiciliadoController.obtenerDescImporteTotal()}" />
+								</div>
+								
+							<div class="clear margin-bottom-20"></div>
+							
+								<p:outputLabel value="Concepto: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.concepto}" />
+
+							<div class="clear-3"></div>
+
+								<p:outputLabel value="Fecha de operación: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.fechaOperacion}">
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Mexico_City"/>
+									</p:outputLabel>
+							
+							<div class="clear-3"></div>
+							
+								<p:outputLabel value="Hora de operación: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.horaOperacion}">
+									<f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City" />
+									</p:outputLabel>
+							
+							<div class="clear-3"></div>
+							
+								<p:outputLabel value="Centro: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.centro}" />
+
+							<div class="clear-3"></div>
+
+								<p:outputLabel value="Referencia: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.referencia}" />
+							
+							<div class="clear-3"></div>
+							
+								<p:outputLabel value="Id Transacción: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.idTransaccion}" />
+							
+							<div class="clear-3"></div>
+							
+								<p:outputLabel value="Número de operación: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.numeroOperacion}" />
+							
+							<div class="clear-3"></div>
+							
+								<p:outputLabel value="Forma de pago: " />
+								<p:outputLabel styleClass="resumen-detalle"
+									value="#{altaReciboNoDomiciliadoController.reciboBean.formaPago}" />
+
+							<div class="clear"></div>
+
+						</div>
+
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Volver al inicio"
+							action="#{altaReciboNoDomiciliadoController.volver}" />
+
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Realizar nuevo pago"
+							action="#{altaReciboNoDomiciliadoController.nuevoPago}" />
+
+					</h:form>
+				</div>
+			</div>
+
+		</h:body>
+	</ui:define>
+</ui:composition>

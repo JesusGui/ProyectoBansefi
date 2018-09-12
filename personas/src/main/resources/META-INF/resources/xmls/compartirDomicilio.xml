@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+          
+   <!-- Mapeo de clases -->
+	<mapping map-id="compartirDomicilio" wildcard="false" map-null="false" trim-strings="true">
+		<class-a>mx.babel.bansefi.banksystem.personas.beans.CompartirDomicilioBean
+		</class-a>
+		<class-b>mx.babel.bansefi.banksystem.personas.webservices.compartirdomicilio.Ejecutar.ITRPECOMPARTIRDOMICTR.TRPECOMPARTIRDOMICEVT
+		</class-b>
+		<field>
+			<a>idInternoPersona</a>
+			<b>idinternope</b>
+		</field>
+		<field>
+			<a>idInternoPersona2</a>
+			<b>idinternope2</b>
+		</field>
+		<field>
+			<a>idInternoBien</a>
+			<b>idinternobi</b>
+		</field>
+		<field>
+			<a>numeroDireccion</a>
+			<b>numdir</b>
+		</field>
+		<field>
+			<a>codigoDireccion</a>
+			<b>coddir</b>
+		</field>
+		<field>
+			<a>valorDireccionElectronica</a>
+			<b>valorelctrdr</b>
+		</field>	
+		<field>
+			<a>longitudValorDireccionElectronica</a>
+			<b>valorelctrdrlen</b>
+		</field>
+		<field custom-converter-id="compartirTipoDomicilioConverter">
+			<a>tipoDomicilio</a>
+			<b>codpersrldirv</b>
+		</field>			
+	</mapping>
+</mappings>

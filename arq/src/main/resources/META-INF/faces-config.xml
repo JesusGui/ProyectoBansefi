@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+	version="2.2">
+
+	<component>
+		<component-type>mx.babel.arq.banksystem.components.SelectOneRadioSlider</component-type>
+		<component-class>mx.babel.arq.banksystem.components.SelectOneRadioSlider</component-class>
+	</component>
+	
+	<component>
+		<component-type>mx.babel.arq.banksystem.components.CatalogoAutoComplete</component-type>
+		<component-class>mx.babel.arq.banksystem.components.CatalogoAutoComplete</component-class>
+	</component>
+	
+	<component>
+		<component-type>mx.babel.arq.banksystem.components.CalendarMonthRange</component-type>
+		<component-class>mx.babel.arq.banksystem.components.CalendarMonthRange</component-class>
+	</component>
+
+	<render-kit>
+		<renderer>
+			<component-family>mx.babel.arq.banksystem.components</component-family>
+			<renderer-type>mx.babel.arq.banksystem.components.SelectOneRadioSliderRenderer</renderer-type>
+			<renderer-class>mx.babel.arq.banksystem.components.SelectOneRadioSliderRenderer</renderer-class>
+		</renderer>
+		<renderer>
+			<component-family>mx.babel.arq.banksystem.components</component-family>
+			<renderer-type>org.primefaces.component.AutoCompleteRenderer</renderer-type>
+			<renderer-class>org.primefaces.component.autocomplete.AutoCompleteRenderer</renderer-class>
+		</renderer>
+		<renderer>
+			<component-family>mx.babel.arq.banksystem.components</component-family>
+			<renderer-type>mx.babel.arq.banksystem.components.CalendarMonthRangeRenderer</renderer-type>
+			<renderer-class>mx.babel.arq.banksystem.components.CalendarMonthRangeRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+
+</faces-config>

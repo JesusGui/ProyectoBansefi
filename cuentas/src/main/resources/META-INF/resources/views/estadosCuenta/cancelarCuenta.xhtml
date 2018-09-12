@@ -1,0 +1,431 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<!-- Parametros -->
+	<ui:param name="controller" value="#{cancelarCuentaController}" />
+	<ui:param name="cuentaBean" value="#{controller.cuentaBean}" />
+	<ui:param name="cancelacion"
+		value="#{cancelarCuentaController.cancelacionCuentaBean}" />
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="form" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{controller.volver()}" immediate="true"></p:commandButton>
+							<div>
+								<h2 class="gris-b">Cancelar</h2>
+								<h2 class="rojo-b">#{cuentaBean.tipoCuenta}</h2>
+								<h3 class="gris-b">(#{cuentaBean.numeroCuenta})</h3>
+							</div>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campo-obligatorio"
+								value="*Datos Obligatorios"></p:outputLabel>
+
+							<div class="clear-row"></div>
+
+							<h:panelGroup layout="block"
+								rendered="#{!controller.isTarifaCancelacionRazon()}">
+								<div class="margin-top-15"></div>
+								<p:outputLabel styleClass="margin-left-10" value="Simulación" />
+								<div class="clear-row"></div>
+
+								<h:panelGroup rendered="#{controller.simulacionCorrecta}">
+									<div class="div-tabla">
+										<div class="ui-datatable ui-widget">
+											<div class="ui-datatable-tablewrapper">
+												<table>
+													<thead>
+														<tr>
+															<th><h:outputLabel value="CONCEPTO"></h:outputLabel></th>
+															<th><h:outputLabel value="SIGNO"></h:outputLabel></th>
+															<th><h:outputLabel value="IMPORTE FACTURADO"></h:outputLabel></th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+										</div>
+
+										<!-- ROW -->
+										<h:panelGroup rendered="#{controller.simulacion.desgloseConceptos.size()>0}">
+										<ui:repeat var="conceptos"
+										value="#{controller.simulacion.desgloseConceptos}">
+										   
+										    <div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="#{conceptos.descripcion}"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel rendered="#{'H' eq conceptos.signo}" value="HABER"></h:outputLabel>
+													<h:outputLabel rendered="#{'D' eq conceptos.signo}" value="DEBE"></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{conceptos.importe}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div>
+											</ui:repeat>
+											</h:panelGroup>
+										
+										
+										<!-- <h:panelGroup
+											rendered="#{controller.isCuentaCreditoSimple() or controller.isCuentaCreditoRevolvente()}">
+											<div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="INTERÉS DEUDOR"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel value="DEBE"></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{controller.simulacion.interesDeudor}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div>
+										</h:panelGroup> -->
+										<!-- /ROW -->
+										<!-- ROW -->
+										<!-- <h:panelGroup rendered="#{controller.isCuentaCreditoSimple()}">
+											<div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="IMPORTE"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel value="DEBE"></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{controller.simulacion.importe}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div>
+										</h:panelGroup> -->
+										<!-- /ROW -->
+										<!-- ROW -->
+							<!-- 			<h:panelGroup rendered="#{controller.isCuentaVista()}">
+										<ui:repeat var="conceptos"
+										value="#{controller.simulacion.desgloseConceptos}">
+										   
+										    <div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="#{conceptos.descripcion}"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel rendered="#{'H' eq conceptos.signo}" value="HABER"></h:outputLabel>
+													<h:outputLabel rendered="#{'D' eq conceptos.signo}" value="DEBER"></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{conceptos.importe}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div>
+										
+										
+										
+										
+										</ui:repeat>
+											 <div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="INTERÉS ACREEDOR"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel rendered="#{'H' eq controller.simulacion.interesAcreedorDebeHaber}" value="HABER"></h:outputLabel>
+													<h:outputLabel rendered="#{'D' eq controller.simulacion.interesAcreedorDebeHaber}" value="DEBER"></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{controller.simulacion.interesAcreedor}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div> 
+										</h:panelGroup> -->
+										<!-- /ROW -->
+										<!-- ROW -->
+										<!-- 									<h:panelGroup> -->
+										<!-- 										<div class="cuerpo-div-tabla"> -->
+										<!-- 											<div> -->
+										<!-- 												<h:outputLabel value="COMISIÓN MANTENIMIENTO"></h:outputLabel> -->
+										<!-- 											</div> -->
+										<!-- 											<div> -->
+										<!-- 												<h:outputLabel value="DEBE"></h:outputLabel> -->
+										<!-- 											</div> -->
+										<!-- 											<div> -->
+										<!-- 												<h:outputLabel styleClass="float-right" -->
+										<!-- 													value="#{controller.simulacion.comisionMantenimiento}"> -->
+										<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+										<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+										<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+										<!-- 														currencyCode="MXN" /> -->
+										<!-- 												</h:outputLabel> -->
+										<!-- 											</div> -->
+										<!-- 										</div> -->
+										<!-- 									</h:panelGroup> -->
+										<!-- /ROW -->
+										<!-- ROW -->
+										<h:panelGroup rendered="#{controller.isCuentaVista()}">
+											<div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="SALDO"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel value="HABER"></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{controller.simulacion.saldo}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div>
+										</h:panelGroup>
+										<!-- /ROW -->
+										<!-- ROW -->
+										<h:panelGroup>
+											<div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="IMPORTE NETO"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel rendered="#{'H' eq controller.simulacion.importeNetoDebeHaber}" value="HABER"></h:outputLabel>
+													<h:outputLabel rendered="#{'D' eq controller.simulacion.importeNetoDebeHaber}" value="DEBE"></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{controller.simulacion.importeNeto}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div>
+										</h:panelGroup>
+										<!-- /ROW -->
+										<!-- ROW -->
+										<h:panelGroup>
+											<div class="cuerpo-div-tabla">
+												<div>
+													<h:outputLabel value="DEUDA IMPAGADA"></h:outputLabel>
+												</div>
+												<div>
+													<h:outputLabel value=""></h:outputLabel>
+												</div>
+												<div>
+													<p:outputLabel styleClass="float-right"
+														value="#{controller.simulacion.deudaImpagada}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															pattern="#,##0.00 ¤" locale="es_MX" currencySymbol="MXN" />
+													</p:outputLabel>
+												</div>
+											</div>
+										</h:panelGroup>
+										<!-- /ROW -->
+
+									</div>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="sinresultados"
+									rendered="#{!controller.simulacionCorrecta}">
+									<div>
+										<p:outputLabel>No se puede realizar la simulación de la
+											cancelación de la cuenta.</p:outputLabel>
+									</div>
+								</h:panelGroup>
+
+								<div class="margin-top-20"></div>
+								<div class="contenedor-fijo-formulario">
+									<p:message id="msgDestino" for="destino" display="icon" />
+									<p:outputLabel for="destino" value="Destino del importe neto"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:selectOneRadio id="destino"
+										value="#{cancelarCuentaController.cancelacionCuentaBean.destinoImporte}"
+										required="true">
+										<f:selectItem
+											itemDisabled="#{!controller.permiteCuentaAsociada()}"
+											itemLabel="Cuenta Asociada" itemValue="CT" />
+										<f:selectItem itemLabel="Otra cuenta" itemValue="null"
+											itemDisabled="#{controller.permiteCuentaAsociada()}" />
+										<f:selectItem itemLabel="Caja" itemValue="CJ"
+											itemDisabled="#{controller.permiteCuentaAsociada() and !controller.isCuentaCreditoSimple()}" />
+										<f:selectItem itemLabel="Intervención" itemValue="IV"
+											itemDisabled="#{controller.permiteCuentaAsociada() and !controller.isCuentaCreditoSimple()}" />
+										<p:ajax global="" partialSubmit="true" update="@form"
+											process="@this"></p:ajax>
+									</p:selectOneRadio>
+								</div>
+								<h:panelGroup
+									rendered="#{'CT' eq cancelarCuentaController.cancelacionCuentaBean.destinoImporte}">
+									<div class="grid_20 alpha">
+										<p:outputLabel for="cuenta" id="cuentaOperativa"
+											value="N° de cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="cuenta"
+											value="#{controller.getCuentaOperativa()}" readonly="true">
+										</p:inputText>
+									</div>
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{'null' eq cancelarCuentaController.cancelacionCuentaBean.destinoImporte}">
+									<!-- Cuenta -->
+									<div class="grid_8">
+										<p:message id="msgOtraCuenta" for="otraCuenta" display="icon" />
+										<p:outputLabel for="otraCuenta" id="cuentaLabel"
+											value="N° de cuenta"></p:outputLabel>
+										<div class="clear-3"></div>
+										<p:inputText id="otraCuenta"
+											value="#{cancelarCuentaController.cancelacionCuentaBean.otraCuenta}"
+											maxlength="10" required="true">
+											<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="false" />
+										</p:inputText>
+									</div>
+
+									<!-- boton de busqueda de cuentas -->
+									<div class="grid_3">
+										<!-- boton de busqueda de cuentas -->
+										<div class="label-vacio"></div>
+										<div class="clear-3"></div>
+										<p:commandButton styleClass="btn-icono-conbackground"
+											id="busquedaPersona" immediate="true"
+											action="#{controller.buscarPersona()}" icon="ui-icon-search"
+											ajax="true" update="@form"></p:commandButton>
+									</div>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{controller.isTarifaCancelacionRazon()}">
+								<div class="grid_20">
+									<p:outputLabel for="razonCancelacion"
+										id="razonCancelacionLabel" value="Razón de cancelación:"></p:outputLabel>
+									<div class="clear-3"></div>
+									<p:selectOneMenu panelStyleClass="combo-estandar"
+										value="#{cancelarCuentaController.cancelacionCuentaBean.razonCancelacion}"
+										required="true" id="razonCancelacion">
+										<f:selectItem itemLabel="Seleccione la razón de cancelación"
+											itemValue="" />
+										<f:selectItems
+											value="#{catalogoUtils.getCatalogo('TP_RZN_ECV_AC')}"
+											var="item" itemValue="#{item.claveFila}"
+											itemLabel="#{item.descripcionL}" />
+										<p:ajax process="@this" partialSubmit="true" />
+									</p:selectOneMenu>
+									<p:message id="msgRazonCancelacion" for="razonCancelacion"
+										display="text" />
+								</div>
+							</h:panelGroup>
+							<div class="clear"></div>
+						</div>
+						<!--Botones  -->
+						<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Cancelar cuenta" update="@form"
+							action="#{controller.solicitarCancelacion}" />
+						 
+							
+							<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Incorporar gastos" rendered="#{controller.muestraIncorporarGastos}"
+							action="#{controller.irGastos()}" immediate="true" />
+							<p:commandButton
+							styleClass="btn_primario float-right margin-top-10"
+							value="Anotaciones" 
+							action="#{controller.irNotacion()}" immediate="true" />
+								
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Regresar" action="#{controller.volver()}" immediate="true" />
+					</h:form>
+
+
+					<!--
+plantilla de ventana de di�logo
+-->
+
+					<p:dialog id="dlgConfirmacionEstado"
+						widgetVar="dlgConfirmacionEstado" appendTo="@(body)"
+						showEffect="fade" hideEffect="fade" closable="false"
+						dynamic="true" draggable="false" modal="true" resizable="false"
+						header="Error">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continúa cancelará la cuenta." />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion" value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_secundario_dialog"
+							onclick="PF('dlgConfirmacionEstado').hide();" update=":form"
+							id="cancelar" value="Cancelar" immediate="true" />
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							id="aceptarCambio" widgetVar="btnAceptarCambio"
+							onclick="PF('dlgConfirmacionEstado').hide()" value="Aceptar"
+							action="#{controller.cancelarCuenta()}" />
+					</p:dialog>
+
+					<p:dialog id="dlgRespuestaCambio" widgetVar="dlgRespuestaCambio"
+						appendTo="@(body)" closable="false" dynamic="true"
+						showEffect="fade" hideEffect="fade" draggable="false" modal="true"
+						resizable="false" header="Error">
+						<!--icono de la modal -->
+						<span class="#{controller.claseEstadoRespuesta}"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{controller.mensaje}" />
+						<div class="clear"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							id="aceptarRespuesta" widgetVar="btnAceptarRespuesta"
+							update=":form"
+							onclick="PF('btnAceptarRespuesta').disable(); PF('dlgRespuestaCambio').hide();"
+							oncomplete="PF('btnAceptarRespuesta').enable()" value="Aceptar"
+							action="#{controller.confirmaRespuesta()}" />
+					</p:dialog>
+				</div>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

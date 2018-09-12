@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	<mapping map-id="resultadoLogin" wildcard="false" map-null="false"
+		trim-strings="true">
+		<class-a>
+			mx.babel.bansefi.banksystem.base.webservices.login.ResponseBansefi
+		</class-a>
+		<class-b>
+			mx.babel.arq.sesion.contexto.beans.UsuarioBean
+		</class-b>
+		<field>
+			<a>USUARIO</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a>NOMBRE</a>
+			<b>nombre</b>
+		</field>
+		<field>
+			<a>PERFIL</a>
+			<b>perfil</b>
+		</field>
+		<field>
+			<a>REGION</a>
+			<b>region</b>
+		</field>
+		<field>
+			<a>ENTIDAD</a>
+			<b>entidad</b>
+		</field>
+		<field>
+			<a>CENTRO</a>
+			<b>sucursal</b>
+		</field>
+		<field>
+			<a>VENTANILLA</a>
+			<b>terminal</b>
+		</field>
+		<field>
+			<a>REGION</a>
+			<b>plazaBancaria</b>
+		</field>
+		<field>
+			<a>EXPIRACION</a>
+			<b>diasExpiracionPwd</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>FECANTERIOR</a>
+			<b>fechaContableAnterior</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>FECSYS</a>
+			<b>fechaContableActual</b>
+		</field>
+		<field custom-converter="mx.babel.bansefi.banksystem.base.utils.StringToDateConverter">
+			<a>FECPOSTERIOR</a>
+			<b>fechaContableSiguiente</b>
+		</field>
+	</mapping>
+</mappings>

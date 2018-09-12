@@ -1,0 +1,732 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<h:outputStylesheet library="css" name="style_table_contadores_centro.css" />
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formaContadores" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w" title="Volver atrás"
+								action="#{contadoresCentroController.rutaInicio}"></p:commandButton>
+							<div>
+								<h2 class="gris-b display-inlineflex">Contadores de centro </h2>
+								<h2 class="rojo-b display-inlineflex">#{contadoresCentroController.numeroCentro}</h2>
+                        	</div>
+						</div>
+						<div class="contenedor-campos">
+							<!--aqui se introducen todos los campos-->
+							<p:tabView>
+								<p:tab title="Contadores">
+									<!-- <div class="posicion-btn-impresion">
+										<p:commandButton title="Imprimir" styleClass="btn-icono btn-impresion"
+											icon="ui-icon-print"
+											onclick="printContenedorCamposId('printArea1');">
+										</p:commandButton>
+									</div> -->
+									<p:messages showDetail="true" for="contadoresCentro"
+										autoUpdate="true" escape="false" closable="false" />
+									<div id="printArea1">
+											<h:panelGroup layout="block" styleClass="grid_48">
+											<h3 class="azul-b">Caja</h3>
+											<div class="clear-3"></div>
+												<div class="marco-componente">
+														<div class="grid_6"><div class="label-vacio"></div></div>
+														<div class="grid_14"><p:outputLabel styleClass="float-right">Cobros</p:outputLabel></div>
+														<div class="grid_14"><p:outputLabel styleClass="float-right">Pagos</p:outputLabel></div>
+														<div class="grid_14"><p:outputLabel styleClass="float-right">Diferencia</p:outputLabel></div>
+													
+													<div class="clear-row"></div>
+														<div class="grid_6"><p:outputLabel styleClass="float-right">On</p:outputLabel></div>
+														<div class="grid_14">
+															<h:outputText styleClass="float-right"
+																value="#{contadoresCentroController.contadoresCentroBean.cobrosOnCaja}">
+																<f:convertNumber type="currency" groupingUsed="true"
+																	maxFractionDigits="2" maxIntegerDigits="12"
+																	minIntegerDigits="1" minFractionDigits="2"
+																	currencyCode="MXN" />
+															</h:outputText>
+														</div>
+														<div class="grid_14">
+															<h:outputText styleClass="float-right"
+																value="#{contadoresCentroController.contadoresCentroBean.pagosOnCaja}">
+																<f:convertNumber type="currency" groupingUsed="true"
+																	maxFractionDigits="2" maxIntegerDigits="12"
+																	minIntegerDigits="1" minFractionDigits="2"
+																	currencyCode="MXN" />
+															</h:outputText>
+														</div>
+														<div class="grid_14">
+															<h:outputText styleClass="float-right"
+																value="#{contadoresCentroController.contadoresCentroBean.diferenciaOnCaja}">
+																<f:convertNumber type="currency" groupingUsed="true"
+																	maxFractionDigits="2" maxIntegerDigits="12"
+																	minIntegerDigits="1" minFractionDigits="2"
+																	currencyCode="MXN" />
+															</h:outputText>
+														</div>
+													<div class="clear-row"></div>
+<!-- 													<div class="ui-grid-row"> -->
+<!-- 														<div class="ui-grid-col-3">Off</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.cobrosOffCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.pagosOffCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.diferenciaOffCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
+<!-- 													<div class="ui-grid-row"> -->
+<!-- 														<div class="ui-grid-col-3">Mov</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.cobrosMovCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.pagosMovCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.diferenciaMovCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
+<!-- 														<div class="grid_6"><p:outputLabel styleClass="float-right">Total</p:outputLabel></div> -->
+<!-- 														<div class="grid_14"> -->
+<!-- 															<h:outputText styleClass="float-right" -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.totalCobrosCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="grid_14"> -->
+<!-- 															<h:outputText styleClass="float-right" -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.totalPagosCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="grid_14"> -->
+<!-- 															<h:outputText styleClass="float-right" -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.totalDiferenciaCaja}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+														<div class="clear"></div>
+													</div>
+											</h:panelGroup>
+
+											<h:panelGroup layout="block" styleClass="grid_48">
+											<h3 class="azul-b">Cuenta intervención</h3>
+											<div class="clear-3"></div>
+												<div class="marco-componente">
+													
+														<div class="grid_6"><div class="label-vacio"></div></div>
+														<div class="grid_14"><p:outputLabel styleClass="float-right">Debe</p:outputLabel></div>
+														<div class="grid_14"><p:outputLabel styleClass="float-right">Haber</p:outputLabel></div>
+														<div class="grid_14"><p:outputLabel styleClass="float-right">Diferencia</p:outputLabel></div>
+													
+													<div class="clear-row"></div>
+													
+														<div class="grid_6"><p:outputLabel styleClass="float-right">On</p:outputLabel></div>
+														<div class="grid_14">
+															<h:outputText styleClass="float-right"
+																value="#{contadoresCentroController.contadoresCentroBean.deberOnIntervencion}">
+																<f:convertNumber type="currency" groupingUsed="true"
+																	maxFractionDigits="2" maxIntegerDigits="12"
+																	minIntegerDigits="1" minFractionDigits="2"
+																	currencyCode="MXN" />
+															</h:outputText>
+														</div>
+														<div class="grid_14">
+															<h:outputText styleClass="float-right"
+																value="#{contadoresCentroController.contadoresCentroBean.haberOnIntervencion}">
+																<f:convertNumber type="currency" groupingUsed="true"
+																	maxFractionDigits="2" maxIntegerDigits="12"
+																	minIntegerDigits="1" minFractionDigits="2"
+																	currencyCode="MXN" />
+															</h:outputText>
+														</div>
+														<div class="grid_14">
+															<h:outputText styleClass="float-right"
+																value="#{contadoresCentroController.contadoresCentroBean.diferenciaOnIntervencion}">
+																<f:convertNumber type="currency" groupingUsed="true"
+																	maxFractionDigits="2" maxIntegerDigits="12"
+																	minIntegerDigits="1" minFractionDigits="2"
+																	currencyCode="MXN" />
+															</h:outputText>
+														</div>
+<!-- 													<div class="ui-grid-row"> -->
+<!-- 														<div class="ui-grid-col-3">Off</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.deberOffIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.haberOffIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.diferenciaOffIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
+<!-- 													<div class="ui-grid-row"> -->
+<!-- 														<div class="ui-grid-col-3">Mov</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.deberMovIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.haberMovIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="ui-grid-col-3"> -->
+<!-- 															<h:outputText -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.diferenciaMovIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
+													<div class="clear-row"></div>
+<!-- 														<div class="grid_6"><p:outputLabel styleClass="float-right">Total</p:outputLabel></div> -->
+<!-- 														<div class="grid_14"> -->
+<!-- 															<h:outputText styleClass="float-right" -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.totalDebeIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="grid_14"> -->
+<!-- 															<h:outputText styleClass="float-right" -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.totalHaberIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+<!-- 														<div class="grid_14"> -->
+<!-- 															<h:outputText styleClass="float-right" -->
+<!-- 																value="#{contadoresCentroController.contadoresCentroBean.totalDiferenciaIntervencion}"> -->
+<!-- 																<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 																	maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 																	minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 																	currencyCode="MXN" /> -->
+<!-- 															</h:outputText> -->
+<!-- 														</div> -->
+														<div class="clear"></div>
+												</div>
+											</h:panelGroup>
+											<div class="clear-row"></div>
+									</div>
+								</p:tab>
+								<p:tab title="Contadores por terminal">
+								
+										<p:commandButton value="Imprimir" styleClass="btn_secundario btn-icono-texto float-right"
+											icon="ui-icon-print"
+											onclick="printContenedorCamposId('printArea2');">
+										</p:commandButton>
+										
+									<div class="clear margin-bottom-10"></div>
+
+									<div id="printArea2" >
+									
+										<div class="impresion contadores">
+										
+										<h2 class="mostrar-en-impresion">Contadores de centro #{contadoresCentroController.numeroCentro}</h2>
+											<br></br>
+											<br></br>
+											<br></br>
+											<h3 class="azul-b">Contadores por terminal</h3>
+											<div class="clear-row"></div>
+										
+											<div class="totales-contadores display-flex">
+											<p:outputLabel styleClass="cuadra border-right">Totales:</p:outputLabel>
+											<p:outputLabel styleClass="cuadra border-right"
+												value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalCobros}">
+															<f:convertNumber type="currency" groupingUsed="true"
+																maxFractionDigits="2" maxIntegerDigits="12"
+																minIntegerDigits="1" minFractionDigits="2"
+																currencyCode="MXN" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="cuadra border-left"
+												value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalPagos}">
+															<f:convertNumber type="currency" groupingUsed="true"
+																maxFractionDigits="2" maxIntegerDigits="12"
+																minIntegerDigits="1" minFractionDigits="2"
+																currencyCode="MXN" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="cuadra border-left"
+												value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalDebe}">
+															<f:convertNumber type="currency" groupingUsed="true"
+																maxFractionDigits="2" maxIntegerDigits="12"
+																minIntegerDigits="1" minFractionDigits="2"
+																currencyCode="MXN" />
+											</p:outputLabel>
+											<p:outputLabel styleClass="cuadra border-left"
+												value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalHaber}">
+															<f:convertNumber type="currency" groupingUsed="true"
+																maxFractionDigits="2" maxIntegerDigits="12"
+																minIntegerDigits="1" minFractionDigits="2"
+																currencyCode="MXN" />
+											</p:outputLabel>
+											</div>
+											
+											<div class="margin-top-5"></div>
+														
+											<p:dataTable var="cuentaOn" styleClass="tabla-contadores-centro"
+												value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.lista}">
+												<p:columnGroup type="header">
+													<p:row>
+														<p:column rowspan="2" headerText="TERMINAL" />
+														<p:column rowspan="2" headerText="PUESTO" />
+														<p:column colspan="2" headerText="CAJA" />
+														<p:column colspan="2" headerText="CUENTA DE INTERVENCIÓN" />
+													</p:row>
+													<p:row>
+														
+														<p:column headerText="COBROS" />
+														<p:column headerText="PAGOS" />
+														<p:column headerText="DEBE" />
+														<p:column headerText="HABER" />
+													</p:row>
+												</p:columnGroup>
+												<p:column>
+													<h:outputText value="#{cuentaOn.terminal}" />
+												</p:column>
+	
+												<p:column>
+													<h:outputText value="#{cuentaOn.puesto}" />
+												</p:column>
+	
+												<p:column>
+													<h:outputText styleClass="float-right" value="#{cuentaOn.cobros}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															currencyCode="MXN" />
+													</h:outputText>
+												</p:column>
+	
+												<p:column>
+													<h:outputText styleClass="float-right" value="#{cuentaOn.pagos}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															currencyCode="MXN" />
+													</h:outputText>
+	
+													
+												</p:column>
+	
+												<p:column>
+													<h:outputText styleClass="float-right" value="#{cuentaOn.debe}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															currencyCode="MXN" />
+													</h:outputText>
+	
+													
+												</p:column>
+	
+												<p:column>
+													<h:outputText styleClass="float-right" value="#{cuentaOn.haber}">
+														<f:convertNumber type="currency" groupingUsed="true"
+															maxFractionDigits="2" maxIntegerDigits="12"
+															minIntegerDigits="1" minFractionDigits="2"
+															currencyCode="MXN" />
+													</h:outputText>
+												</p:column>
+												<p:columnGroup type="footer" styleClass="hidden">
+													<p:row style="visibility: hidden">
+														<p:column colspan="1" styleClass="footer-tableCC bold" footerText="Totales:" />
+														<p:column colspan="2" styleClass="footer-tableCC">
+															<f:facet name="footer">
+																<h:outputText value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalCobros}">
+																	<f:convertNumber type="currency" groupingUsed="true"
+																					 maxFractionDigits="2" maxIntegerDigits="12"
+																					 minIntegerDigits="1" minFractionDigits="2"
+																					 currencyCode="MXN" />
+																</h:outputText>
+															</f:facet>
+														</p:column>
+														<p:column colspan="1" styleClass="footer-tableCC">
+															<f:facet name="footer">
+																<h:outputText value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalPagos}">
+																	<f:convertNumber type="currency" groupingUsed="true"
+																					 maxFractionDigits="2" maxIntegerDigits="12"
+																					 minIntegerDigits="1" minFractionDigits="2"
+																					 currencyCode="MXN" />
+																</h:outputText>
+															</f:facet>
+														</p:column>
+														<p:column colspan="1" styleClass="footer-tableCC">
+															<f:facet name="footer">
+																<h:outputText value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalDebe}">
+																	<f:convertNumber type="currency" groupingUsed="true"
+																					 maxFractionDigits="2" maxIntegerDigits="12"
+																					 minIntegerDigits="1" minFractionDigits="2"
+																					 currencyCode="MXN" />
+																</h:outputText>
+															</f:facet>
+														</p:column>
+														<p:column colspan="1" styleClass="footer-tableCC">
+															<f:facet name="footer">
+																<h:outputText value="#{contadoresCentroController.contadoresCentroBean.contadoresCentroRegistrosOn.totalHaber}">
+																	<f:convertNumber type="currency" groupingUsed="true"
+																					 maxFractionDigits="2" maxIntegerDigits="12"
+																					 minIntegerDigits="1" minFractionDigits="2"
+																					 currencyCode="MXN" />
+																</h:outputText>
+															</f:facet>
+														</p:column>
+													</p:row>
+													<tr></tr>
+													<tr></tr>
+												</p:columnGroup>
+											</p:dataTable>
+										</div>
+									</div>
+								</p:tab>
+<!-- 								<p:tab title="CONTADOR OFF"> -->
+
+<!-- 									<p:commandButton styleClass="btn-impresion" -->
+<!-- 										icon="ui-icon-print" -->
+<!-- 										onclick="printContenedorCamposId('printArea3');"> -->
+<!-- 									</p:commandButton> -->
+
+<!-- 									<div id="printArea3"> -->
+<!-- 										<h2>CUENTA "OFF" TERMINALES</h2> -->
+<!-- 										<p:dataTable var="cuentaOff" -->
+<!-- 											value="#{contadoresCentroController.contadoresCentroRegistrosOff.lista}"> -->
+<!-- 											<p:columnGroup type="header"> -->
+<!-- 												<p:row> -->
+<!-- 													<p:column colspan="4" headerText="CAJA" /> -->
+<!-- 													<p:column colspan="2" headerText="CUENTA DE INTERVENCIÓN" /> -->
+<!-- 												</p:row> -->
+<!-- 												<p:row> -->
+<!-- 													<p:column headerText="TERMINAL" /> -->
+<!-- 													<p:column headerText="PUESTO" /> -->
+<!-- 													<p:column headerText="COBROS" /> -->
+<!-- 													<p:column headerText="PAGOS" /> -->
+<!-- 													<p:column headerText="DEBE" /> -->
+<!-- 													<p:column headerText="HABER" /> -->
+<!-- 												</p:row> -->
+<!-- 											</p:columnGroup> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaOff.terminal}" /> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaOff.puesto}" /> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText value="TOTALES:" style="text-align:right" /> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaOff.cobros}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosOff.totalCobros}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaOff.pagos}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosOff.totalPagos}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaOff.debe}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosOff.totalDebe}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaOff.haber}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosOff.totalHaber}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 										</p:dataTable> -->
+<!-- 									</div> -->
+<!-- 								</p:tab> -->
+<!-- 								<p:tab title="CONTADOR MOV"> -->
+
+<!-- 									<p:commandButton styleClass="btn-impresion" -->
+<!-- 										icon="ui-icon-print" -->
+<!-- 										onclick="printContenedorCamposId('printArea4');"> -->
+<!-- 									</p:commandButton> -->
+<!-- 									<div id="printArea4"> -->
+<!-- 										<h2>CUENTA "MOV" TERMINALES</h2> -->
+<!-- 										<p:dataTable var="cuentaMov" -->
+<!-- 											value="#{contadoresCentroController.contadoresCentroRegistrosMov.lista}"> -->
+<!-- 											<p:columnGroup type="header"> -->
+<!-- 												<p:row> -->
+<!-- 													<p:column colspan="4" headerText="CAJA" /> -->
+<!-- 													<p:column colspan="2" headerText="CUENTA DE INTERVENCIÓN" /> -->
+<!-- 												</p:row> -->
+<!-- 												<p:row> -->
+<!-- 													<p:column headerText="TERMINAL" /> -->
+<!-- 													<p:column headerText="PUESTO" /> -->
+<!-- 													<p:column headerText="COBROS" /> -->
+<!-- 													<p:column headerText="PAGOS" /> -->
+<!-- 													<p:column headerText="DEBE" /> -->
+<!-- 													<p:column headerText="HABER" /> -->
+<!-- 												</p:row> -->
+<!-- 											</p:columnGroup> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaMov.terminal}" /> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaMov.puesto}" /> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText value="TOTALES:" style="text-align:right" /> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaMov.cobros}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosMov.totalCobros}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaMov.pagos}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosMov.totalPagos}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaMov.debe}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosMov.totalDebe}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+<!-- 											<p:column> -->
+<!-- 												<h:outputText value="#{cuentaMov.haber}"> -->
+<!-- 													<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 														maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 														minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 														currencyCode="MXN" /> -->
+<!-- 												</h:outputText> -->
+
+<!-- 												<f:facet name="footer"> -->
+<!-- 													<h:outputText -->
+<!-- 														value="#{contadoresCentroController.contadoresCentroRegistrosMov.totalHaber}"> -->
+<!-- 														<f:convertNumber type="currency" groupingUsed="true" -->
+<!-- 															maxFractionDigits="2" maxIntegerDigits="12" -->
+<!-- 															minIntegerDigits="1" minFractionDigits="2" -->
+<!-- 															currencyCode="MXN" /> -->
+<!-- 													</h:outputText> -->
+<!-- 												</f:facet> -->
+<!-- 											</p:column> -->
+
+
+<!-- 										</p:dataTable> -->
+<!-- 									</div> -->
+<!-- 								</p:tab> -->
+							</p:tabView>
+						</div>
+						<!--Botones  -->
+						<!-- 						<p:commandButton styleClass="btn_secundario margin-top-10" -->
+						<!-- 							value="Borrar Contadores" /> -->
+						<p:commandButton
+							styleClass="btn_secundario float-right margin-top-10"
+							value="Cancelar" immediate="true"
+							action="#{contadoresCentroController.rutaInicio()}" />
+
+					</h:form>
+				</div>
+
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	
+	</ui:define>
+</ui:composition>

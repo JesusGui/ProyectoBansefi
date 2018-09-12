@@ -1,0 +1,302 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!-- Parametros -->
+	<ui:param name="detalle"
+		value="#{diarioElectronicoController.diarioElectronicoDetalleBean}" />
+	<ui:param name="registro"
+		value="#{diarioElectronicoController.diarioBeanTable}" />
+	<ui:param name="controller" value="#{diarioElectronicoController}" />
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formDetalle" styleClass="contenedor-form">
+						<!--título d ela ventana-->
+						<div class="titulo centrar-objeto btn-inline-set">
+							<!--botón atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action='#{controller.cerrarDetalle("resultados")}'></p:commandButton>
+							<h1>Diario electrónico</h1>
+						</div>
+						<div class="contenedor-campos">
+							<h3 class="gris-b">Información común de transacción</h3>
+							<div class="margin-top-10"></div>
+							<h3 class="azul-b">#{detalle.concepto}</h3>
+							
+							<div class="margin-top-10"></div>
+							
+							<div class="contenedor-wrap">
+								
+								<div class="marco-datospersonales grid_24">
+									
+									<h:panelGroup rendered="#{detalle.entidad ne null}">
+										<p:outputLabel value="ENTIDAD: "></p:outputLabel>
+										<p:outputLabel styleClass="bold" value="#{detalle.entidad}"></p:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.centro ne null}">
+										<p:outputLabel value="CENTRO: "></p:outputLabel>
+										<p:outputLabel styleClass="bold" value="#{detalle.centro}"></p:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.plaza ne null}">
+										<p:outputLabel value="PLAZA: "></p:outputLabel>
+										<p:outputLabel styleClass="bold" value="#{detalle.plaza}"></p:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.terminal ne null}">
+										<p:outputLabel value="TERMINAL: "></p:outputLabel>
+										<p:outputLabel styleClass="bold" value="#{detalle.terminal}"></p:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.usuario ne null}">
+										<p:outputLabel value="USUARIO: "></p:outputLabel>
+										<p:outputLabel styleClass="bold" value="#{detalle.usuario}"></p:outputLabel>
+									</h:panelGroup>
+								
+								</div>
+								
+								<div class="marco-datospersonales grid_24">
+							
+									<h:panelGroup rendered="#{detalle.fechaContable ne null}">
+										<h:outputLabel value="Fecha Contable: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.fechaContable}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.fechaValor ne null}">
+										<h:outputLabel value="Fecha Valor: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.fechaValor}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.horaTecleo ne null}">
+										<h:outputLabel value="Hora Tecleo: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.horaTecleo}">
+											<f:convertDateTime pattern="HH:mm:ss" timeZone="America/Mexico_City"/>
+										</h:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.getDebeHaberToString() ne null}">
+										<h:outputLabel value="Debe/Haber: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.getDebeHaberToString()}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.tipoOperacion ne null or detalle.tipoOperacion.trim() ne ''}">
+										<h:outputLabel value="Tipo de Operación: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.tipoOperacion}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+									
+									<h:panelGroup rendered="#{detalle.getRespuestaToString() ne null}">
+										<h:outputLabel value="Tipo de Respuesta: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.getRespuestaToString()}" />
+									</h:panelGroup>
+							
+								</div>
+								
+								<div class="marco-datospersonales grid_24">
+
+									<h:panelGroup rendered="#{detalle.fechaOperacion ne null}">
+										<h:outputLabel value="Fecha de Operación: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.fechaOperacion}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputLabel>
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.digito ne null}">
+										<h:outputLabel value="Dígito: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.digito}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.noSecuencia ne null}">
+										<h:outputLabel value="Número de Secuencia: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.noSecuencia}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.idTransaccion ne null}">
+										<h:outputLabel value="ID Transacción: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.idTransaccion}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.estatus ne null}">
+										<h:outputLabel value="Estatus: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.estatus}" />
+									</h:panelGroup>
+
+								</div>
+								
+								<div class="marco-datospersonales grid_24">
+
+									<h:panelGroup rendered="#{detalle.titular ne null}">
+										<h:outputLabel value="Titular: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.titular}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.noCuenta ne null}">
+										<h:outputLabel value="Número de Cuenta: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.noCuenta}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.tipoIdentificacion ne null}">
+										<h:outputLabel value="Tipo de Identificación: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.tipoIdentificacion}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.noIdentificacion ne null}">
+										<h:outputLabel value="Número de Identificación: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.noIdentificacion}" />
+									</h:panelGroup>
+
+								</div>
+								
+								<div class="marco-datospersonales grid_24">
+							
+									<h:panelGroup rendered="#{detalle.movimiento ne null}">
+										<h:outputLabel value="Movimiento: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.movimiento}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.codigoOperacion ne null}">
+										<h:outputLabel value="Codigo de Operación: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.codigoOperacion}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.concepto ne null}">
+										<h:outputLabel value="Concepto: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.concepto}" />
+										<div class="clear-3"></div>
+									</h:panelGroup>
+	
+									<h:panelGroup rendered="#{detalle.importe ne null}">
+										<h:outputLabel value="Importe: " />
+										<h:outputLabel styleClass="bold" value="#{detalle.importe}">
+											<f:convertNumber type="currency" groupingUsed="true"
+												maxFractionDigits="2" maxIntegerDigits="12"
+												minIntegerDigits="1" minFractionDigits="2" currencyCode="MXN" />
+										</h:outputLabel>
+									</h:panelGroup>
+									
+								</div>
+								
+							</div>
+							
+							<div class="margin-top-20"></div>
+							
+							<h:panelGroup rendered="#{not empty detalle.unificacion}">
+								<h3 class="azul-b">Información variable</h3>
+							</h:panelGroup>
+
+							<div class="margin-top-10"></div>
+
+							<p:dataTable var="info"
+								value="#{detalle.unificacion.entrySet().toArray()}"
+								rendered="#{not empty detalle.unificacion}">
+								<p:column headerText="CAMPO">
+									<h:outputText value="#{info.key}" />
+								</p:column>
+
+								<p:column headerText="CONTENIDO">
+									<h:outputText value="#{info.value}" />
+								</p:column>
+							</p:dataTable>
+						</div>
+						<!--Botones  -->
+						<p:commandButton
+							styleClass="btn_secundario margin-top-10 "
+							value="Cerrar" action="#{controller.cerrarDetalle('inicio')}" />
+						<p:commandButton
+							styleClass="btn_primario margin-top-10 float-right"
+							value="Anular" rendered="#{controller.permiteAnulacion()}"
+							immediate="true" widgetVar="btnAnular"
+							onclick="PF('dlgConfirmacionAnulacion').show(); PF('btnAnular').disable();"
+							oncomplete="PF('btnAnular').enable();" update="@form" />
+
+					</h:form>
+				</div>
+
+				<!--
+plantilla de ventana de diálogo
+-->
+				<!-- Dialogo para confirmar la anulación de la operación -->
+				<p:dialog widgetVar="dlgConfirmacionAnulacion" showEffect="fade" hideEffect="fade"
+					id="dlgConfirmacionAnulacion" appendTo="@(body)"
+					header="Confirmación de anulación" modal="true" visible="false"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="¡Atención! Está a punto de anular la operación." />
+					<div class="clear"></div>
+					<p:outputLabel styleClass="modal-accion"
+						value="¿Está seguro de que desea continuar?" />
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_secundario_dialog"
+						onclick="PF('dlgConfirmacionAnulacion').hide();"
+						update=":formDetalle" id="cancelar" value="Cancelar"
+						immediate="true" />
+					<!--<p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="" value="Cancelar" action="" />-->
+					<p:commandButton widgetVar="btnAnular2"
+						onclick="PF('dlgConfirmacionAnulacion').hide();"
+						styleClass="btn_principal_dialog_derecha" id="anular"
+						value="Aceptar" action="#{controller.anularOperacion}"
+						update=":formDetalle" />
+				</p:dialog>
+				
+				<!-- Dialogo para informar que no se pudo realizar la anulacion -->
+				<p:dialog widgetVar="dlgErrorAnulacion" showEffect="fade" hideEffect="fade"
+					id="dlgErrorAnulacion" appendTo="@(body)"
+					header="Error de anulación" modal="true" visible="false"
+					closable="false" resizable="false" draggable="false">
+					<!--icono de la modal -->
+					<span class="ui-messages-warn-icon warn-dialog"></span>
+					<!--mensaje de la modal styleClass="modal-mensaje" -->
+					<p:outputLabel styleClass="modal-mensaje"
+						value="Falló la anulación de la transacción. Por favor, inténtelo más tarde." />
+					<div class="clear"></div>
+					<div class="margin-bottom-20"></div>
+					<!--botones de la modal primarios y secundarios -->
+					<p:commandButton styleClass="btn_principal_dialog_derecha"
+						onclick="PF('dlgErrorAnulacion').hide();"
+						update=":formDetalle" id="aceptarError" value="Aceptar"
+						immediate="true" />					
+				</p:dialog>
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

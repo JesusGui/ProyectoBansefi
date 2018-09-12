@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="../../templates/plantilla-inicio.xhtml">
+
+	<!--
+plantilla de ventana tipo
+-->
+	<ui:define name="contenido">
+		<!--scripts Evitar utilizar h:head-->
+		<!--<h:outputScript name="/js/personas.js" />-->
+		<h:body>
+			<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="form" styleClass="contenedor-form">
+						<!--t�tulo d ela ventana-->
+						<div class="titulo">
+							<!--bot�n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"></p:commandButton>
+							<h1>Prueba CURP Validator</h1>
+						</div>
+						<div class="contenedor-campos">
+							<p:outputLabel styleClass="txt-campos-oblg"
+								value="*Campos Obligatorios"></p:outputLabel>
+
+							<h:outputLabel styleClass="txt-campos-oblg"
+								value="Los campos marcados en rojo son requeridos"
+								rendered="#{facesContext.validationFailed}" />
+
+							<!--aqui se introducen todos los campos-->
+							<!--posible estructura de conjunto de label + input-->
+							<div class="grid_10">
+								<p:outputLabel value="Curp" for="curp"></p:outputLabel>
+								<div class="clear-3"></div>
+								<p:message id="msgCurp" for="curp" display="text" />
+								<p:inputText id="curp"
+									value="#{curpValidatorTestController.curp}" maxlength="18"
+									required="true" onblur="value=value.toUpperCase()">
+									<pe:keyFilter regEx="/^[a-zA-Z0-9\- ]*$/"
+										preventPaste="false" />
+									<f:validator binding="#{curpValidator}" />
+								</p:inputText>
+							</div>
+							<div class="clear"></div>
+							<p:outputLabel value="Modo del servidor: #{facesContext.application.projectStage}"></p:outputLabel>
+							<p:growl id="messages" />
+							
+							<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Prueba cache" onclick="console.log('cache2')" />
+						</div>
+						<!--Botones  -->
+						<p:commandButton styleClass="btn_secundario margin-top-10"
+							value="Cancelar" />
+						<p:commandButton widgetVar="btnGuardar"
+							onclick="PF('btnGuardar').disable()"
+							oncomplete="PF('btnGuardar').enable()"
+							styleClass="btn_primario float-right margin-top-10"
+							action="#{curpValidatorTestController.guardar()}" value="Guardar" update="@form"/>
+					</h:form>
+				</div>
+
+			</div>
+			<!--termina container 24-->
+		</h:body>
+	</ui:define>
+</ui:composition>

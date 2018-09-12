@@ -1,0 +1,351 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://mx.babel.arq.components.bansefi/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="../../templates/plantilla-inicio.xhtml">
+	<ui:define name="contenido">
+	<h:body>
+<div class="container_48">
+				<div class="contenedor">
+					<!--inicia el hform-->
+					<h:form id="formRecepcionEfectivo" styleClass="contenedor-form">
+					<div class="titulo centrar-objeto btn-inline-set">
+							<!--bot?n atras-->
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								onclick="PF('dialogCancelar').show();"></p:commandButton>
+							<h1>Recepción de efectivo</h1>
+						</div>
+						<div class="contenedor-campos">
+						   <div class="grid_10">
+									<p:outputLabel for="fecha_abastecimiento"
+									value="Fecha de abastecimiento" />
+									<div class="clear-3"></div>
+										<p:outputLabel styleClass="label-valor texto-sininput"
+										id="fecha_abastecimiento"
+										value="#{recepcionPeticionController.recepcionEfectivoBean.fechaAbastecimiento}">
+										<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+										</p:outputLabel>
+							</div>
+							<div class="grid_10">
+							 <p:outputLabel for="no_urgente"
+									value="No.Urgente" />
+								<p:inputText id="no_urgente" maxlength="5" 
+								value="#{recepcionPeticionController.recepcionEfectivoBean.indicadorUrgencia}">
+								<pe:keyFilter regEx="/^[0-9]*$/" preventPaste="false" />
+								</p:inputText>	
+							</div>
+							
+							<div class="grid_10">
+							    <p:commandButton id="btnBuscar"
+							styleClass="btn_primario float-right margin-top-10"  
+							value="Buscar"  action="#{recepcionPeticionController.consultaRecepcion()}" update="formRecepcionEfectivo" />
+							</div>
+							<div class="grid_10">
+							      <h:panelGroup id="blockStatus" layout="block" rendered="#{recepcionPeticionController.mostrarParrila}">
+									<p:outputLabel value="Estatus: "></p:outputLabel>
+									<h:outputLabel styleClass="bold"
+										value="#{recepcionPeticionController.recepcionEfectivoBean.estatusDescripcion}">
+										</h:outputLabel>
+										</h:panelGroup>
+					    </div>
+							<div class="clear-row"></div>
+						<h:panelGroup id="blockParrila" layout="block" rendered="#{recepcionPeticionController.mostrarParrila}">
+										
+										<div class="contenedor-recepcion">
+														    <h:panelGroup rendered="true">
+													<p:selectOneMenu id="filtroDenominaciones" value="#{recepcionPeticionController.recepcionEfectivoBean.parillaBean.filtro}">
+													  	<p:ajax event="change" process="@this" update="contenedorDenominaciones" 
+													  		/> 
+													   	<f:selectItem itemLabel="Todos" itemValue="0"/> 
+													    <f:selectItem itemLabel="Ventanilla" itemValue="1"/>
+													    <f:selectItem itemLabel="Dispensador" itemValue="2"/> 
+													    <f:selectItem itemLabel="Billetes" itemValue="3"/>
+													    <f:selectItem itemLabel="Monedas" itemValue="4"/>
+													     <f:selectItem itemLabel="Desglose" itemValue="5"/>
+													</p:selectOneMenu>
+												</h:panelGroup>
+													<div class="ui-datatable ui-widget">
+														<div class="ui-datatable-tablewrapper">
+															<table>
+																<thead>
+																	<tr>
+																		<th><h:outputLabel value="Valor Facial"></h:outputLabel></th>
+																		<th><h:outputLabel value="Soporte"></h:outputLabel></th>
+																		<th><h:outputLabel value="Formato"></h:outputLabel></th>
+																		<th><h:outputLabel value="D/V"></h:outputLabel></th>
+																		<th><h:outputLabel value="Importe Autorizado"></h:outputLabel></th>
+																		<th><h:outputLabel value="Unidades"></h:outputLabel></th>
+																		<th><h:outputLabel value="Importe Recibido"></h:outputLabel></th>
+																	</tr>
+																</thead>
+															</table>
+														</div>
+													</div>
+													                                      <h:panelGroup id="contenedorDenominaciones">
+                                      		<ui:repeat var="denominacion"
+										value="#{recepcionPeticionController.recepcionEfectivoBean.parillaBean.listaDenominaciones}">
+										<h:panelGroup rendered="#{recepcionPeticionController.recepcionEfectivoBean.parillaBean.isVisibleRecepcion(denominacion)}">
+										<div class="cuerpo-recepcion">
+											<div>
+												<h:outputLabel styleClass="float-right"
+													value="#{denominacion.valor}">
+													<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												</h:outputLabel>
+											</div>
+											<div>
+												<h:outputLabel
+													value="#{denominacion.moneda? 'Moneda':'Billete'}" />
+											</div>
+											<div>
+												<h:outputLabel value="#{denominacion.formato}" />
+											</div>
+											<div>
+												<h:outputLabel
+													value="#{'V'.equals(denominacion.origen)? 'Ventanilla':'Dispensador'}" />
+											</div>
+											<div>
+												<h:outputLabel styleClass="float-right"
+													value="#{denominacion.importeAutorizado}">
+													<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												</h:outputLabel>
+											</div>
+										
+											<div class="ui-inputNum">
+												
+												<p:inputMask id="unidades" value="#{denominacion.unidades}"
+													placeholder="0"
+													maxlength="#{peticionEfectivoController.cantidadMaxima(denominacion)}">
+													<pe:keyFilter regEx="/[0-9_]/i" />
+													<p:ajax event="change" process="unidades" global="false"
+														listener="#{recepcionPeticionController.actualizaImporte(denominacion)}" 
+														update="importeDenominacion @form"></p:ajax>
+													<!-- <p:ajax event="blur" update="importeDenominacion "></p:ajax> -->
+														
+												</p:inputMask>
+											</div>
+											<div>
+											<pe:inputNumber id="importeDenominacion"
+													value="#{denominacion.importeRecibido}" decimalPlaces="2"
+													decimalSeparator="." thousandSeparator="," symbol=" MXN"
+													symbolPosition="suffix" maxlength="12">
+													<f:attribute id="importeAttribute" name="valor"
+														value="#{denominacion.valor}" />
+													<f:validator validatorId="importeDenominacionValidator" />
+													<p:ajax event="change" global="false" process="@this" partialSubmit="true"
+														update="unidades @form"
+														listener="#{recepcionPeticionController.actualizaUnidades(denominacion)}"></p:ajax>
+													<p:ajax event="blur" update="unidades "></p:ajax>	
+												</pe:inputNumber>
+												<p:watermark for="importeDenominacion" value="0.00 MXN" />
+												<p:message for="importeDenominacion" id="mensajeImporte" display="text"></p:message>
+											</div>
+										</div>
+									   </h:panelGroup>
+									</ui:repeat>
+                                      </h:panelGroup>
+										                
+										                <div class="clear-row"></div>
+								<div class="contenedor-totales">
+									<div class="grid_48 saldo-disponible" id="idTotal" >
+									    
+										<div class="grid_12">
+											<p:outputLabel value="Total autorizado:"></p:outputLabel>
+										</div>
+										<div class="grid_12">
+											<p:outputLabel  id="labelTotalAutorizado"  
+												value="#{recepcionPeticionController.recepcionEfectivoBean.totalAutorizado}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												
+											</p:outputLabel>
+										</div>
+										<div class="grid_12">
+											<p:outputLabel value="Total recibido:"></p:outputLabel>
+										</div>
+										<div class="grid_12">
+											<p:outputLabel class="prueba" id="labelTotalRecibido"  
+												value="#{recepcionPeticionController.recepcionEfectivoBean.totalRecibido}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												
+											</p:outputLabel>
+										</div>
+										
+											
+										
+									</div>
+									
+								
+								</div>
+								<div class="contenedor-totales">
+									<div class="grid_48 saldo-disponible" id="idDiferencia" >
+								           <div class="grid_20">
+											<p:outputLabel value="Diferencia:"></p:outputLabel>
+										</div>
+										<div class="grid_28">
+											<p:outputLabel class="prueba" id="labelDiferencia"  
+												value="#{recepcionPeticionController.recepcionEfectivoBean.diferencia}">
+												<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+												
+											</p:outputLabel>
+										</div>
+									</div>
+								</div>
+								<div class="clear-row"></div>
+										                <div >
+											<p:outputLabel value="Observaciones" />
+											<div class="clear-3"></div>
+											<p:inputMask value="#{recepcionPeticionController.recepcionEfectivoBean.observacion}" maxlength="60"
+												onblur="value=value.trim(); value=value.toUpperCase()">
+												<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ ]*$/" />
+											</p:inputMask>
+										</div>               
+								
+								
+								
+								
+								
+										
+										</div>
+										    
+						</h:panelGroup>
+						
+						
+						
+						
+						</div>
+						<h:panelGroup id="idBotones">
+									        <p:commandButton styleClass="btn_secundario margin-top-10 margin-right-10"
+											value="Cancelar" process="@this" partialSubmit="true"
+											onclick="PF('dialogCancelBusqueda').show();" />
+											<p:commandButton
+							styleClass="btn_secundario margin-top-10"
+							value="Limpiar" update=":dialogLimpiarCampos" rendered="#{recepcionPeticionController.mostrarParrila}"
+							action="#{recepcionPeticionController.setMuestraDialogoLimpiar(true)}" />
+							<p:commandButton id="btnguardar"
+							styleClass="btn_primario float-right margin-top-10"  rendered="#{recepcionPeticionController.muestraBotonGuardar}"
+							value="Guardar"  update=":dialogGuardarCampos" disabled="#{recepcionPeticionController.guardarDisabled}"
+							action="#{recepcionPeticionController.setMuestraDialogoGuardar(true)}" />
+							
+											</h:panelGroup>
+					</h:form>
+							<p:dialog widgetVar="dialogCancelar" id="dialogCancelar" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="#{recepcionPeticionController.muestraDialogoCancelar}"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{recepcionPeticionController.rutaInicio()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dialogCancelar').hide();" />
+					</p:dialog>
+					<p:dialog widgetVar="dialogCancelBusqueda" id="dialogCancelBusqueda" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="#{recepcionPeticionController.muestraDialogoCancelar}"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+
+
+							<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+				   		<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true" 
+							oncomplete="PF('dialogCancelBusqueda').hide();"
+							update="formRecepcionEfectivo"
+							action="#{recepcionPeticionController.limpiaConsulta()}" />			
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dialogCancelBusqueda').hide();" />
+					</p:dialog>
+					 <p:dialog widgetVar="dlgAvisoConsultaIncorrecta" id="dlgAvisoConsultaIncorrecta" header="Consulta" showEffect="fade" hideEffect="fade"
+        			modal="true" resizable="false" closable="false" appendTo="@(body)" visible="#{recepcionPeticionController.consultaIncorrecta}" dynamic="true">
+            <span class="ui-messages-warn-icon warn-dialog"></span>
+            <p:outputLabel styleClass="modal-mensaje" 
+            	value="¡Atención! Los datos a consultar son inexistentes." />
+            <div class="clear"></div>
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoConsultaIncorrecta').hide();" />            
+        </p:dialog>
+         <p:dialog widgetVar="dlgAvisoEstatusIncorrecta" id="dlgAvisoEstatusIncorrecta" header="Consulta" showEffect="fade" hideEffect="fade"
+        			modal="true" resizable="false" closable="false" appendTo="@(body)" visible="#{recepcionPeticionController.estatusIncorrecto}" dynamic="true">
+            <span class="ui-messages-warn-icon warn-dialog"></span>
+            <p:outputLabel styleClass="modal-mensaje" 
+            	value="¡Atención!El estatus de la petición de efectivo es Solicitado/Cancelado/Autorizado por lo que no es posible realizar la recepción." />
+            <div class="clear"></div>
+            <p:commandButton styleClass="btn_principal_dialog_derecha" value="Aceptar" immediate="true" onclick="PF('dlgAvisoEstatusIncorrecta').hide();" />            
+        </p:dialog>
+		 	<p:dialog widgetVar="dialogLimpiarCampos" id="dialogLimpiarCampos" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="#{recepcionPeticionController.muestraDialogoLimpiar}"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Está a punto de perder la información capturada" />
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Está seguro que deba limpiar los campos?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" immediate="true"
+							oncomplete="PF('dialogLimpiarCampos').hide();"
+							action="#{recepcionPeticionController.setMuestraDialogoLimpiar(false)}" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Limpiar" immediate="true" update=":formRecepcionEfectivo"
+							oncomplete="PF('dialogLimpiarCampos').hide();"
+							action="#{recepcionPeticionController.limpiaParrilla()}" />
+					</p:dialog>		
+					<p:dialog widgetVar="dialogGuardarCampos" id="dialogGuardarCampos" showEffect="fade" hideEffect="fade"
+						appendTo="@(body)" header="¡Atención!" dynamic="true" modal="true"
+						visible="#{recepcionPeticionController.muestraDialogoGuardar}"
+						closable="false" resizable="false" draggable="false">
+						<!--icono de la modal -->
+						<span class="ui-messages-warn-icon warn-dialog"></span>
+						<!--mensaje de la modal styleClass="modal-mensaje" -->
+						<p:outputLabel styleClass="modal-mensaje"
+							value="Está a punto de registrar una recepción de efectivo por :" >
+							</p:outputLabel>
+						<p:outputLabel styleClass="modal-mensaje"
+							value="#{recepcionPeticionController.recepcionEfectivoBean.totalRecibido}" >
+							<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN" />
+							</p:outputLabel>	
+						<div class="clear"></div>
+						<!--acci�n a tomar por el usuario styleClass="modal-accion"-->
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar?" />
+						<div class="margin-bottom-20"></div>
+						<!--botones de la modal primarios y secundarios -->
+						<p:commandButton styleClass="btn_secundario_dialog margin-left-10"
+							value="Cancelar" immediate="true"
+							oncomplete="PF('dialogGuardarCampos').hide();"
+							action="#{recepcionPeticionController.setMuestraDialogoGuardar(false)}" />
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							value="Continuar" immediate="true" 
+							oncomplete="PF('dialogGuardarCampos').hide();"
+							action="#{recepcionPeticionController.guardar()}" />
+					</p:dialog>
+				</div>
+</div>
+	 				
+	
+	</h:body>
+	</ui:define>
+	</ui:composition>

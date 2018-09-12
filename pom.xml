@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mx.babel.bansefi</groupId>
+  <artifactId>banksystem-parent</artifactId>
+  <version>0.0.1</version>
+  <packaging>pom</packaging>
+  <name>banksystem-parent</name>
+  
+  <modules>
+  	<module>banksystem</module>
+  	<module>arq</module>
+  	<module>base</module>
+  	<module>personas</module>
+  	<module>transacciones</module>
+  	<module>cuentas</module>
+  	<module>administracion</module>
+  	<module>oficina</module>
+  	<module>contabilidad</module>
+  	<module>cajas</module>
+    <module>cheques</module>
+  	<module>integracionesAppWhere</module>
+  </modules>
+  
+  <properties>
+    <banksystem.version>0.0.1</banksystem.version>
+    <arq.version>0.0.2-SNAPSHOT</arq.version>
+    <integracionesAppWhere.version>0.0.1-SNAPSHOT</integracionesAppWhere.version>
+    <base.version>0.0.1-SNAPSHOT</base.version>
+    <personas.version>0.0.1-SNAPSHOT</personas.version>
+    <transacciones.version>0.0.1-SNAPSHOT</transacciones.version>
+    <administracion.version>0.0.1-SNAPSHOT</administracion.version>
+    <cuentas.version>0.0.1-SNAPSHOT</cuentas.version>
+    <oficina.version>0.0.1-SNAPSHOT</oficina.version>
+    <contabilidad.version>0.0.1-SNAPSHOT</contabilidad.version>
+    <cajas.version>0.0.1-SNAPSHOT</cajas.version>
+    <cheques.version>0.0.1-SNAPSHOT</cheques.version>
+    <junit.version>4.12</junit.version>
+    <jsf.version>2.2.10</jsf.version>
+    <primefaces.version>5.1</primefaces.version>
+    <spring.version>4.1.4.RELEASE</spring.version>
+    <aspectjrt.version>1.8.5</aspectjrt.version>
+    <aspectjweaver.version>1.8.5</aspectjweaver.version>
+    <cglib.version>3.1</cglib.version>
+    <joda-time.version>2.7</joda-time.version>
+    <servlet-api.version>3.0.1</servlet-api.version>
+    <bootstrap.version>1.0.10</bootstrap.version>
+    <primefaces-extension.version>3.0.0</primefaces-extension.version>
+    <commons-beanutils.version>1.9.2</commons-beanutils.version>
+    <commons-lang3.version>3.3.2</commons-lang3.version>
+    <dozer.version>5.5.1</dozer.version>
+    <log4j.version>2.2</log4j.version>
+    <cxf.version>3.0.4</cxf.version>
+    <jasper.version>6.0.3</jasper.version>
+    <olap4j.version>0.9.7.309-JS-3</olap4j.version>
+    <mockito.version>1.8.4</mockito.version>
+    <poi.version>3.12</poi.version>
+    <poiscratchpad.version>3.12</poiscratchpad.version>
+    <poiooxml.version>3.12</poiooxml.version>
+    <omnifaces.version>1.10</omnifaces.version>
+    <jboss-as-websockets.version>0.5</jboss-as-websockets.version>
+    <atmosphere-compat-jbossweb.version>2.0.1</atmosphere-compat-jbossweb.version>
+    <apache-poi-converter.version>1.0.5</apache-poi-converter.version>
+    <resteasy-jaxrs>2.2.1.GA</resteasy-jaxrs>
+    <lombok>1.16.18</lombok>
+  </properties>
+  
+  <dependencies>
+    <!-- JSF dependencies -->
+	<dependency>
+		<groupId>com.sun.faces</groupId>
+		<artifactId>jsf-impl</artifactId>
+		<version>${jsf.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>com.sun.faces</groupId>
+		<artifactId>jsf-api</artifactId>
+		<version>${jsf.version}</version>
+	</dependency>
+    <!-- end JSF dependencies -->
+    
+    <!-- Primefaces dependencies -->
+    <dependency>
+	    <groupId>org.primefaces</groupId>
+	    <artifactId>primefaces</artifactId>
+	    <version>${primefaces.version}</version>
+    </dependency>
+    <!-- end Primefaces dependencies -->
+    
+    <!-- Spring Core dependencies -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-core</artifactId>
+	    <version>${spring.version}</version>
+    </dependency>
+    
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-context</artifactId>
+	    <version>${spring.version}</version>
+    </dependency>
+    
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-beans</artifactId>
+	    <version>${spring.version}</version>
+    </dependency>
+    <!-- end Spring Core dependencies -->
+    
+    <!-- Spring Web dependencies -->    
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-web</artifactId>
+	    <version>${spring.version}</version>
+    </dependency>
+    <!-- end Spring Web dependencies -->
+    
+    <!-- Spring Test dependencies -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>${spring.version}</version>
+	</dependency>
+	<!-- end Spring Test dependencies -->
+    
+    <!-- Spring AOP dependencies -->    	
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-aop</artifactId>
+	    <version>${spring.version}</version>
+    </dependency>    
+	
+	<dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjrt</artifactId>
+	    <version>${aspectjrt.version}</version>
+    </dependency>
+	
+	<dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjweaver</artifactId>
+	    <version>${aspectjweaver.version}</version>
+    </dependency>
+
+	<dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        <version>${cxf.version}</version>
+   	</dependency>
+
+    <dependency>
+		<groupId>org.apache.commons</groupId>
+		<artifactId>commons-lang3</artifactId>
+		<version>${commons-lang3.version}</version>
+	</dependency>
+    
+    <dependency>
+	    <groupId>junit</groupId>
+	    <artifactId>junit</artifactId>
+	    <version>${junit.version}</version>
+	    <scope>test</scope>
+    </dependency>
+      
+    <dependency>
+	    <groupId>joda-time</groupId>
+	    <artifactId>joda-time</artifactId>
+	    <version>${joda-time.version}</version>
+    </dependency>
+
+	<dependency>
+		<groupId>org.apache.logging.log4j</groupId>
+		<artifactId>log4j-api</artifactId>
+		<version>${log4j.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.logging.log4j</groupId>
+		<artifactId>log4j-core</artifactId>
+		<version>${log4j.version}</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-all</artifactId>
+		<version>${mockito.version}</version>
+	</dependency>
+	
+    <dependency>
+      <groupId>org.omnifaces</groupId>
+      <artifactId>omnifaces</artifactId>
+      <version>${omnifaces.version}</version>
+    </dependency>
+    
+	<dependency>
+		<groupId>jstl</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+	</dependency>
+
+	<!-- Websocket dependencies -->
+
+	<dependency>
+		<groupId>org.atmosphere.jboss.as</groupId>
+		<artifactId>jboss-as-websockets</artifactId>
+		<version>${jboss-as-websockets.version}</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.atmosphere</groupId>
+		<artifactId>atmosphere-compat-jbossweb</artifactId>
+		<version>${atmosphere-compat-jbossweb.version}</version>
+	</dependency>
+
+	  <!-- Lombok dependency -->
+	  <dependency>
+		  <groupId>org.projectlombok</groupId>
+		  <artifactId>lombok</artifactId>
+		  <version>${lombok}</version>
+		  <scope>provided</scope>
+	  </dependency>
+
+
+  </dependencies>
+ 
+  <distributionManagement>
+    <repository>
+      <id>snapshots</id>
+      <name>Internal Releases</name>
+      <url>http://172.16.8.12:8081/nexus/content/repositories/snapshots</url>
+    </repository>
+  </distributionManagement>
+	<repositories>
+		<repository>
+			<id>JBoss repository</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+		</repository>
+	</repositories>
+  
+  <build>
+    <plugins> 
+		<plugin>
+		  <artifactId>maven-source-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <id>attach-sources</id>
+		      <phase>deploy</phase>
+		      <goals><goal>jar-no-fork</goal></goals> 
+		    </execution>
+		  </executions>
+		</plugin>
+		<plugin> 
+		  <!-- explicitly define maven-deploy-plugin after other to force exec order -->
+		  <artifactId>maven-deploy-plugin</artifactId> 
+		  <executions> 
+		    <execution> 
+		      <id>deploy</id>
+		      <phase>deploy</phase>
+		      <goals><goal>deploy</goal></goals> 
+		    </execution> 
+		  </executions> 
+		</plugin>
+      <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-compiler-plugin</artifactId>
+		<version>3.1</version>
+		<configuration>
+		  <source>1.8</source>
+		  <target>1.8</target>
+		  <encoding>UTF-8</encoding>
+		</configuration>
+	  </plugin>
+	</plugins>
+  </build>
+</project>

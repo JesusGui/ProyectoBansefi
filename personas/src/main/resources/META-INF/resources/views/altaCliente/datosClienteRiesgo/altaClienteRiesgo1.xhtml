@@ -1,0 +1,522 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:componente="http://java.sun.com/jsf/composite/componente"
+	template="../../../templates/plantilla-inicio.xhtml"> 
+
+    <ui:define name="contenido">
+    	
+    	<h:outputScript name="/js/personas.js"/>
+    
+        <h:body>
+            <div class="container_48">
+                <div class="contenedor">
+                
+                    <h:form id="formClienteRiesgo1" styleClass="contenedor-form">
+                        
+                        <h:panelGroup rendered="#{!altaClienteRiesgoController.elementosVisibles}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<p:commandButton icon="ui-icon-arrow-1-w" immediate="true" title="Volver atrás"
+									action="#{altaClienteRiesgoController.cancelarAltaModificacion()}">
+								</p:commandButton>
+							</div>
+						</h:panelGroup>
+                         
+                        <h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente ne true and altaClienteRiesgoController.elementosVisibles}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<div>
+								<h2 class="gris-b">Alta de </h2>
+								<h2 class="azul-b">#{altaClienteRiesgoController.cliente.nombre} #{altaClienteRiesgoController.cliente.apePaterno !=null ?altaClienteRiesgoController.cliente.apePaterno:''} #{altaClienteRiesgoController.cliente.apeMaterno !=null ?altaClienteRiesgoController.cliente.apeMaterno:''} </h2>
+								<h3 class="gris-b">(#{altaClienteRiesgoController.obtenerDescripcionTpDoc()} #{altaClienteRiesgoController.cliente.numIdentificacion})</h3>
+								</div>
+							</div>
+								
+						</h:panelGroup>				
+						
+						<h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente eq true and altaClienteRiesgoController.elementosVisibles}">
+							<div class="titulo centrar-objeto btn-inline-set">
+								<div>
+								<h2 class="gris-b">Modificación Cliente de Riesgo </h2>
+								<h2 class="azul-b">#{altaClienteRiesgoController.cliente.nombre} #{altaClienteRiesgoController.cliente.apePaterno !=null ?altaClienteRiesgoController.cliente.apePaterno:''} #{altaClienteRiesgoController.cliente.apeMaterno !=null ?altaClienteRiesgoController.cliente.apeMaterno:''} </h2>
+								<h3 class="gris-b">(#{altaClienteRiesgoController.obtenerDescripcionTpDoc()} #{altaClienteRiesgoController.cliente.numIdentificacion})</h3>
+								</div>
+							</div>
+						</h:panelGroup>
+                        <h:panelGroup rendered="#{altaClienteRiesgoController.elementosVisibles}">
+	                        <!--Wizard Botones circulares superiores -->
+	                        <div class="wiz-pasos">
+								<!-- Botones persona de riesgo -->
+								<p:commandButton styleClass="activo" value="Datos de operación"/> 
+								<p:commandButton styleClass="inactivo" value="Referencias personales"
+									action="#{altaClienteRiesgoController.irAPaso2()}" onclick="acordionRiesgo()" 
+									ajax="true" update="formClienteRiesgo1"> 						
+								</p:commandButton>
+	                        </div>
+	                    </h:panelGroup>    
+                        
+                        <!--contenedor del wizard-->
+                        <div class="wiz-contenedor">                            
+                            <div class="contenedor-campos">
+                            	<p:messages id="messages" closable="false" showDetail="true" rendered="#{!altaClienteRiesgoController.elementosVisibles}" />
+	                            <h:panelGroup rendered="#{altaClienteRiesgoController.elementosVisibles}">
+		                            <p:outputLabel styleClass="txt-campo-obligatorio margin-left-10" value="*Campos Obligatorios"/>
+									<br/>
+									<h:outputLabel styleClass="txt-campos-oblg" value="Los campos marcados en rojo son requeridos" rendered="#{facesContext.validationFailed}"/>
+									<p:messages id="formCliente" showIcon="false" rendered="#{facesContext.validationFailed}" autoUpdate="true"/>
+									<br/>
+									<p:accordionPanel widgetVar="accordionAltaRiesgo1" multiple="true" dynamic="true" id="accordionformAltaRiesgo1" activeIndex="0,1,2">
+										
+										<!-- Tab de Plazas a Operar -->
+										<p:tab title="Plazas a operar">
+											
+											<!-- Opción 1-->
+											<div class="grid_24">
+												<p:outputLabel for="opcion1" id="opcion1Label" value="1ª opción"></p:outputLabel>
+												<div class="clear-3"></div>
+												<!-- <p:autoComplete id="opcion1" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion1}" 
+													maxlength="60" completeMethod="#{altaClienteRiesgoController.consultarDescripcionesPlazas}"
+													itemLabel="#{item}" itemValue="#{item}" validator="camposValidator" onblur="value=value.toUpperCase()" forceSelection="true">
+													<f:attribute name="tipoValidacion" value="D"/>
+													<p:ajax event="query" global="false"></p:ajax>	
+												</p:autoComplete> -->
+												<p:inputText id="opcion1" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion1}" 
+													maxlength="60" onblur="value=value.toUpperCase()" >
+													<f:attribute name="tipoValidacion" value="A" />
+													<f:validator validatorId="camposValidator" for="opcion1" />
+												</p:inputText>
+												<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\ ]*$/" for="opcion1" />
+											</div>
+											
+											<!-- Opción 2 -->
+											<div class="grid_24">
+												<p:outputLabel for="opcion2" id="opcion2Label"
+													value="2ª opción"></p:outputLabel>
+												<div class="clear-3"></div>
+												<!-- <p:autoComplete id="opcion2" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion2}" 
+													maxlength="60" completeMethod="#{altaClienteRiesgoController.consultarDescripcionesPlazas}"
+													itemLabel="#{item}" itemValue="#{item}"	validator="camposValidator" onblur="value=value.toUpperCase()" forceSelection="true">
+													<f:attribute name="tipoValidacion" value="D"/>
+													<p:ajax event="query" global="false"></p:ajax>	
+												</p:autoComplete> -->
+												<p:inputText id="opcion2" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion2}"
+													maxlength="60" onblur="value=value.toUpperCase()">
+													<f:attribute name="tipoValidacion" value="A"/>
+													<f:validator validatorId="camposValidator" for="opcion2"/>
+												</p:inputText>
+												<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\ ]*$/" for="opcion2" />
+											</div>
+											
+											<div class="clear-row"></div>
+											
+											<!-- Opción 3 -->
+											<div class="grid_24">
+												<p:outputLabel for="opcion3" id="opcion3Label"
+													value="3ª opción"></p:outputLabel>
+												<div class="clear-3"></div>
+												<!-- <p:autoComplete id="opcion3" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion3}" 
+													maxlength="60" completeMethod="#{altaClienteRiesgoController.consultarDescripcionesPlazas}"
+													itemLabel="#{item}" itemValue="#{item}"	validator="camposValidator" onblur="value=value.toUpperCase()" forceSelection="true">
+													<f:attribute name="tipoValidacion" value="D"/>
+													<p:ajax event="query" global="false"></p:ajax>	
+												</p:autoComplete> -->
+												<p:inputText id="opcion3" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion3}"
+													maxlength="60" onblur="value=value.toUpperCase()">
+													<f:attribute name="tipoValidacion" value="A"/>
+													<f:validator validatorId="camposValidator" for="opcion3"/>
+												</p:inputText>
+												<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\ ]*$/" for="opcion3" />
+											</div>
+											
+											<!-- Opción 4 -->
+											<div class="grid_24">
+												<p:outputLabel for="opcion4" id="opcion4Label"
+													value="4ª opción"></p:outputLabel>
+												<div class="clear-3"></div>
+												<!-- <p:autoComplete id="opcion4" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion4}" 
+													maxlength="60" completeMethod="#{altaClienteRiesgoController.consultarDescripcionesPlazas}"
+													itemLabel="#{item}" itemValue="#{item}"	validator="camposValidator" onblur="value=value.toUpperCase()" forceSelection="true">
+													<f:attribute name="tipoValidacion" value="D"/>
+													<p:ajax event="query" global="false"></p:ajax>	
+												</p:autoComplete> -->
+												<p:inputText id="opcion4" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion4}"
+													maxlength="60" onblur="value=value.toUpperCase()">
+													<f:attribute name="tipoValidacion" value="A"/>
+													<f:validator validatorId="camposValidator" for="opcion4"/>
+												</p:inputText>
+												<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\ ]*$/" for="opcion4" />
+											</div>
+											
+											<div class="clear-row"></div>
+											
+											<!-- Opción 5 -->
+											<div class="grid_24">
+												<p:outputLabel for="opcion5" id="opcion5Label"
+													value="5ª opción"></p:outputLabel>
+												<div class="clear-3"></div>
+												<!-- <p:autoComplete id="opcion5" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion5}" 
+													maxlength="60" completeMethod="#{altaClienteRiesgoController.consultarDescripcionesPlazas}"
+													itemLabel="#{item}" itemValue="#{item}"	validator="camposValidator" onblur="value=value.toUpperCase()" forceSelection="true">
+													<f:attribute name="tipoValidacion" value="D"/>
+													<p:ajax event="query" global="false"></p:ajax>	
+												</p:autoComplete> -->
+												<p:inputText id="opcion5" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion5}" 
+													maxlength="60" onblur="value=value.toUpperCase()">
+													<f:attribute name="tipoValidacion" value="A"/>
+													<f:validator validatorId="camposValidator" for="opcion5"/>
+												</p:inputText>
+												<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\ ]*$/" for="opcion5" />
+											</div>
+											
+											<!-- Opción 6 -->
+											<div class="grid_24">
+												<p:outputLabel for="opcion6" id="opcion6Label"	
+													value="6ª opción"></p:outputLabel>
+												<div class="clear-3"></div>
+												<!-- <p:autoComplete id="opcion6" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion6}" 
+													maxlength="60" completeMethod="#{altaClienteRiesgoController.consultarDescripcionesPlazas}"
+													itemLabel="#{item}" itemValue="#{item}"	validator="camposValidator" onblur="value=value.toUpperCase()" forceSelection="true">
+													<f:attribute name="tipoValidacion" value="D"/>
+													<p:ajax event="query" global="false"></p:ajax>	
+												</p:autoComplete> -->
+												<p:inputText id="opcion6" value="#{altaClienteRiesgoController.cliente.datosRiesgo.opcion6}"
+													maxlength="60" onblur="value=value.toUpperCase()">
+													<f:attribute name="tipoValidacion" value="A"/>
+													<f:validator validatorId="camposValidator" for="opcion6" />
+												</p:inputText>
+												<pe:keyFilter regEx="/^[0-9a-zA-ZÑñ\ ]*$/" for="opcion6" />
+											</div>
+										</p:tab>
+										
+										<!-- Tab de Persona fisica con actividad empresarial -->
+										<p:tab title="Persona física con actividad empresarial">
+											
+											<div class="grid_48">
+												<p:outputLabel styleClass="txt-instruccion" value="Datos referentes a la suma todas sus actividades empresariales."/>
+											</div>
+																						
+											<div class="clear-row"></div>
+											
+											<div class="row-flex">
+											
+												<div class="grid_24">
+													<p:outputLabel for="producto" id="productoL" value="Producto / servicio que presta"></p:outputLabel>
+													<div class="clear-3"></div>
+													<p:inputMask id="producto" value="#{altaClienteRiesgoController.cliente.datosRiesgo.producto}"
+														maxlength="60" onblur="value=value.toUpperCase()" required="#{param['disableValidation']==null and altaClienteRiesgoController.cliente.autonomo !=null and altaClienteRiesgoController.cliente.autonomo eq true}">
+														<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/"/>
+														<f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+													</p:inputMask>
+												</div>
+												
+												<div class="grid_6">
+												    <p:outputLabel for="numSucursales" value="N° de Sucursales"></p:outputLabel>
+												    <div class="clear-3"></div>
+													<p:inputMask id="numSucursales"
+														value="#{altaClienteRiesgoController.cliente.datosRiesgo.numSucursales}"
+														maxlength="4" onblur="value=value.toUpperCase()">
+														<pe:keyFilter regEx="/^-?[\d\-\.]/" />
+														<f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="C"/>
+													</p:inputMask>
+					                            </div>
+												
+												<div class="grid_6">
+												    <p:outputLabel for="numEmpleados" value="N° de Empleados"></p:outputLabel>
+												    <div class="clear-3"></div>
+													<p:inputMask id="numEmpleados"
+														value="#{altaClienteRiesgoController.cliente.datosRiesgo.numEmpleados}"
+														maxlength="4" onblur="value=value.toUpperCase()">
+														<!-- <pe:keyFilter regEx="/[\d\-\.]/" /> -->
+														<pe:keyFilter regEx="/^-?[0-9]/" />
+														<f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="C"/>
+													</p:inputMask>
+					                            </div>
+												
+												<div class="grid_12">
+					                            	<p:outputLabel for="activo" value="Activo"></p:outputLabel>
+						                            <div class="clear-3"></div>
+													<pe:inputNumber id="activo" maxlength="14" styleClass="pe-inputNumber"
+														required="#{param['disableValidation']==null and altaClienteRiesgoController.cliente.autonomo !=null and altaClienteRiesgoController.cliente.autonomo eq true}" 
+														decimalPlaces="2" decimalSeparator="."
+														thousandSeparator="," minValue="0" maxValue="999999999999.99"
+														value="#{altaClienteRiesgoController.cliente.datosRiesgo.activo}"
+														placeholder="Importe">
+														<f:validateDoubleRange minimum="#{altaClienteRiesgoController.cliente.autonomo ==null or altaClienteRiesgoController.cliente.autonomo ne true ? '0.00' : '0.01'}"/>
+														<pe:keyFilter regEx="/[\d\.]/" />
+													</pe:inputNumber>
+													<span class="pe-inputNumber-suffix">MXN</span>	
+					                            </div>
+				                            
+				                            </div>
+				                            
+				                            <div class="grid_12">
+				                            	<p:outputLabel for="pasivo" value="Pasivo"></p:outputLabel>
+					                            <div class="clear-3"></div>
+												<pe:inputNumber id="pasivo" maxlength="14" styleClass="pe-inputNumber"
+													required="#{param['disableValidation']==null and altaClienteRiesgoController.cliente.autonomo !=null and altaClienteRiesgoController.cliente.autonomo eq true}" 
+													decimalPlaces="2" decimalSeparator="."
+													thousandSeparator="," minValue="0" maxValue="999999999999.99"
+													value="#{altaClienteRiesgoController.cliente.datosRiesgo.pasivo}"
+													placeholder="Importe">
+													<f:validateDoubleRange minimum="#{altaClienteRiesgoController.cliente.autonomo ==null or altaClienteRiesgoController.cliente.autonomo ne true ? '0.00' : '0.01'}"/>
+													<pe:keyFilter regEx="/[\d\.]/" />
+												</pe:inputNumber>
+												<span class="pe-inputNumber-suffix">MXN</span>	
+				                            </div>	                            		
+											
+											<div class="grid_12">
+				                            	<p:outputLabel for="factAnual" value="Facturación Anual"></p:outputLabel>
+					                            <div class="clear-3"></div>
+												<pe:inputNumber id="factAnual" maxlength="14" styleClass="pe-inputNumber"
+													required="#{param['disableValidation']==null and altaClienteRiesgoController.cliente.autonomo !=null and altaClienteRiesgoController.cliente.autonomo eq true}" 
+													decimalPlaces="2" decimalSeparator="."
+													thousandSeparator="," minValue="0" maxValue="999999999999.99"
+													value="#{altaClienteRiesgoController.cliente.datosRiesgo.factAnual}"
+													placeholder="Importe">
+													<f:validateDoubleRange minimum="#{altaClienteRiesgoController.cliente.autonomo ==null or altaClienteRiesgoController.cliente.autonomo ne true ? '0.00' : '0.01'}"/>
+													<pe:keyFilter regEx="/[\d\.]/" />
+												</pe:inputNumber>
+												<span class="pe-inputNumber-suffix">MXN</span>	
+				                            </div>
+				                            
+				                            <div class="grid_12">
+				                            	<p:outputLabel for="capital" value="Capital"></p:outputLabel>
+					                            <div class="clear-3"></div>
+												<pe:inputNumber id="capital" maxlength="14" styleClass="pe-inputNumber"
+													required="#{param['disableValidation']==null and altaClienteRiesgoController.cliente.autonomo !=null and altaClienteRiesgoController.cliente.autonomo eq true}" 
+													decimalPlaces="2" decimalSeparator="."
+													thousandSeparator="," minValue="0" maxValue="999999999999.99"
+													value="#{altaClienteRiesgoController.cliente.datosRiesgo.capital}"
+													placeholder="Importe">
+													<f:validateDoubleRange minimum="#{altaClienteRiesgoController.cliente.autonomo ==null or altaClienteRiesgoController.cliente.autonomo ne true ? '0.00' : '0.01'}"/>
+													<pe:keyFilter regEx="/[\d\.]/" />	
+												</pe:inputNumber>
+												<span class="pe-inputNumber-suffix">MXN</span>	
+				                            </div>
+				                            
+				                            <div class="grid_12">
+				                            	<p:outputLabel for="exportaciones" value="Exportaciones"></p:outputLabel>
+					                            <div class="clear-3"></div>
+												<pe:inputNumber id="exportaciones" maxlength="14" styleClass="pe-inputNumber"
+													decimalPlaces="2" decimalSeparator="."
+													thousandSeparator="," minValue="0" maxValue="999999999999.99"
+													value="#{altaClienteRiesgoController.cliente.datosRiesgo.exportaciones}"
+													placeholder="Importe">
+													<pe:keyFilter regEx="/[\d\.]/" />
+												</pe:inputNumber>
+												<span class="pe-inputNumber-suffix">MXN</span>	
+				                            </div>
+											
+										</p:tab>
+										
+										<!-- Tab de Empleo Actual: Datos de la empresa -->
+	
+										<p:tab title="Empleo Actual: Datos de la empresa" id="empleoActual">
+											
+											<div class="grid_30">
+												<p:outputLabel for="denominacion" id="denominacionL" value="Denominacion"></p:outputLabel>
+												<div class="clear-3"></div>
+												<p:inputMask id="denominacion" value="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa}"
+													maxlength="60" onblur="value=value.toUpperCase()">
+													<pe:keyFilter regEx="/^[0-9a-zA-ZñÑ\- ]*$/" />
+													<p:ajax global="false" event="change" listener="#{altaClienteRiesgoController.limpiarDatosDomicilio()}" 
+														update="@this datosDomicilioEmpresa" process="@this" immediate="true"/>
+													<!-- Incidencia de datos adicionales no se mostraban antes de pasar al siguiente escenario -->
+													<!-- Se agrega p:ajax con event blur -->
+													<p:ajax global="false" event="blur" listener="#{altaClienteRiesgoController.limpiarDatosDomicilio()}" 
+														update="@this datosDomicilioEmpresa" process="@this" immediate="true"/>
+													<f:param name="disableValidation" value="true"/>
+													<f:validator validatorId="camposValidator"/>
+													<f:attribute name="tipoValidacion" value="A"/>
+												</p:inputMask>
+											</div>
+											
+											<div class="clear-row"></div>
+											
+											<h:panelGroup id="datosDomicilioEmpresa">
+											<div class="row-flex">
+											
+												<div class="grid_5">
+												    <p:outputLabel for="codPostal" value="Código postal" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}" />
+											        <div class="clear-3"></div>
+											        <p:inputText id="codPostal" value="#{altaClienteRiesgoController.cliente.datosRiesgo.codigoPostal}" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and  altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}"
+											        	 maxlength="5" onblur="value=value.toUpperCase()">
+											            <pe:keyFilter regEx="/[\d]/" />
+											            <p:ajax global="false" event="blur" process="@this"/>
+											        </p:inputText>
+											    </div>
+											    
+											    <div class="grid_22">
+												    <p:outputLabel for="municipio" value="Municipio/Localidad/Delegación" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}" />
+											        <h:panelGroup rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}">
+														<span class="ui-outputlabel-rfi"> *</span>
+													</h:panelGroup>
+											        <div class="clear-3"></div>
+											        <p:inputText id="municipio" value="#{altaClienteRiesgoController.cliente.datosRiesgo.municipio}" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and  altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}"
+											        	 maxlength="45" onblur="value=value.toUpperCase()" required="#{param['disableValidation']==null}">
+											            <pe:keyFilter regEx="/[a-zA-ZñÑ\- ]/" />
+											            <p:ajax global="false" event="blur" process="@this"/>
+											            <f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="B"/>
+											        </p:inputText>
+											    </div>
+											    
+											    <div class="grid_21">
+												    <p:outputLabel for="colonia" value="Colonia" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}" />
+											        <div class="clear-3"></div>
+											        <p:inputText id="colonia" value="#{altaClienteRiesgoController.cliente.datosRiesgo.colonia}" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and  altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}"
+											        	 maxlength="30" onblur="value=value.toUpperCase()">
+											            <pe:keyFilter regEx="/[0-9a-zA-ZñÑ\- ]/" />
+											            <p:ajax global="false" event="blur" process="@this"/>
+											            <f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+											        </p:inputText>
+											    </div>
+											    
+											</div>
+											
+											<div class="row-flex">
+											
+												<div class="grid_13">
+												    <p:outputLabel for="estado" value="Estado" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}" />
+											        <div class="clear-3"></div>
+											        <p:inputText id="estado" value="#{altaClienteRiesgoController.cliente.datosRiesgo.estado}" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and  altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}"
+											        	 maxlength="35" onblur="value=value.toUpperCase()">
+											            <pe:keyFilter regEx="/[a-zA-ZñÑ\- ]/" />
+											            <p:ajax global="false" event="blur" process="@this"/>
+											            <f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="B"/>
+											        </p:inputText>
+											    </div>
+											
+					                            <div class="grid_22">
+											        <p:outputLabel for="calle" value="Calle" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}" />
+											        <h:panelGroup rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}">
+														<span class="ui-outputlabel-rfi"> *</span>
+													</h:panelGroup>
+											        <div class="clear-3"></div>
+											        <p:inputText id="calle" value="#{altaClienteRiesgoController.cliente.datosRiesgo.calle}" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and  altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}"
+											         			maxlength="45" onblur="value=value.toUpperCase()" required="#{param['disableValidation']==null}">
+											            <pe:keyFilter regEx="/^[\da-zA-ZñÑ\- ]*$/" />
+											            <p:ajax global="false" event="blur" process="@this"/>
+											            <f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+											        </p:inputText>
+											    </div>
+											    
+											    <div class="grid_8">
+											        <p:outputLabel for="numExterior" value="Num. Exterior" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}" />
+											        <div class="clear-3"></div>
+											        <p:inputText id="numExterior" value="#{altaClienteRiesgoController.cliente.datosRiesgo.numExterior}" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and  altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}"
+											        	 maxlength="4" onblur="value=value.toUpperCase()">
+											            <pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+											            <p:ajax global="false" event="blur" process="@this"/>
+											            <f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+											        </p:inputText>
+											    </div>
+											
+												<div class="grid_5">
+											        <p:outputLabel for="numInterior" value="Num. Interior" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}" />
+											        <div class="clear-3"></div>
+											        <p:inputText id="numInterior" value="#{altaClienteRiesgoController.cliente.datosRiesgo.numInterior}" rendered="#{altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa !=null and  altaClienteRiesgoController.cliente.datosRiesgo.denominacionEmpresa.length()>0}"
+											        	 maxlength="3" onblur="value=value.toUpperCase()">
+											            <pe:keyFilter regEx="/[\d\-\.a-zA-ZñÑ]/" />
+											            <p:ajax global="false" event="blur" process="@this"/>
+											            <f:validator validatorId="camposValidator"/>
+														<f:attribute name="tipoValidacion" value="A"/>
+											        </p:inputText>
+											    </div>
+											
+											</div>
+											    
+				                            </h:panelGroup>
+											
+										</p:tab>
+										
+									<!-- Fin Tabs -->								
+									</p:accordionPanel>
+								</h:panelGroup>
+                            </div>
+                            <h:panelGroup rendered="#{altaClienteRiesgoController.elementosVisibles}">
+	                            <div class="wiz-siguiente">
+	                                <!--aqui va el boton de "paso siguiente" del wizard-->
+	                                <p:commandButton icon="ui-icon-arrow-1-e" id="siguiente" ajax="true" onclick="acordionRiesgo()"
+	                                	update="formClienteRiesgo1" action="#{altaClienteRiesgoController.irAPaso2()}"></p:commandButton>
+	                            </div>
+                            </h:panelGroup>
+                        </div>
+                        
+                        <h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente ne true and altaClienteRiesgoController.elementosVisibles}">
+							<p:commandButton styleClass="btn_secundario  margin-top-10" id="cancelarA" immediate="true" value="Cancelar" onclick="PF('dlgCancelarAlta').show();"/>
+						</h:panelGroup>
+					    
+					    <h:panelGroup rendered="#{altaClienteRiesgoController.modificacionCliente eq true and altaClienteRiesgoController.elementosVisibles}">
+							<p:commandButton styleClass="btn_secundario margin-top-10" id="cancelarM" immediate="true" value="Cancelar" onclick="PF('dlgCancelarModificacion').show();"/>
+						</h:panelGroup>
+						
+						<ui:include src="../../store.xhtml">
+					    	<ui:param name="storeBean" value="#{altaClienteRiesgoController}"/>
+						</ui:include>
+						
+                    </h:form>
+                </div>
+
+                <p:dialog widgetVar="dlgCancelarAlta" id="dlgCancelarAlta" appendTo="@(body)"
+                      header="Cancelar alta cliente de riesgo" modal="true" visible="false" closable="false"
+                      resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--                       <p:outputLabel  styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar el alta de cliente de riesgo" /> -->
+<!--                       <div class="clear"></div> -->
+<!--                       <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--                       <div class="margin-bottom-20"></div> -->
+<!--                       <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarAlta').hide();" id="VolverAlta"  value="Continuar con el alta" immediate="true"/> -->
+<!--                       <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartar"  value="No guardar" action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"/> -->
+<!--                       <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardar" value="Guardar" onclick="return storeData();"/> -->
+
+					<p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarAlta').hide();" />
+             </p:dialog>
+			 
+			 <p:dialog widgetVar="dlgCancelarModificacion" id="dlgCancelarModificacion" appendTo="@(body)"
+                      header="Cancelar modificación cliente de riesgo" modal="true" visible="false" closable="false"
+                      resizable="false" draggable="false" showEffect="fade" hideEffect="fade">
+                      <span class="ui-messages-warn-icon warn-dialog"></span>
+<!--                       <p:outputLabel styleClass="modal-mensaje" value="¡Atención! Está a punto de cancelar la modificación de cliente de riesgo" /> -->
+<!--                       <div class="clear"></div> -->
+<!--                       <p:outputLabel styleClass="modal-accion" value="¿Desea guardar los datos en &quot;Tareas pendientes&quot; para continuar más tarde?" /> -->
+<!--                       <div class="margin-bottom-20"></div> -->
+<!--                       <p:commandButton styleClass="btn_secundario_dialog" onclick="PF('dlgCancelarModificacion').hide();" id="VolverModificacion"  value="Continuar con la modificación" immediate="true"/> -->
+<!--                       <p:commandButton styleClass="btn_secundario_dialog margin-left-10" id="descartarM"  value="No guardar" action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"/> -->
+<!--                       <p:commandButton styleClass="btn_principal_dialog_derecha" id="guardarM" value="Guardar" onclick="return storeData();"/> -->
+                      
+                      <p:outputLabel styleClass="modal-mensaje"
+							value="¡Atención! Si continua perderá todos los cambios" />
+						<div class="clear"></div>
+						<p:outputLabel styleClass="modal-accion"
+							value="¿Desea continuar de todos modos?" />
+						<div class="margin-bottom-20"></div>
+						<p:commandButton styleClass="btn_principal_dialog_derecha"
+							action="#{altaClienteRiesgoController.cancelarAltaModificacion()}"
+							value="Continuar" immediate="true" />
+						<p:commandButton styleClass="btn_secundario_dialog"
+							value="Cancelar" onclick="PF('dlgCancelarModificacion').hide();" />
+             </p:dialog>
+            </div><!--termina container 48-->
+        </h:body>
+    </ui:define>
+</ui:composition>

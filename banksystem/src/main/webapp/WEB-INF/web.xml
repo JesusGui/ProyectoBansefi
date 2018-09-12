@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+
+	<display-name>Archetype Created Web Application</display-name>
+	<!-- Tag Lib para nuevos componentes -->
+	<context-param>
+		<param-name>javax.faces.FACELETS_LIBRARIES</param-name>
+		<param-value>/WEB-INF/bansefi-b.taglib.xml</param-value>
+	</context-param>
+
+	<!-- Refresco automatico de vistas -->
+	<context-param>
+		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
+		<param-value>0</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>facelets.SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>sessionTimeOut</param-name>
+		<param-value>25</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
+
+	<!-- <context-param> -->
+	<!-- <param-name>javax.faces.PROJECT_STAGE</param-name> -->
+	<!-- <param-value>Development</param-value> -->
+	<!-- </context-param> -->
+
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>mx.babel.arq.sesion.contexto.listeners.SesionListener</listener-class>
+	</listener>
+
+	<session-config>
+		<session-timeout>1</session-timeout>
+	</session-config>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/faces/*</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+
+	<!-- Cache configuration -->
+	<filter>
+		<filter-name>noCache</filter-name>
+		<filter-class>org.omnifaces.filter.CacheControlFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>noCache</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- /Cache configuration -->
+
+	<welcome-file-list>
+		<welcome-file>index.xhtml</welcome-file>
+	</welcome-file-list>
+
+	<error-page>
+		<exception-type>mx.babel.arq.comun.exceptions.NoControlableException</exception-type>
+		<location>/faces/views/error/error.xhtml</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/faces/views/error/timeout.xhtml</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>org.springframework.beans.factory.BeanCreationException</exception-type>
+		<location>/faces/views/error/error.xhtml</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>com.sun.faces.context.FacesFileNotFoundException</exception-type>
+		<location>/faces/views/error/error404.xhtml</location>
+	</error-page>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/faces/views/error/error404.xhtml</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/faces/views/error/error500.xhtml</location>
+	</error-page>
+
+	<!-- <distributable/> -->
+
+
+	<!-- Configuracion de RESTEASY-->
+
+	<!-- Auto scan REST service -->
+	<context-param>
+		<param-name>resteasy.scan</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!-- this need same with resteasy servlet url-pattern -->
+	<context-param>
+		<param-name>resteasy.servlet.mapping.prefix</param-name>
+		<param-value>/rest</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>
+			org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+		</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>resteasy-servlet</servlet-name>
+		<servlet-class>
+			org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>resteasy-servlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

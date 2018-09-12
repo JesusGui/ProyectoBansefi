@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<div class="marco-datospersonales sin-margen">
+	<div class="grid_24">
+		<p:outputLabel value="Periodo de liquidación: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.periodoDesdeLiquidacion}">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</p:outputLabel>
+		<p:outputLabel value=" - " styleClass="bold"
+			rendered="#{apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.periodoDesdeLiquidacion != null and apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.periodoHastaLiquidacion != null}" />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.periodoHastaLiquidacion}">
+			<f:convertDateTime pattern="dd/MM/yyyy" />
+		</p:outputLabel>
+		<div class="clear"></div>
+		<p:outputLabel value="Neto operación: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.netoOperacion}">
+			<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+				currencySymbol="MXN" />
+		</p:outputLabel>
+		<div class="clear"></div>
+		<p:outputLabel value="Pendiente: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.importePendiente}">
+			<f:convertNumber locale="es_MX" pattern="#,##0.00 ¤"
+				currencySymbol="MXN" />
+		</p:outputLabel>
+	</div>
+	<div class="grid_24">
+		<p:outputLabel value="Tipo de liquidación: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.tipoLiquidacion} " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescTipoLiquidacion()}" />
+		<div class="clear"></div>
+		<p:outputLabel value="Situación: " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.parametrosBean.apunteSeleccionado.liquidacionBean.situacion} " />
+		<p:outputLabel styleClass="bold"
+			value="#{apunteController.obtenerDescSituacionLiquidacion()}" />
+	</div>
+	<div class="clear-row"></div>
+	</div>
+	<div class="clear-row"></div>
+	
+	<p:dataTable id="tblConceptos"
+		value="#{apunteController.apunteSeleccionado.liquidacionBean.listaConceptos}"
+		var="concepto" rowKey="#{concepto.rowKey}" 
+		rendered="#{apunteController.apunteSeleccionado.liquidacionBean.listaConceptos != null and apunteController.apunteSeleccionado.liquidacionBean.listaConceptos.size() > 0}">
+		<p:column headerText="Concepto">
+			<h:outputText value="#{concepto.descConcepto}" />
+		</p:column>
+		<p:column headerText="Importe facturado">
+			<h:outputText styleClass="float-right"
+				value="#{concepto.importeFacturado}">
+				<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+					locale="es_MX" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Signo">
+			<h:outputText value="DEBE" rendered="#{concepto.signo.equals('D')}" />
+			<h:outputText value="HABER" rendered="#{concepto.signo.equals('H')}" />
+		</p:column>
+		<p:column headerText="Importe pendiente">
+			<h:outputText styleClass="float-right"
+				value="#{concepto.importePendiente}">
+				<f:convertNumber pattern="#,##0.00 ¤" currencySymbol="MXN"
+					locale="es_MX" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Núm. Sec. Comisión" width="0"
+			style="display:none;">
+			<h:outputText value="#{concepto.numSecComision}" />
+		</p:column>
+		<p:column headerText="Núm. Sub. Comisión" width="0"
+			style="display:none;">
+			<h:outputText value="#{concepto.numSubAcComision}" />
+		</p:column>
+	</p:dataTable>
+
+	<div class="clear"></div>
+
+</ui:composition>

@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/templates/plantilla-inicio.xhtml">
+
+	<ui:define name="contenido">
+
+		<h:body>
+
+			<div class="container_48">
+
+				<div class="contenedor">
+
+					<h:form id="formDetAmpliadoLiq" styleClass="contenedor-form">
+
+						<div class="titulo centrar-objeto btn-inline-set">
+							<p:commandButton icon="ui-icon-arrow-1-w"
+								action="#{liquidacionesController.navegaDetalleLiquidacionCondicional()}"></p:commandButton>
+							<div>
+							<h2 class="gris-b">Detalle ampliado de liquidación</h2>
+							<div class="clear"></div>
+							<h2 class="rojo-b">#{liquidacionesController.cuentaBean.tipoCuenta}</h2>
+							<h2 class="gris-b">
+								<h:outputText styleClass="sub-h"
+									value="(#{liquidacionesController.cuentaBean.numeroCuenta}), " />
+								<h:outputText
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.fechaDesdeTramo}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</h:outputText>
+								<h:outputText value=" - "
+									rendered="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.fechaDesdeTramo != null and liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.fechaHastaTramo != null}" />
+								<h:outputText
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.fechaHastaTramo}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</h2>
+							</div>
+						</div>
+
+						<div class="contenedor-campos">
+
+							<h3 class="azul-b">#{liquidacionesController.cuentaBean.nombreTitular}</h3>
+
+							<div class="margin-bottom-10"></div>
+
+							<p:outputLabel styleClass="azul-b"
+								value="Cálculo de intereses" />
+
+							<div class="margin-bottom-10"></div>
+							<div class="marco-datospersonales orden-2-columnas">
+								<p:outputLabel value="Tipo de tramo: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.tipoTramo}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Referencia: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.referencia}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Num. tramo: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.numTramo}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Computo días: " />
+								<p:outputLabel styleClass="bold" value="Sin días"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.indCompDias.equals('S')}" />
+								<p:outputLabel styleClass="bold" value="Comerciales"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.indCompDias.equals('C')}" />
+								<p:outputLabel styleClass="bold" value="Naturales"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.indCompDias.equals('N')}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Base franquicia: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.baseFranquicia}" />
+								<div class="clear"></div>
+								<p:outputLabel value="% intereses franquicia: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.porcentajeIntFranquicia}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Base cálculo: " />
+								<p:outputLabel styleClass="bold" value="Sin base"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.indBaseCalc.equals('S')}" />
+								<p:outputLabel styleClass="bold" value="360"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.indBaseCalc.equals('0')}" />
+								<p:outputLabel styleClass="bold" value="365"
+									rendered="#{liquidacionesController.liquidacionSeleccionada.indBaseCalc.equals('5')}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Días: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.dias}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Valor base: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.valorBase}">
+									<f:convertNumber locale="es_MX" pattern="#,##0.00" />
+								</p:outputLabel>
+								<div class="clear"></div>
+								<p:outputLabel value="% intereses: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.porcentajeIntereses}" />
+								<div class="clear"></div>
+								<p:outputLabel value="Interés devengado: " />
+								<p:outputLabel styleClass="bold"
+									value="#{liquidacionesController.liquidacionSeleccionada.conceptoSeleccionado.interesDevengado}">
+									<f:convertNumber locale="es_MX" pattern="#,##0.00" />
+								</p:outputLabel>
+							</div>
+
+						</div>
+
+					</h:form>
+
+				</div>
+
+			</div>
+
+		</h:body>
+
+	</ui:define>
+
+</ui:composition>
