@@ -63,14 +63,17 @@
 							value="#{contextoUtils.getNotificacionesUsuario().size() > 0 ? contextoUtils.getNotificacionesUsuario().size():''}">
 							<p:menuitem styleClass="opcion-notificaciones" id="mnuVerNotificaciones" value="Ver notificaciones"
 								icon="fa fa-bell"
-								action="#{menuController.redirigirANotificaciones()}" />
+								action="#{menuController.redirigirANotificaciones()}" rendered="#{contextoUtils.isEacp()}" />
+
 							<p:menuitem styleClass="opcion-notificaciones" name="mnuVerSolicitudesName" id="mnuSolicitudes" value="Solicitudes"
 								icon="fa fa-thumb-tack"
-										action="#{limitesAutorizacionesController.solicitudes()}"/>
+										action="#{limitesAutorizacionesController.solicitudes()}"  rendered="#{contextoUtils.isEacp()}" />
 							<!--<span id="alertaSolicitudes" class="alertaContador">3</span>-->
+
 							<p:menuitem styleClass="opcion-avatar" id="mnuRegistroAsistencia" value="Registro Asistencia"
 										icon="fa fa-clock-o"
-										action="#{checadorController.inicio()}" />
+										action="#{checadorController.inicio()}"  rendered="#{contextoUtils.isEacp()}" />
+
 							<p:menuitem styleClass="opcion-avatar" id="mnuModificar" value="Cambiar contraseña"
 								icon="ui-icon-locked"
 								action="#{menuController.redirigirACambioContrasena()}" />
@@ -120,10 +123,10 @@
 					</p:dialog>
 
 			</div>
-			<div class="toolbox">
-				<h:panelGroup id="btnHerramientas" layout="block" styleClass="icon cbs-e003-herramientas iconos-tools darkgrey"></h:panelGroup>
-				<h:panelGroup id="btnCal" layout="block" onclick="PF('dlg2').show();" styleClass="options ui-icon-calculator iconos-tools"></h:panelGroup>
-				<h:panelGroup id="btnConversion" layout="block" onclick="PF('dlg1').show();" styleClass="options fa fa-retweet iconos-tools"></h:panelGroup>
+			<div class="#{contextoUtils.toolboox()}" >
+				<h:panelGroup id="btnHerramientas" layout="block" styleClass="icon cbs-e003-herramientas iconos-tools darkgrey" rendered="#{contextoUtils.isEacp()}"></h:panelGroup>
+				<h:panelGroup id="btnCal" layout="block" onclick="PF('dlg2').show();" styleClass="options ui-icon-calculator iconos-tools" rendered="#{contextoUtils.isEacp()}"></h:panelGroup>
+				<h:panelGroup id="btnConversion" layout="block" onclick="PF('dlg1').show();" styleClass="options fa fa-retweet iconos-tools" rendered="#{contextoUtils.isEacp()}"></h:panelGroup>
 				<pe:tooltip for="btnHerramientas" value="Herramientas" myPosition="top left" targetPosition="center center"/>
 				<pe:tooltip for="btnCal" value="Calculadora" myPosition="top left" targetPosition="center center"/>
 				<pe:tooltip for="btnConversion" value="Conversión de cuentas" myPosition="top left" targetPosition="center center"/>  

@@ -121,6 +121,38 @@ public class ResponseBansefi {
     protected BigInteger frecuente;
     @XmlElement(name = "FECANTERIOR")
     protected String fecanterior;
+
+   public ResponseBansefi() {
+
+    }
+
+    public ResponseBansefi create(String usuario, String nombre, String entidad, String centro, String ventanilla, String perfil, String aplicacion, String nombreaplica, String menu, String nombremenu, String vinculamenu, String submenu, String nombresubmenu, String vinculasubmenu, String subsubmenu, String nombresubsubmenu, String vinculasubsubmenu, String fecsys, String region, BigInteger expiracion, BigInteger frecuente, String fecanterior, String fecposterior) {
+        this.usuario = usuario;
+        this.nombre = nombre;
+        this.entidad = entidad;
+        this.centro = centro;
+        this.ventanilla = ventanilla;
+        this.perfil = perfil;
+        this.aplicacion = aplicacion;
+        this.nombreaplica = nombreaplica;
+        this.menu = menu;
+        this.nombremenu = nombremenu;
+        this.vinculamenu = vinculamenu;
+        this.submenu = submenu;
+        this.nombresubmenu = nombresubmenu;
+        this.vinculasubmenu = vinculasubmenu;
+        this.subsubmenu = subsubmenu;
+        this.nombresubsubmenu = nombresubsubmenu;
+        this.vinculasubsubmenu = vinculasubsubmenu;
+        this.fecsys = fecsys;
+        this.region = region;
+        this.expiracion = expiracion;
+        this.frecuente = frecuente;
+        this.fecanterior = fecanterior;
+        this.fecposterior = fecposterior;
+        return this;
+    }
+
     @XmlElement(name = "FECPOSTERIOR")
     protected String fecposterior;
     /**

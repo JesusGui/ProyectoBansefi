@@ -10,6 +10,7 @@ import mx.babel.arq.serviciosAppwhere.dto.remesasNacionales.ResCredencialesEntid
 import mx.babel.bansefi.banksystem.base.backends.BackEndBean;
 import mx.babel.bansefi.banksystem.base.beans.AperturaPuestoBean;
 import mx.babel.bansefi.banksystem.base.constants.CodTxConstants;
+import mx.babel.bansefi.banksystem.base.controllers.LoginController;
 import mx.babel.bansefi.banksystem.base.utils.IntegerToDateConverter;
 import mx.babel.bansefi.banksystem.base.webservices.aperturapuesto.AperturaPuestoServicio;
 import mx.babel.bansefi.banksystem.base.webservices.aperturapuesto.Ejecutar.ITRAPERTURAPUESTOSTRN;
@@ -64,6 +65,7 @@ public class AperturaPuestoBackend extends BackEndBean {
 
 		EjecutarResult resultado = (EjecutarResult) servicioWebUtils
 				.ejecutarWS(AperturaPuestoServicio.class, itraperturapuestostrn);
+
 
 		super.verificaRespuesta(resultado);
 

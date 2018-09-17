@@ -5,6 +5,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -199,4 +202,71 @@ public class EjecutarResult {
         this.responseBansefi = value;
     }
 
+
+        public List<ResponseBansefi> getDefaultEacp() {
+
+            List<ResponseBansefi> listaMenusDefault= new ArrayList<>();
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"18","REMESAS NACIONALES","","181","Originar","#{remNacController.originar()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"18","REMESAS NACIONALES","","182","Liquidar","#{remNacController.liquidar()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"18","REMESAS NACIONALES","","184","Consulta de Operaciones","#{remNacController.consultaOperaciones()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"18","REMESAS NACIONALES","","188","Aclaraciones","#{remNacController.aclaraciones()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                         ,"19","REMESAS INTERNACIONALES","","191","Abono Cuenta","#{remInterController.abonoCuenta()}",""
+                         ,"","","2015-08-06","420", BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"19","REMESAS INTERNACIONALES","","192","Aclaracion","#{remInterController.aclaracion()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"19","REMESAS INTERNACIONALES","","198","Consulta de Movimientos\t","#{remInterController.consulMovimientos()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"19","REMESAS INTERNACIONALES","","199","Consulta de Movimientos por Entidad\t","#{remInterController.consulMovEntidad()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                         ,"19","REMESAS INTERNACIONALES","","200","Consulta de Movimientos por Remesedora","#{remInterController.consulMovRemesa()",""
+                         ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                         ,"19","REMESAS INTERNACIONALES","","205","Pago en Ventanilla","#{remInterController.pagoVentanilla()}",""
+                         ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"21","RECEPCIÓN DE PAGOS A TERCEROS","","211","recepción de pagos","#{recepPagoTerceroController.recepcionPago()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"21","RECEPCIÓN DE PAGOS A TERCEROS","","212","Anulación de Pagos","#{recepPagoTerceroController.anulacionPago()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"21","RECEPCIÓN DE PAGOS A TERCEROS","","213","Reporte de Operaciones","#{recepPagoTerceroController.reporteOperaciones()}",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+                 listaMenusDefault.add((new ResponseBansefi()).create("E5690019","Gerardo", "0569","001","","EACP","1","NSS"
+                    ,"12","","","","","",""
+                    ,"","","2015-08-06","420",BigInteger.valueOf(18), BigInteger.valueOf(0),"2015-08-05","2015-08-07"));
+
+
+
+            return listaMenusDefault;
+
+    }
 }

@@ -241,7 +241,9 @@ public class MenuController implements Serializable {
 	 */
 	public String cerrarSesion() {
 		String vistaDestino = "#";
-		if (logoutBackEnd.ejecutarWS() == 0) {
+		if (!contextoUtils.isEacp()){
+			vistaDestino=NavegacionEnum.LOGIN.getRuta();
+		} else if (logoutBackEnd.ejecutarWS() == 0) {
 			// OK > Destruye el contexto y cierra la sesión Web.
 			bsContextoService.destruirContexto();
 			vistaDestino = NavegacionEnum.LOGIN.getRuta();

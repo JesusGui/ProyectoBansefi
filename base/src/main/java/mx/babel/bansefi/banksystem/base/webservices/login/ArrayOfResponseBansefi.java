@@ -1,6 +1,7 @@
 
 package mx.babel.bansefi.banksystem.base.webservices.login;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class ArrayOfResponseBansefi {
     @XmlElement(name = "ResponseBansefi")
     protected List<ResponseBansefi> responseBansefi;
 
+    public void setResponseBansefi(List<ResponseBansefi> responseBansefi) {
+        this.responseBansefi = responseBansefi;
+    }
+
     /**
      * Gets the value of the responseBansefi property.
      * 
@@ -61,10 +66,18 @@ public class ArrayOfResponseBansefi {
      * 
      */
     public List<ResponseBansefi> getResponseBansefi() {
-        if (responseBansefi == null) {
-            responseBansefi = new ArrayList<ResponseBansefi>();
-        }
+
+                if(responseBansefi== null) {
+                    responseBansefi  = new ArrayList<ResponseBansefi>();
+                  /* responseBansefi.add(noTcbInt1);
+                   responseBansefi.add(noTcbInt2);
+                   responseBansefi.add(noTcbInt3);*/
+                }
+
+
         return this.responseBansefi;
     }
+
+
 
 }
