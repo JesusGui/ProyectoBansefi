@@ -9,6 +9,14 @@ import lombok.NoArgsConstructor;
 @Data
 public class ContDatosCentroDTO {
 
+    public DatosCentroDTO getCENTRO() {
+        return CENTRO;
+    }
+
+    public void setCENTRO(DatosCentroDTO CENTRO) {
+        this.CENTRO = CENTRO;
+    }
+
     private DatosCentroDTO CENTRO;
 
 }

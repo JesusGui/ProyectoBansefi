@@ -10,40 +10,40 @@
 	<h:outputScript name="js/integracionAppWhere/correccionMenu.js"/>
 	<h:outputScript name="js/isotope.pkgd.min.js"/>
 	
-	<div id="cd-nav" class="cd-nav">
-		<div class="encabezado-menu-global">
-		<div class="titulo-menu-global"><h3 class="gris-b">Menú global</h3></div>
-		<div class="filtro">
-			<span class="icono-input-filtro"><i class="fa fa-filter"></i></span>
-			<p:inputText id="buscadorOpcionesMenu" styleClass="quicksearch" 
-			placeholder="Filtrar elementos del menú"/>
-		</div>
-		</div>
+		<div id="cd-nav" class="cd-nav">
+			<div class="encabezado-menu-global">
+			<div class="titulo-menu-global"><h3 class="gris-b">Menú global</h3></div>
+			<div class="filtro">
+				<span class="icono-input-filtro"><i class="fa fa-filter"></i></span>
+				<p:inputText id="buscadorOpcionesMenu" styleClass="quicksearch"
+				placeholder="Filtrar elementos del menú"/>
+			</div>
+			</div>
 
-		<div class="cd-navigation-wrapper cd-gallery">
-			<div class="centrar-objeto" id="centradorObjeto">
-			<div class="grid" id="contenedorMenu">
-			<ui:repeat var="menu" value="#{menuController.menus}" >
-				<div class="element-item">
-				<div class="element-title">
-				<span class="ui-icon ui-icon-triangle-1-s" />
-				<p:outputLabel styleClass="titulo-menu" value="#{menu.nombre}"/>
-				</div>
-					<div class="element-container">
-					<ui:repeat var="submenu" value="#{menu.submenus}">		
-						<div class="element-item-child">
-						<p:commandLink  styleClass="link-sub-menu" value="#{submenu.nombre}" action="#{menuController.convertActionExpressionToString(submenu.vinculoURL)}">
-						  <f:attribute name="store" value="true" />
-						</p:commandLink>
-						</div>
-					</ui:repeat>
+			<div class="cd-navigation-wrapper cd-gallery">
+				<div class="centrar-objeto" id="centradorObjeto">
+				<div class="grid" id="contenedorMenu">
+				<ui:repeat var="menu" value="#{menuController.menus}" >
+					<div class="element-item">
+					<div class="element-title">
+					<span class="ui-icon ui-icon-triangle-1-s" />
+					<p:outputLabel styleClass="titulo-menu" value="#{menu.nombre}"/>
 					</div>
-				</div>			
-			</ui:repeat>
+						<div class="element-container">
+						<ui:repeat var="submenu" value="#{menu.submenus}">
+							<div class="element-item-child">
+							<p:commandLink  styleClass="link-sub-menu" value="#{submenu.nombre}" action="#{menuController.convertActionExpressionToString(submenu.vinculoURL)}">
+							  <f:attribute name="store" value="true" />
+							</p:commandLink>
+							</div>
+						</ui:repeat>
+						</div>
+					</div>
+				</ui:repeat>
+				</div>
+				</div>
 			</div>
-			</div>
+
 		</div>
-		
-	</div>
 
 </ui:composition>
